@@ -1,15 +1,20 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { environment } from '../environments/environment';
+
+// Modules
+import { BrowserModule } from '@angular/platform-browser';
+import { AppRoutingModule } from './app-routing.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AppRoutingModule } from './app-routing.module';
+// Components
 import { AppComponent } from './app.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
 
 @NgModule({
   	declarations: [
-		AppComponent
+		AppComponent,
+		StartPageComponent
   	],
   	imports: [
 		BrowserModule,
