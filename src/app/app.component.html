@@ -1,3 +1,39 @@
+<nav class="navbar navbar-expand-sm navbar-light fixed-top">
+	<div class="container fixed-top">
+		<!-- Branding -->
+		<a href="/" 
+			class="navbar-brand ml-3" 
+			style="color: black; font-size: 35px; font-weight: bold; margin-top: -6px; font-family: 'MV Boli'">
+			dav
+		</a>
 
+		<!-- Toggle button -->
+		<button
+			class="navbar-toggler mr-3" 
+			type="button"
+			data-toggle="collapse"
+			data-target="#navbar-responsive"
+			aria-controls="navbar-responsive"
+			aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<!-- List items -->
+		<div class="collapse navbar-collapse" id="navbar-responsive">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a href="/pricing" class="nav-link navbar-item">Pricing</a>
+				</li>
+				<li class="nav-item">
+					<a href="/login" class="nav-link navbar-item">Log in</a>
+				</li>
+				<li class="nav-item">
+					<a href="/signup" class="nav-link navbar-item">Sign up</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
 
 <router-outlet></router-outlet>
