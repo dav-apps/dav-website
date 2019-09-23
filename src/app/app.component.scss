@@ -1,7 +1,8 @@
 .navbar-item{
-	margin: 0px 8px;
+	margin: 0px;
 	font-size: 19px;
-	color: black;
+	color: rgba(0, 0, 0, 1) !important;
+	padding: 11px 18px 13px 18px !important;
 }
 
 .navbar-item:hover{
