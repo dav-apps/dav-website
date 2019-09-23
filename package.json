@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-watch": "ng build --watch",
+    "build-prod": "npm install && ng build --prod --aot && npm --prefix ./server/ install ./server/ && cpx 'server/**/*' dist",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -22,6 +24,7 @@
     "@angular/router": "~8.2.7",
     "@angular/service-worker": "~8.2.7",
     "rxjs": "~6.4.0",
+    "socket.io": "^2.3.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },
@@ -30,9 +33,9 @@
     "@angular/cli": "~8.3.5",
     "@angular/compiler-cli": "~8.2.7",
     "@angular/language-service": "~8.2.7",
-    "@types/node": "~8.9.4",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/node": "~8.9.4",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
