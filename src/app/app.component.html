@@ -1,5 +1,10 @@
-<nav class="navbar navbar-expand-sm navbar-light fixed-top">
-	<div class="container fixed-top">
+<nav 
+	id="navbar" 
+	class="navbar navbar-expand-sm navbar-light fixed-top" 
+	style="position: fixed; height: 56px; padding: 0px; z-index: 2; transition: all 0.3s;" 
+	[ngClass]="offsetTop > 100 && width >= 575 ? 'acrylic light shadow' : ''">
+	
+	<div class="container fixed-top" [ngClass]="width < 575 ? 'acrylic light shadow' : ''">
 		<!-- Branding -->
 		<a href="/" 
 			class="navbar-brand ml-3" 
