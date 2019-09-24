@@ -2,11 +2,11 @@
 	id="navbar" 
 	class="navbar navbar-expand-sm navbar-light fixed-top" 
 	style="position: fixed; height: 56px; padding: 0px; z-index: 2; transition: all 0.3s;" 
-	[ngClass]="offsetTop > 100 && width >= 575 ? 'acrylic light shadow' : ''">
+	[ngClass]="offsetTop > 100 && width > 575 ? 'acrylic light shadow' : ''">
 	
-	<div class="container fixed-top" [ngClass]="width < 575 ? 'acrylic light shadow' : ''">
+	<div class="container fixed-top" [ngClass]="width <= 575 ? 'acrylic light shadow' : ''">
 		<!-- Branding -->
-		<a href="/" 
+		<a routerLink="/"
 			class="navbar-brand ml-3" 
 			style="color: black; font-size: 35px; font-weight: bold; margin-top: -6px; font-family: 'MV Boli'">
 			dav
@@ -28,13 +28,13 @@
 		<div class="collapse navbar-collapse" id="navbar-responsive" style="margin-top: -7px; font-family: 'Segoe UI';">
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-					<a href="/pricing" class="nav-link navbar-item">Pricing</a>
+					<a routerLink="/pricing" class="nav-link navbar-item">Pricing</a>
 				</li>
 				<li class="nav-item">
-					<a href="/login" class="nav-link navbar-item">Log in</a>
+					<a routerLink="/login" class="nav-link navbar-item">Log in</a>
 				</li>
 				<li class="nav-item">
-					<a href="/signup" class="nav-link navbar-item">Sign up</a>
+					<a routerLink="/signup" class="nav-link navbar-item">Sign up</a>
 				</li>
 			</ul>
 		</div>
@@ -53,8 +53,8 @@
 			<ul>
 				<li><a href="https://blog.dav-apps.tech" target="blank">Blog</a></li>
 				<li><a href="https://www.twitter.com/dav_apps" target="blank">Twitter</a></li>
-				<li><a href="/contact">Contact</a></li>
-				<li><a href="/privacy">Privacy Policy</a></li>
+				<li><a routerLink="/contact">Contact</a></li>
+				<li><a routerLink="/privacy">Privacy Policy</a></li>
 				<li><a href="https://github.com/dav-apps/dav-website/releases" target="blank">v0.1</a></li>
 			</ul>
 		</nav>
