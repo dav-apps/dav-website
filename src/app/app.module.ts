@@ -12,13 +12,15 @@ import { AppComponent } from './app.component';
 import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
 import { ContactPageComponent } from 'src/app/pages/contact-page/contact-page.component';
 import { PrivacyPageComponent } from 'src/app/pages/privacy-page/privacy-page.component';
+import { PricingPageComponent } from 'src/app/pages/pricing-page/pricing-page.component';
 
 @NgModule({
   	declarations: [
 		AppComponent,
 		StartPageComponent,
 		ContactPageComponent,
-		PrivacyPageComponent
+		PrivacyPageComponent,
+		PricingPageComponent
   	],
   	imports: [
 		BrowserModule,
