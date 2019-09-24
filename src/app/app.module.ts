@@ -9,6 +9,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { AppComponent } from './app.component';
+import { PricingComponent } from 'src/app/components/pricing-component/pricing.component';
+
+// Pages
 import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
 import { ContactPageComponent } from 'src/app/pages/contact-page/contact-page.component';
 import { PrivacyPageComponent } from 'src/app/pages/privacy-page/privacy-page.component';
@@ -16,7 +19,10 @@ import { PricingPageComponent } from 'src/app/pages/pricing-page/pricing-page.co
 
 @NgModule({
   	declarations: [
+		// Components
 		AppComponent,
+		PricingComponent,
+		// Pages
 		StartPageComponent,
 		ContactPageComponent,
 		PrivacyPageComponent,
