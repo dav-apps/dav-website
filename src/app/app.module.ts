@@ -10,11 +10,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Components
 import { AppComponent } from './app.component';
 import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
+import { ContactPageComponent } from 'src/app/pages/contact-page/contact-page.component';
 
 @NgModule({
   	declarations: [
 		AppComponent,
-		StartPageComponent
+		StartPageComponent,
+		ContactPageComponent
   	],
   	imports: [
 		BrowserModule,
