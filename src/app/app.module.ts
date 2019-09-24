@@ -11,12 +11,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from './app.component';
 import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
 import { ContactPageComponent } from 'src/app/pages/contact-page/contact-page.component';
+import { PrivacyPageComponent } from 'src/app/pages/privacy-page/privacy-page.component';
 
 @NgModule({
   	declarations: [
 		AppComponent,
 		StartPageComponent,
-		ContactPageComponent
+		ContactPageComponent,
+		PrivacyPageComponent
   	],
   	imports: [
 		BrowserModule,
