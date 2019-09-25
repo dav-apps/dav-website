@@ -1,1 +1,69 @@
-<h1>Hello World on Signup page</h1>
+<div class="container d-flex flex-column" style="margin-top: 100px; margin-bottom: 100px">
+	<img src="/assets/images/dav-logo.png" style="width: 60px" class="align-self-center" />
+
+	<h1 class="text-center font-weight-light my-4">Sign up for dav</h1>
+
+	<div class="d-flex flex-column">
+		<!-- Username -->
+		<div class="row">
+			<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<div class="mb-3" *ngIf="errorMessage.length > 0">
+					<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
+				</div>
+
+				<fab-text-field
+					id="username-text-field"
+					[(value)]="username"
+					placeholder="Username"
+					label="Username"
+					type="text"
+					autocomplete="username">
+				</fab-text-field>
+			</div>
+		</div>
+		<br>
+		<!-- Email -->
+		<div class="row">
+			<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<fab-text-field
+					id="email-text-field"
+					[(value)]="email"
+					placeholder="Email"
+					label="Email"
+					type="email"
+					autocomplete="email">
+				</fab-text-field>
+			</div>
+		</div>
+		<br>
+		<!-- Password -->
+		<div class="row">
+			<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<fab-text-field
+					id="password-text-field"
+					[(value)]="password"
+					placeholder="Password"
+					label="Password"
+					type="password"
+					autocomplete="new-password">
+				</fab-text-field>
+			</div>
+		</div>
+		<br>
+		<!-- Password confirmation -->
+		<div class="row">
+			<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<fab-text-field
+					id="password-confirmation-text-field"
+					[(value)]="passwordConfirmation"
+					placeholder="Confirm your password"
+					label="Password confirmation"
+					type="password"
+					autocomplete="new-password">
+				</fab-text-field>
+				<br>
+				<fab-primary-button (click)="Signup()">Sign up</fab-primary-button>
+			</div>
+		</div>
+	</div>
+</div>
