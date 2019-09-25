@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { environment } from '../environments/environment';
 
 // Modules
-import { BrowserModule } from '@angular/platform-browser';
+import { AngularReactBrowserModule } from '@angular-react/core';
 import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FabTextFieldModule } from '@angular-react/fabric';
 
 // Components
 import { AppComponent } from './app.component';
@@ -33,10 +34,11 @@ import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.compo
 		SignupPageComponent
   	],
   	imports: [
-		BrowserModule,
+		AngularReactBrowserModule,
 		AppRoutingModule,
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
-		NgbModule
+		NgbModule,
+		FabTextFieldModule
   	],
   	providers: [],
   	bootstrap: [AppComponent]
