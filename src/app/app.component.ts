@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+import { DataService } from './services/data-service';
 
 @Component({
 	selector: 'app-root',
@@ -9,6 +10,10 @@ import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 export class AppComponent {
 	width: number = 500;
 	offsetTop: number = 0;
+
+	constructor(
+		private dataService: DataService
+	){}
 
 	ngOnInit(){
 		this.setSize();
