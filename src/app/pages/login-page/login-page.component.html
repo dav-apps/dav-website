@@ -1,1 +1,40 @@
-<h1>Hello World on Login page</h1>
+<div class="container d-flex flex-column" style="margin-top: 100px; margin-bottom: 100px;">
+	<img src="/assets/images/dav-logo.png" style="width: 60px" class="align-self-center" />
+
+	<h2 class="text-center my-4 font-weight-light">Log in to dav</h2>
+
+	<div class="d-flex flex-column">
+		<div class="row">
+			<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<!-- Error messages -->
+				<div class="mb-3" *ngIf="errorMessage.length > 0">
+					<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
+				</div>
+				
+				<fab-text-field
+					id="email-text-field"
+					[(value)]="email"
+					placeholder="Email"
+					label="Email"
+					type="email"
+					autocomplete="email">
+				</fab-text-field>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<fab-text-field
+					id="password-text-field"
+					[(value)]="password"
+					placeholder="Password"
+					label="Password"
+					type="password"
+					autocomplete="current-password">
+				</fab-text-field>
+				<br>
+				<fab-primary-button (click)="Login()">Log in</fab-primary-button>
+			</div>
+		</div>
+	</div>
+</div>

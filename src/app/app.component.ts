@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 
 @Component({
 	selector: 'app-root',
@@ -12,6 +13,7 @@ export class AppComponent {
 	ngOnInit(){
 		this.setSize();
 		window.onscroll = () => this.offsetTop = window.scrollY;
+		initializeIcons();
 	}
 
 	@HostListener('window:resize')

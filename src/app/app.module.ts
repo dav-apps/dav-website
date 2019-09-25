@@ -6,7 +6,15 @@ import { AngularReactBrowserModule } from '@angular-react/core';
 import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FabTextFieldModule } from '@angular-react/fabric';
+import { 
+	FabTextFieldModule,
+	FabButtonModule,
+	FabMessageBarModule,
+	FabIconModule
+} from '@angular-react/fabric';
+
+// Services
+import { DataService } from './services/data-service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -38,9 +46,14 @@ import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.compo
 		AppRoutingModule,
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 		NgbModule,
-		FabTextFieldModule
+		FabTextFieldModule,
+		FabButtonModule,
+		FabMessageBarModule,
+		FabIconModule
   	],
-  	providers: [],
+  	providers: [
+		DataService
+	],
   	bootstrap: [AppComponent]
 })
 export class AppModule { }
