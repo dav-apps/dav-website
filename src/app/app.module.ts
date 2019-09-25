@@ -16,6 +16,8 @@ import { StartPageComponent } from 'src/app/pages/start-page/start-page.componen
 import { ContactPageComponent } from 'src/app/pages/contact-page/contact-page.component';
 import { PrivacyPageComponent } from 'src/app/pages/privacy-page/privacy-page.component';
 import { PricingPageComponent } from 'src/app/pages/pricing-page/pricing-page.component';
+import { LoginPageComponent } from 'src/app/pages/login-page/login-page.component';
+import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.component';
 
 @NgModule({
   	declarations: [
@@ -26,7 +28,9 @@ import { PricingPageComponent } from 'src/app/pages/pricing-page/pricing-page.co
 		StartPageComponent,
 		ContactPageComponent,
 		PrivacyPageComponent,
-		PricingPageComponent
+		PricingPageComponent,
+		LoginPageComponent,
+		SignupPageComponent
   	],
   	imports: [
 		BrowserModule,
