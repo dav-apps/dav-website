@@ -12,7 +12,7 @@ export class AppComponent {
 	offsetTop: number = 0;
 
 	constructor(
-		private dataService: DataService
+		public dataService: DataService
 	){}
 
 	ngOnInit(){

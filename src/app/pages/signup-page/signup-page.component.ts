@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MessageBarType } from 'office-ui-fabric-react';
 import { SetTextFieldAutocomplete } from 'src/app/services/data-service';
 
 @Component({
@@ -11,6 +12,7 @@ export class SignupPageComponent{
 	password: string = "";
 	passwordConfirmation: string = "";
 	errorMessage: string = "";
+	messageBarType: MessageBarType = MessageBarType.error;
 
 	ngAfterViewInit(){
 		// Set the autocomplete attribute of the input elements
