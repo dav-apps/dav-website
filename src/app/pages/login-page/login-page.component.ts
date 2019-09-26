@@ -18,6 +18,11 @@ export class LoginPageComponent{
 		this.socket = io();
 
 		this.socket.emit("login", {hello: "Hello World"});
+
+		this.socket.on("login", (message) => {
+			console.log("Neue Nachricht!")
+			console.log(message)
+		});
 	}
 
 	ngAfterViewInit(){
