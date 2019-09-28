@@ -1,10 +1,19 @@
 import { Injectable } from "@angular/core";
+import * as localforage from 'localforage';
+
+const jwtKey = "jwt";
 
 @Injectable()
 export class DataService{
 	hideNavbarAndFooter: boolean = false;
 
-	
+	async SetJwt(jwt: string){
+		await localforage.setItem(jwtKey, jwt);
+	}
+
+	async GetJwt() : Promise<string>{
+		return await localforage.getItem(jwtKey);
+	}
 }
 
 export function FindElement(currentElement: Element, tagName: string) : Element{

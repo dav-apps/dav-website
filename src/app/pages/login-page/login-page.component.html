@@ -32,7 +32,8 @@
 					placeholder="Password"
 					label="Password"
 					type="password"
-					autocomplete="current-password">
+					autocomplete="current-password"
+					(keydown.enter)="Login()">
 				</fab-text-field>
 				<br>
 				<fab-primary-button (click)="Login()">Log in</fab-primary-button>
