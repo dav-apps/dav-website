@@ -3,6 +3,8 @@ import { MessageBarType } from 'office-ui-fabric-react';
 import { SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
 
+const loginKey = "login";
+
 @Component({
 	selector: 'dav-website-login-page',
 	templateUrl: './login-page.component.html'
@@ -17,10 +19,7 @@ export class LoginPageComponent{
 	ngOnInit(){
 		this.socket = io();
 
-		this.socket.emit("login", {hello: "Hello World"});
-
-		this.socket.on("login", (message) => {
-			console.log("Neue Nachricht!")
+		this.socket.on(loginKey, (message) => {
 			console.log(message)
 		});
 	}
@@ -34,6 +33,9 @@ export class LoginPageComponent{
 	}
 
 	Login(){
-		
+		this.socket.emit(loginKey, {
+			email: this.email,
+			password: this.password
+		});
 	}
 }

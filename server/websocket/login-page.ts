@@ -1,9 +1,10 @@
-var websocket = require('../websocket');
+import { Login } from 'dav-npm';
+import * as websocket from '../websocket';
 
-const loginKey = "login";
-exports.loginKey = loginKey;
+export const loginKey = "login";
 
-exports.login = async function(message){
-	console.log(message)
-	websocket.emit(loginKey, "Hello back!");
+export async function login(message: {email: string, password: string}){
+	let loginResponse = await Login(websocket.auth, message.email, message.password);
+	
+	websocket.emit(loginKey, loginResponse);
 }
