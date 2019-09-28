@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiResponse, LoginResponseData, ApiErrorResponse, ApiError } from 'dav-npm';
 import { MessageBarType } from 'office-ui-fabric-react';
+import { ApiResponse, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
 
@@ -53,11 +53,16 @@ export class LoginPageComponent{
 			// Redirect to the start page
 			this.router.navigate(['/']);
 		}else{
-			this.errorMessage = this.GetLoginErrorMessage((response as ApiErrorResponse).errors[0].code);
+			let errorCode = (response as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetLoginErrorMessage(errorCode);
+
+			if(errorCode != 2106){
+				this.password = "";
+			}
 		}
 	}
 
-	GetLoginErrorMessage(errorCode: number){
+	GetLoginErrorMessage(errorCode: number) : string{
 		switch (errorCode) {
 			case 1201:
 				return "Login failed";

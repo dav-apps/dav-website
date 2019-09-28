@@ -1,7 +1,7 @@
 <div class="container d-flex flex-column" style="margin-top: 100px; margin-bottom: 100px">
 	<img src="/assets/images/dav-logo.png" style="width: 60px" class="align-self-center" />
 
-	<h1 class="text-center font-weight-light my-4">Sign up for dav</h1>
+	<h2 class="text-center font-weight-light my-4">Sign up for dav</h2>
 
 	<div class="d-flex flex-column">
 		<!-- Username -->
@@ -59,7 +59,8 @@
 					placeholder="Confirm your password"
 					label="Password confirmation"
 					type="password"
-					autocomplete="new-password">
+					autocomplete="new-password"
+					(keydown.enter)="Signup()">
 				</fab-text-field>
 				<br>
 				<fab-primary-button (click)="Signup()">Sign up</fab-primary-button>
