@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import { DataService } from './services/data-service';
 
@@ -12,7 +13,8 @@ export class AppComponent {
 	offsetTop: number = 0;
 
 	constructor(
-		public dataService: DataService
+		public dataService: DataService,
+		public router: Router
 	){}
 
 	ngOnInit(){
@@ -28,5 +30,13 @@ export class AppComponent {
 
 	setSize(){
 		this.width = window.outerWidth;
+	}
+
+	Logout(){
+		this.dataService.user.Logout().then(() => {
+			this.router.navigate(['/']);
+		});
+
+		return false;
 	}
 }
