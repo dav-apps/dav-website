@@ -48,7 +48,7 @@ export class LoginPageComponent{
 	async LoginResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
 		if(response.status == 200){
 			// Save the jwt
-			await this.dataService.SetJwt((response as ApiResponse<LoginResponseData>).data.jwt);
+			await this.dataService.user.Login((response as ApiResponse<LoginResponseData>).data.jwt);
 
 			// Redirect to the start page
 			this.router.navigate(['/']);

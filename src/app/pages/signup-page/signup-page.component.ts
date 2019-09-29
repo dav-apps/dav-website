@@ -58,7 +58,7 @@ export class SignupPageComponent{
 	async SignupResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
 		if(response.status == 201){
 			// Save the jwt
-			await this.dataService.SetJwt((response as ApiResponse<SignupResponseData>).data.jwt);
+			await this.dataService.user.Login((response as ApiResponse<SignupResponseData>).data.jwt);
 
 			// Redirect to the start page
 			this.router.navigate(['/']);

@@ -34,7 +34,6 @@
     "bootstrap": "^4.3.1",
     "dav-npm": "git+https://github.com/dav-apps/dav-npm.git#development",
     "jquery": "^3.4.1",
-    "localforage": "^1.7.3",
     "office-ui-fabric-core": "^10.1.0",
     "office-ui-fabric-react": "^6.151.0",
     "react": "^16.9.0",

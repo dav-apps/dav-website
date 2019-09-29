@@ -1,18 +1,13 @@
 import { Injectable } from "@angular/core";
-import * as localforage from 'localforage';
-
-const jwtKey = "jwt";
+import { DavUser } from 'dav-npm';
 
 @Injectable()
 export class DataService{
+	user: DavUser;
 	hideNavbarAndFooter: boolean = false;
 
-	async SetJwt(jwt: string){
-		await localforage.setItem(jwtKey, jwt);
-	}
-
-	async GetJwt() : Promise<string>{
-		return await localforage.getItem(jwtKey);
+	constructor(){
+		this.user = new DavUser();
 	}
 }
 
