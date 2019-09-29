@@ -19,6 +19,7 @@ import { DataService } from './services/data-service';
 // Components
 import { AppComponent } from './app.component';
 import { PricingComponent } from 'src/app/components/pricing-component/pricing.component';
+import { AppCardComponent } from 'src/app/components/app-card-component/app-card.component';
 
 // Pages
 import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
@@ -33,6 +34,7 @@ import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.compo
 		// Components
 		AppComponent,
 		PricingComponent,
+		AppCardComponent,
 		// Pages
 		StartPageComponent,
 		ContactPageComponent,
