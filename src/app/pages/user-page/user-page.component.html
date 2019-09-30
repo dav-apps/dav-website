@@ -1,1 +1,40 @@
-<h1>Hello World on UserPage</h1>
+<mat-sidenav-container>
+	<mat-sidenav #sideNav mode="side" opened="true" style="margin-top: 100px">
+		<mat-nav-list>
+			<mat-list-item (click)="ShowGeneralMenu()" disableRipple [ngClass]="selectedMenu == 0 ? 'selected-menu-item' : ''" class="px-4">General</mat-list-item>
+			<mat-list-item (click)="ShowPlansMenu()" disableRipple [ngClass]="selectedMenu == 1 ? 'selected-menu-item' : ''" class="px-4">Plans</mat-list-item>
+			<mat-list-item (click)="ShowAppsMenu()" disableRipple [ngClass]="selectedMenu == 2 ? 'selected-menu-item' : ''" class="px-4">Apps</mat-list-item>
+		</mat-nav-list>
+	</mat-sidenav>
+  	<mat-sidenav-content>
+		<!-- General settings -->
+		<div class="navbar-margin pt-4" style="background-color: white" *ngIf="selectedMenu == 0">
+			<h1 class="text-center font-weight-light mb-4">General settings</h1>
+
+			<div class="d-flex flex-column align-items-center">
+				<img height="150" width="150" class="img" alt="Avatar" [src]="dataService.user.Avatar">
+			</div>
+		</div>
+
+		<!-- Plans -->
+		<div class="navbar-margin pt-4" style="background-color: white" *ngIf="selectedMenu == 1">
+			<h1 class="text-center font-weight-light">Plans</h1>
+
+			<div class="d-flex flex-column align-items-center py-4">
+				<div style="width: 80%"><dav-website-pricing></dav-website-pricing></div>
+			</div>
+		</div>
+
+		<!-- Apps -->
+		<div class="navbar-margin pt-4" style="background-color: white" *ngIf="selectedMenu == 2">
+			<h1 class="text-center font-weight-light mb-5">Your Apps</h1>
+
+			<div class="d-flex flex-column align-items-center">
+				<div style="width: 40%">
+					<mat-progress-bar [value]="usedStoragePercent"></mat-progress-bar>
+					<p class="mt-2">0 GB of 2 GB used</p>
+				</div>
+			</div>
+		</div>
+	</mat-sidenav-content>
+</mat-sidenav-container>

@@ -7,13 +7,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { 
 	FabTextFieldModule,
 	FabButtonModule,
 	FabMessageBarModule,
 	FabIconModule
 } from '@angular-react/fabric';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 // Services
 import { DataService } from './services/data-service';
@@ -55,11 +58,14 @@ import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 		BrowserAnimationsModule,
 		NgbModule,
+		FontAwesomeModule,
 		FabTextFieldModule,
 		FabButtonModule,
 		FabMessageBarModule,
 		FabIconModule,
-		FontAwesomeModule
+		MatSidenavModule,
+		MatListModule,
+		MatProgressBarModule
   	],
   	providers: [
 		DataService
