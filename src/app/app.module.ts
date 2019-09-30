@@ -29,6 +29,7 @@ import { PrivacyPageComponent } from 'src/app/pages/privacy-page/privacy-page.co
 import { PricingPageComponent } from 'src/app/pages/pricing-page/pricing-page.component';
 import { LoginPageComponent } from 'src/app/pages/login-page/login-page.component';
 import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.component';
+import { AppsPageComponent } from 'src/app/pages/apps-page/apps-page.component';
 
 @NgModule({
   	declarations: [
@@ -42,7 +43,8 @@ import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.compo
 		PrivacyPageComponent,
 		PricingPageComponent,
 		LoginPageComponent,
-		SignupPageComponent
+		SignupPageComponent,
+		AppsPageComponent
   	],
   	imports: [
 		AngularReactBrowserModule,

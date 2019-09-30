@@ -7,6 +7,7 @@ import { PrivacyPageComponent } from './pages/privacy-page/privacy-page.componen
 import { PricingPageComponent } from './pages/pricing-page/pricing-page.component';
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
+import { AppsPageComponent } from './pages/apps-page/apps-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -14,7 +15,8 @@ const routes: Routes = [
 	{ path: "privacy", component: PrivacyPageComponent },
 	{ path: "pricing", component: PricingPageComponent },
 	{ path: "login", component: LoginPageComponent },
-	{ path: "signup", component: SignupPageComponent }
+	{ path: "signup", component: SignupPageComponent },
+	{ path: "apps", component: AppsPageComponent }
 ];
 
 @NgModule({
