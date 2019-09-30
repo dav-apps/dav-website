@@ -1,6 +1,7 @@
 import { InitStatic, DavEnvironment, Auth } from 'dav-npm';
 import * as loginPage from './websocket/login-page';
 import * as signupPage from './websocket/signup-page';
+import * as appsPage from './websocket/apps-page';
 
 var socket = null;
 export var auth: Auth;
@@ -9,6 +10,7 @@ export function init(s: any){
 	socket = s;
 	socket.on(loginPage.loginKey, loginPage.login);
 	socket.on(signupPage.signupKey, signupPage.signup);
+	socket.on(appsPage.getAllAppsKey, appsPage.getAllApps);
 
 	InitStatic(DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);
