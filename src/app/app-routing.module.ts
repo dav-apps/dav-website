@@ -8,6 +8,7 @@ import { PricingPageComponent } from './pages/pricing-page/pricing-page.componen
 import { LoginPageComponent } from './pages/login-page/login-page.component';
 import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { AppsPageComponent } from './pages/apps-page/apps-page.component';
+import { UserPageComponent } from './pages/user-page/user-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -16,7 +17,8 @@ const routes: Routes = [
 	{ path: "pricing", component: PricingPageComponent },
 	{ path: "login", component: LoginPageComponent },
 	{ path: "signup", component: SignupPageComponent },
-	{ path: "apps", component: AppsPageComponent }
+	{ path: "apps", component: AppsPageComponent },
+	{ path: "user", component: UserPageComponent }
 ];
 
 @NgModule({
