@@ -1,1 +1,7 @@
-<h1>Hello World on Apps Page</h1>
+<div class="container navbar-margin pt-4">
+	<h1 class="text-center font-weight-light mb-3">All Apps</h1>
+
+	<div class="card-group">
+		<dav-website-app-card *ngFor="let app of apps" [app]="app"></dav-website-app-card>
+	</div>
+</div>
