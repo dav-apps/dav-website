@@ -5,6 +5,7 @@ import { environment } from '../environments/environment';
 import { AngularReactBrowserModule } from '@angular-react/core';
 import { AppRoutingModule } from './app-routing.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { 
 	FabTextFieldModule,
@@ -52,6 +53,7 @@ import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 		AngularReactBrowserModule,
 		AppRoutingModule,
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+		BrowserAnimationsModule,
 		NgbModule,
 		FabTextFieldModule,
 		FabButtonModule,
