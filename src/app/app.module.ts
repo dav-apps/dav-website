@@ -12,6 +12,7 @@ import {
 	FabMessageBarModule,
 	FabIconModule
 } from '@angular-react/fabric';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // Services
 import { DataService } from './services/data-service';
@@ -51,7 +52,8 @@ import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.compo
 		FabTextFieldModule,
 		FabButtonModule,
 		FabMessageBarModule,
-		FabIconModule
+		FabIconModule,
+		FontAwesomeModule
   	],
   	providers: [
 		DataService

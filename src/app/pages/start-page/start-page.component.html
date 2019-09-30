@@ -1,4 +1,12 @@
-<div class="container-fluid" style="padding: 0px">
+<div class="container navbar-margin pt-4" *ngIf="dataService.user.IsLoggedIn">
+	<h1 class="text-center font-weight-light mb-3">Your apps</h1>
+
+	<div class="card-group">
+		<dav-website-app-card *ngFor="let app of dataService.user.Apps" [app]="app"></dav-website-app-card>
+	</div>
+</div>
+
+<div class="container-fluid" style="padding: 0px" *ngIf="!dataService.user.IsLoggedIn">
 	<!-- Header with image -->
 	<div id="start-header" class="d-flex parallax" [style.height.px]="height * 0.7">
 		<div

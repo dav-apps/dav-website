@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { DataService } from 'src/app/services/data-service';
 
 @Component({
 	selector: 'dav-website-start-page',
@@ -11,7 +12,9 @@ export class StartPageComponent{
 	height: number = 500;
 	width: number = 500;
 
-	constructor(){}
+	constructor(
+		public dataService: DataService
+	){}
 
 	ngOnInit(){
 		this.setSize();

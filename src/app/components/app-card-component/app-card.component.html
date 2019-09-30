@@ -1,1 +1,31 @@
-<h1>Hello World on App Card</h1>
+<div>
+	<div class="card bg-light m-3" style="max-width: 18rem">
+		<h5 class="card-header font-weight-light">{{ app.Name }}</h5>
+		<div class="card-body">
+			<p class="card-text">{{ app.Description }}</p>
+		</div>
+		<div class="card-footer">
+			<a class="btn btn-light text-dark mx-1" 
+				target="blank" 
+				[href]="app.LinkWeb" 
+				style="font-size: 23px; padding: 3px 10px"
+				*ngIf="app.LinkWeb">
+				<fa-icon [icon]="faGlobe"></fa-icon>
+			</a>
+			<a class="btn btn-light text-dark mx-1" 
+				target="blank" 
+				[href]="app.LinkPlay" 
+				style="font-size: 23px; padding: 3px 10px"
+				*ngIf="app.LinkPlay">
+				<fa-icon [icon]="faAndroid"></fa-icon>
+			</a>
+			<a class="btn btn-light text-dark mx-1" 
+				target="blank" 
+				[href]="app.LinkWindows" 
+				style="font-size: 23px; padding: 3px 10px"
+				*ngIf="app.LinkWindows">
+				<fa-icon [icon]="faWindows"></fa-icon>
+			</a>
+		</div>
+	</div>
+</div>
