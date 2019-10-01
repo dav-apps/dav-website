@@ -17,6 +17,7 @@ import {
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { NgxFileHelpersModule } from 'ngx-file-helpers';
 
 // Services
 import { DataService } from './services/data-service';
@@ -65,7 +66,8 @@ import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 		FabIconModule,
 		MatSidenavModule,
 		MatListModule,
-		MatProgressBarModule
+		MatProgressBarModule,
+		NgxFileHelpersModule
   	],
   	providers: [
 		DataService
