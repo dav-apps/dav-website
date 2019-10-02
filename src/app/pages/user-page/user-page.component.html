@@ -22,7 +22,13 @@
 
 					<!-- Username -->
 					<div class="mt-4 d-flex" style="font-size: 18px">
-						<fab-text-field label="Username" [(value)]="username" [errorMessage]="usernameErrorMessage" (keydown)="UsernameTextFieldChanged($event)"></fab-text-field>
+						<fab-text-field 
+							label="Username" 
+							[(value)]="username" 
+							[errorMessage]="usernameErrorMessage" 
+							type="text"
+							autocomplete="username"
+							(keydown)="UsernameTextFieldChanged($event)"></fab-text-field>
 
 						<button 
 							type="button" 
@@ -36,7 +42,13 @@
 
 					<!-- Email -->
 					<div class="mt-4 d-flex" style="font-size: 18px">
-						<fab-text-field label="Email" [(value)]="email" [errorMessage]="emailErrorMessage" (keydown)="EmailTextFieldChanged($event)"></fab-text-field>
+						<fab-text-field 
+							label="Email" 
+							[(value)]="email" 
+							[errorMessage]="emailErrorMessage" 
+							type="email"
+							autocomplete="email"
+							(keydown)="EmailTextFieldChanged($event)"></fab-text-field>
 
 						<button
 							type="button"
@@ -46,6 +58,32 @@
 							*ngIf="email != dataService.user.Email && email != newEmail && email.length > 3 && email.includes('@')">
 							<fab-icon iconName="Save"></fab-icon>
 						</button>
+					</div>
+
+					<!-- Password -->
+					<div class="mt-4 d-flex flex-column" style="font-size: 18px">
+						<fab-text-field 
+							label="New Password" 
+							[(value)]="password" 
+							placeholder="Your new password"
+							[errorMessage]="passwordErrorMessage"
+							type="password"
+							autocomplete="new-password"
+							(keydown)="PasswordTextFieldChanged($event)">
+						</fab-text-field>
+
+						<fab-text-field 
+							label="Password confirmation" 
+							[(value)]="passwordConfirmation" 
+							placeholder="Repeat your new password" 
+							className="mt-3" 
+							type="password"
+							autocomplete="new-password"
+							(keydown)="PasswordTextFieldChanged($event)"
+							*ngIf="password.length >= 7 && password.length <= 25">
+						</fab-text-field>
+
+						<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation" className="mt-3">Save</fab-primary-button>
 					</div>
 				</div>
 			</div>

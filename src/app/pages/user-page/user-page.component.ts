@@ -19,6 +19,8 @@ const snackBarDuration = 3000;
 })
 export class UserPageComponent{
 	selectedMenu: Menu = Menu.General;
+
+	//#region General page
 	successMessageBarType: MessageBarType = MessageBarType.success;
 	errorMessageBarType: MessageBarType = MessageBarType.error;
 	socket: any = null;
@@ -27,12 +29,19 @@ export class UserPageComponent{
 	username: string = "";
 	email: string = "";
 	newEmail: string = "";
-	usedStoragePercent: number = 0;
+	password: string = "";
+	passwordConfirmation: string = "";
 
 	successMessage: string = "";
 	errorMessage: string = "";
 	usernameErrorMessage: string = "";
 	emailErrorMessage: string = "";
+	passwordErrorMessage: string = "";
+	//#endregion
+
+	//#region Apps page
+	usedStoragePercent: number = 0;
+	//#endregion
 
 	constructor(
 		public dataService: DataService,
@@ -61,11 +70,15 @@ export class UserPageComponent{
 	}
 
 	ShowGeneralMenu(){
+		if(this.selectedMenu == Menu.General) return;
 		this.selectedMenu = Menu.General;
 		
 		this.ClearErrors();
 		this.successMessage = "";
 		this.username = this.dataService.user.Username;
+		this.email = this.dataService.user.Email;
+		this.password = "";
+		this.passwordConfirmation = "";
 
 		// Set the content of the avatar image if it was updated
 		setTimeout(() => {
@@ -74,10 +87,12 @@ export class UserPageComponent{
 	}
 
 	ShowPlansMenu(){
+		if(this.selectedMenu == Menu.Plans) return;
 		this.selectedMenu = Menu.Plans;
 	}
 
 	ShowAppsMenu(){
+		if(this.selectedMenu == Menu.Apps) return;
 		this.selectedMenu = Menu.Apps;
 	}
 
@@ -119,6 +134,16 @@ export class UserPageComponent{
 		});
 	}
 
+	SavePassword(){
+		if(!(this.password.length >= 7 && this.password.length <= 25 && this.password == this.passwordConfirmation)) return;
+
+		this.updatedAttribute = UserAttribute.Password;
+		this.socket.emit(updateUserKey, {
+			jwt: this.dataService.user.JWT,
+			password: this.password
+		});
+	}
+
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
 		if(message.status == 200){
 			if(this.updatedAttribute == UserAttribute.Avatar){
@@ -132,6 +157,10 @@ export class UserPageComponent{
 				this.successMessage = "You will receive an email to confirm your new email address. After that, you can log in with your new email address.";
 				this.newEmail = this.email;
 				this.email = this.dataService.user.Email;
+			}else if(this.updatedAttribute == UserAttribute.Password){
+				this.successMessage = "You will receive an email to confirm your new password. After that, you can log in with your new password.";
+				this.password = "";
+				this.passwordConfirmation = "";
 			}
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
@@ -139,6 +168,10 @@ export class UserPageComponent{
 			if(this.updatedAttribute == UserAttribute.Avatar) this.errorMessage = this.GetAvatarErrorMessage(errorCode);
 			else if(this.updatedAttribute == UserAttribute.Username) this.usernameErrorMessage = this.GetUsernameErrorMessage(errorCode);
 			else if(this.updatedAttribute == UserAttribute.Email) this.emailErrorMessage = this.GetEmailErrorMessage(errorCode);
+			else if(this.updatedAttribute == UserAttribute.Password){
+				this.passwordErrorMessage = this.GetPasswordErrorMessage(errorCode);
+				this.passwordConfirmation = "";
+			}
 		}
 	}
 
@@ -152,6 +185,7 @@ export class UserPageComponent{
 		this.errorMessage = "";
 		this.usernameErrorMessage = "";
 		this.emailErrorMessage = "";
+		this.passwordErrorMessage = "";
 	}
 
 	GetAvatarErrorMessage(errorCode: number) : string{
@@ -171,12 +205,23 @@ export class UserPageComponent{
 		}
 	}
 
-	GetEmailErrorMessage(errorCode: number){
-		switch (errorCode) {
+	GetEmailErrorMessage(errorCode: number) : string{
+		switch(errorCode){
 			case 2401:
 				return "The email address is invalid";
 			case 2702:
 				return "The email address is already taken";
+			default:
+				return `Unexpected error (${errorCode})`;
+		}
+	}
+
+	GetPasswordErrorMessage(errorCode: number) : string{
+		switch(errorCode){
+			case 2202:
+				return "Your new password is too short";
+			case 2302:
+				return "Your new password is too long";
 			default:
 				return `Unexpected error (${errorCode})`;
 		}
@@ -191,6 +236,11 @@ export class UserPageComponent{
 		if(event.keyCode == 13) this.SaveEmail();
 		else this.ClearErrors();
 	}
+
+	PasswordTextFieldChanged(event: KeyboardEvent){
+		if(event.keyCode == 13) this.SavePassword();
+		else this.ClearErrors();
+	}
 }
 
 enum Menu{
@@ -202,5 +252,6 @@ enum Menu{
 enum UserAttribute{
 	Avatar = 0,
 	Username = 1,
-	Email = 2
+	Email = 2,
+	Password = 3
 }
