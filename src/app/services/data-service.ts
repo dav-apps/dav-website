@@ -5,9 +5,15 @@ import { DavUser } from 'dav-npm';
 export class DataService{
 	user: DavUser;
 	hideNavbarAndFooter: boolean = false;
+	userLoaded: boolean = false;
+	userLoadCallbacks: Function[] = [];
 
 	constructor(){
-		this.user = new DavUser();
+		this.user = new DavUser(() => {
+			this.userLoaded = true;
+			for(let callback of this.userLoadCallbacks) callback();
+			this.userLoadCallbacks = [];
+		});
 	}
 }
 

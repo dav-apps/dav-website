@@ -17,18 +17,28 @@ export class UserPageComponent{
 	selectedMenu: Menu = Menu.General;
 	usedStoragePercent: number = 0;
 	socket: any = null;
+	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
+	username: string;
 
 	constructor(
 		public dataService: DataService
 	){}
 
-	ngOnInit(){
+	async ngOnInit(){
 		this.socket = io();
 		this.socket.on(updateUserKey, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
 
-		// Todo: Wait for the user to be loaded
+		if(!this.dataService.userLoaded){
+			// Wait for the user to be loaded
+			await new Promise<any>(resolve => {
+				this.dataService.userLoadCallbacks.push(resolve);
+			});
+		}
 		this.UpdateUsedStoragePercent();
+
+		// Set the values for the text fields
+		this.username = this.dataService.user.Username;
 	}
 
 	UpdateUsedStoragePercent(){
@@ -53,6 +63,7 @@ export class UserPageComponent{
 	}
 
 	UpdateAvatar(file: ReadFile){
+		this.updatedAttribute = UserAttribute.Avatar;
 		this.newAvatarContent = file.content;
 		let content = file.content.substring(file.content.indexOf(',') + 1);
 
@@ -63,9 +74,20 @@ export class UserPageComponent{
 		});
 	}
 
+	SaveUsername(){
+		if(!(this.username != this.dataService.user.Username && this.username.length >= 2 && this.username.length <= 25)) return;
+
+		this.updatedAttribute = UserAttribute.Username;
+		this.socket.emit(updateUserKey, {
+			jwt: this.dataService.user.JWT,
+			username: this.username
+		});
+	}
+
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
 		if(message.status == 200){
-			this.UpdateAvatarImageContent();
+			if(this.updatedAttribute == UserAttribute.Avatar) this.UpdateAvatarImageContent();
+			else if(this.updatedAttribute == UserAttribute.Username) this.dataService.user.Username = this.username;
 		}
 	}
 
@@ -80,4 +102,9 @@ enum Menu{
 	General,
 	Plans,
 	Apps
+}
+
+enum UserAttribute{
+	Avatar = 0,
+	Username = 1
 }
