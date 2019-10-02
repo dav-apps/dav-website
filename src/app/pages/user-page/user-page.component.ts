@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData } from 'dav-npm';
@@ -6,6 +7,8 @@ import { DataService } from 'src/app/services/data-service';
 declare var io: any;
 
 const updateUserKey = "updateUser";
+const maxAvatarFileSize = 5000000;
+const snackBarDuration = 3000;
 
 @Component({
 	selector: 'dav-website-user-page',
@@ -27,7 +30,8 @@ export class UserPageComponent{
 	usernameErrorMessage: string = "";
 
 	constructor(
-		public dataService: DataService
+		public dataService: DataService,
+		private snackBar: MatSnackBar
 	){}
 
 	async ngOnInit(){
@@ -52,6 +56,9 @@ export class UserPageComponent{
 
 	ShowGeneralMenu(){
 		this.selectedMenu = Menu.General;
+		
+		this.ClearErrors();
+		this.username = this.dataService.user.Username;
 
 		// Set the content of the avatar image if it was updated
 		setTimeout(() => {
@@ -68,6 +75,12 @@ export class UserPageComponent{
 	}
 
 	UpdateAvatar(file: ReadFile){
+		if(file.size > maxAvatarFileSize){
+			this.errorMessage = "The image file is too large";
+			return;
+		}
+		this.ClearErrors();
+
 		this.updatedAttribute = UserAttribute.Avatar;
 		this.newAvatarContent = file.content;
 		let content = file.content.substring(file.content.indexOf(',') + 1);
@@ -91,8 +104,14 @@ export class UserPageComponent{
 
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
 		if(message.status == 200){
-			if(this.updatedAttribute == UserAttribute.Avatar) this.UpdateAvatarImageContent();
-			else if(this.updatedAttribute == UserAttribute.Username) this.dataService.user.Username = this.username;
+			if(this.updatedAttribute == UserAttribute.Avatar){
+				this.UpdateAvatarImageContent();
+				this.snackBar.open("Your profile picture was updated successfully. It may take some time to update across the site and apps.", null, {duration: 5000});
+			}
+			else if(this.updatedAttribute == UserAttribute.Username){
+				this.dataService.user.Username = this.username;
+				this.snackBar.open("Your username was updated successfully.", null, {duration: snackBarDuration});
+			}
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 
@@ -111,6 +130,11 @@ export class UserPageComponent{
 		return `Unexpected error (${errorCode})`;
 	}
 
+	ClearErrors(){
+		this.errorMessage = "";
+		this.usernameErrorMessage = "";
+	}
+
 	GetUsernameErrorMessage(errorCode: number){
 		switch(errorCode){
 			case 2201:
@@ -126,7 +150,7 @@ export class UserPageComponent{
 
 	UsernameTextFieldChanged(event: KeyboardEvent){
 		if(event.keyCode == 13) this.SaveUsername();
-		else this.usernameErrorMessage = "";
+		else this.ClearErrors();
 	}
 }
 
