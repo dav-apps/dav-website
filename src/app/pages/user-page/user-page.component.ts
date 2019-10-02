@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MessageBarType } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
@@ -15,11 +16,15 @@ const updateUserKey = "updateUser";
 })
 export class UserPageComponent{
 	selectedMenu: Menu = Menu.General;
-	usedStoragePercent: number = 0;
+	messageBarType: MessageBarType = MessageBarType.error;
 	socket: any = null;
 	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
 	username: string;
+	usedStoragePercent: number = 0;
+
+	errorMessage: string = "";
+	usernameErrorMessage: string = "";
 
 	constructor(
 		public dataService: DataService
@@ -88,6 +93,11 @@ export class UserPageComponent{
 		if(message.status == 200){
 			if(this.updatedAttribute == UserAttribute.Avatar) this.UpdateAvatarImageContent();
 			else if(this.updatedAttribute == UserAttribute.Username) this.dataService.user.Username = this.username;
+		}else{
+			let errorCode = (message as ApiErrorResponse).errors[0].code;
+
+			if(this.updatedAttribute == UserAttribute.Avatar) this.errorMessage = this.GetAvatarErrorMessage(errorCode);
+			else if(this.updatedAttribute == UserAttribute.Username) this.usernameErrorMessage = this.GetUsernameErrorMessage(errorCode);
 		}
 	}
 
@@ -95,6 +105,28 @@ export class UserPageComponent{
 		if(!this.newAvatarContent) return;
 		let imageTag = document.getElementById('avatar-image');
 		if(imageTag) imageTag.setAttribute('src', this.newAvatarContent);
+	}
+
+	GetAvatarErrorMessage(errorCode: number){
+		return `Unexpected error (${errorCode})`;
+	}
+
+	GetUsernameErrorMessage(errorCode: number){
+		switch(errorCode){
+			case 2201:
+				return "Your username is too short";
+			case 2301:
+				return "Your username is too long";
+			case 2701:
+				return "This username is already taken";
+			default:
+				return `Unexpected error (${errorCode})`;
+		}
+	}
+
+	UsernameTextFieldChanged(event: KeyboardEvent){
+		if(event.keyCode == 13) this.SaveUsername();
+		else this.usernameErrorMessage = "";
 	}
 }
 

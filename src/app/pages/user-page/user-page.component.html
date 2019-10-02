@@ -13,11 +13,13 @@
 
 			<div class="d-flex flex-column align-items-center ml-4">
 				<div style="width: 220px">
+					<div class="mb-4" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar></div>
+
 					<img id="avatar-image" class="img mb-3" height="150" width="150" alt="Avatar" [src]="dataService.user.Avatar"><br>
 					<fab-primary-button ngxFilePicker accept="image/png,image/jpeg" (filePick)="UpdateAvatar($event)">Upload Profile image</fab-primary-button>
 
 					<div class="mt-4 d-flex" style="font-size: 18px;">
-						<fab-text-field label="Username" [(value)]="username" (keydown.enter)="SaveUsername()"></fab-text-field>
+						<fab-text-field label="Username" [(value)]="username" [errorMessage]="usernameErrorMessage" (keydown)="UsernameTextFieldChanged($event)"></fab-text-field>
 						<button 
 							type="button" 
 							class="btn btn-sm ml-2 icon-button"
