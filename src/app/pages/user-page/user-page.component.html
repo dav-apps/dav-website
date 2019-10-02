@@ -13,19 +13,37 @@
 
 			<div class="d-flex flex-column align-items-center ml-4">
 				<div style="width: 220px">
-					<div class="mb-4" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar></div>
+					<div class="mb-4" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
+					<div class="mb-4" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
+					<!-- Avatar -->
 					<img id="avatar-image" class="img mb-3" height="150" width="150" alt="Avatar" [src]="dataService.user.Avatar"><br>
 					<fab-primary-button ngxFilePicker accept="image/png,image/jpeg" (filePick)="UpdateAvatar($event)">Upload Profile image</fab-primary-button>
 
-					<div class="mt-4 d-flex" style="font-size: 18px;">
+					<!-- Username -->
+					<div class="mt-4 d-flex" style="font-size: 18px">
 						<fab-text-field label="Username" [(value)]="username" [errorMessage]="usernameErrorMessage" (keydown)="UsernameTextFieldChanged($event)"></fab-text-field>
+
 						<button 
 							type="button" 
 							class="btn btn-sm ml-2 icon-button"
 							style="margin-top: 32px"
 							(click)="SaveUsername()"
 							*ngIf="username != dataService.user.Username && username.length >= 2 && username.length <= 25">
+							<fab-icon iconName="Save"></fab-icon>
+						</button>
+					</div>
+
+					<!-- Email -->
+					<div class="mt-4 d-flex" style="font-size: 18px">
+						<fab-text-field label="Email" [(value)]="email" [errorMessage]="emailErrorMessage" (keydown)="EmailTextFieldChanged($event)"></fab-text-field>
+
+						<button
+							type="button"
+							class="btn btn-sm ml-2 icon-button"
+							style="margin-top: 32px"
+							(click)="SaveEmail()"
+							*ngIf="email != dataService.user.Email && email != newEmail && email.length > 3 && email.includes('@')">
 							<fab-icon iconName="Save"></fab-icon>
 						</button>
 					</div>

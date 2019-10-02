@@ -19,15 +19,20 @@ const snackBarDuration = 3000;
 })
 export class UserPageComponent{
 	selectedMenu: Menu = Menu.General;
-	messageBarType: MessageBarType = MessageBarType.error;
+	successMessageBarType: MessageBarType = MessageBarType.success;
+	errorMessageBarType: MessageBarType = MessageBarType.error;
 	socket: any = null;
 	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
-	username: string;
+	username: string = "";
+	email: string = "";
+	newEmail: string = "";
 	usedStoragePercent: number = 0;
 
+	successMessage: string = "";
 	errorMessage: string = "";
 	usernameErrorMessage: string = "";
+	emailErrorMessage: string = "";
 
 	constructor(
 		public dataService: DataService,
@@ -48,6 +53,7 @@ export class UserPageComponent{
 
 		// Set the values for the text fields
 		this.username = this.dataService.user.Username;
+		this.email = this.dataService.user.Email;
 	}
 
 	UpdateUsedStoragePercent(){
@@ -58,6 +64,7 @@ export class UserPageComponent{
 		this.selectedMenu = Menu.General;
 		
 		this.ClearErrors();
+		this.successMessage = "";
 		this.username = this.dataService.user.Username;
 
 		// Set the content of the avatar image if it was updated
@@ -102,6 +109,16 @@ export class UserPageComponent{
 		});
 	}
 
+	SaveEmail(){
+		if(!(this.email != this.dataService.user.Email && this.email != this.newEmail && this.email.length > 3 && this.email.includes('@'))) return;
+
+		this.updatedAttribute = UserAttribute.Email;
+		this.socket.emit(updateUserKey, {
+			jwt: this.dataService.user.JWT,
+			email: this.email
+		});
+	}
+
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
 		if(message.status == 200){
 			if(this.updatedAttribute == UserAttribute.Avatar){
@@ -111,12 +128,17 @@ export class UserPageComponent{
 			else if(this.updatedAttribute == UserAttribute.Username){
 				this.dataService.user.Username = this.username;
 				this.snackBar.open("Your username was updated successfully.", null, {duration: snackBarDuration});
+			}else if(this.updatedAttribute == UserAttribute.Email){
+				this.successMessage = "You will receive an email to confirm your new email address. After that, you can log in with your new email address.";
+				this.newEmail = this.email;
+				this.email = this.dataService.user.Email;
 			}
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 
 			if(this.updatedAttribute == UserAttribute.Avatar) this.errorMessage = this.GetAvatarErrorMessage(errorCode);
 			else if(this.updatedAttribute == UserAttribute.Username) this.usernameErrorMessage = this.GetUsernameErrorMessage(errorCode);
+			else if(this.updatedAttribute == UserAttribute.Email) this.emailErrorMessage = this.GetEmailErrorMessage(errorCode);
 		}
 	}
 
@@ -126,16 +148,17 @@ export class UserPageComponent{
 		if(imageTag) imageTag.setAttribute('src', this.newAvatarContent);
 	}
 
-	GetAvatarErrorMessage(errorCode: number){
-		return `Unexpected error (${errorCode})`;
-	}
-
 	ClearErrors(){
 		this.errorMessage = "";
 		this.usernameErrorMessage = "";
+		this.emailErrorMessage = "";
 	}
 
-	GetUsernameErrorMessage(errorCode: number){
+	GetAvatarErrorMessage(errorCode: number) : string{
+		return `Unexpected error (${errorCode})`;
+	}
+
+	GetUsernameErrorMessage(errorCode: number) : string{
 		switch(errorCode){
 			case 2201:
 				return "Your username is too short";
@@ -148,8 +171,24 @@ export class UserPageComponent{
 		}
 	}
 
+	GetEmailErrorMessage(errorCode: number){
+		switch (errorCode) {
+			case 2401:
+				return "The email address is invalid";
+			case 2702:
+				return "The email address is already taken";
+			default:
+				return `Unexpected error (${errorCode})`;
+		}
+	}
+
 	UsernameTextFieldChanged(event: KeyboardEvent){
 		if(event.keyCode == 13) this.SaveUsername();
+		else this.ClearErrors();
+	}
+
+	EmailTextFieldChanged(event: KeyboardEvent){
+		if(event.keyCode == 13) this.SaveEmail();
 		else this.ClearErrors();
 	}
 }
@@ -162,5 +201,6 @@ enum Menu{
 
 enum UserAttribute{
 	Avatar = 0,
-	Username = 1
+	Username = 1,
+	Email = 2
 }
