@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
@@ -23,6 +23,8 @@ const buttonTransition = "all 0.15s";
 })
 export class UserPageComponent{
 	selectedMenu: Menu = Menu.General;
+	sideNavHidden: boolean = false;
+	sideNavOpened: boolean = false;
 
 	//#region General page
 	successMessageBarType: MessageBarType = MessageBarType.success;
@@ -97,6 +99,7 @@ export class UserPageComponent{
 	){}
 
 	async ngOnInit(){
+		this.setSize();
 		this.socket = io();
 		this.socket.on(updateUserKey, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
 		this.socket.on(sendDeleteAccountEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
@@ -123,6 +126,18 @@ export class UserPageComponent{
 		}, 1);
 	}
 
+	@HostListener('window:resize')
+	onResize(){
+		this.setSize();
+	}
+
+	setSize(){
+		this.sideNavHidden = window.outerWidth < 576;
+
+		if(!this.sideNavHidden) this.sideNavOpened = true;
+		else this.sideNavOpened = false;
+	}
+
 	UpdateUsedStoragePercent(){
 		this.usedStoragePercent = (this.dataService.user.UsedStorage / this.dataService.user.TotalStorage) * 100;
 	}
@@ -130,6 +145,7 @@ export class UserPageComponent{
 	ShowGeneralMenu(){
 		if(this.selectedMenu == Menu.General) return;
 		this.selectedMenu = Menu.General;
+		if(this.sideNavHidden) this.sideNavOpened = false;
 		
 		this.ClearErrors();
 		this.successMessage = "";
@@ -148,11 +164,13 @@ export class UserPageComponent{
 	ShowPlansMenu(){
 		if(this.selectedMenu == Menu.Plans) return;
 		this.selectedMenu = Menu.Plans;
+		if(this.sideNavHidden) this.sideNavOpened = false;
 	}
 
 	ShowAppsMenu(){
 		if(this.selectedMenu == Menu.Apps) return;
 		this.selectedMenu = Menu.Apps;
+		if(this.sideNavHidden) this.sideNavOpened = false;
 	}
 
 	UpdateAvatar(file: ReadFile){

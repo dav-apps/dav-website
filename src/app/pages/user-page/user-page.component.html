@@ -1,14 +1,24 @@
 <mat-sidenav-container>
-	<mat-sidenav #sideNav mode="side" opened="true" style="margin-top: 100px">
-		<mat-nav-list>
+	<mat-sidenav #sideNav [mode]="sideNavHidden ? 'over' : 'side'" [(opened)]="sideNavOpened">
+		<mat-nav-list style="margin-top: 100px">
 			<mat-list-item (click)="ShowGeneralMenu()" disableRipple [ngClass]="selectedMenu == 0 ? 'selected-menu-item' : ''" class="px-4">General</mat-list-item>
 			<mat-list-item (click)="ShowPlansMenu()" disableRipple [ngClass]="selectedMenu == 1 ? 'selected-menu-item' : ''" class="px-4">Plans</mat-list-item>
 			<mat-list-item (click)="ShowAppsMenu()" disableRipple [ngClass]="selectedMenu == 2 ? 'selected-menu-item' : ''" class="px-4">Apps</mat-list-item>
 		</mat-nav-list>
 	</mat-sidenav>
   	<mat-sidenav-content>
+		<!-- SideNav toggle button -->
+		<button 
+			type="button" 
+			class="btn btn-sm ml-2 icon-button"
+			style="margin-top: 84px; height: 40px; width: 40px; position: absolute; font-size: 18px"
+			(click)="sideNavOpened = !sideNavOpened"
+			*ngIf="sideNavHidden">
+			<fab-icon iconName="More"></fab-icon>
+		</button>
+
 		<!-- General settings -->
-		<div class="navbar-margin pt-4" style="background-color: white" *ngIf="selectedMenu == 0">
+		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 0">
 			<h1 class="text-center font-weight-light mb-4">General Settings</h1>
 
 			<div class="d-flex flex-column align-items-center">
@@ -108,7 +118,7 @@
 		</div>
 
 		<!-- Plans -->
-		<div class="navbar-margin pt-4" style="background-color: white" *ngIf="selectedMenu == 1">
+		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 1">
 			<h1 class="text-center font-weight-light">Plans</h1>
 
 			<div class="d-flex flex-column align-items-center py-4">
@@ -117,7 +127,7 @@
 		</div>
 
 		<!-- Apps -->
-		<div class="navbar-margin pt-4" style="background-color: white" *ngIf="selectedMenu == 2">
+		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 2">
 			<h1 class="text-center font-weight-light mb-5">Your Apps</h1>
 
 			<div class="d-flex flex-column align-items-center">
