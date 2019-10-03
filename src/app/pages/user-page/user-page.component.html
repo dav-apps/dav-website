@@ -136,6 +136,6 @@
 	(onDismiss)="deleteAccountDialogVisible = false">
 	<fab-dialog-footer>
 		<fab-default-button (click)="deleteAccountDialogVisible = false">Cancel</fab-default-button>
-		<fab-primary-button [styles]="deleteAccountDialogButtonStyles">Delete Account</fab-primary-button>
+		<fab-primary-button [styles]="deleteAccountDialogButtonStyles" (click)="DeleteAccount()">Delete Account</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

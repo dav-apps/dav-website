@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MessageBarType, IDialogContentProps, IDialogStyles, IButtonStyles } from 'office-ui-fabric-react';
+import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
 
 const updateUserKey = "updateUser";
+const sendDeleteAccountEmailKey = "sendDeleteAccountEmail";
 const maxAvatarFileSize = 5000000;
 const snackBarDuration = 3000;
 const dangerButtonBackgroundColor = "#dc3545";
@@ -98,6 +99,7 @@ export class UserPageComponent{
 	async ngOnInit(){
 		this.socket = io();
 		this.socket.on(updateUserKey, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
+		this.socket.on(sendDeleteAccountEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
 
 		if(!this.dataService.userLoaded){
 			// Wait for the user to be loaded
@@ -201,6 +203,13 @@ export class UserPageComponent{
 		});
 	}
 
+	DeleteAccount(){
+		this.deleteAccountDialogVisible = false;
+		this.socket.emit(sendDeleteAccountEmailKey, {
+			jwt: this.dataService.user.JWT
+		});
+	}
+
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
 		if(message.status == 200){
 			if(this.updatedAttribute == UserAttribute.Avatar){
@@ -230,6 +239,15 @@ export class UserPageComponent{
 				this.passwordErrorMessage = this.GetPasswordErrorMessage(errorCode);
 				this.passwordConfirmation = "";
 			}
+		}
+	}
+
+	SendDeleteAccountEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
+		if(message.status == 200){
+			this.successMessage = "You will receive an email to confirm the deletion of your account.";
+		}else{
+			let errorCode = (message as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetSendDeleteAccountEmailErrorMessage(errorCode);
 		}
 	}
 
@@ -283,6 +301,10 @@ export class UserPageComponent{
 			default:
 				return `Unexpected error (${errorCode})`;
 		}
+	}
+
+	GetSendDeleteAccountEmailErrorMessage(errorCode: number) : string{
+		return `Unexpected error (${errorCode})`;
 	}
 
 	UsernameTextFieldChanged(event: KeyboardEvent){
