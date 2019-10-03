@@ -1,4 +1,4 @@
-<div class="container navbar-margin pt-4" *ngIf="dataService.user.IsLoggedIn">
+<div class="container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="dataService.user.IsLoggedIn">
 	<h1 class="text-center font-weight-light mb-3">Your apps</h1>
 
 	<div class="card-group">
@@ -6,7 +6,7 @@
 	</div>
 </div>
 
-<div class="container-fluid" style="padding: 0px" *ngIf="!dataService.user.IsLoggedIn">
+<div class="container-fluid ms-motion-slideUpIn" style="padding: 0px" *ngIf="!dataService.user.IsLoggedIn">
 	<!-- Header with image -->
 	<div id="start-header" class="d-flex parallax" [style.height.px]="height * 0.7">
 		<div
