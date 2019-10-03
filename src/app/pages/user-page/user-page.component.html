@@ -9,10 +9,10 @@
   	<mat-sidenav-content>
 		<!-- General settings -->
 		<div class="navbar-margin pt-4" style="background-color: white" *ngIf="selectedMenu == 0">
-			<h1 class="text-center font-weight-light mb-4">General settings</h1>
+			<h1 class="text-center font-weight-light mb-4">General Settings</h1>
 
-			<div class="d-flex flex-column align-items-center ml-4">
-				<div style="width: 220px">
+			<div class="d-flex flex-column align-items-center">
+				<div style="width: 250px; margin-right: -100px">
 					<div class="mb-4" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
 					<div class="mb-4" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
@@ -23,9 +23,12 @@
 					<!-- Username -->
 					<div class="mt-4 d-flex" style="font-size: 18px">
 						<fab-text-field 
+							id="username-text-field"
 							label="Username" 
 							[(value)]="username" 
+							placeholder="Username"
 							[errorMessage]="usernameErrorMessage" 
+							[styles]="textFieldStyles"
 							type="text"
 							autocomplete="username"
 							(keydown)="UsernameTextFieldChanged($event)"></fab-text-field>
@@ -43,9 +46,12 @@
 					<!-- Email -->
 					<div class="mt-4 d-flex" style="font-size: 18px">
 						<fab-text-field 
+							id="email-text-field"
 							label="Email" 
 							[(value)]="email" 
+							placeholder="Email"
 							[errorMessage]="emailErrorMessage" 
+							[styles]="textFieldStyles"
 							type="email"
 							autocomplete="email"
 							(keydown)="EmailTextFieldChanged($event)"></fab-text-field>
@@ -63,20 +69,24 @@
 					<!-- Password -->
 					<div class="mt-4 d-flex flex-column" style="font-size: 18px">
 						<fab-text-field 
+							id="password-text-field"
 							label="New Password" 
 							[(value)]="password" 
 							placeholder="Your new password"
 							[errorMessage]="passwordErrorMessage"
+							[styles]="textFieldStyles"
 							type="password"
 							autocomplete="new-password"
 							(keydown)="PasswordTextFieldChanged($event)">
 						</fab-text-field>
 
 						<fab-text-field 
+							id="password-confirmation-text-field"
 							label="Password confirmation" 
 							[(value)]="passwordConfirmation" 
 							placeholder="Repeat your new password" 
 							className="mt-3" 
+							[styles]="textFieldStyles"
 							type="password"
 							autocomplete="new-password"
 							(keydown)="PasswordTextFieldChanged($event)"

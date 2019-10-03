@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData } from 'dav-npm';
-import { DataService } from 'src/app/services/data-service';
+import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
 
 const updateUserKey = "updateUser";
@@ -24,6 +24,11 @@ export class UserPageComponent{
 	successMessageBarType: MessageBarType = MessageBarType.success;
 	errorMessageBarType: MessageBarType = MessageBarType.error;
 	socket: any = null;
+	textFieldStyles = {
+		root: {
+			width: 200
+		}
+	}
 	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
 	username: string = "";
@@ -63,6 +68,15 @@ export class UserPageComponent{
 		// Set the values for the text fields
 		this.username = this.dataService.user.Username;
 		this.email = this.dataService.user.Email;
+	}
+
+	ngAfterViewInit(){
+		// Set the autocomplete attribute of the input elements
+		setTimeout(() => {
+			SetTextFieldAutocomplete('username-text-field', 'username');
+			SetTextFieldAutocomplete('email-text-field', 'email');
+			SetTextFieldAutocomplete('password-text-field', 'new-password');
+		}, 1);
 	}
 
 	UpdateUsedStoragePercent(){
@@ -240,6 +254,11 @@ export class UserPageComponent{
 	PasswordTextFieldChanged(event: KeyboardEvent){
 		if(event.keyCode == 13) this.SavePassword();
 		else this.ClearErrors();
+
+		if(this.password.length >= 7 && this.password.length <= 25){
+			// Set the autocomplete attribute of the password confirmation text field
+			SetTextFieldAutocomplete('password-confirmation-text-field', 'new-password');
+		}
 	}
 }
 
