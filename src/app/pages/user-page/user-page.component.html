@@ -95,6 +95,14 @@
 
 						<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation" className="mt-3">Save</fab-primary-button>
 					</div>
+
+					<div 
+						style="border: 0.5px solid #dadada; width: 200px; margin: 20px 0px"
+						*ngIf="!passwordConfirmationVisible"></div>
+					<fab-primary-button 
+						[styles]="deleteAccountButtonStyles" 
+						*ngIf="!passwordConfirmationVisible"
+						(click)="deleteAccountDialogVisible = true">Delete Account</fab-primary-button>
 				</div>
 			</div>
 		</div>
@@ -121,3 +129,13 @@
 		</div>
 	</mat-sidenav-content>
 </mat-sidenav-container>
+
+<fab-dialog 
+	[hidden]="!deleteAccountDialogVisible" 
+	[dialogContentProps]="dialogContent" 
+	(onDismiss)="deleteAccountDialogVisible = false">
+	<fab-dialog-footer>
+		<fab-default-button (click)="deleteAccountDialogVisible = false">Cancel</fab-default-button>
+		<fab-primary-button [styles]="deleteAccountDialogButtonStyles">Delete Account</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>

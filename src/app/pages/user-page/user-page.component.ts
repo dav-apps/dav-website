@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MessageBarType } from 'office-ui-fabric-react';
+import { MessageBarType, IDialogContentProps, IDialogStyles, IButtonStyles } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
@@ -9,6 +9,9 @@ declare var io: any;
 const updateUserKey = "updateUser";
 const maxAvatarFileSize = 5000000;
 const snackBarDuration = 3000;
+const dangerButtonBackgroundColor = "#dc3545";
+const dangerButtonHoverBackgroundColor = "#c82333";
+const buttonTransition = "all 0.15s";
 
 @Component({
 	selector: 'dav-website-user-page',
@@ -24,11 +27,6 @@ export class UserPageComponent{
 	successMessageBarType: MessageBarType = MessageBarType.success;
 	errorMessageBarType: MessageBarType = MessageBarType.error;
 	socket: any = null;
-	textFieldStyles = {
-		root: {
-			width: 200
-		}
-	}
 	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
 	username: string = "";
@@ -36,12 +34,56 @@ export class UserPageComponent{
 	newEmail: string = "";
 	password: string = "";
 	passwordConfirmation: string = "";
+	passwordConfirmationVisible: boolean = false;
+	deleteAccountDialogVisible: boolean = false;
 
 	successMessage: string = "";
 	errorMessage: string = "";
 	usernameErrorMessage: string = "";
 	emailErrorMessage: string = "";
 	passwordErrorMessage: string = "";
+
+	textFieldStyles = {
+		root: {
+			width: 200
+		}
+	}
+	dialogContent: IDialogContentProps = {
+		title: "Deleting your Account",
+		subText: "Are your absolutely sure that you want to delete your account? All your data will be irreversively deleted.",
+		styles: {
+			subText: {
+				fontSize: 14
+			}
+		}
+	}
+	deleteAccountButtonStyles: IButtonStyles = {
+		root: {
+			backgroundColor: dangerButtonBackgroundColor,
+			transition: buttonTransition,
+			float: 'right',
+			marginRight: 50
+		},
+		rootHovered: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		},
+		rootPressed: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		}
+	}
+	deleteAccountDialogButtonStyles: IButtonStyles = {
+		root: {
+			backgroundColor: dangerButtonBackgroundColor,
+			transition: buttonTransition,
+			marginLeft: 10
+		},
+		rootHovered: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		},
+		rootPressed: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		}
+	}
 	//#endregion
 
 	//#region Apps page
@@ -93,6 +135,7 @@ export class UserPageComponent{
 		this.email = this.dataService.user.Email;
 		this.password = "";
 		this.passwordConfirmation = "";
+		this.passwordConfirmationVisible = false;
 
 		// Set the content of the avatar image if it was updated
 		setTimeout(() => {
@@ -175,6 +218,7 @@ export class UserPageComponent{
 				this.successMessage = "You will receive an email to confirm your new password. After that, you can log in with your new password.";
 				this.password = "";
 				this.passwordConfirmation = "";
+				this.passwordConfirmationVisible = false;
 			}
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
@@ -255,7 +299,9 @@ export class UserPageComponent{
 		if(event.keyCode == 13) this.SavePassword();
 		else this.ClearErrors();
 
-		if(this.password.length >= 7 && this.password.length <= 25){
+		this.passwordConfirmationVisible = this.password.length >= 7 && this.password.length <= 25;
+
+		if(this.passwordConfirmationVisible){
 			// Set the autocomplete attribute of the password confirmation text field
 			SetTextFieldAutocomplete('password-confirmation-text-field', 'new-password');
 		}

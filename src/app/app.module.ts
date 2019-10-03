@@ -12,7 +12,8 @@ import {
 	FabTextFieldModule,
 	FabButtonModule,
 	FabMessageBarModule,
-	FabIconModule
+	FabIconModule,
+	FabDialogModule
 } from '@angular-react/fabric';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -65,6 +66,7 @@ import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 		FabButtonModule,
 		FabMessageBarModule,
 		FabIconModule,
+		FabDialogModule,
 		MatSidenavModule,
 		MatListModule,
 		MatProgressBarModule,
