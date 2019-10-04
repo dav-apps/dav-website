@@ -11,10 +11,10 @@
 		<button 
 			
 			class="btn btn-sm ml-2 icon-button"
-			style="margin-top: 84px; height: 40px; width: 40px; position: absolute; font-size: 18px"
+			style="margin-top: 84px; height: 40px; width: 40px; font-size: 18px; position: absolute; z-index: 1"
 			(click)="sideNavOpened = !sideNavOpened"
 			*ngIf="sideNavHidden">
-			<!-- <fab-icon iconName="More"></fab-icon> -->
+			<fab-icon iconName="More"></fab-icon>
 		</button>
 
 		<!-- General settings -->
@@ -136,13 +136,13 @@
 			</div>
 			
 			<div class="d-flex flex-column align-items-center mb-4 mt-4">
-				<div style="width: 40%">
+				<div style="width: 40%; max-width: 552px">
 					<mat-progress-bar [value]="usedStoragePercent"></mat-progress-bar>
 					<p class="mt-2">{{ BytesToGigabytes(dataService.user.UsedStorage) }} GB of {{ BytesToGigabytes(dataService.user.TotalStorage) }} GB used</p>
 				</div>
 			</div>
 
-			<div class="mx-auto mb-4" style="max-width: 600px">
+			<div class="mx-auto mb-4 px-4" style="max-width: 600px">
 				<mat-accordion *ngFor="let app of dataService.user.Apps">
 					<mat-expansion-panel>
 						<mat-expansion-panel-header>
