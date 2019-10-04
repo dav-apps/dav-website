@@ -10,7 +10,9 @@
 					<li class="list-group-item border-left-0 border-right-0">No ads</li>
 				</ul>
 				<br>
-				<button routerLink="/signup" class="btn btn-primary" type="button">Sign up</button>
+				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">Sign up</button>
+				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">Current plan</button>
+				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 1 || dataService.user.Plan == 2)">Downgrade</button>
 			</div>
 		</div>
 	</div>
@@ -28,7 +30,10 @@
 					<li class="list-group-item border-left-0 border-right-0">Use all Plus features in our apps</li>
 				</ul>
 				<br>
-				<button routerLink="/signup" class="btn btn-primary" type="button">Sign up</button>
+				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">Sign up</button>
+				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">Upgrade</button>
+				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 1">Current plan</button>
+				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">Downgrade</button>
 			</div>
 		</div>
 	</div>
@@ -47,7 +52,9 @@
 					<li class="list-group-item border-left-0 border-right-0">Use all Pro features in our apps</li>
 				</ul>
 				<br>
-				<button routerLink="/signup" class="btn btn-primary" type="button">Sign up</button>
+				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">Sign up</button>
+				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 0 || dataService.user.Plan == 1)">Upgrade</button>
+				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">Current plan</button>
 			</div>
 		</div>
 	</div>
