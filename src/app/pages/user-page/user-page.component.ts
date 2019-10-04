@@ -87,6 +87,20 @@ export class UserPageComponent{
 			backgroundColor: dangerButtonHoverBackgroundColor
 		}
 	}
+	removeAppButtonStyles: IButtonStyles = {
+		root: {
+			backgroundColor: dangerButtonBackgroundColor,
+			transition: buttonTransition,
+			float: 'right',
+			marginRight: "20%"
+		},
+		rootHovered: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		},
+		rootPressed: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		}
+	}
 	//#endregion
 
 	//#region Apps page
@@ -136,10 +150,6 @@ export class UserPageComponent{
 
 		if(!this.sideNavHidden) this.sideNavOpened = true;
 		else this.sideNavOpened = false;
-	}
-
-	UpdateUsedStoragePercent(){
-		this.usedStoragePercent = (this.dataService.user.UsedStorage / this.dataService.user.TotalStorage) * 100;
 	}
 
 	ShowGeneralMenu(){
@@ -345,6 +355,22 @@ export class UserPageComponent{
 			// Set the autocomplete attribute of the password confirmation text field
 			SetTextFieldAutocomplete('password-confirmation-text-field', 'new-password');
 		}
+	}
+
+	UpdateUsedStoragePercent(){
+		this.usedStoragePercent = (this.dataService.user.UsedStorage / this.dataService.user.TotalStorage) * 100;
+	}
+
+	BytesToGigabytes(bytes: number){
+		let gb = Math.trunc(bytes / 100000000);
+
+		if(gb % 10 == 0){
+			gb = Math.trunc(gb / 10);
+		}else{
+			gb /= 10;
+		}
+
+		return gb;
 	}
 }
 

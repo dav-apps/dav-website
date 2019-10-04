@@ -130,11 +130,28 @@
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 2">
 			<h1 class="text-center font-weight-light mb-5">Your Apps</h1>
 
-			<div class="d-flex flex-column align-items-center">
+			<div class="d-flex flex-column align-items-center mb-4">
 				<div style="width: 40%">
 					<mat-progress-bar [value]="usedStoragePercent"></mat-progress-bar>
-					<p class="mt-2">0 GB of 2 GB used</p>
+					<p class="mt-2">{{ BytesToGigabytes(dataService.user.UsedStorage) }} GB of {{ BytesToGigabytes(dataService.user.TotalStorage) }} GB used</p>
 				</div>
+			</div>
+
+			<div class="mx-auto" style="max-width: 600px">
+				<mat-accordion *ngFor="let app of dataService.user.Apps">
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title style="font-size: 20px">{{ app.Name }}</mat-panel-title>
+						</mat-expansion-panel-header>
+	
+						<div style="width: 60%; font-size: 16px" class="mx-auto mt-3">
+							<mat-progress-bar></mat-progress-bar>
+							<p class="mt-2">This app uses {{ BytesToGigabytes(app.UsedStorage) }} GB</p>
+						</div>
+	
+						<fab-primary-button [styles]="removeAppButtonStyles">Remove App</fab-primary-button>
+					</mat-expansion-panel>
+				</mat-accordion>
 			</div>
 		</div>
 	</mat-sidenav-content>

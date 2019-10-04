@@ -19,6 +19,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxFileHelpersModule } from 'ngx-file-helpers';
 
 // Services
@@ -71,6 +72,7 @@ import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 		MatListModule,
 		MatProgressBarModule,
 		MatSnackBarModule,
+		MatExpansionModule,
 		NgxFileHelpersModule
   	],
   	providers: [
