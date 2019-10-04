@@ -8,6 +8,7 @@ declare var io: any;
 
 const updateUserKey = "updateUser";
 const sendDeleteAccountEmailKey = "sendDeleteAccountEmail";
+const sendRemoveAppEmailKey = "sendRemoveAppEmail";
 const maxAvatarFileSize = 5000000;
 const snackBarDuration = 3000;
 const dangerButtonBackgroundColor = "#dc3545";
@@ -141,6 +142,7 @@ export class UserPageComponent{
 		this.socket = io();
 		this.socket.on(updateUserKey, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
 		this.socket.on(sendDeleteAccountEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
+		this.socket.on(sendRemoveAppEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendRemoveAppEmailResponse(message));
 
 		if(!this.dataService.userLoaded){
 			// Wait for the user to be loaded
@@ -264,7 +266,10 @@ export class UserPageComponent{
 
 	RemoveApp(){
 		this.removeAppDialogVisible = false;
-		// TODO Remove app from account
+		this.socket.emit(sendRemoveAppEmailKey, {
+			jwt: this.dataService.user.JWT,
+			appId: this.selectedAppToRemove.Id
+		});
 	}
 
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
@@ -305,6 +310,15 @@ export class UserPageComponent{
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendDeleteAccountEmailErrorMessage(errorCode);
+		}
+	}
+
+	SendRemoveAppEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
+		if(message.status == 200){
+			this.successMessage = `You will receive an email to confirm the removal of the app.`;
+		}else{
+			let errorCode = (message as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetSendRemoveAppEmailErrorMessage(errorCode);
 		}
 	}
 
@@ -361,6 +375,10 @@ export class UserPageComponent{
 	}
 
 	GetSendDeleteAccountEmailErrorMessage(errorCode: number) : string{
+		return `Unexpected error (${errorCode})`;
+	}
+
+	GetSendRemoveAppEmailErrorMessage(errorCode: number) : string{
 		return `Unexpected error (${errorCode})`;
 	}
 
