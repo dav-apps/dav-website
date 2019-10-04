@@ -149,7 +149,7 @@
 							<p class="mt-2">This app uses {{ BytesToGigabytes(app.UsedStorage) }} GB</p>
 						</div>
 	
-						<fab-primary-button [styles]="removeAppButtonStyles">Remove App</fab-primary-button>
+						<fab-primary-button [styles]="removeAppButtonStyles" (click)="ShowRemoveAppDialog(app)">Remove App</fab-primary-button>
 					</mat-expansion-panel>
 				</mat-accordion>
 			</div>
@@ -159,10 +159,20 @@
 
 <fab-dialog 
 	[hidden]="!deleteAccountDialogVisible" 
-	[dialogContentProps]="dialogContent" 
+	[dialogContentProps]="deleteAccountDialogContent" 
 	(onDismiss)="deleteAccountDialogVisible = false">
 	<fab-dialog-footer>
 		<fab-default-button (click)="deleteAccountDialogVisible = false">Cancel</fab-default-button>
 		<fab-primary-button [styles]="deleteAccountDialogButtonStyles" (click)="DeleteAccount()">Delete Account</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>
+
+<fab-dialog
+	[hidden]="!removeAppDialogVisible"
+	[dialogContentProps]="removeAppDialogContent"
+	(onDismiss)="removeAppDialogVisible = false">
+	<fab-dialog-footer>
+		<fab-default-button (click)="removeAppDialogVisible = false">Cancel</fab-default-button>
+		<fab-primary-button [styles]="removeAppDialogButtonStyles">Remove App</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

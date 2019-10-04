@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
-import { ApiResponse, ApiErrorResponse, UserResponseData } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, UserResponseData, App } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
 
@@ -39,6 +39,8 @@ export class UserPageComponent{
 	passwordConfirmation: string = "";
 	passwordConfirmationVisible: boolean = false;
 	deleteAccountDialogVisible: boolean = false;
+	removeAppDialogVisible: boolean = false;
+	selectedAppToRemove: App = null;
 
 	successMessage: string = "";
 	errorMessage: string = "";
@@ -51,9 +53,18 @@ export class UserPageComponent{
 			width: 200
 		}
 	}
-	dialogContent: IDialogContentProps = {
+	deleteAccountDialogContent: IDialogContentProps = {
 		title: "Deleting your Account",
-		subText: "Are your absolutely sure that you want to delete your account? All your data will be irreversively deleted.",
+		subText: "Are your absolutely sure that you want to delete your account? All your data will be irreversibly deleted.",
+		styles: {
+			subText: {
+				fontSize: 14
+			}
+		}
+	}
+	removeAppDialogContent: IDialogContentProps = {
+		title: `Removing appName from your Account`,
+		subText: "All app data will be irreversibly deleted. Are you sure you want to remove this app?",
 		styles: {
 			subText: {
 				fontSize: 14
@@ -93,6 +104,19 @@ export class UserPageComponent{
 			transition: buttonTransition,
 			float: 'right',
 			marginRight: "20%"
+		},
+		rootHovered: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		},
+		rootPressed: {
+			backgroundColor: dangerButtonHoverBackgroundColor
+		}
+	}
+	removeAppDialogButtonStyles: IButtonStyles = {
+		root: {
+			backgroundColor: dangerButtonBackgroundColor,
+			transition: buttonTransition,
+			marginLeft: 10
 		},
 		rootHovered: {
 			backgroundColor: dangerButtonHoverBackgroundColor
@@ -238,6 +262,11 @@ export class UserPageComponent{
 		});
 	}
 
+	RemoveApp(){
+		this.removeAppDialogVisible = false;
+		// TODO Remove app from account
+	}
+
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
 		if(message.status == 200){
 			if(this.updatedAttribute == UserAttribute.Avatar){
@@ -371,6 +400,13 @@ export class UserPageComponent{
 		}
 
 		return gb;
+	}
+
+	ShowRemoveAppDialog(app: App){
+		this.selectedAppToRemove = app;
+		this.removeAppDialogContent.title = `Removing ${app.Name} from your Account`;
+
+		this.removeAppDialogVisible = true;
 	}
 }
 
