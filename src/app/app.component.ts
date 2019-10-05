@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import { DataService } from './services/data-service';
 
@@ -21,6 +21,15 @@ export class AppComponent {
 		this.setSize();
 		window.onscroll = () => this.offsetTop = window.scrollY;
 		initializeIcons();
+
+		this.router.events.subscribe((navigation: any) => {
+			if(navigation instanceof NavigationEnd){
+				// Clear the success message if the user navigates to a page other than the start page
+				if(navigation.url != "/"){
+					this.dataService.startPageSuccessMessage = "";
+				}
+			}
+		});
 	}
 
 	@HostListener('window:resize')

@@ -7,6 +7,7 @@ export class DataService{
 	hideNavbarAndFooter: boolean = false;
 	userLoaded: boolean = false;
 	userLoadCallbacks: Function[] = [];
+	startPageSuccessMessage: string = "";
 
 	constructor(){
 		this.user = new DavUser(() => {

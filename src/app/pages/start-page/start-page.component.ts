@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { MessageBarType } from 'office-ui-fabric-react';
 import { DataService } from 'src/app/services/data-service';
 
 @Component({
@@ -9,6 +10,7 @@ import { DataService } from 'src/app/services/data-service';
 	]
 })
 export class StartPageComponent{
+	messageBarType: MessageBarType = MessageBarType.success;
 	height: number = 500;
 	width: number = 500;
 

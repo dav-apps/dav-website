@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageBarType } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
-import { SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
 
 const sendPasswordResetEmailKey = "sendPasswordResetEmail";
@@ -15,6 +16,11 @@ export class PasswordResetPageComponent{
 	messageBarType: MessageBarType = MessageBarType.error;
 	email: string = "";
 	errorMessage: string = "";
+
+	constructor(
+		public dataService: DataService,
+		private router: Router
+	){}
 
 	ngOnInit(){
 		this.socket = io();
@@ -37,8 +43,9 @@ export class PasswordResetPageComponent{
 
 	SendPasswordResetEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
-			// TODO Redirect to start page
-			
+			// Redirect to start page and show message
+			this.dataService.startPageSuccessMessage = "You will receive an email with instructions to reset your password"
+			this.router.navigate(['/']);
 		}else{
 			let errorCode = (response as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendPasswordResetEmailErrorMessage(errorCode);
