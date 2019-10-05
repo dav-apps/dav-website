@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageBarType } from 'office-ui-fabric-react';
+import { MessageBarType, IButtonStyles } from 'office-ui-fabric-react';
 import { ApiResponse, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
@@ -17,6 +17,11 @@ export class LoginPageComponent{
 	password: string = "";
 	errorMessage: string = "";
 	messageBarType: MessageBarType = MessageBarType.error;
+	loginButtonStyles: IButtonStyles = {
+		root: {
+			marginTop: 24
+		}
+	}
 
 	constructor(
 		public dataService: DataService,

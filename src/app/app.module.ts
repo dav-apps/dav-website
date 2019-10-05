@@ -39,6 +39,7 @@ import { LoginPageComponent } from 'src/app/pages/login-page/login-page.componen
 import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.component';
 import { AppsPageComponent } from 'src/app/pages/apps-page/apps-page.component';
 import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
+import { PasswordResetPageComponent } from 'src/app/pages/password-reset-page/password-reset-page.component';
 
 @NgModule({
   	declarations: [
@@ -54,7 +55,8 @@ import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 		LoginPageComponent,
 		SignupPageComponent,
 		AppsPageComponent,
-		UserPageComponent
+		UserPageComponent,
+		PasswordResetPageComponent
   	],
   	imports: [
 		AngularReactBrowserModule,

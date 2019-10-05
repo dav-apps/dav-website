@@ -35,8 +35,11 @@
 					autocomplete="current-password"
 					(keydown.enter)="Login()">
 				</fab-text-field>
-				<br>
-				<fab-primary-button (click)="Login()">Log in</fab-primary-button>
+				
+				<div class="d-flx flex-column">
+					<fab-primary-button (click)="Login()" [styles]="loginButtonStyles">Log in</fab-primary-button>
+					<a style="color: black; font-size: 15px; margin-top: 12px; float: right" routerLink="/password_reset" tabindex="-1">Forgot password?</a>
+				</div>
 			</div>
 		</div>
 	</div>
