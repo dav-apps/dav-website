@@ -13,6 +13,7 @@ export function init(s: any){
 	socket.on(signupPage.signupKey, signupPage.signup);
 	socket.on(appsPage.getAllAppsKey, appsPage.getAllApps);
 	socket.on(userPage.updateUserKey, userPage.updateUser);
+	socket.on(userPage.sendVerificationEmailKey, userPage.sendVerificationEmail);
 	socket.on(userPage.sendDeleteAccountEmailKey, userPage.sendDeleteAccountEmail);
 	socket.on(userPage.sendRemoveAppEmailKey, userPage.sendRemoveAppEmail);
 

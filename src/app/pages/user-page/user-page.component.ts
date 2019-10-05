@@ -7,6 +7,7 @@ import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-ser
 declare var io: any;
 
 const updateUserKey = "updateUser";
+const sendVerificationEmailKey = "sendVerificationEmail";
 const sendDeleteAccountEmailKey = "sendDeleteAccountEmail";
 const sendRemoveAppEmailKey = "sendRemoveAppEmail";
 const maxAvatarFileSize = 5000000;
@@ -141,6 +142,7 @@ export class UserPageComponent{
 		this.setSize();
 		this.socket = io();
 		this.socket.on(updateUserKey, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
+		this.socket.on(sendVerificationEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendVerificationEmailResponse(message));
 		this.socket.on(sendDeleteAccountEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
 		this.socket.on(sendRemoveAppEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendRemoveAppEmailResponse(message));
 
@@ -257,6 +259,13 @@ export class UserPageComponent{
 		});
 	}
 
+	SendVerificationEmail(){
+		this.socket.emit(sendVerificationEmailKey, {
+			jwt: this.dataService.user.JWT
+		});
+		return false;
+	}
+
 	DeleteAccount(){
 		this.deleteAccountDialogVisible = false;
 		this.socket.emit(sendDeleteAccountEmailKey, {
@@ -301,6 +310,15 @@ export class UserPageComponent{
 				this.passwordErrorMessage = this.GetPasswordErrorMessage(errorCode);
 				this.passwordConfirmation = "";
 			}
+		}
+	}
+
+	SendVerificationEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
+		if(message.status == 200){
+			this.successMessage = "A new confirmation email was sent";
+		}else{
+			let errorCode = (message as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetSendVerificationEmailErrorMessage(errorCode);
 		}
 	}
 
@@ -369,6 +387,15 @@ export class UserPageComponent{
 				return "Your new password is too short";
 			case 2302:
 				return "Your new password is too long";
+			default:
+				return `Unexpected error (${errorCode})`;
+		}
+	}
+
+	GetSendVerificationEmailErrorMessage(errorCode: number) : string{
+		switch (errorCode) {
+			case 1106:
+				return "Your email address is already confirmed";
 			default:
 				return `Unexpected error (${errorCode})`;
 		}

@@ -121,7 +121,17 @@
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 1">
 			<h1 class="text-center font-weight-light">Plans</h1>
 
-			<div class="d-flex flex-column align-items-center py-4">
+			<div class="mx-auto my-3" style="width: 250px">
+				<div *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
+				<div *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
+			</div>
+
+			<p class="mt-3" style="margin-left: 10%; margin-right: 10%" *ngIf="!dataService.user.Confirmed">
+				Confirm your email address to change your plan and get more storage.<br>
+				<a href="#" (click)="SendVerificationEmail()">Resend confirmation email</a>
+			</p>
+
+			<div class="d-flex flex-column align-items-center pb-4" [ngClass]="dataService.user.Confirmed ? 'pt-3' : ''">
 				<div style="width: 80%"><dav-website-pricing></dav-website-pricing></div>
 			</div>
 		</div>

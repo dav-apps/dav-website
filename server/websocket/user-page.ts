@@ -1,7 +1,8 @@
-import { UpdateUser, SendDeleteAccountEmail, SendRemoveAppEmail } from 'dav-npm';
+import { UpdateUser, SendVerificationEmail, SendDeleteAccountEmail, SendRemoveAppEmail } from 'dav-npm';
 import * as websocket from '../websocket';
 
 export const updateUserKey = "updateUser";
+export const sendVerificationEmailKey = "sendVerificationEmail";
 export const sendDeleteAccountEmailKey = "sendDeleteAccountEmail";
 export const sendRemoveAppEmailKey = "sendRemoveAppEmail";
 
@@ -25,9 +26,12 @@ export async function updateUser(message: {
 	websocket.emit(updateUserKey, updateUserResponse);
 }
 
-export async function sendDeleteAccountEmail(message: {
-	jwt: string
-}){
+export async function sendVerificationEmail(message: {jwt: string}){
+	let sendVerificationEmailResponse = await SendVerificationEmail(message.jwt);
+	websocket.emit(sendVerificationEmailKey, sendVerificationEmailResponse);
+}
+
+export async function sendDeleteAccountEmail(message: {jwt: string}){
 	let sendDeleteAccountEmailResponse = await SendDeleteAccountEmail(message.jwt);
 	websocket.emit(sendDeleteAccountEmailKey, sendDeleteAccountEmailResponse);
 }
