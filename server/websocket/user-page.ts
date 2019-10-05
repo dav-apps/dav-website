@@ -1,10 +1,11 @@
-import { UpdateUser, SendVerificationEmail, SendDeleteAccountEmail, SendRemoveAppEmail } from 'dav-npm';
+import { UpdateUser, SendVerificationEmail, SendDeleteAccountEmail, SendRemoveAppEmail, SendPasswordResetEmail } from 'dav-npm';
 import * as websocket from '../websocket';
 
 export const updateUserKey = "updateUser";
 export const sendVerificationEmailKey = "sendVerificationEmail";
 export const sendDeleteAccountEmailKey = "sendDeleteAccountEmail";
 export const sendRemoveAppEmailKey = "sendRemoveAppEmail";
+export const sendPasswordResetEmailKey = "sendPasswordResetEmail";
 
 export async function updateUser(message: {
 	jwt: string,
@@ -27,16 +28,21 @@ export async function updateUser(message: {
 }
 
 export async function sendVerificationEmail(message: {jwt: string}){
-	let sendVerificationEmailResponse = await SendVerificationEmail(message.jwt);
-	websocket.emit(sendVerificationEmailKey, sendVerificationEmailResponse);
+	let response = await SendVerificationEmail(message.jwt);
+	websocket.emit(sendVerificationEmailKey, response);
 }
 
 export async function sendDeleteAccountEmail(message: {jwt: string}){
-	let sendDeleteAccountEmailResponse = await SendDeleteAccountEmail(message.jwt);
-	websocket.emit(sendDeleteAccountEmailKey, sendDeleteAccountEmailResponse);
+	let response = await SendDeleteAccountEmail(message.jwt);
+	websocket.emit(sendDeleteAccountEmailKey, response);
 }
 
 export async function sendRemoveAppEmail(message: {jwt: string, appId: number}){
-	let sendRemoveAppEmailResponse = await SendRemoveAppEmail(message.jwt, message.appId);
-	websocket.emit(sendRemoveAppEmailKey, sendRemoveAppEmailResponse);
+	let response = await SendRemoveAppEmail(message.jwt, message.appId);
+	websocket.emit(sendRemoveAppEmailKey, response);
+}
+
+export async function sendPasswordResetEmail(message: {email: string}){
+	let response = await SendPasswordResetEmail(websocket.auth, message.email);
+	websocket.emit(sendPasswordResetEmailKey, response);
 }

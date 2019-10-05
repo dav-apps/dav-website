@@ -16,6 +16,7 @@ export function init(s: any){
 	socket.on(userPage.sendVerificationEmailKey, userPage.sendVerificationEmail);
 	socket.on(userPage.sendDeleteAccountEmailKey, userPage.sendDeleteAccountEmail);
 	socket.on(userPage.sendRemoveAppEmailKey, userPage.sendRemoveAppEmail);
+	socket.on(userPage.sendPasswordResetEmailKey, userPage.sendPasswordResetEmail);
 
 	InitStatic(DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);
