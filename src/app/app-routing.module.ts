@@ -10,6 +10,7 @@ import { SignupPageComponent } from './pages/signup-page/signup-page.component';
 import { AppsPageComponent } from './pages/apps-page/apps-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { PasswordResetPageComponent } from './pages/password-reset-page/password-reset-page.component';
+import { ResetPasswordPageComponent } from './pages/reset-password-page/reset-password-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
 	{ path: "signup", component: SignupPageComponent },
 	{ path: "apps", component: AppsPageComponent },
 	{ path: "user", component: UserPageComponent },
-	{ path: "password_reset", component: PasswordResetPageComponent }
+	{ path: "password_reset", component: PasswordResetPageComponent },
+	{ path: "reset_password", component: ResetPasswordPageComponent }
 ];
 
 @NgModule({

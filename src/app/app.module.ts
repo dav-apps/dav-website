@@ -40,6 +40,7 @@ import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.compo
 import { AppsPageComponent } from 'src/app/pages/apps-page/apps-page.component';
 import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 import { PasswordResetPageComponent } from 'src/app/pages/password-reset-page/password-reset-page.component';
+import { ResetPasswordPageComponent } from 'src/app/pages/reset-password-page/reset-password-page.component';
 
 @NgModule({
   	declarations: [
@@ -56,7 +57,8 @@ import { PasswordResetPageComponent } from 'src/app/pages/password-reset-page/pa
 		SignupPageComponent,
 		AppsPageComponent,
 		UserPageComponent,
-		PasswordResetPageComponent
+		PasswordResetPageComponent,
+		ResetPasswordPageComponent
   	],
   	imports: [
 		AngularReactBrowserModule,
