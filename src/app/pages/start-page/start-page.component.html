@@ -9,10 +9,18 @@
 <div class="container-fluid ms-motion-slideUpIn" style="padding: 0px" *ngIf="!dataService.user.IsLoggedIn">
 	<!-- Header with image -->
 	<div id="start-header" class="d-flex parallax" [style.height.px]="height * 0.7">
+		<!-- Error message -->
+		<div
+			style="width: 300px; position: absolute; right: 0; left: 0; margin-right: auto; margin-left: auto; top: 100px"
+			*ngIf="dataService.startPageErrorMessage.length > 0">
+			<fab-message-bar [messageBarType]="errorMessageBarType">{{ dataService.startPageErrorMessage }}</fab-message-bar>
+		</div>
+
+		<!-- Success message -->
 		<div 
 			style="width: 300px; position: absolute; right: 0; left: 0; margin-right: auto; margin-left: auto; top: 100px" 
 			*ngIf="dataService.startPageSuccessMessage.length > 0">
-			<fab-message-bar [messageBarType]="messageBarType">{{ dataService.startPageSuccessMessage }}</fab-message-bar>
+			<fab-message-bar [messageBarType]="successMessageBarType">{{ dataService.startPageSuccessMessage }}</fab-message-bar>
 		</div>
 
 		<div

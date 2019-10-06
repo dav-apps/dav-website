@@ -24,8 +24,9 @@ export class AppComponent {
 
 		this.router.events.subscribe((navigation: any) => {
 			if(navigation instanceof NavigationEnd){
-				// Clear the success message if the user navigates to a page other than the start page
+				// Clear the success and error messages if the user navigates to a page other than the start page
 				if(navigation.url != "/"){
+					this.dataService.startPageErrorMessage = "";
 					this.dataService.startPageSuccessMessage = "";
 				}
 			}

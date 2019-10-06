@@ -10,7 +10,8 @@ import { DataService } from 'src/app/services/data-service';
 	]
 })
 export class StartPageComponent{
-	messageBarType: MessageBarType = MessageBarType.success;
+	errorMessageBarType: MessageBarType = MessageBarType.error;
+	successMessageBarType: MessageBarType = MessageBarType.success;
 	height: number = 500;
 	width: number = 500;
 
