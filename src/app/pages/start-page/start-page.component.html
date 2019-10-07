@@ -1,6 +1,16 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="dataService.user.IsLoggedIn">
 	<h1 class="text-center font-weight-light mb-3">Your apps</h1>
 
+	<!-- Error message -->
+	<div class="mx-auto mb-2" style="width: 300px" *ngIf="dataService.startPageErrorMessage.length > 0">
+		<fab-message-bar [messageBarType]="errorMessageBarType">{{ dataService.startPageErrorMessage }}</fab-message-bar>
+	</div>
+
+	<!-- Success message -->
+	<div class="mx-auto mb-2" style="width: 300px" *ngIf="dataService.startPageSuccessMessage.length > 0">
+		<fab-message-bar [messageBarType]="successMessageBarType">{{ dataService.startPageSuccessMessage }}</fab-message-bar>
+	</div>
+
 	<div class="card-group">
 		<dav-website-app-card *ngFor="let app of dataService.user.Apps" [app]="app"></dav-website-app-card>
 	</div>
