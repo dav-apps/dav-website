@@ -3,6 +3,7 @@ import * as loginPage from './websocket/login-page';
 import * as signupPage from './websocket/signup-page';
 import * as appsPage from './websocket/apps-page';
 import * as userPage from './websocket/user-page';
+import * as emailLinkPage from './websocket/email-link-page';
 
 var socket = null;
 export var auth: Auth;
@@ -18,7 +19,8 @@ export function init(s: any){
 	socket.on(userPage.sendRemoveAppEmailKey, userPage.sendRemoveAppEmail);
 	socket.on(userPage.sendPasswordResetEmailKey, userPage.sendPasswordResetEmail);
 	socket.on(userPage.setPasswordKey, userPage.setPassword);
-	socket.on(userPage.saveNewPasswordKey, userPage.saveNewPassword);
+	socket.on(emailLinkPage.saveNewPasswordKey, emailLinkPage.saveNewPassword);
+	socket.on(emailLinkPage.saveNewEmailKey, emailLinkPage.saveNewEmail);
 
 	InitStatic(DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);

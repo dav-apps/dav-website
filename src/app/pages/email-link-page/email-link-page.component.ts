@@ -5,6 +5,7 @@ import { DataService } from 'src/app/services/data-service';
 declare var io: any;
 
 const saveNewPasswordKey = "saveNewPassword";
+const saveNewEmailKey = "saveNewEmail";
 
 @Component({
 	selector: 'dav-website-email-link-page',
@@ -28,15 +29,23 @@ export class EmailLinkPageComponent{
 
 		this.socket = io();
 		this.socket.on(saveNewPasswordKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
+		this.socket.on(saveNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
+
+		// Get all possible variables from the url params
+		let userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id');
+		let passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('password_confirmation_token');
+		let emailConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('email_confirmation_token');
 
 		switch (type) {
 			case "change_password":
-				// Get user id and password confirmation token
-				let userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id');
-				let passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('password_confirmation_token');
-
+				// Check if user id and password confirmation token are present
 				if(isNaN(userId) || userId <= 0 || !passwordConfirmationToken || passwordConfirmationToken.length < 2) this.RedirectToStartPageWithError();
 				else this.HandleChangePassword(userId, passwordConfirmationToken);
+				break;
+			case "change_email":
+				// Check if user id and email confirmation token are present
+				if(isNaN(userId) || userId <= 0 || !emailConfirmationToken || emailConfirmationToken.length < 2) this.RedirectToStartPageWithError();
+				else this.HandleChangeEmail(userId, emailConfirmationToken);
 				break;
 			default:
 				this.RedirectToStartPageWithError();
@@ -50,9 +59,24 @@ export class EmailLinkPageComponent{
 		});
 	}
 
+	HandleChangeEmail(userId: number, emailConfirmationToken: string){
+		this.socket.emit(saveNewEmailKey, {
+			userId,
+			emailConfirmationToken
+		});
+	}
+
 	SaveNewPasswordResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
 			this.RedirectToStartPageWithSuccess("You can now log in with your new password");
+		}else{
+			this.RedirectToStartPageWithError();
+		}
+	}
+
+	SaveNewEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
+		if(response.status == 200){
+			this.RedirectToStartPageWithSuccess("You can now log in with your new email address");
 		}else{
 			this.RedirectToStartPageWithError();
 		}
