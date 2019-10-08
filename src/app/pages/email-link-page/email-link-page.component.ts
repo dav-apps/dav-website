@@ -6,6 +6,7 @@ declare var io: any;
 
 const saveNewPasswordKey = "saveNewPassword";
 const saveNewEmailKey = "saveNewEmail";
+const resetNewEmailKey = "resetNewEmail";
 
 @Component({
 	selector: 'dav-website-email-link-page',
@@ -30,6 +31,7 @@ export class EmailLinkPageComponent{
 		this.socket = io();
 		this.socket.on(saveNewPasswordKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
 		this.socket.on(saveNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
+		this.socket.on(resetNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.ResetNewEmailResponse(response));
 
 		// Get all possible variables from the url params
 		let userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id');
@@ -46,6 +48,11 @@ export class EmailLinkPageComponent{
 				// Check if user id and email confirmation token are present
 				if(isNaN(userId) || userId <= 0 || !emailConfirmationToken || emailConfirmationToken.length < 2) this.RedirectToStartPageWithError();
 				else this.HandleChangeEmail(userId, emailConfirmationToken);
+				break;
+			case "reset_new_email":
+				// Check if user id is present
+				if(isNaN(userId) || userId <= 0) this.RedirectToStartPageWithError();
+				else this.HandleResetNewEmail(userId);
 				break;
 			default:
 				this.RedirectToStartPageWithError();
@@ -66,6 +73,10 @@ export class EmailLinkPageComponent{
 		});
 	}
 
+	HandleResetNewEmail(userId: number){
+		this.socket.emit(resetNewEmailKey, {userId});
+	}
+
 	SaveNewPasswordResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
 			this.RedirectToStartPageWithSuccess("You can now log in with your new password");
@@ -77,6 +88,14 @@ export class EmailLinkPageComponent{
 	SaveNewEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
 			this.RedirectToStartPageWithSuccess("You can now log in with your new email address");
+		}else{
+			this.RedirectToStartPageWithError();
+		}
+	}
+
+	ResetNewEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
+		if(response.status == 200){
+			this.RedirectToStartPageWithSuccess("The email change was canceled. You can now log in with your old email");
 		}else{
 			this.RedirectToStartPageWithError();
 		}

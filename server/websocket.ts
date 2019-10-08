@@ -21,6 +21,7 @@ export function init(s: any){
 	socket.on(userPage.setPasswordKey, userPage.setPassword);
 	socket.on(emailLinkPage.saveNewPasswordKey, emailLinkPage.saveNewPassword);
 	socket.on(emailLinkPage.saveNewEmailKey, emailLinkPage.saveNewEmail);
+	socket.on(emailLinkPage.resetNewEmailKey, emailLinkPage.resetNewEmail);
 
 	InitStatic(DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);
