@@ -4,6 +4,7 @@ import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 declare var io: any;
 
+const deleteUserKey = "deleteUser";
 const saveNewPasswordKey = "saveNewPassword";
 const saveNewEmailKey = "saveNewEmail";
 const resetNewEmailKey = "resetNewEmail";
@@ -29,6 +30,7 @@ export class EmailLinkPageComponent{
 		}
 
 		this.socket = io();
+		this.socket.on(deleteUserKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.DeleteUserResponse(response));
 		this.socket.on(saveNewPasswordKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
 		this.socket.on(saveNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
 		this.socket.on(resetNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.ResetNewEmailResponse(response));
@@ -39,6 +41,11 @@ export class EmailLinkPageComponent{
 		let emailConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('email_confirmation_token');
 
 		switch (type) {
+			case "delete_user":
+				// Check if user id, email confirmation token and password confirmation token are present
+				if(isNaN(userId) || userId <= 0 || !emailConfirmationToken || emailConfirmationToken.length < 2 || !passwordConfirmationToken || passwordConfirmationToken.length < 2) this.RedirectToStartPageWithError();
+				else this.HandleDeleteUser(userId, emailConfirmationToken, passwordConfirmationToken);
+				break;
 			case "change_password":
 				// Check if user id and password confirmation token are present
 				if(isNaN(userId) || userId <= 0 || !passwordConfirmationToken || passwordConfirmationToken.length < 2) this.RedirectToStartPageWithError();
@@ -59,6 +66,14 @@ export class EmailLinkPageComponent{
 		}
 	}
 
+	HandleDeleteUser(userId: number, emailConfirmationToken: string, passwordConfirmationToken: string){
+		this.socket.emit(deleteUserKey, {
+			userId,
+			emailConfirmationToken,
+			passwordConfirmationToken
+		});
+	}
+
 	HandleChangePassword(userId: number, passwordConfirmationToken: string){
 		this.socket.emit(saveNewPasswordKey, {
 			userId,
@@ -75,6 +90,17 @@ export class EmailLinkPageComponent{
 
 	HandleResetNewEmail(userId: number){
 		this.socket.emit(resetNewEmailKey, {userId});
+	}
+
+	async DeleteUserResponse(response: ApiResponse<{}> | ApiErrorResponse){
+		if(response.status == 200){
+			// If the user is logged in, log the user out
+			await this.dataService.user.Logout();
+
+			this.RedirectToStartPageWithSuccess("Your account was successfully deleted");
+		}else{
+			this.RedirectToStartPageWithError();
+		}
 	}
 
 	SaveNewPasswordResponse(response: ApiResponse<{}> | ApiErrorResponse){

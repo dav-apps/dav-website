@@ -1,9 +1,19 @@
-import { SaveNewPassword, SaveNewEmail, ResetNewEmail } from 'dav-npm';
+import { DeleteUser, SaveNewPassword, SaveNewEmail, ResetNewEmail } from 'dav-npm';
 import * as websocket from '../websocket';
 
+export const deleteUserKey = "deleteUser";
 export const saveNewPasswordKey = "saveNewPassword";
 export const saveNewEmailKey = "saveNewEmail";
 export const resetNewEmailKey = "resetNewEmail";
+
+export async function deleteUser(message: {
+	userId: number,
+	emailConfirmationToken: string,
+	passwordConfirmationToken: string
+}){
+	let response = await DeleteUser(websocket.auth, message.userId, message.emailConfirmationToken, message.passwordConfirmationToken);
+	websocket.emit(deleteUserKey, response);
+}
 
 export async function saveNewPassword(message: {
 	userId: number,
