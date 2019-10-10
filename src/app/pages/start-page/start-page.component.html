@@ -14,6 +14,13 @@
 	<div class="card-group">
 		<dav-website-app-card *ngFor="let app of dataService.user.Apps" [app]="app"></dav-website-app-card>
 	</div>
+
+	<div class="jumbotron mt-4" style="padding: 35px 38px" *ngIf="dataService.user.Apps.length == 0">
+		<h1 class="font-weight-light">Hi, {{ dataService.user.Username }}</h1>
+
+		<p class="lead">You're not using any app right now. Check out the All Apps page to find your first app!</p>
+		<a class="btn btn-primary mt-2" routerLink="apps" role="button">Find apps</a>
+	</div>
 </div>
 
 <div class="container-fluid ms-motion-slideUpIn" style="padding: 0px" *ngIf="!dataService.user.IsLoggedIn">
