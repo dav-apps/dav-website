@@ -5,6 +5,7 @@ import { DataService } from 'src/app/services/data-service';
 declare var io: any;
 
 const deleteUserKey = "deleteUser";
+const removeAppKey = "removeApp";
 const saveNewPasswordKey = "saveNewPassword";
 const saveNewEmailKey = "saveNewEmail";
 const resetNewEmailKey = "resetNewEmail";
@@ -31,12 +32,14 @@ export class EmailLinkPageComponent{
 
 		this.socket = io();
 		this.socket.on(deleteUserKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.DeleteUserResponse(response));
+		this.socket.on(removeAppKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.RemoveAppResponse(response));
 		this.socket.on(saveNewPasswordKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
 		this.socket.on(saveNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
 		this.socket.on(resetNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.ResetNewEmailResponse(response));
 
 		// Get all possible variables from the url params
 		let userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id');
+		let appId = +this.activatedRoute.snapshot.queryParamMap.get("app_id");
 		let passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('password_confirmation_token');
 		let emailConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('email_confirmation_token');
 
@@ -45,6 +48,11 @@ export class EmailLinkPageComponent{
 				// Check if user id, email confirmation token and password confirmation token are present
 				if(isNaN(userId) || userId <= 0 || !emailConfirmationToken || emailConfirmationToken.length < 2 || !passwordConfirmationToken || passwordConfirmationToken.length < 2) this.RedirectToStartPageWithError();
 				else this.HandleDeleteUser(userId, emailConfirmationToken, passwordConfirmationToken);
+				break;
+			case "remove_app":
+				// Check if app_id, user_id and password_confirmation_token are present
+				if(isNaN(appId) || appId <= 0 || isNaN(userId) || userId <= 0 || !passwordConfirmationToken || passwordConfirmationToken.length < 2) this.RedirectToStartPageWithError();
+				else this.HandleRemoveApp(appId, userId, passwordConfirmationToken);
 				break;
 			case "change_password":
 				// Check if user id and password confirmation token are present
@@ -74,6 +82,14 @@ export class EmailLinkPageComponent{
 		});
 	}
 
+	HandleRemoveApp(appId: number, userId: number, passwordConfirmationToken: string){
+		this.socket.emit(removeAppKey, {
+			appId,
+			userId,
+			passwordConfirmationToken
+		});
+	}
+
 	HandleChangePassword(userId: number, passwordConfirmationToken: string){
 		this.socket.emit(saveNewPasswordKey, {
 			userId,
@@ -98,6 +114,14 @@ export class EmailLinkPageComponent{
 			await this.dataService.user.Logout();
 
 			this.RedirectToStartPageWithSuccess("Your account was successfully deleted");
+		}else{
+			this.RedirectToStartPageWithError();
+		}
+	}
+
+	RemoveAppResponse(response: ApiResponse<{}> | ApiErrorResponse){
+		if(response.status == 200){
+			this.RedirectToStartPageWithSuccess("The app was successfully removed from your account");
 		}else{
 			this.RedirectToStartPageWithError();
 		}
