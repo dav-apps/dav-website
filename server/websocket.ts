@@ -21,6 +21,7 @@ export function init(s: any){
 	socket.on(userPage.setPasswordKey, userPage.setPassword);
 	socket.on(emailLinkPage.deleteUserKey, emailLinkPage.deleteUser);
 	socket.on(emailLinkPage.removeAppKey, emailLinkPage.removeApp);
+	socket.on(emailLinkPage.confirmUserKey, emailLinkPage.confirmUser);
 	socket.on(emailLinkPage.saveNewPasswordKey, emailLinkPage.saveNewPassword);
 	socket.on(emailLinkPage.saveNewEmailKey, emailLinkPage.saveNewEmail);
 	socket.on(emailLinkPage.resetNewEmailKey, emailLinkPage.resetNewEmail);

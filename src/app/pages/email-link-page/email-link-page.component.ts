@@ -6,6 +6,7 @@ declare var io: any;
 
 const deleteUserKey = "deleteUser";
 const removeAppKey = "removeApp";
+const confirmUserKey = "confirmUser";
 const saveNewPasswordKey = "saveNewPassword";
 const saveNewEmailKey = "saveNewEmail";
 const resetNewEmailKey = "resetNewEmail";
@@ -33,6 +34,7 @@ export class EmailLinkPageComponent{
 		this.socket = io();
 		this.socket.on(deleteUserKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.DeleteUserResponse(response));
 		this.socket.on(removeAppKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.RemoveAppResponse(response));
+		this.socket.on(confirmUserKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.ConfirmUserResponse(response));
 		this.socket.on(saveNewPasswordKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
 		this.socket.on(saveNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
 		this.socket.on(resetNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.ResetNewEmailResponse(response));
@@ -53,6 +55,11 @@ export class EmailLinkPageComponent{
 				// Check if app_id, user_id and password_confirmation_token are present
 				if(isNaN(appId) || appId <= 0 || isNaN(userId) || userId <= 0 || !passwordConfirmationToken || passwordConfirmationToken.length < 2) this.RedirectToStartPageWithError();
 				else this.HandleRemoveApp(appId, userId, passwordConfirmationToken);
+				break;
+			case "confirm_user":
+				// Check if user id and email confirmation token are present
+				if(isNaN(userId) || userId <= 0 || !emailConfirmationToken || emailConfirmationToken.length < 2) this.RedirectToStartPageWithError();
+				else this.HandleConfirmUser(userId, emailConfirmationToken);
 				break;
 			case "change_password":
 				// Check if user id and password confirmation token are present
@@ -90,6 +97,13 @@ export class EmailLinkPageComponent{
 		});
 	}
 
+	HandleConfirmUser(userId: number, emailConfirmationToken: string){
+		this.socket.emit(confirmUserKey, {
+			userId,
+			emailConfirmationToken
+		});
+	}
+
 	HandleChangePassword(userId: number, passwordConfirmationToken: string){
 		this.socket.emit(saveNewPasswordKey, {
 			userId,
@@ -122,6 +136,14 @@ export class EmailLinkPageComponent{
 	RemoveAppResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
 			this.RedirectToStartPageWithSuccess("The app was successfully removed from your account");
+		}else{
+			this.RedirectToStartPageWithError();
+		}
+	}
+
+	ConfirmUserResponse(response: ApiResponse<{}> | ApiErrorResponse){
+		if(response.status == 200){
+			this.RedirectToStartPageWithSuccess("Your email address was successfully confirmed");
 		}else{
 			this.RedirectToStartPageWithError();
 		}
