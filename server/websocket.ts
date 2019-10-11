@@ -11,6 +11,7 @@ export var auth: Auth;
 export function init(s: any){
 	socket = s;
 	socket.on(loginPage.loginKey, loginPage.login);
+	socket.on(loginPage.loginImplicitKey, loginPage.loginImplicit);
 	socket.on(signupPage.signupKey, signupPage.signup);
 	socket.on(appsPage.getAllAppsKey, appsPage.getAllApps);
 	socket.on(userPage.updateUserKey, userPage.updateUser);
