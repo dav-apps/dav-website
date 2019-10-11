@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
@@ -15,6 +16,8 @@ const snackBarDuration = 3000;
 const dangerButtonBackgroundColor = "#dc3545";
 const dangerButtonHoverBackgroundColor = "#c82333";
 const buttonTransition = "all 0.15s";
+const plansHash = "plans";
+const appsHash = "apps";
 
 @Component({
 	selector: 'dav-website-user-page',
@@ -135,8 +138,24 @@ export class UserPageComponent{
 
 	constructor(
 		public dataService: DataService,
-		private snackBar: MatSnackBar
-	){}
+		private snackBar: MatSnackBar,
+		private router: Router,
+		private activatedRoute: ActivatedRoute
+	){
+		this.activatedRoute.fragment.subscribe((value) => {
+			switch (value) {
+				case plansHash:
+					this.ShowPlansMenu();
+					break;
+				case appsHash:
+					this.ShowAppsMenu();
+					break;
+				default:
+					this.ShowGeneralMenu();
+					break;
+			}
+		});
+	}
 
 	async ngOnInit(){
 		this.setSize();
@@ -197,18 +216,24 @@ export class UserPageComponent{
 		setTimeout(() => {
 			this.UpdateAvatarImageContent();
 		}, 1);
+
+		this.router.navigateByUrl('user');
 	}
 
 	ShowPlansMenu(){
 		if(this.selectedMenu == Menu.Plans) return;
 		this.selectedMenu = Menu.Plans;
 		if(this.sideNavHidden) this.sideNavOpened = false;
+
+		this.router.navigateByUrl(`user#${plansHash}`);
 	}
 
 	ShowAppsMenu(){
 		if(this.selectedMenu == Menu.Apps) return;
 		this.selectedMenu = Menu.Apps;
 		if(this.sideNavHidden) this.sideNavOpened = false;
+
+		this.router.navigateByUrl(`user#${appsHash}`);
 	}
 
 	UpdateAvatar(file: ReadFile){
