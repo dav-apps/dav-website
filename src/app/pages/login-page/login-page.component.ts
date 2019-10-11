@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageBarType, IButtonStyles, IconFontSizes } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, LoginResponseData, DevResponseData } from 'dav-npm';
+import { MessageBarType, IButtonStyles } from 'office-ui-fabric-react';
+import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
+declare var deviceAPI: any;
 
 const loginKey = "login";
 const loginImplicitKey = "loginImplicit";
+const createSessionKey = "createSession";
 const loginTypeImplicit = "implicit";
 const loginTypeSession = "session";
 
@@ -38,6 +40,7 @@ export class LoginPageComponent{
 		this.socket = io();
 		this.socket.on(loginKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginResponse(response));
 		this.socket.on(loginImplicitKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginImplicitResponse(response));
+		this.socket.on(createSessionKey, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionResponse(response));
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 
@@ -56,12 +59,12 @@ export class LoginPageComponent{
 		if(this.loginType == LoginType.Implicit){
 			// Check if apiKey and redirectUrl are present
 			if(!this.apiKey || this.apiKey.length < 2 || !this.redirectUrl || this.redirectUrl.length < 2) this.RedirectToStartPageWithError();
+			else this.dataService.hideNavbarAndFooter = true;
 		}else if(this.loginType == LoginType.Session){
-			
+			// Check if appId, apiKey and redirectUrl are present
+			if(isNaN(this.appId) || this.appId <= 0 || !this.apiKey || this.apiKey.length < 2 || !this.redirectUrl || this.redirectUrl.length < 2) this.RedirectToStartPageWithError();
+			else this.dataService.hideNavbarAndFooter = true;
 		}
-
-		// Hide navbar and footer
-		this.dataService.hideNavbarAndFooter = true;
 	}
 
 	ngAfterViewInit(){
@@ -77,6 +80,7 @@ export class LoginPageComponent{
 
 		switch (this.loginType) {
 			case LoginType.Normal:
+				// Call login on the server
 				this.socket.emit(loginKey, {
 					email: this.email,
 					password: this.password
@@ -91,7 +95,25 @@ export class LoginPageComponent{
 				});
 				break;
 			case LoginType.Session:
-				
+				// Get device info
+				let deviceName = deviceAPI.deviceName;
+				let deviceType = this.Capitalize(deviceAPI.deviceType as string);
+				let deviceOs = deviceAPI.osName;
+
+				if(deviceName == "Not available") deviceName = "Unknown";
+				if(deviceType == "Not available") deviceType = "Unknown";
+				if(deviceOs == "Not available") deviceOs = "Unknown";
+
+				// Call createSession on the server
+				this.socket.emit(createSessionKey, {
+					email: this.email,
+					password: this.password,
+					appId: this.appId,
+					apiKey: this.apiKey,
+					deviceName,
+					deviceType,
+					deviceOs
+				});
 				break;
 		}
 	}
@@ -127,6 +149,20 @@ export class LoginPageComponent{
 		}
 	}
 
+	async CreateSessionResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)){
+		if(response.status == 201){
+			// Redirect to the redirect url
+			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<CreateSessionResponseData>).data.jwt}`;
+		}else{
+			let errorCode = (response as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetLoginErrorMessage(errorCode);
+
+			if(errorCode != 2106){
+				this.password = "";
+			}
+		}
+	}
+
 	GetLoginErrorMessage(errorCode: number) : string{
 		switch (errorCode) {
 			case 1201:
@@ -145,6 +181,10 @@ export class LoginPageComponent{
 	RedirectToStartPageWithError(){
 		this.dataService.startPageErrorMessage = "An unexpected error occured. Please try again.";
 		this.router.navigate(['/']);
+	}
+
+	Capitalize(s: string){
+		return s.charAt(0).toUpperCase() + s.slice(1);
 	}
 }
 

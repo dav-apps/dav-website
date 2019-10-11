@@ -1,8 +1,9 @@
-import { Login, Auth, GetDevByApiKey, ApiResponse, DevResponseData } from 'dav-npm';
+import { Login, Auth, GetDevByApiKey, ApiResponse, DevResponseData, CreateSession } from 'dav-npm';
 import * as websocket from '../websocket';
 
 export const loginKey = "login";
 export const loginImplicitKey = "loginImplicit";
+export const createSessionKey = "createSession";
 
 export async function login(message: {email: string, password: string}){
 	let loginResponse = await Login(websocket.auth, message.email, message.password);
@@ -28,4 +29,17 @@ export async function loginImplicit(message: {
 	// Log the user in
 	let loginResponse = await Login(devAuth, message.email, message.password);
 	websocket.emit(loginImplicitKey, loginResponse);
+}
+
+export async function createSession(message: {
+	email: string,
+	password: string,
+	appId: number,
+	apiKey: string,
+	deviceName: string,
+	deviceType: string,
+	deviceOs: string
+}){
+	let response = await CreateSession(websocket.auth, message.email, message.password, message.appId, message.apiKey, message.deviceName, message.deviceType, message.deviceOs);
+	websocket.emit(createSessionKey, response);
 }
