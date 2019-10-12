@@ -43,7 +43,6 @@ export class LoginPageComponent{
 		this.socket.on(createSessionKey, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionResponse(response));
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
-
 		if(!type) return;
 
 		if(type == loginTypeImplicit){
@@ -183,13 +182,21 @@ export class LoginPageComponent{
 		this.router.navigate(['/']);
 	}
 
+	NavigateToSignup(){
+		if(this.loginType == LoginType.Implicit){
+			this.router.navigateByUrl(`/signup?type=${loginTypeImplicit}&api_key=${this.apiKey}&redirect_url=${this.redirectUrl}`);
+		}else if(this.loginType == LoginType.Session){
+			this.router.navigateByUrl(`/signup?type=${loginTypeSession}&api_key=${this.apiKey}&app_id=${this.appId}&redirect_url=${this.redirectUrl}`);
+		}
+	}
+
 	Capitalize(s: string){
 		return s.charAt(0).toUpperCase() + s.slice(1);
 	}
 }
 
 enum LoginType{
-	Normal,
-	Implicit,
-	Session
+	Normal = 0,
+	Implicit = 1,
+	Session = 2
 }

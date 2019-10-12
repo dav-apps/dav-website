@@ -24,7 +24,8 @@ export async function loginImplicit(message: {
 	}
 
 	// Create the auth of the dev
-	let devAuth = new Auth((getDevResponse as ApiResponse<DevResponseData>).data.apiKey, (getDevResponse as ApiResponse<DevResponseData>).data.secretKey, (getDevResponse as ApiResponse<DevResponseData>).data.uuid);
+	let getDevResponseData = (getDevResponse as ApiResponse<DevResponseData>).data;
+	let devAuth = new Auth(getDevResponseData.apiKey, getDevResponseData.secretKey, getDevResponseData.uuid);
 
 	// Log the user in
 	let loginResponse = await Login(devAuth, message.email, message.password);

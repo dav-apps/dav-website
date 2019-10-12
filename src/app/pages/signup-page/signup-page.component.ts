@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageBarType } from 'office-ui-fabric-react';
-import { ApiResponse, SignupResponseData, ApiErrorResponse } from 'dav-npm';
+import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
 
 const signupKey = "signup";
+const signupImplicitKey = "signupImplicit";
+const signupTypeImplicit = "implicit";
+const signupTypeSession = "session";
 
 @Component({
 	selector: 'dav-website-signup-page',
@@ -17,17 +20,44 @@ export class SignupPageComponent{
 	email: string = "";
 	password: string = "";
 	passwordConfirmation: string = "";
+	signupType: SignupType = SignupType.Normal;
+	appId: number = -1;
+	apiKey: string = null;
+	redirectUrl: string = null;
 	errorMessage: string = "";
 	messageBarType: MessageBarType = MessageBarType.error;
 
 	constructor(
 		public dataService: DataService,
-		public router: Router
-	){}
-
-	ngOnInit(){
+		private router: Router,
+		private activatedRoute: ActivatedRoute
+	){
 		this.socket = io();
 		this.socket.on(signupKey, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupResponse(message));
+		this.socket.on(signupImplicitKey, (message: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.SignupImplicitResponse(message));
+
+		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
+		if(!type) return;
+
+		if(type == signupTypeImplicit){
+			this.signupType = SignupType.Implicit;
+		}else if(type == signupTypeSession){
+			this.signupType = SignupType.Session;
+		}
+
+		this.appId = +this.activatedRoute.snapshot.queryParamMap.get('app_id');
+		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get('api_key');
+		this.redirectUrl = decodeURIComponent(this.activatedRoute.snapshot.queryParamMap.get('redirect_url'));
+
+		if(this.signupType == SignupType.Implicit){
+			// Check if apiKey and redirectUrl are present
+			if(!this.apiKey || this.apiKey.length < 2 || !this.redirectUrl || this.redirectUrl.length < 2) this.RedirectToStartPageWithError();
+			else this.dataService.hideNavbarAndFooter = true;
+		}else if(this.signupType == SignupType.Session){
+			// Check if appId, apiKey and redirectUrl are present
+			if(isNaN(this.appId) || this.appId <= 0 || !this.apiKey || this.apiKey.length < 2 || !this.redirectUrl || this.redirectUrl.length < 2) this.RedirectToStartPageWithError();
+			else this.dataService.hideNavbarAndFooter = true;
+		}
 	}
 
 	ngAfterViewInit(){
@@ -48,11 +78,23 @@ export class SignupPageComponent{
 		}
 		this.errorMessage = "";
 
-		this.socket.emit(signupKey, {
-			username: this.username,
-			email: this.email,
-			password: this.password
-		});
+		switch (this.signupType) {
+			case SignupType.Normal:
+				this.socket.emit(signupKey, {
+					username: this.username,
+					email: this.email,
+					password: this.password
+				});
+				break;
+			case SignupType.Implicit:
+				this.socket.emit(signupImplicitKey, {
+					apiKey: this.apiKey,
+					username: this.username,
+					email: this.email,
+					password: this.password
+				});
+				break;
+		}
 	}
 
 	async SignupResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
@@ -62,6 +104,21 @@ export class SignupPageComponent{
 
 			// Redirect to the start page
 			this.router.navigate(['/']);
+		}else{
+			let errorCode = (response as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetSignupErrorMessage(errorCode);
+
+			if(errorCode == 2202 || errorCode == 2302){
+				this.password = "";
+				this.passwordConfirmation = "";
+			}
+		}
+	}
+
+	async SignupImplicitResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
+		if(response.status == 200){
+			// Redirect to the redirect url
+			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<LoginResponseData>).data.jwt}`;
 		}else{
 			let errorCode = (response as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSignupErrorMessage(errorCode);
@@ -99,4 +156,15 @@ export class SignupPageComponent{
 				return `Unexpected error (${errorCode})`;
 		}
 	}
+
+	RedirectToStartPageWithError(){
+		this.dataService.startPageErrorMessage = "An unexpected error occured. Please try again.";
+		this.router.navigate(['/']);
+	}
+}
+
+enum SignupType{
+	Normal = 0,
+	Implicit = 1,
+	Session = 2
 }
