@@ -9,6 +9,7 @@ declare var deviceAPI: any;
 const loginKey = "login";
 const loginImplicitKey = "loginImplicit";
 const createSessionKey = "createSession";
+const createSessionWithJwtKey = "createSessionWithJwt";
 const loginTypeImplicit = "implicit";
 const loginTypeSession = "session";
 
@@ -41,6 +42,7 @@ export class LoginPageComponent{
 		this.socket.on(loginKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginResponse(response));
 		this.socket.on(loginImplicitKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginImplicitResponse(response));
 		this.socket.on(createSessionKey, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionResponse(response));
+		this.socket.on(createSessionWithJwtKey, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionWithJwtResponse(response));
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 		if(!type) return;
@@ -117,6 +119,26 @@ export class LoginPageComponent{
 		}
 	}
 
+	LoginAsLoggedInUser(){
+		// Get device info
+		let deviceName = deviceAPI.deviceName;
+		let deviceType = this.Capitalize(deviceAPI.deviceType as string);
+		let deviceOs = deviceAPI.osName;
+
+		if(deviceName == "Not available") deviceName = "Unknown";
+		if(deviceType == "Not available") deviceType = "Unknown";
+		if(deviceOs == "Not available") deviceOs = "Unknown";
+
+		this.socket.emit(createSessionWithJwtKey, {
+			jwt: this.dataService.user.JWT,
+			appId: this.appId,
+			apiKey: this.apiKey,
+			deviceName,
+			deviceType,
+			deviceOs
+		});
+	}
+
 	async LoginResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
 		if(response.status == 200){
 			// Save the jwt
@@ -159,6 +181,16 @@ export class LoginPageComponent{
 			if(errorCode != 2106){
 				this.password = "";
 			}
+		}
+	}
+
+	async CreateSessionWithJwtResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)){
+		if(response.status == 201){
+			// Redirect to the redirect url
+			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<CreateSessionResponseData>).data.jwt}`;
+		}else{
+			let errorCode = (response as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetLoginErrorMessage(errorCode);
 		}
 	}
 

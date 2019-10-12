@@ -44,7 +44,18 @@
 						*ngIf="loginType == 0">Forgot password?</a>
 					<div style="margin-top: 24px; float: right;" *ngIf="loginType != 0"><fab-default-button (click)="NavigateToSignup()">Sign up</fab-default-button></div>
 				</div>
+
+				<div class="mx-auto" style="width: 80%; border-top: 1px solid #eaeaea; margin-top: 56px; margin-bottom: 56px" *ngIf="dataService.user.IsLoggedIn && loginType == 2"></div>
 			</div>
 		</div>
+	</div>
+
+	<div class="mx-auto shadow-sm" *ngIf="dataService.user.IsLoggedIn && loginType == 2">
+		<button class="list-group-item list-group-item-action" style="padding: 16px" (click)="LoginAsLoggedInUser()">
+			<div class="media">
+				<img class="mr-3 rounded" [src]="dataService.user.Avatar" alt="User avatar" height="70" width="70">
+				<h5 class="my-auto font-weight-light">Log in as {{ dataService.user.Username }}</h5>
+			</div>
+		</button>
 	</div>
 </div>

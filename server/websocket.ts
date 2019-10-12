@@ -13,6 +13,7 @@ export function init(s: any){
 	socket.on(loginPage.loginKey, loginPage.login);
 	socket.on(loginPage.loginImplicitKey, loginPage.loginImplicit);
 	socket.on(loginPage.createSessionKey, loginPage.createSession);
+	socket.on(loginPage.createSessionWithJwtKey, loginPage.createSessionWithJwt);
 	socket.on(signupPage.signupKey, signupPage.signup);
 	socket.on(signupPage.signupImplicitKey, signupPage.signupImplicit);
 	socket.on(signupPage.signupSessionKey, signupPage.signupSession);

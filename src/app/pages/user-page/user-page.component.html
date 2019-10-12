@@ -27,7 +27,7 @@
 					<div class="mb-4" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
 					<!-- Avatar -->
-					<img id="avatar-image" class="img mb-3" height="150" width="150" alt="Avatar" [src]="dataService.user.Avatar"><br>
+					<img id="avatar-image" class="img mb-3 rounded" height="150" width="150" alt="Avatar" [src]="dataService.user.Avatar"><br>
 					<fab-primary-button ngxFilePicker accept="image/png,image/jpeg" (filePick)="UpdateAvatar($event)">Upload Profile image</fab-primary-button>
 
 					<!-- Username -->
