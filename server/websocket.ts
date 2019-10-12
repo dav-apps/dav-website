@@ -15,6 +15,7 @@ export function init(s: any){
 	socket.on(loginPage.createSessionKey, loginPage.createSession);
 	socket.on(signupPage.signupKey, signupPage.signup);
 	socket.on(signupPage.signupImplicitKey, signupPage.signupImplicit);
+	socket.on(signupPage.signupSessionKey, signupPage.signupSession);
 	socket.on(appsPage.getAllAppsKey, appsPage.getAllApps);
 	socket.on(userPage.updateUserKey, userPage.updateUser);
 	socket.on(userPage.sendVerificationEmailKey, userPage.sendVerificationEmail);

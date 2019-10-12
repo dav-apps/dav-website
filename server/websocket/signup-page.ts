@@ -3,6 +3,7 @@ import * as websocket from '../websocket';
 
 export const signupKey = "signup";
 export const signupImplicitKey = "signupImplicit";
+export const signupSessionKey = "signupSession";
 
 export async function signup(message: {username: string, email: string, password: string}){
 	let signupResponse = await Signup(websocket.auth, message.email, message.password, message.username);
@@ -38,4 +39,18 @@ export async function signupImplicit(message: {
 	// Log in the user with the dev auth
 	let loginResponse = await Login(devAuth, message.email, message.password);
 	websocket.emit(signupImplicitKey, loginResponse);
+}
+
+export async function signupSession(message: {
+	username: string,
+	email: string,
+	password: string,
+	appId: number,
+	apiKey: string,
+	deviceName: string,
+	deviceType: string,
+	deviceOs: string
+}){
+	let response = await Signup(websocket.auth, message.email, message.password, message.username, message.appId, message.apiKey, message.deviceName, message.deviceType, message.deviceOs);
+	websocket.emit(signupSessionKey, response);
 }

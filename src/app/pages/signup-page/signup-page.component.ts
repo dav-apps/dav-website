@@ -4,9 +4,11 @@ import { MessageBarType } from 'office-ui-fabric-react';
 import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
+declare var deviceAPI: any;
 
 const signupKey = "signup";
 const signupImplicitKey = "signupImplicit";
+const signupSessionKey = "signupSession";
 const signupTypeImplicit = "implicit";
 const signupTypeSession = "session";
 
@@ -35,6 +37,7 @@ export class SignupPageComponent{
 		this.socket = io();
 		this.socket.on(signupKey, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupResponse(message));
 		this.socket.on(signupImplicitKey, (message: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.SignupImplicitResponse(message));
+		this.socket.on(signupSessionKey, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupSessionResponse(message));
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 		if(!type) return;
@@ -94,6 +97,27 @@ export class SignupPageComponent{
 					password: this.password
 				});
 				break;
+			case SignupType.Session:
+				// Get device info
+				let deviceName = deviceAPI.deviceName;
+				let deviceType = this.Capitalize(deviceAPI.deviceType as string);
+				let deviceOs = deviceAPI.osName;
+
+				if(deviceName == "Not available") deviceName = "Unknown";
+				if(deviceType == "Not available") deviceType = "Unknown";
+				if(deviceOs == "Not available") deviceOs = "Unknown";
+
+				this.socket.emit(signupSessionKey, {
+					username: this.username,
+					email: this.email,
+					password: this.password,
+					appId: this.appId,
+					apiKey: this.apiKey,
+					deviceName,
+					deviceType,
+					deviceOs
+				});
+				break;
 		}
 	}
 
@@ -119,6 +143,21 @@ export class SignupPageComponent{
 		if(response.status == 200){
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<LoginResponseData>).data.jwt}`;
+		}else{
+			let errorCode = (response as ApiErrorResponse).errors[0].code;
+			this.errorMessage = this.GetSignupErrorMessage(errorCode);
+
+			if(errorCode == 2202 || errorCode == 2302){
+				this.password = "";
+				this.passwordConfirmation = "";
+			}
+		}
+	}
+
+	async SignupSessionResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
+		if(response.status == 201){
+			// Redirect to the redirect url
+			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<SignupResponseData>).data.jwt}`;
 		}else{
 			let errorCode = (response as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSignupErrorMessage(errorCode);
@@ -160,6 +199,10 @@ export class SignupPageComponent{
 	RedirectToStartPageWithError(){
 		this.dataService.startPageErrorMessage = "An unexpected error occured. Please try again.";
 		this.router.navigate(['/']);
+	}
+
+	Capitalize(s: string){
+		return s.charAt(0).toUpperCase() + s.slice(1);
 	}
 }
 
