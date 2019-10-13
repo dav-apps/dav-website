@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageBarType } from 'office-ui-fabric-react';
+import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
@@ -28,6 +28,8 @@ export class SignupPageComponent{
 	redirectUrl: string = null;
 	errorMessage: string = "";
 	messageBarType: MessageBarType = MessageBarType.error;
+	spinnerSize: SpinnerSize = SpinnerSize.small;
+	signupLoading: boolean = false;
 
 	constructor(
 		public dataService: DataService,
@@ -80,6 +82,7 @@ export class SignupPageComponent{
 			return;
 		}
 		this.errorMessage = "";
+		this.signupLoading = true;
 
 		switch (this.signupType) {
 			case SignupType.Normal:
@@ -137,6 +140,9 @@ export class SignupPageComponent{
 				this.passwordConfirmation = "";
 			}
 		}
+
+		// Hide the spinner
+		this.signupLoading = false;
 	}
 
 	async SignupImplicitResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
@@ -152,6 +158,9 @@ export class SignupPageComponent{
 				this.passwordConfirmation = "";
 			}
 		}
+
+		// Hide the spinner
+		this.signupLoading = false;
 	}
 
 	async SignupSessionResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
@@ -167,6 +176,9 @@ export class SignupPageComponent{
 				this.passwordConfirmation = "";
 			}
 		}
+
+		// Hide the spinner
+		this.signupLoading = false;
 	}
 
 	GetSignupErrorMessage(errorCode: number) : string{

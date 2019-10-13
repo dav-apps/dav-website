@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageBarType, IButtonStyles } from 'office-ui-fabric-react';
+import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 declare var io: any;
@@ -26,6 +26,8 @@ export class LoginPageComponent{
 	appId: number = -1;
 	apiKey: string = null;
 	redirectUrl: string = null;
+	loginLoading: boolean = false;
+	spinnerSize: SpinnerSize = SpinnerSize.small;
 	messageBarType: MessageBarType = MessageBarType.error;
 	loginButtonStyles: IButtonStyles = {
 		root: {
@@ -78,6 +80,7 @@ export class LoginPageComponent{
 
 	Login(){
 		this.errorMessage = "";
+		this.loginLoading = true;
 
 		switch (this.loginType) {
 			case LoginType.Normal:
@@ -154,6 +157,9 @@ export class LoginPageComponent{
 				this.password = "";
 			}
 		}
+
+		// Hide the spinner
+		this.loginLoading = false;
 	}
 
 	async LoginImplicitResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
@@ -168,6 +174,9 @@ export class LoginPageComponent{
 				this.password = "";
 			}
 		}
+
+		// Hide the spinner
+		this.loginLoading = false;
 	}
 
 	async CreateSessionResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)){
@@ -182,6 +191,9 @@ export class LoginPageComponent{
 				this.password = "";
 			}
 		}
+
+		// Hide the spinner
+		this.loginLoading = false;
 	}
 
 	async CreateSessionWithJwtResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)){

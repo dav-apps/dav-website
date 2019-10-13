@@ -36,13 +36,20 @@
 					(keydown.enter)="Login()">
 				</fab-text-field>
 				
-				<div>
-					<fab-primary-button (click)="Login()" [styles]="loginButtonStyles">Log in</fab-primary-button>
-					<a style="color: black; font-size: 15px; margin-top: 12px; float: right" 
-						routerLink="/password_reset" 
-						tabindex="-1"
-						*ngIf="loginType == 0">Forgot password?</a>
-					<div style="margin-top: 24px; float: right;" *ngIf="loginType != 0"><fab-default-button (click)="NavigateToSignup()">Sign up</fab-default-button></div>
+				<div class="d-flex flex-row">
+					<div class="d-flex">
+						<fab-primary-button (click)="Login()" [styles]="loginButtonStyles" [disabled]="loginLoading">Log in</fab-primary-button>
+						<div style="margin-top: 32px; margin-left: 14px" *ngIf="loginLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+					</div>
+					
+					<div class="d-flex ml-auto">
+						<a style="color: black; font-size: 15px; margin-top: 12px;" 
+							routerLink="/password_reset" 
+							tabindex="-1"
+							*ngIf="loginType == 0">Forgot password?</a>
+
+						<div style="margin-top: 24px" *ngIf="loginType != 0"><fab-default-button (click)="NavigateToSignup()">Sign up</fab-default-button></div>
+					</div>
 				</div>
 
 				<div class="mx-auto" style="width: 80%; border-top: 1px solid #eaeaea; margin-top: 56px; margin-bottom: 56px" *ngIf="dataService.user.IsLoggedIn && loginType == 2"></div>

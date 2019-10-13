@@ -63,7 +63,11 @@
 					(keydown.enter)="Signup()">
 				</fab-text-field>
 				<br>
-				<fab-primary-button (click)="Signup()">Sign up</fab-primary-button>
+				
+				<div class="d-flex">
+					<fab-primary-button (click)="Signup()" [disabled]="signupLoading">Sign up</fab-primary-button>
+					<div style="margin-top: 8px; margin-left: 14px" *ngIf="signupLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+				</div>
 			</div>
 		</div>
 	</div>

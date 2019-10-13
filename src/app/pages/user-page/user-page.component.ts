@@ -322,7 +322,7 @@ export class UserPageComponent{
 		if(message.status == 200){
 			if(this.updatedAttribute == UserAttribute.Avatar){
 				this.UpdateAvatarImageContent();
-				this.snackBar.open("Your profile picture was updated successfully. It may take some time to update across the site and apps.", null, {duration: 5000});
+				this.snackBar.open("Your profile picture was updated successfully. It may take some time to update across the site and all apps.", null, {duration: 5000});
 			}
 			else if(this.updatedAttribute == UserAttribute.Username){
 				this.dataService.user.Username = this.username;
