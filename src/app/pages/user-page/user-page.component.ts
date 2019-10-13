@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
+import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData, App } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
@@ -53,6 +53,13 @@ export class UserPageComponent{
 	emailErrorMessage: string = "";
 	passwordErrorMessage: string = "";
 
+	avatarLoading: boolean = false;
+	usernameLoading: boolean = false;
+	emailLoading: boolean = false;
+	passwordLoading: boolean = false;
+	sendDeleteAccountEmailLoading: boolean = false;
+
+	spinnerSize: SpinnerSize = SpinnerSize.small;
 	textFieldStyles = {
 		root: {
 			width: 200
@@ -79,9 +86,7 @@ export class UserPageComponent{
 	deleteAccountButtonStyles: IButtonStyles = {
 		root: {
 			backgroundColor: dangerButtonBackgroundColor,
-			transition: buttonTransition,
-			float: 'right',
-			marginRight: 50
+			transition: buttonTransition
 		},
 		rootHovered: {
 			backgroundColor: dangerButtonHoverBackgroundColor
@@ -106,9 +111,7 @@ export class UserPageComponent{
 	removeAppButtonStyles: IButtonStyles = {
 		root: {
 			backgroundColor: dangerButtonBackgroundColor,
-			transition: buttonTransition,
-			float: 'right',
-			marginRight: "20%"
+			transition: buttonTransition
 		},
 		rootHovered: {
 			backgroundColor: dangerButtonHoverBackgroundColor
@@ -134,6 +137,7 @@ export class UserPageComponent{
 
 	//#region Apps page
 	usedStoragePercent: number = 0;
+	sendRemoveAppEmailLoading: boolean = false;
 	//#endregion
 
 	constructor(
@@ -204,7 +208,7 @@ export class UserPageComponent{
 		this.selectedMenu = Menu.General;
 		if(this.sideNavHidden) this.sideNavOpened = false;
 		
-		this.ClearErrors();
+		this.ClearMessages();
 		this.successMessage = "";
 		this.username = this.dataService.user.Username;
 		this.email = this.dataService.user.Email;
@@ -224,6 +228,7 @@ export class UserPageComponent{
 		if(this.selectedMenu == Menu.Plans) return;
 		this.selectedMenu = Menu.Plans;
 		if(this.sideNavHidden) this.sideNavOpened = false;
+		this.ClearMessages();
 
 		this.router.navigateByUrl(`user#${plansHash}`);
 	}
@@ -232,6 +237,7 @@ export class UserPageComponent{
 		if(this.selectedMenu == Menu.Apps) return;
 		this.selectedMenu = Menu.Apps;
 		if(this.sideNavHidden) this.sideNavOpened = false;
+		this.ClearMessages();
 
 		this.router.navigateByUrl(`user#${appsHash}`);
 	}
@@ -241,9 +247,10 @@ export class UserPageComponent{
 			this.errorMessage = "The image file is too large";
 			return;
 		}
-		this.ClearErrors();
+		this.ClearMessages();
 
 		this.updatedAttribute = UserAttribute.Avatar;
+		this.avatarLoading = true;
 		this.newAvatarContent = file.content;
 		let content = file.content.substring(file.content.indexOf(',') + 1);
 
@@ -258,6 +265,7 @@ export class UserPageComponent{
 		if(!(this.username != this.dataService.user.Username && this.username.length >= 2 && this.username.length <= 25)) return;
 
 		this.updatedAttribute = UserAttribute.Username;
+		this.usernameLoading = true;
 		this.socket.emit(updateUserKey, {
 			jwt: this.dataService.user.JWT,
 			username: this.username
@@ -268,6 +276,7 @@ export class UserPageComponent{
 		if(!(this.email != this.dataService.user.Email && this.email != this.newEmail && this.email.length > 3 && this.email.includes('@'))) return;
 
 		this.updatedAttribute = UserAttribute.Email;
+		this.emailLoading = true;
 		this.socket.emit(updateUserKey, {
 			jwt: this.dataService.user.JWT,
 			email: this.email
@@ -278,6 +287,7 @@ export class UserPageComponent{
 		if(!(this.password.length >= 7 && this.password.length <= 25 && this.password == this.passwordConfirmation)) return;
 
 		this.updatedAttribute = UserAttribute.Password;
+		this.passwordLoading = true;
 		this.socket.emit(updateUserKey, {
 			jwt: this.dataService.user.JWT,
 			password: this.password
@@ -293,6 +303,7 @@ export class UserPageComponent{
 
 	DeleteAccount(){
 		this.deleteAccountDialogVisible = false;
+		this.sendDeleteAccountEmailLoading = true;
 		this.socket.emit(sendDeleteAccountEmailKey, {
 			jwt: this.dataService.user.JWT
 		});
@@ -300,6 +311,7 @@ export class UserPageComponent{
 
 	RemoveApp(){
 		this.removeAppDialogVisible = false;
+		this.sendRemoveAppEmailLoading = true;
 		this.socket.emit(sendRemoveAppEmailKey, {
 			jwt: this.dataService.user.JWT,
 			appId: this.selectedAppToRemove.Id
@@ -336,6 +348,12 @@ export class UserPageComponent{
 				this.passwordConfirmation = "";
 			}
 		}
+
+		// Hide the spinner
+		this.avatarLoading = false;
+		this.usernameLoading = false;
+		this.emailLoading = false;
+		this.passwordLoading = false;
 	}
 
 	SendVerificationEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
@@ -354,6 +372,9 @@ export class UserPageComponent{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendDeleteAccountEmailErrorMessage(errorCode);
 		}
+
+		// Hide the spinner
+		this.sendDeleteAccountEmailLoading = false;
 	}
 
 	SendRemoveAppEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
@@ -363,6 +384,9 @@ export class UserPageComponent{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendRemoveAppEmailErrorMessage(errorCode);
 		}
+
+		// Hide the spinner
+		this.sendRemoveAppEmailLoading = false;
 	}
 
 	UpdateAvatarImageContent(){
@@ -371,8 +395,9 @@ export class UserPageComponent{
 		if(imageTag) imageTag.setAttribute('src', this.newAvatarContent);
 	}
 
-	ClearErrors(){
+	ClearMessages(){
 		this.errorMessage = "";
+		this.successMessage = "";
 		this.usernameErrorMessage = "";
 		this.emailErrorMessage = "";
 		this.passwordErrorMessage = "";
@@ -436,17 +461,17 @@ export class UserPageComponent{
 
 	UsernameTextFieldChanged(event: KeyboardEvent){
 		if(event.keyCode == 13) this.SaveUsername();
-		else this.ClearErrors();
+		else this.ClearMessages();
 	}
 
 	EmailTextFieldChanged(event: KeyboardEvent){
 		if(event.keyCode == 13) this.SaveEmail();
-		else this.ClearErrors();
+		else this.ClearMessages();
 	}
 
 	PasswordTextFieldChanged(event: KeyboardEvent){
 		if(event.keyCode == 13) this.SavePassword();
-		else this.ClearErrors();
+		else this.ClearMessages();
 
 		this.passwordConfirmationVisible = this.password.length >= 7 && this.password.length <= 25;
 

@@ -13,7 +13,8 @@ import {
 	FabButtonModule,
 	FabMessageBarModule,
 	FabIconModule,
-	FabDialogModule
+	FabDialogModule,
+	FabSpinnerModule
 } from '@angular-react/fabric';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -74,6 +75,7 @@ import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link
 		FabMessageBarModule,
 		FabIconModule,
 		FabDialogModule,
+		FabSpinnerModule,
 		MatSidenavModule,
 		MatListModule,
 		MatProgressBarModule,
