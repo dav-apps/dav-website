@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import { DavUser } from 'dav-npm';
+import * as locales from 'src/locales/locales';
 
 @Injectable()
 export class DataService{
 	user: DavUser;
+	locale: string = navigator.language;
 	hideNavbarAndFooter: boolean = false;
 	userLoaded: boolean = false;
 	userLoadCallbacks: Function[] = [];
@@ -16,6 +18,21 @@ export class DataService{
 			for(let callback of this.userLoadCallbacks) callback();
 			this.userLoadCallbacks = [];
 		});
+	}
+
+	GetLocale(){
+		let l = this.locale.toLowerCase();
+
+		if(l.includes("en")){			// en
+			if(l == "en-gb")				return locales.enGB;
+			else								return locales.enUS;
+		}else if(l.includes("de")){	// de
+			if(l == "de-at")				return locales.deAT;
+			else if(l == "de-ch")		return locales.deCH;
+			else								return locales.deDE;
+		}
+
+		return localStorage.enUS;
 	}
 }
 
