@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+import { enUS } from 'src/locales/locales';
 import { DataService } from './services/data-service';
 
 @Component({
@@ -9,13 +10,16 @@ import { DataService } from './services/data-service';
 	styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+	locale = enUS.appComponent;
 	width: number = 500;
 	offsetTop: number = 0;
 
 	constructor(
 		public dataService: DataService,
 		public router: Router
-	){}
+	){
+		this.locale = this.dataService.GetLocale().appComponent;
+	}
 
 	ngOnInit(){
 		this.setSize();

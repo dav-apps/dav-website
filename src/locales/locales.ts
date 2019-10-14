@@ -1,5 +1,18 @@
 //#region en
 const enDefaults = {
+	appComponent: {
+		navbar: {
+			pricing: "Pricing",
+			allApps: "All Apps",
+			login: "Log in",
+			logout: "Log out",
+			signup: "Sign up"
+		},
+		footer: {
+			contact: "Contact",
+			privacy: "Privacy Policy"
+		}
+	},
 	startPage: {
 		title: "dav is a new platform of connected apps and services",
 		calendoDescription: `
@@ -27,6 +40,19 @@ export var enGB = enDefaults;
 
 //#region de
 const deDefaults = {
+	appComponent: {
+		navbar: {
+			pricing: "Preise",
+			allApps: "Alle Apps",
+			login: "Anmelden",
+			logout: "Abmelden",
+			signup: "Registrieren"
+		},
+		footer: {
+			contact: "Kontakt",
+			privacy: "Datenschutzerklärung"
+		}
+	},
 	startPage: {
 		title: "dav ist eine neue Plattform für vernetzte Apps und Dienste",
 		calendoDescription: `

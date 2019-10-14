@@ -32,26 +32,26 @@
 			<!-- Not logged in -->
 			<ul class="navbar-nav ml-auto" *ngIf="!dataService.user.IsLoggedIn">
 				<li class="nav-item">
-					<a routerLink="/pricing" class="nav-link navbar-item">Pricing</a>
+					<a routerLink="/pricing" class="nav-link navbar-item">{{ locale.navbar.pricing }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/login" class="nav-link navbar-item">Log in</a>
+					<a routerLink="/login" class="nav-link navbar-item">{{ locale.navbar.login }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/signup" class="nav-link navbar-item">Sign up</a>
+					<a routerLink="/signup" class="nav-link navbar-item">{{ locale.navbar.signup }}</a>
 				</li>
 			</ul>
 
 			<!-- Logged in -->
 			<ul class="navbar-nav ml-auto" *ngIf="dataService.user.IsLoggedIn">
 				<li class="nav-item">
-					<a routerLink="/apps" class="nav-link navbar-item">All Apps</a>
+					<a routerLink="/apps" class="nav-link navbar-item">{{ locale.navbar.allApps }}</a>
 				</li>
 				<li class="nav-item">
 					<a routerLink="/user" class="nav-link navbar-item">{{ dataService.user.Username }}</a>
 				</li>
 				<li class="nav-item">
-					<a href="#logout" class="nav-link navbar-item" (click)="Logout()">Log out</a>
+					<a href="#logout" class="nav-link navbar-item" (click)="Logout()">{{ locale.navbar.logout }}</a>
 				</li>
 			</ul>
 		</div>
@@ -63,15 +63,14 @@
 <div class="container" *ngIf="!dataService.hideNavbarAndFooter">
 	<footer class="footer">
 		<small>
-			Copyright &copy; 2019 by dav.
-			All rights reserved
+			Copyright &copy; 2019 by dav
 		</small>
 		<nav>
 			<ul>
 				<li><a href="https://blog.dav-apps.tech" target="blank">Blog</a></li>
 				<li><a href="https://www.twitter.com/dav_apps" target="blank">Twitter</a></li>
-				<li><a routerLink="/contact">Contact</a></li>
-				<li><a routerLink="/privacy">Privacy Policy</a></li>
+				<li><a routerLink="/contact">{{ locale.footer.contact }}</a></li>
+				<li><a routerLink="/privacy">{{ locale.footer.privacy }}</a></li>
 			</ul>
 		</nav>
 	</footer>
