@@ -32,7 +32,7 @@ export class DataService{
 			else								return locales.deDE;
 		}
 
-		return localStorage.enUS;
+		return locales.enUS;
 	}
 }
 

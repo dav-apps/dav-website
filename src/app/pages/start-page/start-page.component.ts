@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { MessageBarType } from 'office-ui-fabric-react';
 import { DataService } from 'src/app/services/data-service';
+import { enUS } from 'src/locales/locales';
 
 @Component({
 	selector: 'dav-website-start-page',
@@ -10,6 +11,7 @@ import { DataService } from 'src/app/services/data-service';
 	]
 })
 export class StartPageComponent{
+	locale = enUS.startPage;
 	errorMessageBarType: MessageBarType = MessageBarType.error;
 	successMessageBarType: MessageBarType = MessageBarType.success;
 	height: number = 500;
@@ -17,7 +19,9 @@ export class StartPageComponent{
 
 	constructor(
 		public dataService: DataService
-	){}
+	){
+		this.locale = this.dataService.GetLocale().startPage;
+	}
 
 	ngOnInit(){
 		this.setSize();

@@ -1,5 +1,5 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="dataService.user.IsLoggedIn">
-	<h1 class="text-center font-weight-light mb-3">Your apps</h1>
+	<h1 class="text-center font-weight-light mb-3">{{ locale.loggedInTitle }}</h1>
 
 	<!-- Error message -->
 	<div class="mx-auto mb-2" style="width: 300px" *ngIf="dataService.startPageErrorMessage.length > 0">
@@ -16,10 +16,10 @@
 	</div>
 
 	<div class="jumbotron mt-4" style="padding: 35px 38px" *ngIf="dataService.user.Apps.length == 0">
-		<h1 class="font-weight-light">Hi, {{ dataService.user.Username }}</h1>
+		<h1 class="font-weight-light">{{ locale.welcomeTitle.replace('{0}', dataService.user.Username) }}</h1>
 
-		<p class="lead">You're not using any app right now. Check out the All Apps page to find your first app!</p>
-		<a class="btn btn-primary mt-2" routerLink="apps" role="button">Find apps</a>
+		<p class="lead">{{ locale.welcomeMessage }}</p>
+		<a class="btn btn-primary mt-2" routerLink="apps" role="button">{{ locale.welcomeButton }}</a>
 	</div>
 </div>
 
@@ -44,7 +44,7 @@
 			class="acrylic align-self-center"
 			style="padding: 20px; width: 300px; color: white;"
 			[style.marginLeft.px]="width * 0.1">
-			<p style="font-size: 20px; margin: 0px">dav is a new platform of connected apps and services</p>
+			<p style="font-size: 20px; margin: 0px">{{ locale.title }}</p>
 		</div>
 	</div>
 
@@ -53,12 +53,7 @@
 		<div class="col-12 col-md-6 pl-5 pr-5 pr-md-0" style="width: 100%; font-family: 'Segoe UI'">
 			<h2 class="mt-3 text-center">Calendo</h2>
 
-			<p style="font-size: 20px" class="my-5">
-				Calendo is a simple app for managing your schedule. 
-				You can organize your appointments, manage your todos and group todos by topic.
-				<br>With Calendo you have always an overview of upcoming events and todos.
-				<br><br>You can log in with your dav Account to use the same calendar on all your devices.
-			</p>
+			<p style="font-size: 20px" class="my-5" [innerHtml]="locale.calendoDescription"></p>
 
 			<a href="https://calendo.dav-apps.tech" target="blank" class="mr-2"><img src="/assets/images/globe-solid.png" height="40"></a>
 			<a href='//www.microsoft.com/store/apps/9NL3D2524GH9?cid=storebadge&ocid=badge' target="blank" class="mx-2"><img src='https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png' alt='English badge' class="microsoft-store-badge" /></a>
@@ -90,11 +85,7 @@
 		<div class="col-12 col-md-5 pr-5 pl-md-0 pl-5 pb-4" style="width: 100%; font-family: 'Segoe UI'">
 			<h2 class="mt-3 text-center">UniversalSoundboard</h2>
 
-			<p style="font-size: 20px" class="my-5">
-				Create your own soundboard with UniversalSoundboard!
-				<br>Add and play your sounds or your music collection. Sort your sounds in categories and set your preferred sounds as favourites to keep track of your collection.
-				<br><br>You can log in with your dav Account to use the same soundboard on all your devices.
-			</p>
+			<p style="font-size: 20px" class="my-5" [innerHtml]="locale.universalSoundboardDescription"></p>
 
 			<a href='//www.microsoft.com/store/apps/9NBLGGH51005?cid=storebadge&ocid=badge' target="blank" class="mr-2"><img src='https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png' alt='English badge' class="microsoft-store-badge" /></a>
 			<a href='https://play.google.com/store/apps/details?id=app.dav.universalsoundboard&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' class="google-play-badge" /></a>
