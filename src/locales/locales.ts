@@ -37,6 +37,41 @@ const enDefaults = {
 	contactPage: {
 		title: "Contact",
 		germany: "Germany"
+	},
+	privacyPage: {
+		title: "Privacy Policy",
+		intro: "The protection of your privacy is very important for us. This is the reason why we collect as less data as possible. This page is intended to inform you what information we collect and how we use that information.",
+		section1: {
+			header: "Data collection",
+			text1: "We save the following information when you visit one of our websites or web apps:",
+			listItemTime: "The time",
+			listItemCountry: "The country of your IP address",
+			listItemBrowser: "The name and version of your browser",
+			listItemOs: "The name and version of your operating system",
+			text2: "However, we do not save the IP address, so the saved data cannot be associated with certain users."
+		},
+		section2: {
+			header: "Information you provide",
+			text1: "When you use our services you will be asked to provide specific information about you, like your email address. We only ask you for the information that is really necessary to provide our services.",
+			text2: "All information you provide us within our apps is securely stored and can be accessed from the appropriate apps."
+		},
+		section3: {
+			header: "Data shared with third parties",
+			text1: "In order to be able to offer our services, it is necessary that we use certain services from third parties. The services with which data is shared are listed below.",
+			text2: "However, these services are only used when it is necessary for our services to work. Your data will not be sold or otherwise disclosed to third parties.",
+			text3: "You can delete all of your data in the settings of your account. If you delete your account, all your data shared with third parties will also be deleted."
+		},
+		section3a: {
+			header: "Payments",
+			text1: `
+				We use <a href="https://stripe.com" target="blank">Stripe</a> for processing payments. 
+				If you upgrade to Plus or Pro, we share your email with Stripe in order to connect your payment information with your account.
+				Your payment information will be stored directly by Stripe, which means we do not have access to your payment information.
+				For more information, we reference to the <a href="https://stripe.com/privacy" target="blank">Privacy Policy of Stripe</a>.
+			`
+		},
+		endText1: "These rules apply to all our apps and our websites, including web apps and our blog. If specific cases apply to certain apps or services, they will be listed below. If you have any questions, feel free to email us at support@dav-apps.tech",
+		endText2: "We reserve the right to change this privacy policy in the future.<br>Last updated: 14 Oktober 2019"
 	}
 }
 
@@ -84,6 +119,41 @@ const deDefaults = {
 	contactPage: {
 		title: "Kontakt",
 		germany: "Deutschland"
+	},
+	privacyPage: {
+		title: "Datenschutzerklärung",
+		intro: "Der Schutz deiner Privatsphäre ist uns sehr wichtig. Aus diesem Grund erheben wir so wenig Daten wie möglich. Diese Seite dient dazu, dich darüber zu informieren, welche Informationen wir sammeln und wie wir diese Informationen verwenden.",
+		section1: {
+			header: "Datenerhebung",
+			text1: "Wir speichern die folgenden Daten, wenn du eine unserer Webseiten oder Web-Apps besuchst:",
+			listItemTime: "Die Zeit",
+			listItemCountry: "Das Land deiner IP-Adresse",
+			listItemBrowser: "Den Namen und die Version deines Browsers",
+			listItemOs: "Den Namen und die Version deines Betriebssystems",
+			text2: "Allerdings speichern wir nicht die IP-Adresse, so dass die gespeicherten Daten nicht mit bestimmten Nutzern in Verbindung gebracht werden können."
+		},
+		section2: {
+			header: "Von dir angegebene Informationen",
+			text1: "Wenn du unsere Dienste nutzt, wird du aufgefordert, bestimmte Informationen über dich anzugeben, wie z.B. deine Email-Adresse. Wir fragen nur nach den Informationen, die notwendig sind, um unsere Dienst anbieten zu können.",
+			text2: "Alle Informationen, die du in unseren Apps angibst, werden sicher gespeichert und können von den entsprechenden Apps aus zugegriffen werden."
+		},
+		section3: {
+			header: "An Dritte weitergegebene Daten",
+			text1: "Um unsere Dienste anbieten zu können, ist es notwendig, dass wir bestimmte Dienste von Dritten nutzen. Die Dienste, mit denen wir Daten teilen, sind unten aufgelistet.",
+			text2: "Allerdings werden diese Dienste nur in Anspruch genommen, wenn es notwendig ist. Deine Daten werden nicht verkauft oder anderweitig and Dritte weitergegeben.",
+			text3: "Du kannst all deine Daten in den Einstellungen deines Account löschen. Wenn du dein Account löscht, werden auch alle Daten gelöscht, die mit Dritten geteilt wurden."
+		},
+		section3a: {
+			header: "Zahlungen",
+			text1: `
+				Wir nutzen <a href="https://stripe.com" target="blank">Stripe</a> zum Bearbeiten von Zahlungen. 
+				Wenn du dein Abo auf Plus oder Pro hochstufst, teilen wir deine Email-Adresse mit Stripe, um deine Zahlungsinformationen mit deinem Account zu verknüpfen.
+				Deine Zahlungsinformationen werden direkt durch Stripe gespeichert, was bedeutet, dass wir keinen Zugriff auf deine Zahlungsinformationen haben. 
+				Für mehr Informationen verweisen wir auf die <a href="https://stripe.com/privacy" target="blank">Datenschutzerklärung von Stripe</a>.
+			`
+		},
+		endText1: "Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Falls spezielle Fälle auf bestimmte Apps oder Dienste zutreffen, werden sie im Folgenden aufgeführt. Falls du Fragen hast, kannst du uns jederzeit eine Email an support@dav-apps.tech schreiben.",
+		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu ändern.<br>Zuletzt geändert: 14. Oktober 2019"
 	}
 }
 
