@@ -30,6 +30,13 @@ const enDefaults = {
 		welcomeTitle: "Hi, {0}",
 		welcomeMessage: "You're not using any app right now. Check out the All Apps page to find your first app!",
 		welcomeButton: "Find apps"
+	},
+	appsPage: {
+		title: "All Apps"
+	},
+	contactPage: {
+		title: "Contact",
+		germany: "Germany"
 	}
 }
 
@@ -70,6 +77,13 @@ const deDefaults = {
 		welcomeTitle: "Hi, {0}",
 		welcomeMessage: "Im Moment benutzt du keine App. Sieh dir alle Apps an, um deine erste App zu finden!",
 		welcomeButton: "Apps finden"
+	},
+	appsPage: {
+		title: "Alle Apps"
+	},
+	contactPage: {
+		title: "Kontakt",
+		germany: "Deutschland"
 	}
 }
 

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ApiResponse, ApiErrorResponse, App } from 'dav-npm';
+import { enUS } from 'src/locales/locales';
+import { DataService } from 'src/app/services/data-service';
 declare var io: any;
 
 const getAllAppsKey = "getAllApps";
@@ -9,8 +11,15 @@ const getAllAppsKey = "getAllApps";
 	templateUrl: './apps-page.component.html'
 })
 export class AppsPageComponent{
+	locale = enUS.appsPage;
 	socket: any = null;
 	apps: App[] = [];
+
+	constructor(
+		public dataService: DataService
+	){
+		this.locale = this.dataService.GetLocale().appsPage;
+	}
 
 	ngOnInit(){
 		this.socket = io();
