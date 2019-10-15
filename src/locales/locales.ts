@@ -95,6 +95,34 @@ const enDefaults = {
 			unexpectedErrorLong: "An unexpected error occured. Please try again."
 		}
 	},
+	signupPage: {
+		title: "Sign up for dav",
+		usernameTextfieldLabel: "Username",
+		usernameTextfieldPlaceholder: "Pick a username",
+		emailTextfieldLabel: "Email",
+		emailTextfieldPlaceholder: "Your email address",
+		passwordTextfieldLabel: "Password",
+		passwordTextfieldPlaceholder: "Choose a password",
+		passwordConfirmationTextfieldLabel: "Password confirmation",
+		passwordConfirmationTextFieldPlaceholder: "Repeat your password",
+		signup: "Sign up",
+		deviceInfoUnknown: "Unknown",
+		errors: {
+			usernameMissing: "Please enter a username",
+			emailMissing: "Please enter your email",
+			passwordMissing: "Please enter a password",
+			passwordConfirmationNotMatching: "Your password doesn't match your password confirmation",
+			usernameTooShort: "Your username is too short",
+			passwordTooShort: "Your password is too short",
+			usernameTooLong: "Your username is too long",
+			passwordTooLong: "Your password is too long",
+			emailInvalid: "Your email is invalid",
+			usernameTaken: "The username is already taken",
+			emailTaken: "This email address is already in use",
+			unexpectedErrorShort: "Unexpected error ({0})",
+			unexpectedErrorLong: "An unexpected error occured. Please try again."
+		}
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -217,6 +245,34 @@ const deDefaults = {
 			loginFailed: "Anmeldung fehlgeschlagen",
 			emailMissing: "Bitte gib deine Email-Adresse ein",
 			passwordMissing: "Bitte gib dein Passwort ein",
+			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+		}
+	},
+	signupPage: {
+		title: "Für dav registrieren",
+		usernameTextfieldLabel: "Nutzername",
+		usernameTextfieldPlaceholder: "Wähle einen Nutzernamen",
+		emailTextfieldLabel: "Email",
+		emailTextfieldPlaceholder: "Deine Email-Adresse",
+		passwordTextfieldLabel: "Passwort",
+		passwordTextfieldPlaceholder: "Wähle ein Passwort",
+		passwordConfirmationTextfieldLabel: "Passwortbestätigung",
+		passwordConfirmationTextFieldPlaceholder: "Wiederhole dein Passwort",
+		signup: "Registrieren",
+		deviceInfoUnknown: "Unbekannt",
+		errors: {
+			usernameMissing: "Bitte gib einen Nutzernamen ein",
+			emailMissing: "Bitte gib deine Email-Adresse ein",
+			passwordMissing: "Bitte gib ein Passwort ein",
+			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein",
+			usernameTooShort: "Dein Nutzername ist zu kurz",
+			passwordTooShort: "Dein Passwort ist zu kurz",
+			usernameTooLong: "Dein Nutzername ist zu lang",
+			passwordTooLong: "Dein Passwort ist zu lang",
+			emailInvalid: "Deine Email-Adresse ist ungültig",
+			usernameTaken: "Der Nutzername ist bereits vergeben",
+			emailTaken: "Diese Email-Adresse wird bereits verwendet",
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}

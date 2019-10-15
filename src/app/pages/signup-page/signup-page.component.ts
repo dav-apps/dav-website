@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { enUS } from 'src/locales/locales';
 declare var io: any;
 declare var deviceAPI: any;
 
@@ -17,6 +18,7 @@ const signupTypeSession = "session";
 	templateUrl: './signup-page.component.html'
 })
 export class SignupPageComponent{
+	locale = enUS.signupPage;
 	socket: any = null;
 	username: string = "";
 	email: string = "";
@@ -36,6 +38,8 @@ export class SignupPageComponent{
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
+		this.locale = this.dataService.GetLocale().signupPage;
+
 		this.socket = io();
 		this.socket.on(signupKey, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupResponse(message));
 		this.socket.on(signupImplicitKey, (message: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.SignupImplicitResponse(message));
@@ -77,7 +81,7 @@ export class SignupPageComponent{
 
 	Signup(){
 		if(this.password != this.passwordConfirmation){
-			this.errorMessage = "Your password doesn't match your password confimration";
+			this.errorMessage = this.locale.errors.passwordConfirmationNotMatching;
 			this.passwordConfirmation = "";
 			return;
 		}
@@ -106,9 +110,9 @@ export class SignupPageComponent{
 				let deviceType = this.Capitalize(deviceAPI.deviceType as string);
 				let deviceOs = deviceAPI.osName;
 
-				if(deviceName == "Not available") deviceName = "Unknown";
-				if(deviceType == "Not available") deviceType = "Unknown";
-				if(deviceOs == "Not available") deviceOs = "Unknown";
+				if(deviceName == "Not available") deviceName = this.locale.deviceInfoUnknown;
+				if(deviceType == "Not available") deviceType = this.locale.deviceInfoUnknown;
+				if(deviceOs == "Not available") deviceOs = this.locale.deviceInfoUnknown;
 
 				this.socket.emit(signupSessionKey, {
 					username: this.username,
@@ -184,32 +188,32 @@ export class SignupPageComponent{
 	GetSignupErrorMessage(errorCode: number) : string{
 		switch (errorCode) {
 			case 2105:
-				return "Please enter your username";
+				return this.locale.errors.usernameMissing;
 			case 2106:
-				return "Please enter your email";
+				return this.locale.errors.emailMissing;
 			case 2107:
-				return "Please enter a password";
+				return this.locale.errors.passwordMissing;
 			case 2201:
-				return "Your username is too short";
+				return this.locale.errors.usernameTooShort;
 			case 2202:
-				return "The password is too short";
+				return this.locale.errors.passwordTooShort;
 			case 2301:
-				return "Your username is too long";
+				return this.locale.errors.usernameTooLong;
 			case 2302:
-				return "The password is too long";
+				return this.locale.errors.passwordTooLong;
 			case 2401:
-				return "Your email is invalid";
+				return this.locale.errors.emailInvalid;
 			case 2701:
-				return "The username is already taken";
+				return this.locale.errors.usernameTaken;
 			case 2702:
-				return "The email is already taken";
+				return this.locale.errors.emailTaken;
 			default:
-				return `Unexpected error (${errorCode})`;
+				return this.locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString());
 		}
 	}
 
 	RedirectToStartPageWithError(){
-		this.dataService.startPageErrorMessage = "An unexpected error occured. Please try again.";
+		this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong;
 		this.router.navigate(['/']);
 	}
 

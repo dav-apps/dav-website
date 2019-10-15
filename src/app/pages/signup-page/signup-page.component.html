@@ -1,7 +1,7 @@
 <div class="container d-flex flex-column ms-motion-slideUpIn" style="margin-top: 100px; margin-bottom: 100px">
 	<img src="/assets/images/dav-logo.png" width="60" height="60" class="align-self-center" />
 
-	<h2 class="text-center font-weight-light my-4">Sign up for dav</h2>
+	<h2 class="text-center font-weight-light my-4">{{ locale.title }}</h2>
 
 	<div class="d-flex flex-column">
 		<!-- Username -->
@@ -14,8 +14,8 @@
 				<fab-text-field
 					id="username-text-field"
 					[(value)]="username"
-					placeholder="Username"
-					label="Username"
+					[label]="locale.usernameTextfieldLabel"
+					[placeholder]="locale.usernameTextfieldPlaceholder"
 					type="text"
 					autocomplete="username">
 				</fab-text-field>
@@ -28,8 +28,8 @@
 				<fab-text-field
 					id="email-text-field"
 					[(value)]="email"
-					placeholder="Email"
-					label="Email"
+					[label]="locale.emailTextfieldLabel"
+					[placeholder]="locale.emailTextfieldPlaceholder"
 					type="email"
 					autocomplete="email">
 				</fab-text-field>
@@ -42,8 +42,8 @@
 				<fab-text-field
 					id="password-text-field"
 					[(value)]="password"
-					placeholder="Password"
-					label="Password"
+					[label]="locale.passwordTextfieldLabel"
+					[placeholder]="locale.passwordTextfieldPlaceholder"
 					type="password"
 					autocomplete="new-password">
 				</fab-text-field>
@@ -56,8 +56,8 @@
 				<fab-text-field
 					id="password-confirmation-text-field"
 					[(value)]="passwordConfirmation"
-					placeholder="Confirm your password"
-					label="Password confirmation"
+					[label]="locale.passwordConfirmationTextfieldLabel"
+					[placeholder]="locale.passwordConfirmationTextFieldPlaceholder"
 					type="password"
 					autocomplete="new-password"
 					(keydown.enter)="Signup()">
@@ -65,7 +65,7 @@
 				<br>
 				
 				<div class="d-flex">
-					<fab-primary-button (click)="Signup()" [disabled]="signupLoading">Sign up</fab-primary-button>
+					<fab-primary-button (click)="Signup()" [disabled]="signupLoading">{{ locale.signup }}</fab-primary-button>
 					<div style="margin-top: 8px; margin-left: 14px" *ngIf="signupLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 				</div>
 			</div>
