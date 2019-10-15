@@ -76,6 +76,25 @@ const enDefaults = {
 	pricingPage: {
 		title: "Pricing"
 	},
+	loginPage: {
+		title: "Log in to dav",
+		emailTextfieldLabel: "Email",
+		emailTextfieldPlaceholder: "Your email address",
+		passwordTextfieldLabel: "Password",
+		passwordTextfieldPlaceholder: "Your password",
+		login: "Log in",
+		signup: "Sign up",
+		loginAs: "Log in as {0}",
+		forgotPassword: "Forgot password?",
+		deviceInfoUnknown: "Unknown",
+		errors: {
+			loginFailed: "Login failed",
+			emailMissing: "Please enter your email",
+			passwordMissing: "Please enter your password",
+			unexpectedErrorShort: "Unexpected error ({0})",
+			unexpectedErrorLong: "An unexpected error occured. Please try again."
+		}
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -182,6 +201,25 @@ const deDefaults = {
 	},
 	pricingPage: {
 		title: "Pläne"
+	},
+	loginPage: {
+		title: "Bei dav anmelden",
+		emailTextfieldLabel: "Email",
+		emailTextfieldPlaceholder: "Deine Email-Adresse",
+		passwordTextfieldLabel: "Passwort",
+		passwordTextfieldPlaceholder: "Dein Passwort",
+		login: "Anmelden",
+		signup: "Registrieren",
+		loginAs: "Als {0} anmelden",
+		forgotPassword: "Passwort vergessen?",
+		deviceInfoUnknown: "Unbekannt",
+		errors: {
+			loginFailed: "Anmeldung fehlgeschlagen",
+			emailMissing: "Bitte gib deine Email-Adresse ein",
+			passwordMissing: "Bitte gib dein Passwort ein",
+			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+		}
 	},
 	pricingComponent: {
 		free: {

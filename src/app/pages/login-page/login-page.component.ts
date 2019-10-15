@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { enUS } from 'src/locales/locales';
 declare var io: any;
 declare var deviceAPI: any;
 
@@ -12,12 +13,14 @@ const createSessionKey = "createSession";
 const createSessionWithJwtKey = "createSessionWithJwt";
 const loginTypeImplicit = "implicit";
 const loginTypeSession = "session";
+const deviceInfoNotAvailable = "Not available";
 
 @Component({
 	selector: 'dav-website-login-page',
 	templateUrl: './login-page.component.html'
 })
 export class LoginPageComponent{
+	locale = enUS.loginPage;
 	socket: any = null;
 	loginType: LoginType = LoginType.Normal;
 	email: string = "";
@@ -40,6 +43,8 @@ export class LoginPageComponent{
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
+		this.locale = this.dataService.GetLocale().loginPage;
+
 		this.socket = io();
 		this.socket.on(loginKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginResponse(response));
 		this.socket.on(loginImplicitKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginImplicitResponse(response));
@@ -104,9 +109,9 @@ export class LoginPageComponent{
 				let deviceType = this.Capitalize(deviceAPI.deviceType as string);
 				let deviceOs = deviceAPI.osName;
 
-				if(deviceName == "Not available") deviceName = "Unknown";
-				if(deviceType == "Not available") deviceType = "Unknown";
-				if(deviceOs == "Not available") deviceOs = "Unknown";
+				if(deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown;
+				if(deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown;
+				if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
 
 				// Call createSession on the server
 				this.socket.emit(createSessionKey, {
@@ -128,9 +133,9 @@ export class LoginPageComponent{
 		let deviceType = this.Capitalize(deviceAPI.deviceType as string);
 		let deviceOs = deviceAPI.osName;
 
-		if(deviceName == "Not available") deviceName = "Unknown";
-		if(deviceType == "Not available") deviceType = "Unknown";
-		if(deviceOs == "Not available") deviceOs = "Unknown";
+		if(deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown;
+		if(deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown;
+		if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
 
 		this.socket.emit(createSessionWithJwtKey, {
 			jwt: this.dataService.user.JWT,
@@ -209,20 +214,20 @@ export class LoginPageComponent{
 	GetLoginErrorMessage(errorCode: number) : string{
 		switch (errorCode) {
 			case 1201:
-				return "Login failed";
+				return this.locale.errors.loginFailed;
 			case 2106:
-				return "Please enter your email";
+				return this.locale.errors.emailMissing;
 			case 2107:
-				return "Please enter your password";
+				return this.locale.errors.passwordMissing;
 			case 2801:
-				return "Login failed";
+				return this.locale.errors.loginFailed;
 			default:
-				return `Unexpected error (${errorCode})`;
+				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 		}
 	}
 
 	RedirectToStartPageWithError(){
-		this.dataService.startPageErrorMessage = "An unexpected error occured. Please try again.";
+		this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong;
 		this.router.navigate(['/']);
 	}
 

@@ -1,7 +1,7 @@
 <div class="container d-flex flex-column ms-motion-slideUpIn" style="margin-top: 100px; margin-bottom: 100px;">
 	<img src="/assets/images/dav-logo.png" width="60" height="60" class="align-self-center" />
 
-	<h2 class="text-center font-weight-light my-4">Log in to dav</h2>
+	<h2 class="text-center font-weight-light my-4">{{ locale.title }}</h2>
 
 	<div class="d-flex flex-column">
 		<!-- Email -->
@@ -15,8 +15,8 @@
 				<fab-text-field
 					id="email-text-field"
 					[(value)]="email"
-					placeholder="Email"
-					label="Email"
+					[label]="locale.emailTextfieldLabel"
+					[placeholder]="locale.emailTextfieldPlaceholder"
 					type="email"
 					autocomplete="email">
 				</fab-text-field>
@@ -29,8 +29,8 @@
 				<fab-text-field
 					id="password-text-field"
 					[(value)]="password"
-					placeholder="Password"
-					label="Password"
+					[label]="locale.passwordTextfieldLabel"
+					[placeholder]="locale.passwordTextfieldPlaceholder"
 					type="password"
 					autocomplete="current-password"
 					(keydown.enter)="Login()">
@@ -38,7 +38,7 @@
 				
 				<div class="d-flex flex-row">
 					<div class="d-flex">
-						<fab-primary-button (click)="Login()" [styles]="loginButtonStyles" [disabled]="loginLoading">Log in</fab-primary-button>
+						<fab-primary-button (click)="Login()" [styles]="loginButtonStyles" [disabled]="loginLoading">{{ locale.login }}</fab-primary-button>
 						<div style="margin-top: 32px; margin-left: 14px" *ngIf="loginLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 					</div>
 					
@@ -46,9 +46,9 @@
 						<a style="color: black; font-size: 15px; margin-top: 12px;" 
 							routerLink="/password_reset" 
 							tabindex="-1"
-							*ngIf="loginType == 0">Forgot password?</a>
+							*ngIf="loginType == 0">{{ locale.forgotPassword }}</a>
 
-						<div style="margin-top: 24px" *ngIf="loginType != 0"><fab-default-button (click)="NavigateToSignup()">Sign up</fab-default-button></div>
+						<div style="margin-top: 24px" *ngIf="loginType != 0"><fab-default-button (click)="NavigateToSignup()">{{ locale.signup }}</fab-default-button></div>
 					</div>
 				</div>
 
@@ -61,7 +61,7 @@
 		<button class="list-group-item list-group-item-action" style="padding: 16px" (click)="LoginAsLoggedInUser()">
 			<div class="media">
 				<img class="mr-3 rounded" [src]="dataService.user.Avatar" alt="User avatar" height="70" width="70">
-				<h5 class="my-auto font-weight-light">Log in as {{ dataService.user.Username }}</h5>
+				<h5 class="my-auto font-weight-light">{{ locale.loginAs.replace('{0}', dataService.user.Username) }}</h5>
 			</div>
 		</button>
 	</div>
