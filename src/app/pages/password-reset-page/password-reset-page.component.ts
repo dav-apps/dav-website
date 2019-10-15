@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MessageBarType } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { enUS } from 'src/locales/locales';
 declare var io: any;
 
 const sendPasswordResetEmailKey = "sendPasswordResetEmail";
@@ -12,6 +13,7 @@ const sendPasswordResetEmailKey = "sendPasswordResetEmail";
 	templateUrl: './password-reset-page.component.html'
 })
 export class PasswordResetPageComponent{
+	locale = enUS.passwordResetPage;
 	socket: any = null;
 	messageBarType: MessageBarType = MessageBarType.error;
 	email: string = "";
@@ -20,7 +22,9 @@ export class PasswordResetPageComponent{
 	constructor(
 		public dataService: DataService,
 		private router: Router
-	){}
+	){
+		this.locale = this.dataService.GetLocale().passwordResetPage;
+	}
 
 	ngOnInit(){
 		this.socket = io();
@@ -44,7 +48,7 @@ export class PasswordResetPageComponent{
 	SendPasswordResetEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
 			// Redirect to start page and show message
-			this.dataService.startPageSuccessMessage = "You will receive an email with instructions to reset your password"
+			this.dataService.startPageSuccessMessage = this.locale.successMessage;
 			this.router.navigate(['/']);
 		}else{
 			let errorCode = (response as ApiErrorResponse).errors[0].code;
@@ -55,9 +59,9 @@ export class PasswordResetPageComponent{
 	GetSendPasswordResetEmailErrorMessage(errorCode: number) : string{
 		switch (errorCode) {
 			case 2801:
-				return "Can't find a user with this email address";
+				return this.locale.errors.userNotFound;
 			default:
-				return `Unexpected error (${errorCode})`;
+				return this.locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString());
 		}
 	}
 }

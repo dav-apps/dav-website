@@ -123,6 +123,18 @@ const enDefaults = {
 			unexpectedErrorLong: "An unexpected error occured. Please try again."
 		}
 	},
+	passwordResetPage: {
+		title: "Reset your password",
+		description: "Enter the email address of your account and we will send you a link to reset your password.",
+		emailTextfieldLabel: "Email",
+		emailTextfieldPlaceholder: "Your email address",
+		send: "Send",
+		successMessage: "You will receive an email with instructions to reset your password",
+		errors: {
+			userNotFound: "There is no user with this email address",
+			unexpectedErrorShort: "Unexpected error ({0})"
+		}
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -275,6 +287,18 @@ const deDefaults = {
 			emailTaken: "Diese Email-Adresse wird bereits verwendet",
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+		}
+	},
+	passwordResetPage: {
+		title: "Passwort zurücksetzen",
+		description: "Gib die Email-Adresse deines Accounts ein und wir senden dir einen Link, um dein Passwort zurückzusetzen.",
+		emailTextfieldLabel: "Email",
+		emailTextfieldPlaceholder: "Deine Email-Adresse",
+		send: "Senden",
+		successMessage: "Du bekommst eine Email mit Anweisungen, um dein Passwort zurückzusetzen.",
+		errors: {
+			userNotFound: "Es gibt keinen Nutzer mit dieser Email-Adresse",
+			unexpectedErrorShort: "Unerwarteter Fehler ({0})"
 		}
 	},
 	pricingComponent: {
