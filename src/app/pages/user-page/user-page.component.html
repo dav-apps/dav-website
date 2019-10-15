@@ -1,9 +1,9 @@
 <mat-sidenav-container>
 	<mat-sidenav #sideNav [mode]="sideNavHidden ? 'over' : 'side'" [(opened)]="sideNavOpened">
 		<mat-nav-list style="margin-top: 100px">
-			<mat-list-item (click)="ShowGeneralMenu()" disableRipple [ngClass]="selectedMenu == 0 ? 'selected-menu-item' : ''" class="px-4">General</mat-list-item>
-			<mat-list-item (click)="ShowPlansMenu()" disableRipple [ngClass]="selectedMenu == 1 ? 'selected-menu-item' : ''" class="px-4">Plans</mat-list-item>
-			<mat-list-item (click)="ShowAppsMenu()" disableRipple [ngClass]="selectedMenu == 2 ? 'selected-menu-item' : ''" class="px-4">Apps</mat-list-item>
+			<mat-list-item (click)="ShowGeneralMenu()" disableRipple [ngClass]="selectedMenu == 0 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.general }}</mat-list-item>
+			<mat-list-item (click)="ShowPlansMenu()" disableRipple [ngClass]="selectedMenu == 1 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.plans }}</mat-list-item>
+			<mat-list-item (click)="ShowAppsMenu()" disableRipple [ngClass]="selectedMenu == 2 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.apps }}</mat-list-item>
 		</mat-nav-list>
 	</mat-sidenav>
   	<mat-sidenav-content style="overflow: hidden">
@@ -18,7 +18,7 @@
 
 		<!-- General settings -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 0">
-			<h1 class="text-center font-weight-light mb-4">General Settings</h1>
+			<h1 class="text-center font-weight-light mb-4">{{ locale.general.title }}</h1>
 
 			<div class="d-flex flex-column align-items-center">
 				<div style="width: 280px; margin-right: -70px">
@@ -26,10 +26,10 @@
 					<div class="mb-4" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
 					<!-- Avatar -->
-					<img id="avatar-image" class="img mb-3 rounded" height="150" width="150" alt="Avatar" [src]="dataService.user.Avatar"><br>
+					<img id="avatar-image" class="img mb-3 rounded" height="150" width="150" [alt]="locale.general.avatarAlt" [src]="dataService.user.Avatar"><br>
 
 					<div class="d-flex">
-						<fab-primary-button ngxFilePicker accept="image/png,image/jpeg" (filePick)="UpdateAvatar($event)" [disabled]="avatarLoading">Upload Profile image</fab-primary-button>
+						<fab-primary-button ngxFilePicker accept="image/png,image/jpeg" (filePick)="UpdateAvatar($event)" [disabled]="avatarLoading">{{ locale.general.uploadAvatar }}</fab-primary-button>
 						<div style="margin-top: 8px; margin-left: 14px" *ngIf="avatarLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 					</div>
 
@@ -37,9 +37,9 @@
 					<div class="mt-4 d-flex" style="font-size: 18px">
 						<fab-text-field 
 							id="username-text-field"
-							label="Username" 
 							[(value)]="username" 
-							placeholder="Username"
+							[label]="locale.general.usernameTextfieldLabel" 
+							[placeholder]="locale.general.usernameTextfieldPlaceholder"
 							[errorMessage]="usernameErrorMessage" 
 							[styles]="textFieldStyles"
 							type="text"
@@ -63,9 +63,9 @@
 					<div class="mt-4 d-flex" style="font-size: 18px">
 						<fab-text-field 
 							id="email-text-field"
-							label="Email" 
 							[(value)]="email" 
-							placeholder="Email"
+							[label]="locale.general.emailTextfieldLabel" 
+							[placeholder]="locale.general.emailTextfieldPlaceholder"
 							[errorMessage]="emailErrorMessage" 
 							[styles]="textFieldStyles"
 							type="email"
@@ -89,9 +89,9 @@
 					<div class="mt-4 d-flex flex-column" style="font-size: 18px">
 						<fab-text-field 
 							id="password-text-field"
-							label="New Password" 
 							[(value)]="password" 
-							placeholder="Your new password"
+							[label]="locale.general.passwordTextfieldLabel" 
+							[placeholder]="locale.general.passwordTextfieldPlaceholder"
 							[errorMessage]="passwordErrorMessage"
 							[styles]="textFieldStyles"
 							type="password"
@@ -101,9 +101,9 @@
 
 						<fab-text-field 
 							id="password-confirmation-text-field"
-							label="Password confirmation" 
 							[(value)]="passwordConfirmation" 
-							placeholder="Repeat your new password" 
+							[label]="locale.general.passwordConfirmationTextfieldLabel" 
+							[placeholder]="locale.general.passwordConfirmationTextfieldPlaceholder" 
 							className="mt-3" 
 							[styles]="textFieldStyles"
 							type="password"
@@ -113,7 +113,7 @@
 						</fab-text-field>
 
 						<div class="d-flex">
-							<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation || passwordLoading" className="mt-3">Save</fab-primary-button>
+							<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation || passwordLoading" className="mt-3">{{ locale.general.save }}</fab-primary-button>
 							<div style="margin-top: 24px; margin-left: 14px" *ngIf="passwordLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 						</div>
 					</div>
@@ -128,7 +128,7 @@
 							[styles]="deleteAccountButtonStyles"
 							[disabled]="sendDeleteAccountEmailLoading" 
 							*ngIf="!passwordConfirmationVisible"
-							(click)="deleteAccountDialogVisible = true">Delete Account</fab-primary-button>
+							(click)="deleteAccountDialogVisible = true">{{ locale.general.deleteAccount }}</fab-primary-button>
 					</div>
 				</div>
 			</div>
@@ -136,7 +136,7 @@
 
 		<!-- Plans -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 1">
-			<h1 class="text-center font-weight-light mb-3">Plans</h1>
+			<h1 class="text-center font-weight-light mb-3">{{ locale.plans.title }}</h1>
 
 			<div class="mx-auto my-3" style="width: 250px">
 				<div *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
@@ -144,8 +144,8 @@
 			</div>
 
 			<p class="mt-3" style="margin-left: 10%; margin-right: 10%" *ngIf="!dataService.user.Confirmed">
-				Confirm your email address to change your plan and get more storage.<br>
-				<a href="#" (click)="SendVerificationEmail()">Resend confirmation email</a>
+				{{ locale.plans.confirmEmailText }}<br>
+				<a href="#" (click)="SendVerificationEmail()">{{ locale.plans.confirmEmailLink }}</a>
 			</p>
 
 			<div class="d-flex flex-column align-items-center pb-4">
@@ -155,7 +155,7 @@
 
 		<!-- Apps -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 2">
-			<h1 class="text-center font-weight-light mb-4">Your Apps</h1>
+			<h1 class="text-center font-weight-light mb-4">{{ locale.apps.title }}</h1>
 
 			<div class="mx-auto" style="width: 250px">
 				<div *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
@@ -165,7 +165,7 @@
 			<div class="d-flex flex-column align-items-center mb-4 mt-4">
 				<div style="width: 40%; max-width: 552px">
 					<mat-progress-bar [value]="usedStoragePercent"></mat-progress-bar>
-					<p class="mt-2">{{ BytesToGigabytes(dataService.user.UsedStorage) }} GB of {{ BytesToGigabytes(dataService.user.TotalStorage) }} GB used</p>
+					<p class="mt-2">{{ locale.apps.totalStorageUsed.replace("{0}", BytesToGigabytes(dataService.user.UsedStorage).toString()).replace("{1}", BytesToGigabytes(dataService.user.TotalStorage).toString()) }}</p>
 				</div>
 			</div>
 
@@ -178,12 +178,12 @@
 	
 						<div style="width: 60%; font-size: 16px" class="mx-auto mt-3">
 							<mat-progress-bar></mat-progress-bar>
-							<p class="mt-2">This app uses {{ BytesToGigabytes(app.UsedStorage) }} GB</p>
+							<p class="mt-2">{{ locale.apps.appStorageUsed.replace("{0}", BytesToGigabytes(app.UsedStorage).toString()) }}</p>
 						</div>
 	
 						<div class="d-flex" style="float: right; margin-right: 20%">
 							<div style="margin-top: 8px; margin-right: 14px" *ngIf="sendRemoveAppEmailLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-							<fab-primary-button [styles]="removeAppButtonStyles" [disabled]="sendRemoveAppEmailLoading" (click)="ShowRemoveAppDialog(app)">Remove App</fab-primary-button>
+							<fab-primary-button [styles]="removeAppButtonStyles" [disabled]="sendRemoveAppEmailLoading" (click)="ShowRemoveAppDialog(app)">{{ locale.apps.removeApp }}</fab-primary-button>
 						</div>
 					</mat-expansion-panel>
 				</mat-accordion>
@@ -197,8 +197,8 @@
 	[dialogContentProps]="deleteAccountDialogContent" 
 	(onDismiss)="deleteAccountDialogVisible = false">
 	<fab-dialog-footer>
-		<fab-default-button (click)="deleteAccountDialogVisible = false">Cancel</fab-default-button>
-		<fab-primary-button [styles]="deleteAccountDialogButtonStyles" (click)="DeleteAccount()">Delete Account</fab-primary-button>
+		<fab-default-button (click)="deleteAccountDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="deleteAccountDialogButtonStyles" (click)="DeleteAccount()">{{ locale.general.deleteAccount }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>
 
@@ -207,7 +207,7 @@
 	[dialogContentProps]="removeAppDialogContent"
 	(onDismiss)="removeAppDialogVisible = false">
 	<fab-dialog-footer>
-		<fab-default-button (click)="removeAppDialogVisible = false">Cancel</fab-default-button>
-		<fab-primary-button [styles]="removeAppDialogButtonStyles" (click)="RemoveApp()">Remove App</fab-primary-button>
+		<fab-default-button (click)="removeAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="removeAppDialogButtonStyles" (click)="RemoveApp()">{{ locale.apps.removeApp }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

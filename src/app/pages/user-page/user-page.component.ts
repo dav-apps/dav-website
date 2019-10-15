@@ -5,6 +5,7 @@ import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize } from 
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData, App } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { enUS } from 'src/locales/locales';
 declare var io: any;
 
 const updateUserKey = "updateUser";
@@ -27,6 +28,8 @@ const appsHash = "apps";
 	]
 })
 export class UserPageComponent{
+	locale = enUS.userPage;
+
 	selectedMenu: Menu = Menu.General;
 	sideNavHidden: boolean = false;
 	sideNavOpened: boolean = false;
@@ -66,8 +69,8 @@ export class UserPageComponent{
 		}
 	}
 	deleteAccountDialogContent: IDialogContentProps = {
-		title: "Deleting your Account",
-		subText: "Are your absolutely sure that you want to delete your account? All your data will be irreversibly deleted.",
+		title: this.locale.general.deleteAccountDialog.title,
+		subText: this.locale.general.deleteAccountDialog.subText,
 		styles: {
 			subText: {
 				fontSize: 14
@@ -75,8 +78,8 @@ export class UserPageComponent{
 		}
 	}
 	removeAppDialogContent: IDialogContentProps = {
-		title: `Removing appName from your Account`,
-		subText: "All app data will be irreversibly deleted. Are you sure you want to remove this app?",
+		title: this.locale.apps.removeAppDialog.title,
+		subText: this.locale.apps.removeAppDialog.subText,
 		styles: {
 			subText: {
 				fontSize: 14
@@ -146,6 +149,9 @@ export class UserPageComponent{
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
+		this.locale = this.dataService.GetLocale().userPage;
+		this.UpdateDialogTexts();
+
 		this.activatedRoute.fragment.subscribe((value) => {
 			switch (value) {
 				case plansHash:
@@ -244,7 +250,7 @@ export class UserPageComponent{
 
 	UpdateAvatar(file: ReadFile){
 		if(file.size > maxAvatarFileSize){
-			this.errorMessage = "The image file is too large";
+			this.errorMessage = this.locale.errors.avatarFileTooLarge;
 			return;
 		}
 		this.ClearMessages();
@@ -322,17 +328,17 @@ export class UserPageComponent{
 		if(message.status == 200){
 			if(this.updatedAttribute == UserAttribute.Avatar){
 				this.UpdateAvatarImageContent();
-				this.snackBar.open("Your profile picture was updated successfully. It may take some time to update across the site and all apps.", null, {duration: 5000});
+				this.snackBar.open(this.locale.messages.avatarUpdateMessage, null, {duration: 5000});
 			}
 			else if(this.updatedAttribute == UserAttribute.Username){
 				this.dataService.user.Username = this.username;
-				this.snackBar.open("Your username was updated successfully.", null, {duration: snackBarDuration});
+				this.snackBar.open(this.locale.messages.usernameUpdateMessage, null, {duration: snackBarDuration});
 			}else if(this.updatedAttribute == UserAttribute.Email){
-				this.successMessage = "You will receive an email to confirm your new email address. After that, you can log in with your new email address.";
+				this.successMessage = this.locale.messages.emailUpdateMessage;
 				this.newEmail = this.email;
 				this.email = this.dataService.user.Email;
 			}else if(this.updatedAttribute == UserAttribute.Password){
-				this.successMessage = "You will receive an email to confirm your new password. After that, you can log in with your new password.";
+				this.successMessage = this.locale.messages.passwordUpdateMessage;
 				this.password = "";
 				this.passwordConfirmation = "";
 				this.passwordConfirmationVisible = false;
@@ -358,7 +364,7 @@ export class UserPageComponent{
 
 	SendVerificationEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
 		if(message.status == 200){
-			this.successMessage = "A new confirmation email was sent";
+			this.successMessage = this.locale.messages.sendVerificationEmailMessage;
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendVerificationEmailErrorMessage(errorCode);
@@ -367,7 +373,7 @@ export class UserPageComponent{
 
 	SendDeleteAccountEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
 		if(message.status == 200){
-			this.successMessage = "You will receive an email to confirm the deletion of your account.";
+			this.successMessage = this.locale.messages.sendDeleteAccountEmailMessage;
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendDeleteAccountEmailErrorMessage(errorCode);
@@ -379,7 +385,7 @@ export class UserPageComponent{
 
 	SendRemoveAppEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
 		if(message.status == 200){
-			this.successMessage = `You will receive an email to confirm the removal of the app.`;
+			this.successMessage = this.locale.messages.sendRemoveAppEmailMessage;
 		}else{
 			let errorCode = (message as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendRemoveAppEmailErrorMessage(errorCode);
@@ -387,6 +393,13 @@ export class UserPageComponent{
 
 		// Hide the spinner
 		this.sendRemoveAppEmailLoading = false;
+	}
+
+	UpdateDialogTexts(){
+		this.deleteAccountDialogContent.title = this.locale.general.deleteAccountDialog.title;
+		this.deleteAccountDialogContent.subText = this.locale.general.deleteAccountDialog.subText;
+		this.removeAppDialogContent.title = this.locale.apps.removeAppDialog.title.replace("{0}", this.selectedAppToRemove ? this.selectedAppToRemove.Name : "");
+		this.removeAppDialogContent.subText = this.locale.apps.removeAppDialog.subText;
 	}
 
 	UpdateAvatarImageContent(){
@@ -404,59 +417,59 @@ export class UserPageComponent{
 	}
 
 	GetAvatarErrorMessage(errorCode: number) : string{
-		return `Unexpected error (${errorCode})`;
+		return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 	}
 
 	GetUsernameErrorMessage(errorCode: number) : string{
 		switch(errorCode){
 			case 2201:
-				return "Your username is too short";
+				return this.locale.errors.usernameTooShort;
 			case 2301:
-				return "Your username is too long";
+				return this.locale.errors.usernameTooLong;
 			case 2701:
-				return "This username is already taken";
+				return this.locale.errors.usernameTaken;
 			default:
-				return `Unexpected error (${errorCode})`;
+				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 		}
 	}
 
 	GetEmailErrorMessage(errorCode: number) : string{
 		switch(errorCode){
 			case 2401:
-				return "The email address is invalid";
+				return this.locale.errors.emailInvalid;
 			case 2702:
-				return "The email address is already taken";
+				return this.locale.errors.emailTaken;
 			default:
-				return `Unexpected error (${errorCode})`;
+				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 		}
 	}
 
 	GetPasswordErrorMessage(errorCode: number) : string{
 		switch(errorCode){
 			case 2202:
-				return "Your new password is too short";
+				return this.locale.errors.passwordTooShort;
 			case 2302:
-				return "Your new password is too long";
+				return this.locale.errors.passwordTooLong;
 			default:
-				return `Unexpected error (${errorCode})`;
+				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 		}
 	}
 
 	GetSendVerificationEmailErrorMessage(errorCode: number) : string{
 		switch (errorCode) {
 			case 1106:
-				return "Your email address is already confirmed";
+				return this.locale.errors.emailAlreadyConfirmed;
 			default:
-				return `Unexpected error (${errorCode})`;
+				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 		}
 	}
 
 	GetSendDeleteAccountEmailErrorMessage(errorCode: number) : string{
-		return `Unexpected error (${errorCode})`;
+		return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 	}
 
 	GetSendRemoveAppEmailErrorMessage(errorCode: number) : string{
-		return `Unexpected error (${errorCode})`;
+		return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 	}
 
 	UsernameTextFieldChanged(event: KeyboardEvent){
@@ -499,7 +512,7 @@ export class UserPageComponent{
 
 	ShowRemoveAppDialog(app: App){
 		this.selectedAppToRemove = app;
-		this.removeAppDialogContent.title = `Removing ${app.Name} from your Account`;
+		this.UpdateDialogTexts();
 
 		this.removeAppDialogVisible = true;
 	}

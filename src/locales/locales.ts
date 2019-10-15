@@ -156,6 +156,69 @@ const enDefaults = {
 		resetNewEmailMessage: "Your email address has been reset. You can now log in again with your old email address.",
 		errorMessage: "An unexpected error occured. Please try it again."
 	},
+	userPage: {
+		sideNav: {
+			general: "General",
+			plans: "Plans",
+			apps: "Apps"
+		},
+		general: {
+			title: "General Settings",
+			avatarAlt: "Your Profile image",
+			uploadAvatar: "Upload profile image",
+			usernameTextfieldLabel: "Username",
+			usernameTextfieldPlaceholder: "Your new username",
+			emailTextfieldLabel: "Email",
+			emailTextfieldPlaceholder: "Your new email address",
+			passwordTextfieldLabel: "New Password",
+			passwordTextfieldPlaceholder: "Your new password",
+			passwordConfirmationTextfieldLabel: "Password confirmation",
+			passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
+			save: "Save",
+			deleteAccount: "Delete Account",
+			deleteAccountDialog: {
+				title: "Deleting your Account",
+				subText: "Are your absolutely sure that you want to delete your account? All your data will be irreversibly deleted."
+			}
+		},
+		plans: {
+			title: "Plans",
+			confirmEmailText: "Confirm your email address to change your plan and get more storage.",
+			confirmEmailLink: "Resend confirmation email"
+		},
+		apps: {
+			title: "Your Apps",
+			totalStorageUsed: "{0} GB of {1} GB used",
+			appStorageUsed: "This app uses {0} GB",
+			removeApp: "Remove App",
+			removeAppDialog: {
+				title: "Removing {0}",
+				subText: "Are you sure you want to remove this app from your account? All app data will be irreversibly deleted."
+			}
+		},
+		messages: {
+			avatarUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
+			usernameUpdateMessage: "Your username has been updated successfully",
+			emailUpdateMessage: "You will receive an email to confirm your new email address",
+			passwordUpdateMessage: "You will receive an email to confirm your new password",
+			sendVerificationEmailMessage: "A new confirmation email has been sent",
+			sendDeleteAccountEmailMessage: "You will receive an email to confirm the deletion of your account",
+			sendRemoveAppEmailMessage: "You will receive an email to confirm the removal of the app"
+		},
+		errors: {
+			unexpectedErrorShort: "Unexpected error ({0})",
+			avatarFileTooLarge: "The image file is too large",
+			usernameTooShort: "Your new username is too short",
+			usernameTooLong: "Your new username is too long",
+			usernameTaken: "The username is already taken",
+			emailInvalid: "Your new email is invalid",
+			emailTaken: "This email address is already in use",
+			passwordTooShort: "Your new password is too short",
+			passwordTooLong: "Your new password is too long",
+			emailAlreadyConfirmed: "Your email address is already confirmed"
+		},
+		cancel: "Cancel"
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -342,6 +405,69 @@ const deDefaults = {
 		saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
 		resetNewEmailMessage: "Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
 		errorMessage: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+	},
+	userPage: {
+		sideNav: {
+			general: "Allgemein",
+			plans: "Pläne",
+			apps: "Apps"
+		},
+		general: {
+			title: "Allgemeine Einstellungen",
+			avatarAlt: "Dein Profilbild",
+			uploadAvatar: "Profilbild hochladen",
+			usernameTextfieldLabel: "Nutzername",
+			usernameTextfieldPlaceholder: "Dein neuer Nutzername",
+			emailTextfieldLabel: "Email",
+			emailTextfieldPlaceholder: "Deine neue Email-Adresse",
+			passwordTextfieldLabel: "Neues Passwort",
+			passwordTextfieldPlaceholder: "Dein neues Passwort",
+			passwordConfirmationTextfieldLabel: "Passwortbestätigung",
+			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort",
+			save: "Speichern",
+			deleteAccount: "Account löschen",
+			deleteAccountDialog: {
+				title: "Löschen deines Accounts",
+				subText: "Bist du dir absolut sicher, dass du deinen Account löschen willst? All deine Daten werden unwiderruflich gelöscht."
+			}
+		},
+		plans: {
+			title: "Pläne",
+			confirmEmailText: "Bestätige deine Email-Adresse, um deinen Plan zu ändern und mehr Speicherplatz zu bekommen.",
+			confirmEmailLink: "Bestätigungsemail senden"
+		},
+		apps: {
+			title: "Deine Apps",
+			totalStorageUsed: "{0} GB von {1} GB verwendet",
+			appStorageUsed: "Diese App verwendet {0} GB",
+			removeApp: "App entfernen",
+			removeAppDialog: {
+				title: "{0} entfernen",
+				subText: "Bist du dir sicher, dass du diese App von deinem Account entfernen willst? Alle App-Daten werden unwiderruflich gelöscht."
+			}
+		},
+		messages: {
+			avatarUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
+			usernameUpdateMessage: "Dein Nutzername wurde erfolgreich aktualisiert",
+			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
+			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts",
+			sendVerificationEmailMessage: "Eine neue Bestätigungsemail wurde gesendet",
+			sendDeleteAccountEmailMessage: "Du erhältst eine Email, um die Löschung deines Accounts zu bestätigen",
+			sendRemoveAppEmailMessage: "Du erhältst eine Email, um die Entfernung der App zu bestätigen"
+		},
+		errors: {
+			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+			avatarFileTooLarge: "Die Bilddatei ist zu groß",
+			usernameTooShort: "Dein neuer Nutzername ist zu kurz",
+			usernameTooLong: "Dein neuer Nutzername ist zu lang",
+			usernameTaken: "Der Nutzername ist bereits vergeben",
+			emailInvalid: "Deine neue Email-Adresse ist ungültig",
+			emailTaken: "Diese Email-Adresse wird bereits verwendet",
+			passwordTooShort: "Dein neues Passwort ist zu kurz",
+			passwordTooLong: "Dein neues Passwort ist zu lang",
+			emailAlreadyConfirmed: "Deine Email-Adresse ist bereits bestätigt"
+		},
+		cancel: "Abbrechen"
 	},
 	pricingComponent: {
 		free: {
