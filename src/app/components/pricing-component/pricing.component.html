@@ -4,15 +4,15 @@
 			<div class="card-body">
 				<h4 class="card-title font-weight-light" style="margin-bottom: 40px">Free</h4>
 				<ul class="list-group">
-					<li class="list-group-item border-left-0 border-right-0">2 GB of storage</li>
-					<li class="list-group-item border-left-0 border-right-0">Use all our apps</li>
-					<li class="list-group-item border-left-0 border-right-0">Access your data on any device</li>
-					<li class="list-group-item border-left-0 border-right-0">No ads</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.free.storage }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.useAllApps }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.accessData }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.noAds }}</li>
 				</ul>
 				<br>
-				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">Sign up</button>
-				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">Current plan</button>
-				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 1 || dataService.user.Plan == 2)">Downgrade</button>
+				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
+				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">{{ locale.currentPlan }}</button>
+				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 1 || dataService.user.Plan == 2)">{{ locale.downgrade }}</button>
 			</div>
 		</div>
 	</div>
@@ -21,19 +21,19 @@
 		<div class="card text-center shadow">
 			<div class="card-body">
 				<h4 class="card-title font-weight-light">Plus</h4>
-				<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem">3 € per month</h6>
+				<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem">{{ locale.plus.price }}</h6>
 				<ul class="list-group">
-					<li class="list-group-item border-left-0 border-right-0">15 GB of storage</li>
-					<li class="list-group-item border-left-0 border-right-0">Use all our apps</li>
-					<li class="list-group-item border-left-0 border-right-0">Access your data on any device</li>
-					<li class="list-group-item border-left-0 border-right-0">No ads</li>
-					<li class="list-group-item border-left-0 border-right-0">Use all Plus features in our apps</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.plus.storage }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.useAllApps }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.accessData }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.noAds }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.plus.features }}</li>
 				</ul>
 				<br>
-				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">Sign up</button>
-				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">Upgrade</button>
-				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 1">Current plan</button>
-				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">Downgrade</button>
+				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
+				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">{{ locale.upgrade }}</button>
+				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 1">{{ locale.currentPlan }}</button>
+				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">{{ locale.downgrade }}</button>
 			</div>
 		</div>
 	</div>
@@ -42,19 +42,19 @@
 		<div class="card text-center shadow">
 			<div class="card-body">
 				<h4 class="card-title font-weight-light">Pro</h4>
-				<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem;">10 € per month</h6>
+				<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem;">{{ locale.pro.price }}</h6>
 				<ul class="list-group">
-					<li class="list-group-item border-left-0 border-right-0">50 GB of storage</li>
-					<li class="list-group-item border-left-0 border-right-0">Use all our apps</li>
-					<li class="list-group-item border-left-0 border-right-0">Access your data on any device</li>
-					<li class="list-group-item border-left-0 border-right-0">No ads</li>
-					<li class="list-group-item border-left-0 border-right-0">Use all Plus features in our apps</li>
-					<li class="list-group-item border-left-0 border-right-0">Use all Pro features in our apps</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.pro.storage }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.useAllApps }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.accessData }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.noAds }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.plus.features }}</li>
+					<li class="list-group-item border-left-0 border-right-0">{{ locale.pro.features }}</li>
 				</ul>
 				<br>
-				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">Sign up</button>
-				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 0 || dataService.user.Plan == 1)">Upgrade</button>
-				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">Current plan</button>
+				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
+				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 0 || dataService.user.Plan == 1)">{{ locale.upgrade }}</button>
+				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">{{ locale.currentPlan }}</button>
 			</div>
 		</div>
 	</div>

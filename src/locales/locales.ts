@@ -72,6 +72,31 @@ const enDefaults = {
 		},
 		endText1: "These rules apply to all our apps and our websites, including web apps and our blog. If specific cases apply to certain apps or services, they will be listed below. If you have any questions, feel free to email us at support@dav-apps.tech",
 		endText2: "We reserve the right to change this privacy policy in the future.<br>Last updated: 14 Oktober 2019"
+	},
+	pricingPage: {
+		title: "Pricing"
+	},
+	pricingComponent: {
+		free: {
+			storage: "2 GB of storage"
+		},
+		plus: {
+			price: "3 € per month",
+			storage: "15 GB of storage",
+			features: "Use all Plus features in our apps"
+		},
+		pro: {
+			price: "10 € per month",
+			storage: "50 GB of storage",
+			features: "Use all Pro features in our apps"
+		},
+		useAllApps: "Use all our apps",
+		accessData: "Access your data on any device",
+		noAds: "No ads",
+		signup: "Sign up",
+		currentPlan: "Current plan",
+		upgrade: "Upgrade",
+		downgrade: "Downgrade"
 	}
 }
 
@@ -84,7 +109,7 @@ export var enGB = enDefaults;
 const deDefaults = {
 	appComponent: {
 		navbar: {
-			pricing: "Preise",
+			pricing: "Pläne",
 			allApps: "Alle Apps",
 			login: "Anmelden",
 			logout: "Abmelden",
@@ -154,6 +179,31 @@ const deDefaults = {
 		},
 		endText1: "Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Falls spezielle Fälle auf bestimmte Apps oder Dienste zutreffen, werden sie im Folgenden aufgeführt. Falls du Fragen hast, kannst du uns jederzeit eine Email an support@dav-apps.tech schreiben.",
 		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu ändern.<br>Zuletzt geändert: 14. Oktober 2019"
+	},
+	pricingPage: {
+		title: "Pläne"
+	},
+	pricingComponent: {
+		free: {
+			storage: "2 GB Speicherplatz"
+		},
+		plus: {
+			storage: "15 GB Speicherplatz",
+			price: "3 € pro Monat",
+			features: "Zugriff auf alle Plus-Funktionen"
+		},
+		pro: {
+			storage: "50 GB Speicherplatz",
+			price: "10 € pro Monat",
+			features: "Zugriff auf alle Pro-Funktionen"
+		},
+		useAllApps: "Benutze all unsere Apps",
+		accessData: "Zugriff auf deine Daten von jedem Gerät",
+		noAds: "Keine Werbung",
+		signup: "Registrieren",
+		currentPlan: "Aktueller Plan",
+		upgrade: "Upgrade",
+		downgrade: "Downgrade"
 	}
 }
 
