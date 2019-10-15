@@ -92,7 +92,7 @@ const enDefaults = {
 			emailMissing: "Please enter your email",
 			passwordMissing: "Please enter your password",
 			unexpectedErrorShort: "Unexpected error ({0})",
-			unexpectedErrorLong: "An unexpected error occured. Please try again."
+			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		}
 	},
 	signupPage: {
@@ -120,7 +120,7 @@ const enDefaults = {
 			usernameTaken: "The username is already taken",
 			emailTaken: "This email address is already in use",
 			unexpectedErrorShort: "Unexpected error ({0})",
-			unexpectedErrorLong: "An unexpected error occured. Please try again."
+			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		}
 	},
 	passwordResetPage: {
@@ -133,6 +133,18 @@ const enDefaults = {
 		errors: {
 			userNotFound: "There is no user with this email address",
 			unexpectedErrorShort: "Unexpected error ({0})"
+		}
+	},
+	resetPasswordPage: {
+		title: "Create a new password",
+		passwordTextfieldLabel: "Password",
+		passwordTextfieldPlaceholder: "Choose a new password",
+		passwordConfirmationTextfieldLabel: "Password confirmation",
+		passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
+		save: "Save",
+		successMessage: "Your new password was saved",
+		errors: {
+			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		}
 	},
 	pricingComponent: {
@@ -299,6 +311,18 @@ const deDefaults = {
 		errors: {
 			userNotFound: "Es gibt keinen Nutzer mit dieser Email-Adresse",
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})"
+		}
+	},
+	resetPasswordPage: {
+		title: "Neues Passwort erstellen",
+		passwordTextfieldLabel: "Passwort",
+		passwordTextfieldPlaceholder: "Wähle ein neues Passwort",
+		passwordConfirmationTextfieldLabel: "Passwortbestätigung",
+		passwordConfirmationTextfieldPlaceholder: "Wiederhole dein neues Passwort",
+		save: "Speichern",
+		successMessage: "Dein neues Passwort wurde gespeichert",
+		errors: {
+			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}
 	},
 	pricingComponent: {

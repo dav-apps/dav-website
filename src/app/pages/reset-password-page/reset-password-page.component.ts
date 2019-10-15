@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { enUS } from 'src/locales/locales';
 declare var io: any;
 
 const setPasswordKey = "setPassword";
@@ -11,6 +12,7 @@ const setPasswordKey = "setPassword";
 	templateUrl: './reset-password-page.component.html'
 })
 export class ResetPasswordPageComponent{
+	locale = enUS.resetPasswordPage;
 	socket: any = null;
 	userId: number = -1;
 	passwordConfirmationToken: string = "";
@@ -22,11 +24,13 @@ export class ResetPasswordPageComponent{
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
+		this.locale = this.dataService.GetLocale().resetPasswordPage;
+
 		this.userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id');
 		this.passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('password_confirmation_token');
 
-		if((this.userId <= 0 || isNaN(this.userId)) || this.passwordConfirmationToken.length < 3){
-			this.dataService.startPageErrorMessage = "There was an error. Please try again."
+		if(isNaN(this.userId) || this.userId <= 0 || !this.passwordConfirmationToken || this.passwordConfirmationToken.length < 3){
+			this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong;
 			this.router.navigate(['/']);
 		}
 	}
@@ -57,9 +61,9 @@ export class ResetPasswordPageComponent{
 
 	async SetPasswordResponse(response: (ApiResponse<{}> | ApiErrorResponse)){
 		if(response.status == 200){
-			this.dataService.startPageSuccessMessage = "You can now log in with your new password";
+			this.dataService.startPageSuccessMessage = this.locale.successMessage;
 		}else{
-			this.dataService.startPageErrorMessage = "There was an error with changing your password. Please try it again."
+			this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong
 		}
 		this.router.navigate(['/']);
 	}
