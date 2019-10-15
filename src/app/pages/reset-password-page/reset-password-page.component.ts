@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 import { enUS } from 'src/locales/locales';
@@ -18,6 +19,8 @@ export class ResetPasswordPageComponent{
 	passwordConfirmationToken: string = "";
 	password: string = "";
 	passwordConfirmation: string = "";
+	loading: boolean = false;
+	spinnerSize: SpinnerSize = SpinnerSize.small;
 
 	constructor(
 		public dataService: DataService,
@@ -52,6 +55,7 @@ export class ResetPasswordPageComponent{
 		if(this.password.length < 7 || this.password.length > 25 || this.password != this.passwordConfirmation) return;
 		
 		// Send new password to the server
+		this.loading = true;
 		this.socket.emit(setPasswordKey, {
 			userId: this.userId,
 			passwordConfirmationToken: this.passwordConfirmationToken,
@@ -65,6 +69,7 @@ export class ResetPasswordPageComponent{
 		}else{
 			this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong
 		}
+		this.loading = false;
 		this.router.navigate(['/']);
 	}
 }
