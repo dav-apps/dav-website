@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
+import { enUS } from 'src/locales/locales';
 declare var io: any;
 
 const deleteUserKey = "deleteUser";
@@ -16,6 +17,7 @@ const resetNewEmailKey = "resetNewEmail";
 	templateUrl: "./email-link-page.component.html"
 })
 export class EmailLinkPageComponent{
+	locale = enUS.emailLinkPage;
 	socket: any = null;
 
 	constructor(
@@ -23,6 +25,8 @@ export class EmailLinkPageComponent{
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
+		this.locale = this.dataService.GetLocale().emailLinkPage;
+
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 
 		if(!type){
@@ -127,7 +131,7 @@ export class EmailLinkPageComponent{
 			// If the user is logged in, log the user out
 			await this.dataService.user.Logout();
 
-			this.RedirectToStartPageWithSuccess("Your account was successfully deleted");
+			this.RedirectToStartPageWithSuccess(this.locale.deleteUserMessage);
 		}else{
 			this.RedirectToStartPageWithError();
 		}
@@ -135,7 +139,7 @@ export class EmailLinkPageComponent{
 
 	RemoveAppResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
-			this.RedirectToStartPageWithSuccess("The app was successfully removed from your account");
+			this.RedirectToStartPageWithSuccess(this.locale.removeAppMessage);
 		}else{
 			this.RedirectToStartPageWithError();
 		}
@@ -143,7 +147,7 @@ export class EmailLinkPageComponent{
 
 	ConfirmUserResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
-			this.RedirectToStartPageWithSuccess("Your email address was successfully confirmed");
+			this.RedirectToStartPageWithSuccess(this.locale.confirmUserMessage);
 		}else{
 			this.RedirectToStartPageWithError();
 		}
@@ -151,7 +155,7 @@ export class EmailLinkPageComponent{
 
 	SaveNewPasswordResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
-			this.RedirectToStartPageWithSuccess("You can now log in with your new password");
+			this.RedirectToStartPageWithSuccess(this.locale.saveNewPasswordMessage);
 		}else{
 			this.RedirectToStartPageWithError();
 		}
@@ -159,7 +163,7 @@ export class EmailLinkPageComponent{
 
 	SaveNewEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
-			this.RedirectToStartPageWithSuccess("You can now log in with your new email address");
+			this.RedirectToStartPageWithSuccess(this.locale.saveNewEmailMessage);
 		}else{
 			this.RedirectToStartPageWithError();
 		}
@@ -167,7 +171,7 @@ export class EmailLinkPageComponent{
 
 	ResetNewEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
-			this.RedirectToStartPageWithSuccess("The email change was canceled. You can now log in with your old email");
+			this.RedirectToStartPageWithSuccess(this.locale.resetNewEmailMessage);
 		}else{
 			this.RedirectToStartPageWithError();
 		}
@@ -179,7 +183,7 @@ export class EmailLinkPageComponent{
 	}
 
 	RedirectToStartPageWithError(){
-		this.dataService.startPageErrorMessage = "There was an error. Please try again.";
+		this.dataService.startPageErrorMessage = this.locale.errorMessage;
 		this.router.navigate(['/']);
 	}
 }

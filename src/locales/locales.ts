@@ -142,10 +142,19 @@ const enDefaults = {
 		passwordConfirmationTextfieldLabel: "Password confirmation",
 		passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
 		save: "Save",
-		successMessage: "Your new password was saved",
+		successMessage: "Your new password has been saved",
 		errors: {
 			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		}
+	},
+	emailLinkPage: {
+		deleteUserMessage: "Your account has been successfully deleted",
+		removeAppMessage: "The app has been successfully removed from your account",
+		confirmUserMessage: "Your email address has been successfully confirmed",
+		saveNewPasswordMessage: "You new password has been saved",
+		saveNewEmailMessage: "Your new email address has been saved",
+		resetNewEmailMessage: "Your email address has been reset. You can now log in again with your old email address.",
+		errorMessage: "An unexpected error occured. Please try it again."
 	},
 	pricingComponent: {
 		free: {
@@ -324,6 +333,15 @@ const deDefaults = {
 		errors: {
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}
+	},
+	emailLinkPage: {
+		deleteUserMessage: "Dein Account wurde erfolgreich gelöscht",
+		removeAppMessage: "Die App wurde erfolgreich von deinem Account entfernt",
+		confirmUserMessage: "Deine Email-Adresse wurde erfolgreich verifiziert",
+		saveNewPasswordMessage: "Dein neues Passwort wurde gespeichert",
+		saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
+		resetNewEmailMessage: "Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
+		errorMessage: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 	},
 	pricingComponent: {
 		free: {
