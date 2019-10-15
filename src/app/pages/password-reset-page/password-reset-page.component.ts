@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageBarType } from 'office-ui-fabric-react';
+import { SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 import { enUS } from 'src/locales/locales';
@@ -15,9 +15,10 @@ const sendPasswordResetEmailKey = "sendPasswordResetEmail";
 export class PasswordResetPageComponent{
 	locale = enUS.passwordResetPage;
 	socket: any = null;
-	messageBarType: MessageBarType = MessageBarType.error;
 	email: string = "";
 	errorMessage: string = "";
+	loading: boolean = false;
+	spinnerSize: SpinnerSize = SpinnerSize.small;
 
 	constructor(
 		public dataService: DataService,
@@ -39,9 +40,10 @@ export class PasswordResetPageComponent{
 	}
 
 	SendPasswordResetEmail(){
-		if(this.email.length < 3 && !this.email.includes('@')) return;
+		if(this.email.length < 3 || !this.email.includes('@')) return;
 
 		this.errorMessage = "";
+		this.loading = true;
 		this.socket.emit(sendPasswordResetEmailKey, {email: this.email});
 	}
 
@@ -54,6 +56,9 @@ export class PasswordResetPageComponent{
 			let errorCode = (response as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetSendPasswordResetEmailErrorMessage(errorCode);
 		}
+
+		// Hide the spinner
+		this.loading = false;
 	}
 
 	GetSendPasswordResetEmailErrorMessage(errorCode: number) : string{
