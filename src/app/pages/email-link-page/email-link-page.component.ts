@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { enUS } from 'src/locales/locales';
@@ -19,6 +20,8 @@ const resetNewEmailKey = "resetNewEmail";
 export class EmailLinkPageComponent{
 	locale = enUS.emailLinkPage;
 	socket: any = null;
+	spinnerSize: SpinnerSize = SpinnerSize.large;
+	height: number = 500;
 
 	constructor(
 		public dataService: DataService,
@@ -26,6 +29,9 @@ export class EmailLinkPageComponent{
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().emailLinkPage;
+
+		this.dataService.hideNavbarAndFooter = true;
+		this.setSize();
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 
@@ -83,6 +89,15 @@ export class EmailLinkPageComponent{
 			default:
 				this.RedirectToStartPageWithError();
 		}
+	}
+
+	@HostListener('window:resize')
+	onResize(){
+		this.setSize();
+	}
+	
+	setSize(){
+		this.height = window.innerHeight;
 	}
 
 	HandleDeleteUser(userId: number, emailConfirmationToken: string, passwordConfirmationToken: string){
@@ -178,11 +193,13 @@ export class EmailLinkPageComponent{
 	}
 
 	RedirectToStartPageWithSuccess(message: string){
+		this.dataService.hideNavbarAndFooter = false;
 		this.dataService.startPageSuccessMessage = message;
 		this.router.navigate(['/']);
 	}
 
 	RedirectToStartPageWithError(){
+		this.dataService.hideNavbarAndFooter = false;
 		this.dataService.startPageErrorMessage = this.locale.errorMessage;
 		this.router.navigate(['/']);
 	}
