@@ -30,6 +30,7 @@ import { DataService } from './services/data-service';
 import { AppComponent } from './app.component';
 import { PricingComponent } from 'src/app/components/pricing-component/pricing.component';
 import { AppCardComponent } from 'src/app/components/app-card-component/app-card.component';
+import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component';
 
 // Pages
 import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
@@ -50,6 +51,7 @@ import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link
 		AppComponent,
 		PricingComponent,
 		AppCardComponent,
+		PaymentFormComponent,
 		// Pages
 		StartPageComponent,
 		ContactPageComponent,
