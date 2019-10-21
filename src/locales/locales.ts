@@ -239,7 +239,10 @@ const enDefaults = {
 		signup: "Sign up",
 		currentPlan: "Current plan",
 		upgrade: "Upgrade",
-		downgrade: "Downgrade"
+		downgrade: "Downgrade",
+		save: "Save",
+		cancel: "Cancel",
+		paymentFormDialogTitle: "Enter payment information"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -494,7 +497,10 @@ const deDefaults = {
 		signup: "Registrieren",
 		currentPlan: "Aktueller Plan",
 		upgrade: "Upgrade",
-		downgrade: "Downgrade"
+		downgrade: "Downgrade",
+		save: "Speichern",
+		cancel: "Abbrechen",
+		paymentFormDialogTitle: "Zahlungsinformationen eingeben"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",
