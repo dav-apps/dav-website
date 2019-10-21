@@ -240,6 +240,11 @@ const enDefaults = {
 		currentPlan: "Current plan",
 		upgrade: "Upgrade",
 		downgrade: "Downgrade"
+	},
+	paymentFormComponent: {
+		header: "Credit or debit card",
+		save: "Save",
+		unexpectedError: "Unexpected error ({0})"
 	}
 }
 
@@ -490,6 +495,11 @@ const deDefaults = {
 		currentPlan: "Aktueller Plan",
 		upgrade: "Upgrade",
 		downgrade: "Downgrade"
+	},
+	paymentFormComponent: {
+		header: "Kredit- oder Debitkarte",
+		save: "Speichern",
+		unexpectedError: "Unerwarteter Fehler ({0})"
 	}
 }
 

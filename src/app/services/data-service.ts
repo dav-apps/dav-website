@@ -36,6 +36,11 @@ export class DataService{
 	}
 }
 
+export interface StripeApiResponse{
+	success: boolean;
+	response: any;
+}
+
 export function FindElement(currentElement: Element, tagName: string) : Element{
 	if(currentElement.tagName.toLowerCase() == tagName) return currentElement;
 
