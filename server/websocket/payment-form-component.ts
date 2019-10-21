@@ -12,8 +12,8 @@ export async function createStripeCustomerForUser(message: {jwt: string}){
 }
 
 export async function saveStripePaymentMethod(message: {paymentMethodId: string, customerId: string}){
-	// Attach the payment method to the customer
 	try{
+		// Attach the payment method to the customer
 		let result = await stripe.paymentMethods.attach(message.paymentMethodId, {customer: message.customerId});
 
 		// Set the payment method as default

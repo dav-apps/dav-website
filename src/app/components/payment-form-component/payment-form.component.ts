@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { ApiResponse, ApiErrorResponse, CreateStripeCustomerForUserResponseData } from 'dav-npm';
 import { DataService, StripeApiResponse } from 'src/app/services/data-service';
 import { environment } from 'src/environments/environment';
@@ -19,15 +19,21 @@ const saveStripePaymentMethodKey = "savePaymentMethod";
 export class PaymentFormComponent{
 	locale = enUS.paymentFormComponent;
 	socket: any;
+	@Input() showSaveButton: boolean = true;
 	@Output() completed = new EventEmitter();
+	@Output() loadingStart = new EventEmitter();
+	@Output() loadingEnd = new EventEmitter();
 	stripe: any;
 	elements: any;
 	card: any;
+	cardHandler = this.onChange.bind(this);
 	errorMessage: string = "";
 	cardInputComplete: boolean = false;
+	loading: boolean = false;
 
 	constructor(
-		public dataService: DataService
+		public dataService: DataService,
+		private cd: ChangeDetectorRef
 	){
 		this.locale = this.dataService.GetLocale().paymentFormComponent;
 	}
@@ -38,14 +44,19 @@ export class PaymentFormComponent{
 		this.socket.on(saveStripePaymentMethodKey, (message: StripeApiResponse) => this.SaveStripePaymentMethodResponse(message));
 	}
 
-	ngAfterViewInit(){
+	ngOnDestroy(){
+		this.card.removeEventListener('change', this.cardHandler);
+		this.card.destroy();
+	}
+
+	Init(){
 		this.stripe = Stripe(environment.stripePublishableKey);
 		this.elements = this.stripe.elements();
 
 		this.card = this.elements.create('card');
 		this.card.mount("#card-element");
 
-		this.card.addEventListener('change', (event: any) => this.onChange(event));
+		this.card.addEventListener('change', this.cardHandler);
 	}
 
 	onChange(event: any){
@@ -56,6 +67,8 @@ export class PaymentFormComponent{
 		}else{
 			this.errorMessage = "";
 		}
+
+		this.cd.detectChanges();
 	}
 
 	async SaveCard(){
@@ -66,6 +79,11 @@ export class PaymentFormComponent{
 			this.socket.emit(createStripeCustomerForUserKey, {
 				jwt: this.dataService.user.JWT
 			});
+
+			if(!this.loading){
+				this.loadingStart.emit();
+				this.loading = true;
+			}
 		}else{
 			await this.CreatePaymentMethod();
 		}
@@ -83,6 +101,11 @@ export class PaymentFormComponent{
 				paymentMethodId: result.paymentMethod.id,
 				customerId: this.dataService.user.StripeCustomerId
 			});
+
+			if(!this.loading){
+				this.loadingStart.emit();
+				this.loading = true;
+			}
 		}
 	}
 
@@ -102,6 +125,11 @@ export class PaymentFormComponent{
 		}else{
 			// Show error
 			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
+		}
+
+		if(this.loading){
+			this.loadingEnd.emit();
+			this.loading = false;
 		}
 	}
 }
