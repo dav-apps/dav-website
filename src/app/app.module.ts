@@ -25,6 +25,7 @@ import { NgxFileHelpersModule } from 'ngx-file-helpers';
 
 // Services
 import { DataService } from './services/data-service';
+import { WebsocketService } from './services/websocket-service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -86,7 +87,8 @@ import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link
 		NgxFileHelpersModule
   	],
   	providers: [
-		DataService
+		DataService,
+		WebsocketService
 	],
   	bootstrap: [AppComponent]
 })
