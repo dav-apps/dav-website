@@ -9,6 +9,8 @@ export class DataService{
 	hideNavbarAndFooter: boolean = false;
 	userLoaded: boolean = false;
 	userLoadCallbacks: Function[] = [];
+	userDownloaded: boolean = false;
+	userDownloadCallbacks: Function[] = [];
 	startPageErrorMessage: string = "";
 	startPageSuccessMessage: string = "";
 

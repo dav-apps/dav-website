@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+  appId: -1,
   stripePublishableKey: "pk_test_2n7dkdRDf19haHugZ0AJ2E5Q",
   stripeDavPlusEurPlanId: "plan_CmGzwEgBfEk5Ic",
   stripeDavProEurPlanId: "plan_EkH9nhgVhb46jt"

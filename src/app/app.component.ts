@@ -1,8 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+import { Init, DavEnvironment } from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from './services/data-service';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-root',
@@ -35,6 +37,26 @@ export class AppComponent {
 				}
 			}
 		});
+
+		Init(
+			environment.production ? DavEnvironment.Production : DavEnvironment.Development,
+			environment.appId,
+			[],
+			[],
+			true,
+			{icon: "", badge: ""},
+			{
+				UpdateAllOfTable: () => {},
+				UpdateTableObject: () => {},
+				DeleteTableObject: () => {},
+				UserDownloadFinished: () => {
+					this.dataService.userDownloaded = true;
+					for(let callback of this.dataService.userDownloadCallbacks) callback();
+					this.dataService.userDownloadCallbacks = [];
+				},
+				SyncFinished: () => {}
+			}
+		)
 	}
 
 	@HostListener('window:resize')
