@@ -1,12 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
 import { IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
 import { DataService, StripeApiResponse } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
 import { PaymentFormComponent } from '../payment-form-component/payment-form.component';
-declare var io: any;
 
-const setStripeSubscriptionKey = "setStripeSubscription";
 const buttonTransition = "all 0.15s";
 
 @Component({
@@ -16,6 +15,7 @@ const buttonTransition = "all 0.15s";
 export class PricingComponent{
 	locale = enUS.pricingComponent;
 	socket: any;
+	setStripeSubscriptionSubscriptionKey: number;
 	@ViewChild('paymentForm', {static: true}) paymentForm: PaymentFormComponent;
 	selectedPlan: number = -1;
 	paymentFormDialogVisible: boolean = false;
@@ -32,15 +32,19 @@ export class PricingComponent{
 	}
 
 	constructor(
-		public dataService: DataService
+		public dataService: DataService,
+		public websocketService: WebsocketService
 	){
 		this.locale = this.dataService.GetLocale().pricingComponent;
 		this.paymentFormDialogContent.title = this.locale.paymentFormDialogTitle;
 	}
 
 	ngOnInit(){
-		this.socket = io();
-		this.socket.on(setStripeSubscriptionKey, (message: StripeApiResponse) => this.SetStripeSubscriptionResponse(message));
+		this.setStripeSubscriptionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscription, (message: StripeApiResponse) => this.SetStripeSubscriptionResponse(message));
+	}
+
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(this.setStripeSubscriptionSubscriptionKey);
 	}
 
 	PaymentDialogSaveClick(){
@@ -64,7 +68,7 @@ export class PricingComponent{
 		if(this.selectedPlan == 1) planId = environment.stripeDavPlusEurPlanId;
 		else if(this.selectedPlan == 2) planId = environment.stripeDavProEurPlanId;
 
-		this.socket.emit(setStripeSubscriptionKey, {
+		this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscription, {
 			customerId: this.dataService.user.StripeCustomerId,
 			planId
 		});

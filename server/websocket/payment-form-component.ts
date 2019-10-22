@@ -4,7 +4,7 @@ import { CreateStripeCustomerForUser } from 'dav-npm';
 import * as websocket from '../websocket';
 
 export const createStripeCustomerForUserKey = "createStripeCustomerForUser";
-export const saveStripePaymentMethodKey = "savePaymentMethod";
+export const saveStripePaymentMethodKey = "saveStripePaymentMethod";
 
 export async function createStripeCustomerForUser(message: {jwt: string}){
 	let response = await CreateStripeCustomerForUser(message.jwt);

@@ -1,13 +1,10 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
 import { ApiResponse, ApiErrorResponse, CreateStripeCustomerForUserResponseData } from 'dav-npm';
 import { DataService, StripeApiResponse } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
 declare var Stripe: any;
-declare var io: any;
-
-const createStripeCustomerForUserKey = "createStripeCustomerForUser";
-const saveStripePaymentMethodKey = "savePaymentMethod";
 
 @Component({
 	selector: 'dav-website-payment-form',
@@ -18,7 +15,8 @@ const saveStripePaymentMethodKey = "savePaymentMethod";
 })
 export class PaymentFormComponent{
 	locale = enUS.paymentFormComponent;
-	socket: any;
+	createStripeCustomerForUserSubscriptionKey: number;
+	saveStripePaymentMethodSubscriptionKey: number;
 	@Input() showSaveButton: boolean = true;
 	@Output() completed = new EventEmitter();
 	@Output() loadingStart = new EventEmitter();
@@ -33,20 +31,27 @@ export class PaymentFormComponent{
 
 	constructor(
 		public dataService: DataService,
+		public websocketService: WebsocketService,
 		private cd: ChangeDetectorRef
 	){
 		this.locale = this.dataService.GetLocale().paymentFormComponent;
 	}
 
 	ngOnInit(){
-		this.socket = io();
-		this.socket.on(createStripeCustomerForUserKey, (message: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse) => this.CreateStripeCustomerForUserResponse(message));
-		this.socket.on(saveStripePaymentMethodKey, (message: StripeApiResponse) => this.SaveStripePaymentMethodResponse(message));
+		this.createStripeCustomerForUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateStripeCustomerForUser, (message: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse) => this.CreateStripeCustomerForUserResponse(message));
+		this.saveStripePaymentMethodSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SaveStripePaymentMethod, (message: StripeApiResponse) => this.SaveStripePaymentMethodResponse(message));
 	}
 
 	ngOnDestroy(){
-		this.card.removeEventListener('change', this.cardHandler);
-		this.card.destroy();
+		if(this.card){
+			this.card.removeEventListener('change', this.cardHandler);
+			this.card.destroy();
+		}
+
+		this.websocketService.Unsubscribe(
+			this.createStripeCustomerForUserSubscriptionKey, 
+			this.saveStripePaymentMethodSubscriptionKey
+		);
 	}
 
 	Init(){
@@ -76,7 +81,7 @@ export class PaymentFormComponent{
 
 		// Create a stripe customer if the user has no stripe customer
 		if(!this.dataService.user.StripeCustomerId){
-			this.socket.emit(createStripeCustomerForUserKey, {
+			this.websocketService.Emit(WebsocketCallbackType.CreateStripeCustomerForUser, {
 				jwt: this.dataService.user.JWT
 			});
 
@@ -97,7 +102,7 @@ export class PaymentFormComponent{
 			this.errorMessage = result.error.message;
 		}else{
 			// Send the payment method to the server
-			this.socket.emit(saveStripePaymentMethodKey, {
+			this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
 				paymentMethodId: result.paymentMethod.id,
 				customerId: this.dataService.user.StripeCustomerId
 			});
