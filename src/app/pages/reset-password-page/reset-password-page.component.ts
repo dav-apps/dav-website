@@ -3,10 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
-declare var io: any;
-
-const setPasswordKey = "setPassword";
 
 @Component({
 	selector: 'dav-website-reset-password-page',
@@ -14,7 +12,7 @@ const setPasswordKey = "setPassword";
 })
 export class ResetPasswordPageComponent{
 	locale = enUS.resetPasswordPage;
-	socket: any = null;
+	setPasswordSubscriptionKey: number;
 	userId: number = -1;
 	passwordConfirmationToken: string = "";
 	password: string = "";
@@ -24,6 +22,7 @@ export class ResetPasswordPageComponent{
 
 	constructor(
 		public dataService: DataService,
+		public websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
@@ -39,8 +38,7 @@ export class ResetPasswordPageComponent{
 	}
 
 	ngOnInit(){
-		this.socket = io();
-		this.socket.on(setPasswordKey, (response: (ApiResponse<{}> | ApiErrorResponse)) => this.SetPasswordResponse(response));
+		this.setPasswordSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetPassword, (response: (ApiResponse<{}> | ApiErrorResponse)) => this.SetPasswordResponse(response));
 	}
 
 	ngAfterViewInit(){
@@ -51,12 +49,16 @@ export class ResetPasswordPageComponent{
 		}, 1);
 	}
 
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(this.setPasswordSubscriptionKey);
+	}
+
 	SavePassword(){
 		if(this.password.length < 7 || this.password.length > 25 || this.password != this.passwordConfirmation) return;
 		
 		// Send new password to the server
 		this.loading = true;
-		this.socket.emit(setPasswordKey, {
+		this.websocketService.Emit(WebsocketCallbackType.SetPassword, {
 			userId: this.userId,
 			passwordConfirmationToken: this.passwordConfirmationToken,
 			password: this.password

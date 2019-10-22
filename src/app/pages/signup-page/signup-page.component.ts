@@ -3,13 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
-declare var io: any;
 declare var deviceAPI: any;
 
-const signupKey = "signup";
-const signupImplicitKey = "signupImplicit";
-const signupSessionKey = "signupSession";
 const signupTypeImplicit = "implicit";
 const signupTypeSession = "session";
 
@@ -19,7 +16,9 @@ const signupTypeSession = "session";
 })
 export class SignupPageComponent{
 	locale = enUS.signupPage;
-	socket: any = null;
+	signupSubscriptionKey: number;
+	signupImplicitSubscriptionKey: number;
+	signupSessionSubscriptionKey: number;
 	username: string = "";
 	email: string = "";
 	password: string = "";
@@ -35,15 +34,15 @@ export class SignupPageComponent{
 
 	constructor(
 		public dataService: DataService,
+		public websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().signupPage;
 
-		this.socket = io();
-		this.socket.on(signupKey, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupResponse(message));
-		this.socket.on(signupImplicitKey, (message: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.SignupImplicitResponse(message));
-		this.socket.on(signupSessionKey, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupSessionResponse(message));
+		this.signupSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.Signup, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupResponse(message));
+		this.signupImplicitSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SignupImplicit, (message: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.SignupImplicitResponse(message));
+		this.signupSessionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SignupSession, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupSessionResponse(message));
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 		if(!type) return;
@@ -79,6 +78,14 @@ export class SignupPageComponent{
 		}, 1);
 	}
 
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(
+			this.signupSubscriptionKey,
+			this.signupImplicitSubscriptionKey,
+			this.signupSessionSubscriptionKey
+		)
+	}
+
 	Signup(){
 		if(this.password != this.passwordConfirmation){
 			this.errorMessage = this.locale.errors.passwordConfirmationNotMatching;
@@ -90,14 +97,14 @@ export class SignupPageComponent{
 
 		switch (this.signupType) {
 			case SignupType.Normal:
-				this.socket.emit(signupKey, {
+				this.websocketService.Emit(WebsocketCallbackType.Signup, {
 					username: this.username,
 					email: this.email,
 					password: this.password
 				});
 				break;
 			case SignupType.Implicit:
-				this.socket.emit(signupImplicitKey, {
+				this.websocketService.Emit(WebsocketCallbackType.SignupImplicit, {
 					apiKey: this.apiKey,
 					username: this.username,
 					email: this.email,
@@ -114,7 +121,7 @@ export class SignupPageComponent{
 				if(deviceType == "Not available") deviceType = this.locale.deviceInfoUnknown;
 				if(deviceOs == "Not available") deviceOs = this.locale.deviceInfoUnknown;
 
-				this.socket.emit(signupSessionKey, {
+				this.websocketService.Emit(WebsocketCallbackType.SignupSession, {
 					username: this.username,
 					email: this.email,
 					password: this.password,

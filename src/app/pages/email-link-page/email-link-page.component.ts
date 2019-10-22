@@ -3,15 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
-declare var io: any;
-
-const deleteUserKey = "deleteUser";
-const removeAppKey = "removeApp";
-const confirmUserKey = "confirmUser";
-const saveNewPasswordKey = "saveNewPassword";
-const saveNewEmailKey = "saveNewEmail";
-const resetNewEmailKey = "resetNewEmail";
 
 @Component({
 	selector: 'dav-website-email-link-page',
@@ -19,12 +12,18 @@ const resetNewEmailKey = "resetNewEmail";
 })
 export class EmailLinkPageComponent{
 	locale = enUS.emailLinkPage;
-	socket: any = null;
+	deleteUserSubscriptionKey: number;
+	removeAppSubscriptionKey: number;
+	confirmUserSubscriptionKey: number;
+	saveNewPasswordSubscriptionKey: number;
+	saveNewEmailSubscriptionKey: number;
+	resetNewEmailSubscriptionKey: number;
 	spinnerSize: SpinnerSize = SpinnerSize.large;
 	height: number = 500;
 
 	constructor(
 		public dataService: DataService,
+		public websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
@@ -41,13 +40,12 @@ export class EmailLinkPageComponent{
 			return;
 		}
 
-		this.socket = io();
-		this.socket.on(deleteUserKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.DeleteUserResponse(response));
-		this.socket.on(removeAppKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.RemoveAppResponse(response));
-		this.socket.on(confirmUserKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.ConfirmUserResponse(response));
-		this.socket.on(saveNewPasswordKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
-		this.socket.on(saveNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
-		this.socket.on(resetNewEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.ResetNewEmailResponse(response));
+		this.deleteUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.DeleteUser, (response: ApiResponse<{}> | ApiErrorResponse) => this.DeleteUserResponse(response));
+		this.removeAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.RemoveApp, (response: ApiResponse<{}> | ApiErrorResponse) => this.RemoveAppResponse(response));
+		this.confirmUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.ConfirmUser, (response: ApiResponse<{}> | ApiErrorResponse) => this.ConfirmUserResponse(response));
+		this.saveNewPasswordSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SaveNewPassword, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
+		this.saveNewEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SaveNewEmail, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
+		this.resetNewEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.ResetNewEmail, (response: ApiResponse<{}> | ApiErrorResponse) => this.ResetNewEmailResponse(response));
 
 		// Get all possible variables from the url params
 		let userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id');
@@ -91,6 +89,17 @@ export class EmailLinkPageComponent{
 		}
 	}
 
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(
+			this.deleteUserSubscriptionKey,
+			this.removeAppSubscriptionKey,
+			this.confirmUserSubscriptionKey,
+			this.saveNewPasswordSubscriptionKey,
+			this.saveNewEmailSubscriptionKey,
+			this.resetNewEmailSubscriptionKey
+		)
+	}
+
 	@HostListener('window:resize')
 	onResize(){
 		this.setSize();
@@ -101,7 +110,7 @@ export class EmailLinkPageComponent{
 	}
 
 	HandleDeleteUser(userId: number, emailConfirmationToken: string, passwordConfirmationToken: string){
-		this.socket.emit(deleteUserKey, {
+		this.websocketService.Emit(WebsocketCallbackType.DeleteUser, {
 			userId,
 			emailConfirmationToken,
 			passwordConfirmationToken
@@ -109,7 +118,7 @@ export class EmailLinkPageComponent{
 	}
 
 	HandleRemoveApp(appId: number, userId: number, passwordConfirmationToken: string){
-		this.socket.emit(removeAppKey, {
+		this.websocketService.Emit(WebsocketCallbackType.RemoveApp, {
 			appId,
 			userId,
 			passwordConfirmationToken
@@ -117,28 +126,28 @@ export class EmailLinkPageComponent{
 	}
 
 	HandleConfirmUser(userId: number, emailConfirmationToken: string){
-		this.socket.emit(confirmUserKey, {
+		this.websocketService.Emit(WebsocketCallbackType.ConfirmUser, {
 			userId,
 			emailConfirmationToken
 		});
 	}
 
 	HandleChangePassword(userId: number, passwordConfirmationToken: string){
-		this.socket.emit(saveNewPasswordKey, {
+		this.websocketService.Emit(WebsocketCallbackType.SaveNewPassword, {
 			userId,
 			passwordConfirmationToken
 		});
 	}
 
 	HandleChangeEmail(userId: number, emailConfirmationToken: string){
-		this.socket.emit(saveNewEmailKey, {
+		this.websocketService.Emit(WebsocketCallbackType.SaveNewEmail, {
 			userId,
 			emailConfirmationToken
 		});
 	}
 
 	HandleResetNewEmail(userId: number){
-		this.socket.emit(resetNewEmailKey, {userId});
+		this.websocketService.Emit(WebsocketCallbackType.ResetNewEmail, {userId});
 	}
 
 	async DeleteUserResponse(response: ApiResponse<{}> | ApiErrorResponse){

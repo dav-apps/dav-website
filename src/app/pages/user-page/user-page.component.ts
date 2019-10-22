@@ -5,13 +5,9 @@ import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize } from 
 import { ReadFile } from 'ngx-file-helpers';
 import { ApiResponse, ApiErrorResponse, UserResponseData, App } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
-declare var io: any;
 
-const updateUserKey = "updateUser";
-const sendVerificationEmailKey = "sendVerificationEmail";
-const sendDeleteAccountEmailKey = "sendDeleteAccountEmail";
-const sendRemoveAppEmailKey = "sendRemoveAppEmail";
 const maxAvatarFileSize = 5000000;
 const snackBarDuration = 3000;
 const dangerButtonBackgroundColor = "#dc3545";
@@ -29,6 +25,10 @@ const appsHash = "apps";
 })
 export class UserPageComponent{
 	locale = enUS.userPage;
+	updateUserSubscriptionKey: number;
+	sendVerificationEmailSubscriptionKey: number;
+	sendDeleteAccountEmailSubscriptionKey: number;
+	sendRemoveAppEmailSubscriptionKey: number;
 
 	selectedMenu: Menu = Menu.General;
 	sideNavHidden: boolean = false;
@@ -37,7 +37,6 @@ export class UserPageComponent{
 	//#region General page
 	successMessageBarType: MessageBarType = MessageBarType.success;
 	errorMessageBarType: MessageBarType = MessageBarType.error;
-	socket: any = null;
 	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
 	username: string = "";
@@ -145,6 +144,7 @@ export class UserPageComponent{
 
 	constructor(
 		public dataService: DataService,
+		public websocketService: WebsocketService,
 		private snackBar: MatSnackBar,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
@@ -169,11 +169,10 @@ export class UserPageComponent{
 
 	async ngOnInit(){
 		this.setSize();
-		this.socket = io();
-		this.socket.on(updateUserKey, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
-		this.socket.on(sendVerificationEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendVerificationEmailResponse(message));
-		this.socket.on(sendDeleteAccountEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
-		this.socket.on(sendRemoveAppEmailKey, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendRemoveAppEmailResponse(message));
+		this.updateUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.UpdateUser, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
+		this.sendVerificationEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendVerificationEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendVerificationEmailResponse(message));
+		this.sendDeleteAccountEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendDeleteAccountEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
+		this.sendRemoveAppEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendRemoveAppEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendRemoveAppEmailResponse(message));
 
 		if(!this.dataService.userLoaded){
 			// Wait for the user to be loaded
@@ -195,6 +194,15 @@ export class UserPageComponent{
 			SetTextFieldAutocomplete('email-text-field', 'email');
 			SetTextFieldAutocomplete('password-text-field', 'new-password');
 		}, 1);
+	}
+
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(
+			this.updateUserSubscriptionKey,
+			this.sendVerificationEmailSubscriptionKey,
+			this.sendDeleteAccountEmailSubscriptionKey,
+			this.sendRemoveAppEmailSubscriptionKey
+		)
 	}
 
 	@HostListener('window:resize')
@@ -261,7 +269,7 @@ export class UserPageComponent{
 		let content = file.content.substring(file.content.indexOf(',') + 1);
 
 		// Send the file content to the server
-		this.socket.emit(updateUserKey, {
+		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
 			jwt: this.dataService.user.JWT,
 			avatar: content
 		});
@@ -272,7 +280,7 @@ export class UserPageComponent{
 
 		this.updatedAttribute = UserAttribute.Username;
 		this.usernameLoading = true;
-		this.socket.emit(updateUserKey, {
+		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
 			jwt: this.dataService.user.JWT,
 			username: this.username
 		});
@@ -283,7 +291,7 @@ export class UserPageComponent{
 
 		this.updatedAttribute = UserAttribute.Email;
 		this.emailLoading = true;
-		this.socket.emit(updateUserKey, {
+		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
 			jwt: this.dataService.user.JWT,
 			email: this.email
 		});
@@ -294,14 +302,14 @@ export class UserPageComponent{
 
 		this.updatedAttribute = UserAttribute.Password;
 		this.passwordLoading = true;
-		this.socket.emit(updateUserKey, {
+		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
 			jwt: this.dataService.user.JWT,
 			password: this.password
 		});
 	}
 
 	SendVerificationEmail(){
-		this.socket.emit(sendVerificationEmailKey, {
+		this.websocketService.Emit(WebsocketCallbackType.SendVerificationEmail, {
 			jwt: this.dataService.user.JWT
 		});
 		return false;
@@ -310,7 +318,7 @@ export class UserPageComponent{
 	DeleteAccount(){
 		this.deleteAccountDialogVisible = false;
 		this.sendDeleteAccountEmailLoading = true;
-		this.socket.emit(sendDeleteAccountEmailKey, {
+		this.websocketService.Emit(WebsocketCallbackType.SendDeleteAccountEmail, {
 			jwt: this.dataService.user.JWT
 		});
 	}
@@ -318,7 +326,7 @@ export class UserPageComponent{
 	RemoveApp(){
 		this.removeAppDialogVisible = false;
 		this.sendRemoveAppEmailLoading = true;
-		this.socket.emit(sendRemoveAppEmailKey, {
+		this.websocketService.Emit(WebsocketCallbackType.SendRemoveAppEmail, {
 			jwt: this.dataService.user.JWT,
 			appId: this.selectedAppToRemove.Id
 		});

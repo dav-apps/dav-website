@@ -3,14 +3,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
-declare var io: any;
 declare var deviceAPI: any;
 
-const loginKey = "login";
-const loginImplicitKey = "loginImplicit";
-const createSessionKey = "createSession";
-const createSessionWithJwtKey = "createSessionWithJwt";
 const loginTypeImplicit = "implicit";
 const loginTypeSession = "session";
 const deviceInfoNotAvailable = "Not available";
@@ -21,7 +17,10 @@ const deviceInfoNotAvailable = "Not available";
 })
 export class LoginPageComponent{
 	locale = enUS.loginPage;
-	socket: any = null;
+	loginSubscriptionKey: number;
+	loginImplicitSubscriptionKey: number;
+	createSessionSubscriptionKey: number;
+	createSessionWithJwtSubscriptionKey: number;
 	loginType: LoginType = LoginType.Normal;
 	email: string = "";
 	password: string = "";
@@ -40,16 +39,16 @@ export class LoginPageComponent{
 
 	constructor(
 		public dataService: DataService,
+		public websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().loginPage;
 
-		this.socket = io();
-		this.socket.on(loginKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginResponse(response));
-		this.socket.on(loginImplicitKey, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginImplicitResponse(response));
-		this.socket.on(createSessionKey, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionResponse(response));
-		this.socket.on(createSessionWithJwtKey, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionWithJwtResponse(response));
+		this.loginSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.Login, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginResponse(response));
+		this.loginImplicitSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.LoginImplicit, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginImplicitResponse(response));
+		this.createSessionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateSession, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionResponse(response));
+		this.createSessionWithJwtSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateSessionWithJwt, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionWithJwtResponse(response));
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 		if(!type) return;
@@ -83,6 +82,15 @@ export class LoginPageComponent{
 		}, 1);
 	}
 
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(
+			this.loginSubscriptionKey,
+			this.loginImplicitSubscriptionKey,
+			this.createSessionSubscriptionKey,
+			this.createSessionWithJwtSubscriptionKey
+		)
+	}
+
 	Login(){
 		this.errorMessage = "";
 		this.loginLoading = true;
@@ -90,14 +98,14 @@ export class LoginPageComponent{
 		switch (this.loginType) {
 			case LoginType.Normal:
 				// Call login on the server
-				this.socket.emit(loginKey, {
+				this.websocketService.Emit(WebsocketCallbackType.Login, {
 					email: this.email,
 					password: this.password
 				});
 				break;
 			case LoginType.Implicit:
 				// Call loginImplicit on the server
-				this.socket.emit(loginImplicitKey, {
+				this.websocketService.Emit(WebsocketCallbackType.LoginImplicit, {
 					apiKey: this.apiKey,
 					email: this.email,
 					password: this.password
@@ -114,7 +122,7 @@ export class LoginPageComponent{
 				if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
 
 				// Call createSession on the server
-				this.socket.emit(createSessionKey, {
+				this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
 					email: this.email,
 					password: this.password,
 					appId: this.appId,
@@ -137,7 +145,7 @@ export class LoginPageComponent{
 		if(deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown;
 		if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
 
-		this.socket.emit(createSessionWithJwtKey, {
+		this.websocketService.Emit(WebsocketCallbackType.CreateSessionWithJwt, {
 			jwt: this.dataService.user.JWT,
 			appId: this.appId,
 			apiKey: this.apiKey,

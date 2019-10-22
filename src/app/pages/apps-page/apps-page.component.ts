@@ -2,9 +2,7 @@ import { Component } from '@angular/core';
 import { ApiResponse, ApiErrorResponse, App } from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from 'src/app/services/data-service';
-declare var io: any;
-
-const getAllAppsKey = "getAllApps";
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 
 @Component({
 	selector: 'dav-website-apps-page',
@@ -12,20 +10,23 @@ const getAllAppsKey = "getAllApps";
 })
 export class AppsPageComponent{
 	locale = enUS.appsPage;
-	socket: any = null;
+	getAllAppsSubscriptionKey: number;
 	apps: App[] = [];
 
 	constructor(
-		public dataService: DataService
+		public dataService: DataService,
+		public websocketService: WebsocketService
 	){
 		this.locale = this.dataService.GetLocale().appsPage;
 	}
 
 	ngOnInit(){
-		this.socket = io();
-		this.socket.on(getAllAppsKey, (message: (ApiResponse<App[]> | ApiErrorResponse)) => this.GetAllAppsResponse(message));
+		this.getAllAppsSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetAllApps, (message: (ApiResponse<App[]> | ApiErrorResponse)) => this.GetAllAppsResponse(message));
+		this.websocketService.Emit(WebsocketCallbackType.GetAllApps, {});
+	}
 
-		this.socket.emit(getAllAppsKey, {});
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(this.getAllAppsSubscriptionKey);
 	}
 
 	async GetAllAppsResponse(response: (ApiResponse<App[]> | ApiErrorResponse)){

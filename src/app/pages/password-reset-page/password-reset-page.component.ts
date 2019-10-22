@@ -3,10 +3,8 @@ import { Router } from '@angular/router';
 import { SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
-declare var io: any;
-
-const sendPasswordResetEmailKey = "sendPasswordResetEmail";
 
 @Component({
 	selector: 'dav-website-password-reset-page',
@@ -14,7 +12,7 @@ const sendPasswordResetEmailKey = "sendPasswordResetEmail";
 })
 export class PasswordResetPageComponent{
 	locale = enUS.passwordResetPage;
-	socket: any = null;
+	sendPasswordResetEmailSubscriptionKey: number;
 	email: string = "";
 	errorMessage: string = "";
 	loading: boolean = false;
@@ -22,14 +20,14 @@ export class PasswordResetPageComponent{
 
 	constructor(
 		public dataService: DataService,
+		public websocketService: WebsocketService,
 		private router: Router
 	){
 		this.locale = this.dataService.GetLocale().passwordResetPage;
 	}
 
 	ngOnInit(){
-		this.socket = io();
-		this.socket.on(sendPasswordResetEmailKey, (response: ApiResponse<{}> | ApiErrorResponse) => this.SendPasswordResetEmailResponse(response));
+		this.sendPasswordResetEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendPasswordResetEmail, (response: ApiResponse<{}> | ApiErrorResponse) => this.SendPasswordResetEmailResponse(response));
 	}
 
 	ngAfterViewInit(){
@@ -39,12 +37,16 @@ export class PasswordResetPageComponent{
 		}, 1);
 	}
 
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(this.sendPasswordResetEmailSubscriptionKey);
+	}
+
 	SendPasswordResetEmail(){
 		if(this.email.length < 3 || !this.email.includes('@')) return;
 
 		this.errorMessage = "";
 		this.loading = true;
-		this.socket.emit(sendPasswordResetEmailKey, {email: this.email});
+		this.websocketService.Emit(WebsocketCallbackType.SendPasswordResetEmail, {email: this.email});
 	}
 
 	SendPasswordResetEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){
