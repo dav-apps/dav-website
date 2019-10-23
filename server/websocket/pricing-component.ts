@@ -3,6 +3,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 import * as websocket from '../websocket';
 
 export const setStripeSubscriptionKey = "setStripeSubscription";
+export const getStripePaymentMethodKey = "getStripePaymentMethod";
 
 export async function setStripeSubscription(message: {customerId: string, planId: string}){
 	try{
@@ -42,6 +43,30 @@ export async function setStripeSubscription(message: {customerId: string, planId
 		});
 	}catch(error){
 		websocket.emit(setStripeSubscriptionKey, {
+			success: false,
+			response: error.raw
+		});
+	}
+}
+
+export async function getStripePaymentMethod(message: {customerId: string}){
+	try{
+		let result = await stripe.paymentMethods.list({
+			customer: message.customerId,
+			type: 'card'
+		});
+
+		let paymentMethod: any = null;
+		if(result.data.length > 0){
+			paymentMethod = result.data[0];
+		}
+
+		websocket.emit(getStripePaymentMethodKey, {
+			success: true,
+			response: paymentMethod
+		});
+	}catch(error){
+		websocket.emit(getStripePaymentMethodKey, {
 			success: false,
 			response: error.raw
 		});

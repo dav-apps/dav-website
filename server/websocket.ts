@@ -33,6 +33,7 @@ export function init(s: any){
 	socket.on(emailLinkPage.saveNewEmailKey, emailLinkPage.saveNewEmail);
 	socket.on(emailLinkPage.resetNewEmailKey, emailLinkPage.resetNewEmail);
 	socket.on(pricingComponent.setStripeSubscriptionKey, pricingComponent.setStripeSubscription);
+	socket.on(pricingComponent.getStripePaymentMethodKey, pricingComponent.getStripePaymentMethod);
 	socket.on(paymentFormComponent.createStripeCustomerForUserKey, paymentFormComponent.createStripeCustomerForUser);
 	socket.on(paymentFormComponent.saveStripePaymentMethodKey, paymentFormComponent.saveStripePaymentMethod);
 

@@ -76,8 +76,9 @@ export enum WebsocketCallbackType{
 	SaveNewEmail = 19,
 	ResetNewEmail = 20,
 	SetStripeSubscription = 21,
-	CreateStripeCustomerForUser = 22,
-	SaveStripePaymentMethod = 23
+	GetStripePaymentMethod = 22,
+	CreateStripeCustomerForUser = 23,
+	SaveStripePaymentMethod = 24
 }
 
 export const Callbacks = {
@@ -102,6 +103,7 @@ export const Callbacks = {
 	saveNewEmail: WebsocketCallbackType.SaveNewEmail,
 	resetNewEmail: WebsocketCallbackType.ResetNewEmail,
 	setStripeSubscription: WebsocketCallbackType.SetStripeSubscription,
+	getStripePaymentMethod: WebsocketCallbackType.GetStripePaymentMethod,
 	createStripeCustomerForUser: WebsocketCallbackType.CreateStripeCustomerForUser,
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod
 }
