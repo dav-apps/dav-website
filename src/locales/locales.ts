@@ -243,7 +243,8 @@ const enDefaults = {
 		save: "Save",
 		cancel: "Cancel",
 		paymentFormDialogTitle: "Enter payment information",
-		unexpectedError: "Unexpected error ({0})"
+		unexpectedError: "Unexpected error ({0})",
+		changePlanSuccessMessage: "Your plan has been successfully changed"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -502,7 +503,8 @@ const deDefaults = {
 		save: "Speichern",
 		cancel: "Abbrechen",
 		paymentFormDialogTitle: "Zahlungsinformationen eingeben",
-		unexpectedError: "Unerwarteter Fehler ({0})"
+		unexpectedError: "Unerwarteter Fehler ({0})",
+		changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

@@ -1,4 +1,5 @@
-<div class="mb-4 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
+<div class="mb-3 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
+<div class="mb-3 mx-auto" style="max-width: 300px" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
 <div class="row">
 	<div class="col-md-4 mt-3 mb-4">

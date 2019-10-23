@@ -16,12 +16,17 @@ export class PricingComponent{
 	locale = enUS.pricingComponent;
 	socket: any;
 	setStripeSubscriptionSubscriptionKey: number;
+	getStripePaymentMethodSubscriptionKey: number;
 	@ViewChild('paymentForm', {static: true}) paymentForm: PaymentFormComponent;
 	selectedPlan: number = -1;
 	paymentFormDialogVisible: boolean = false;
 	paymentFormLoading: boolean = false;
 	errorMessage: string = "";
+	successMessage: string = "";
 	errorMessageBarType: MessageBarType = MessageBarType.error;
+	successMessageBarType: MessageBarType = MessageBarType.success;
+	paymentMethod: Promise<any> = new Promise((resolve) => this.paymentMethodResolve = resolve);
+	paymentMethodResolve: Function;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
@@ -43,21 +48,48 @@ export class PricingComponent{
 
 	ngOnInit(){
 		this.setStripeSubscriptionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscription, (message: StripeApiResponse) => this.SetStripeSubscriptionResponse(message));
+		this.getStripePaymentMethodSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetStripePaymentMethod, (message: StripeApiResponse) => this.GetStripePaymentMethodResponse(message));
+
+		if(this.dataService.userLoaded){
+			if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
+				this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
+			}else{
+				this.paymentMethodResolve();
+			}
+		}else{
+			this.dataService.userLoadCallbacks.push(() => {
+				if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
+					this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
+				}else{
+					this.paymentMethodResolve();
+				}
+			});
+		}
 	}
 
 	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.setStripeSubscriptionSubscriptionKey);
+		this.websocketService.Unsubscribe(
+			this.setStripeSubscriptionSubscriptionKey,
+			this.getStripePaymentMethodSubscriptionKey
+		);
 	}
 
 	PaymentDialogSaveClick(){
 		this.paymentForm.SaveCard();
 	}
 
-	PlanButtonClick(plan: number){
+	async PlanButtonClick(plan: number){
 		this.selectedPlan = plan;
+		let paymentMethod = await this.paymentMethod;
 
-		this.paymentFormDialogVisible = true;
-		setTimeout(() => this.paymentForm.Init(), 1);
+		if(!paymentMethod){
+			// Show the payment form
+			this.paymentFormDialogVisible = true;
+			setTimeout(() => this.paymentForm.Init(), 1);
+		}else{
+			// Update the subscription as the user has a payment method
+			this.SetStripeSubscription();
+		}
 	}
 
 	PaymentMethodInputCompleted(){
@@ -80,8 +112,20 @@ export class PricingComponent{
 		if(message.success){
 			// Set the plan of the user
 			this.dataService.user.Plan = this.selectedPlan;
+			this.errorMessage = "";
+			this.successMessage = this.locale.changePlanSuccessMessage;
 		}else{
 			// Show error
+			this.successMessage = "";
+			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
+		}
+	}
+
+	GetStripePaymentMethodResponse(message: StripeApiResponse){
+		if(message.success){
+			this.paymentMethodResolve(message.response);
+		}else{
+			this.successMessage = "";
 			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
 		}
 	}
