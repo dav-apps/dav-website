@@ -95,7 +95,7 @@ export class PaymentFormComponent{
 	}
 
 	async CreatePaymentMethod(){
-		let result = await this.stripe.createPaymentMethod('card', this.card)
+		let result = await this.stripe.createPaymentMethod('card', this.card);
 
 		if(result.error){
 			// Show error

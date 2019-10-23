@@ -9,9 +9,9 @@
 			<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
 			<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
 		</div>
-		<p style="margin-bottom: 0px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
+		<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
 
-		<fab-default-button [styles]="editPaymentMethodButtonStyles">{{ locale.edit }}</fab-default-button>
+		<fab-default-button [styles]="editPaymentMethodButtonStyles" (click)="EditPaymentMethodClick()">{{ locale.edit }}</fab-default-button>
 	</div>
 </div>
 

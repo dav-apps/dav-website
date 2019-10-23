@@ -30,6 +30,7 @@ export class PricingComponent{
 	paymentMethodLast4: string;
 	paymentMethodExpirationMonth: string;
 	paymentMethodExpirationYear: string;
+	editPaymentMethod: boolean = false;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
@@ -59,21 +60,7 @@ export class PricingComponent{
 		this.setStripeSubscriptionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscription, (message: StripeApiResponse) => this.SetStripeSubscriptionResponse(message));
 		this.getStripePaymentMethodSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetStripePaymentMethod, (message: StripeApiResponse) => this.GetStripePaymentMethodResponse(message));
 
-		if(this.dataService.userLoaded){
-			if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
-				this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
-			}else{
-				this.paymentMethodResolve();
-			}
-		}else{
-			this.dataService.userLoadCallbacks.push(() => {
-				if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
-					this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
-				}else{
-					this.paymentMethodResolve();
-				}
-			});
-		}
+		this.LoadPaymentMethod();
 	}
 
 	ngOnDestroy(){
@@ -93,6 +80,7 @@ export class PricingComponent{
 
 		if(!paymentMethod){
 			// Show the payment form
+			this.editPaymentMethod = false;
 			this.paymentFormDialogVisible = true;
 			setTimeout(() => this.paymentForm.Init(), 1);
 		}else{
@@ -101,9 +89,24 @@ export class PricingComponent{
 		}
 	}
 
+	EditPaymentMethodClick(){
+		this.editPaymentMethod = true;
+		this.paymentFormDialogVisible = true;
+		setTimeout(() => this.paymentForm.Init(), 1);
+	}
+
 	PaymentMethodInputCompleted(){
 		this.paymentFormDialogVisible = false;
-		this.SetStripeSubscription();
+
+		if(!this.editPaymentMethod){
+			this.SetStripeSubscription();
+		}else{
+			this.errorMessage = "";
+			this.successMessage = this.locale.changePaymentMethodSuccessMessage;
+
+			// Get the new payment method from the server
+			this.LoadPaymentMethod();
+		}
 	}
 
 	SetStripeSubscription(){
@@ -115,6 +118,24 @@ export class PricingComponent{
 			customerId: this.dataService.user.StripeCustomerId,
 			planId
 		});
+	}
+
+	LoadPaymentMethod(){
+		if(this.dataService.userLoaded){
+			if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
+				this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
+			}else{
+				this.paymentMethodResolve();
+			}
+		}else{
+			this.dataService.userLoadCallbacks.push(() => {
+				if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
+					this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
+				}else{
+					this.paymentMethodResolve();
+				}
+			});
+		}
 	}
 
 	SetStripeSubscriptionResponse(message: StripeApiResponse){

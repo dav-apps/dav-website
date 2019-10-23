@@ -247,7 +247,8 @@ const enDefaults = {
 		changePlanSuccessMessage: "Your plan has been successfully changed",
 		paymentMethodCardHeader: "Your payment method",
 		cardExpires: "Expires",
-		edit: "Edit"
+		edit: "Edit",
+		changePaymentMethodSuccessMessage: "Your payment method has been successfully updated"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -510,7 +511,8 @@ const deDefaults = {
 		changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert",
 		paymentMethodCardHeader: "Deine Zahlungsmethode",
 		cardExpires: "Ablaufdatum:",
-		edit: "Bearbeiten"
+		edit: "Bearbeiten",
+		changePaymentMethodSuccessMessage: "Deine Zahlungsmethode wurde erfolgreich aktualisiert"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",
