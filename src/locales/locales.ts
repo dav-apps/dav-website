@@ -242,7 +242,8 @@ const enDefaults = {
 		downgrade: "Downgrade",
 		save: "Save",
 		cancel: "Cancel",
-		paymentFormDialogTitle: "Enter payment information"
+		paymentFormDialogTitle: "Enter payment information",
+		unexpectedError: "Unexpected error ({0})"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -500,7 +501,8 @@ const deDefaults = {
 		downgrade: "Downgrade",
 		save: "Speichern",
 		cancel: "Abbrechen",
-		paymentFormDialogTitle: "Zahlungsinformationen eingeben"
+		paymentFormDialogTitle: "Zahlungsinformationen eingeben",
+		unexpectedError: "Unerwarteter Fehler ({0})"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

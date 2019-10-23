@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
+import { IDialogContentProps, IButtonStyles, MessageBarType } from 'office-ui-fabric-react';
 import { DataService, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
@@ -20,6 +20,8 @@ export class PricingComponent{
 	selectedPlan: number = -1;
 	paymentFormDialogVisible: boolean = false;
 	paymentFormLoading: boolean = false;
+	errorMessage: string = "";
+	errorMessageBarType: MessageBarType = MessageBarType.error;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
@@ -79,7 +81,8 @@ export class PricingComponent{
 			// Set the plan of the user
 			this.dataService.user.Plan = this.selectedPlan;
 		}else{
-			// Todo: Show error
+			// Show error
+			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
 		}
 	}
 }
