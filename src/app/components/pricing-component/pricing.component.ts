@@ -120,21 +120,13 @@ export class PricingComponent{
 		});
 	}
 
-	LoadPaymentMethod(){
-		if(this.dataService.userLoaded){
-			if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
-				this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
-			}else{
-				this.paymentMethodResolve();
-			}
+	async LoadPaymentMethod(){
+		await this.dataService.userPromise;
+
+		if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
+			this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
 		}else{
-			this.dataService.userLoadCallbacks.push(() => {
-				if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
-					this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
-				}else{
-					this.paymentMethodResolve();
-				}
-			});
+			this.paymentMethodResolve();
 		}
 	}
 

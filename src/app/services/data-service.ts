@@ -7,19 +7,15 @@ export class DataService{
 	user: DavUser;
 	locale: string = navigator.language;
 	hideNavbarAndFooter: boolean = false;
-	userLoaded: boolean = false;
-	userLoadCallbacks: Function[] = [];
+	userPromise: Promise<DavUser> = new Promise(resolve => this.userPromiseResolve = resolve);
+	userPromiseResolve: Function;
 	userDownloaded: boolean = false;
 	userDownloadCallbacks: Function[] = [];
 	startPageErrorMessage: string = "";
 	startPageSuccessMessage: string = "";
 
 	constructor(){
-		this.user = new DavUser(() => {
-			this.userLoaded = true;
-			for(let callback of this.userLoadCallbacks) callback();
-			this.userLoadCallbacks = [];
-		});
+		this.user = new DavUser(() => this.userPromiseResolve(this.user));
 	}
 
 	GetLocale(){

@@ -174,12 +174,7 @@ export class UserPageComponent{
 		this.sendDeleteAccountEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendDeleteAccountEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
 		this.sendRemoveAppEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendRemoveAppEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendRemoveAppEmailResponse(message));
 
-		if(!this.dataService.userLoaded){
-			// Wait for the user to be loaded
-			await new Promise<any>(resolve => {
-				this.dataService.userLoadCallbacks.push(resolve);
-			});
-		}
+		await this.dataService.userPromise;
 		this.UpdateUsedStoragePercent();
 
 		// Set the values for the text fields
