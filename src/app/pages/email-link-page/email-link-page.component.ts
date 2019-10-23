@@ -152,17 +152,11 @@ export class EmailLinkPageComponent{
 
 	async DeleteUserResponse(response: ApiResponse<{}> | ApiErrorResponse){
 		if(response.status == 200){
-			if(this.dataService.userDownloaded){
-				// Log out the user
-				await this.dataService.user.Logout();
-				this.RedirectToStartPageWithSuccess(this.locale.deleteUserMessage);
-			}else{
-				this.dataService.userDownloadCallbacks.push(async () => {
-					// Log out the user
-					await this.dataService.user.Logout();
-					this.RedirectToStartPageWithSuccess(this.locale.deleteUserMessage);
-				});
-			}
+			await this.dataService.userDownloadPromise;
+
+			// Log out the user
+			await this.dataService.user.Logout();
+			this.RedirectToStartPageWithSuccess(this.locale.deleteUserMessage);
 		}else{
 			this.RedirectToStartPageWithError();
 		}

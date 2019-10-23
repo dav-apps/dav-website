@@ -9,8 +9,8 @@ export class DataService{
 	hideNavbarAndFooter: boolean = false;
 	userPromise: Promise<DavUser> = new Promise(resolve => this.userPromiseResolve = resolve);
 	userPromiseResolve: Function;
-	userDownloaded: boolean = false;
-	userDownloadCallbacks: Function[] = [];
+	userDownloadPromise: Promise<any> = new Promise(resolve => this.userDownloadPromiseResolve = resolve);
+	userDownloadPromiseResolve: Function;
 	startPageErrorMessage: string = "";
 	startPageSuccessMessage: string = "";
 

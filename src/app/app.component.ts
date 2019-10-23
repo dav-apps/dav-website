@@ -49,11 +49,7 @@ export class AppComponent {
 				UpdateAllOfTable: () => {},
 				UpdateTableObject: () => {},
 				DeleteTableObject: () => {},
-				UserDownloadFinished: () => {
-					this.dataService.userDownloaded = true;
-					for(let callback of this.dataService.userDownloadCallbacks) callback();
-					this.dataService.userDownloadCallbacks = [];
-				},
+				UserDownloadFinished: () => this.dataService.userDownloadPromiseResolve(),
 				SyncFinished: () => {}
 			}
 		)
