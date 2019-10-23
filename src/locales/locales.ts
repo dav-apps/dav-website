@@ -244,7 +244,10 @@ const enDefaults = {
 		cancel: "Cancel",
 		paymentFormDialogTitle: "Enter payment information",
 		unexpectedError: "Unexpected error ({0})",
-		changePlanSuccessMessage: "Your plan has been successfully changed"
+		changePlanSuccessMessage: "Your plan has been successfully changed",
+		paymentMethodCardHeader: "Your payment method",
+		cardExpires: "Expires",
+		edit: "Edit"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -504,7 +507,10 @@ const deDefaults = {
 		cancel: "Abbrechen",
 		paymentFormDialogTitle: "Zahlungsinformationen eingeben",
 		unexpectedError: "Unerwarteter Fehler ({0})",
-		changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert"
+		changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert",
+		paymentMethodCardHeader: "Deine Zahlungsmethode",
+		cardExpires: "Ablaufdatum:",
+		edit: "Bearbeiten"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

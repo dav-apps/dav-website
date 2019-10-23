@@ -27,6 +27,9 @@ export class PricingComponent{
 	successMessageBarType: MessageBarType = MessageBarType.success;
 	paymentMethod: Promise<any> = new Promise((resolve) => this.paymentMethodResolve = resolve);
 	paymentMethodResolve: Function;
+	paymentMethodLast4: string;
+	paymentMethodExpirationMonth: string;
+	paymentMethodExpirationYear: string;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
@@ -35,6 +38,12 @@ export class PricingComponent{
 		root: {
 			transition: buttonTransition,
 			marginLeft: 10
+		}
+	}
+	editPaymentMethodButtonStyles: IButtonStyles = {
+		root: {
+			float: 'right',
+			marginBottom: 16
 		}
 	}
 
@@ -124,6 +133,15 @@ export class PricingComponent{
 	GetStripePaymentMethodResponse(message: StripeApiResponse){
 		if(message.success){
 			this.paymentMethodResolve(message.response);
+
+			// Get last 4 and expiration date to show at the top of the page
+			this.paymentMethodLast4 = message.response.card.last4;
+			this.paymentMethodExpirationMonth = message.response.card.exp_month.toString();
+			this.paymentMethodExpirationYear = message.response.card.exp_year.toString().substring(2);
+
+			if(this.paymentMethodExpirationMonth.length == 1){
+				this.paymentMethodExpirationMonth = "0" + this.paymentMethodExpirationMonth;
+			}
 		}else{
 			this.successMessage = "";
 			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
