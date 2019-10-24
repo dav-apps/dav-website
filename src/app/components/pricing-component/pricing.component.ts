@@ -36,6 +36,9 @@ export class PricingComponent{
 	editPaymentMethod: boolean = false;
 	periodEndDate: string;
 	continueOrCancelSubscriptionLoading: boolean = false;
+	freePlanLoading: boolean = false;
+	plusPlanLoading: boolean = false;
+	proPlanLoading: boolean = false;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
@@ -83,6 +86,24 @@ export class PricingComponent{
 	async PlanButtonClick(plan: number){
 		this.selectedPlan = plan;
 		let paymentMethod = await this.paymentMethod;
+
+		switch (this.selectedPlan) {
+			case 0:
+				this.freePlanLoading = true;
+				this.plusPlanLoading = false;
+				this.proPlanLoading = false;
+				break;
+			case 1:
+				this.freePlanLoading = false;
+				this.plusPlanLoading = true;
+				this.proPlanLoading = false;
+				break;
+			case 2:
+				this.freePlanLoading = false;
+				this.plusPlanLoading = false;
+				this.proPlanLoading = true;
+				break;
+		}
 
 		if(!paymentMethod){
 			// Show the payment form
@@ -145,9 +166,11 @@ export class PricingComponent{
 			this.paymentMethodResolve();
 		}
 
-		// Show the date of the next payment or the subscription end
-		moment.locale(this.dataService.locale);
-		this.periodEndDate = moment(this.dataService.user.PeriodEnd).format('LL');
+		if(this.dataService.user.Plan > 0 && this.dataService.user.PeriodEnd){
+			// Show the date of the next payment or the subscription end
+			moment.locale(this.dataService.locale);
+			this.periodEndDate = moment(this.dataService.user.PeriodEnd).format('LL');
+		}
 	}
 
 	SetStripeSubscriptionResponse(message: StripeApiResponse){
@@ -168,6 +191,10 @@ export class PricingComponent{
 			this.successMessage = "";
 			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
 		}
+
+		this.freePlanLoading = false;
+		this.plusPlanLoading = false;
+		this.proPlanLoading = false;
 	}
 
 	GetStripePaymentMethodResponse(message: StripeApiResponse){

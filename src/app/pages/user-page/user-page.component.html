@@ -138,7 +138,7 @@
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 1">
 			<h1 class="text-center font-weight-light" [ngClass]="dataService.user.Plan == 0 ? 'mb-3' : 'mb-0'">{{ locale.plans.title }}</h1>
 
-			<div class="mx-auto my-3" style="width: 250px" *ngIf="errorMessage.length > 0 || successMessage.length > 0">
+			<div class="mx-auto my-2" style="width: 250px" *ngIf="errorMessage.length > 0 || successMessage.length > 0">
 				<div *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
 				<div *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 			</div>

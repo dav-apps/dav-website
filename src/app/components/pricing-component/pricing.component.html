@@ -1,5 +1,5 @@
-<div class="my-3 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
-<div class="my-3 mx-auto" style="max-width: 300px" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
+<div class="my-2 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
+<div class="my-2 mx-auto" style="max-width: 300px" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
 <div class="row">
 	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
@@ -16,7 +16,7 @@
 		</div>
 	</div>
 	
-	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px">
+	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="dataService.user.Plan > 0 && dataService.user.PeriodEnd">
 		<div class="card-body">
 			<h5 class="font-weight-light">{{ dataService.user.SubscriptionStatus == 0 ? locale.nextPayment : locale.subscriptionEnd }}</h5>
 			<p>{{ periodEndDate }}</p>
@@ -41,9 +41,15 @@
 					<li class="list-group-item border-left-0 border-right-0">{{ locale.noAds }}</li>
 				</ul>
 				<br>
-				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
-				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">{{ locale.currentPlan }}</button>
-				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 1 || dataService.user.Plan == 2)" (click)="PlanButtonClick(0)" [disabled]="dataService.user.SubscriptionStatus == 1">{{ locale.downgrade }}</button>
+
+				<div style="display: inline-block">
+					<div class="d-flex">
+						<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
+						<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">{{ locale.currentPlan }}</button>
+						<button type="button" class="btn btn-outline-danger" [style.marginLeft]="freePlanLoading ? '32px' : '0px'" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 1 || dataService.user.Plan == 2)" (click)="PlanButtonClick(0)" [disabled]="dataService.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading">{{ locale.downgrade }}</button>
+						<div style="margin-top: 11px; margin-left: 16px" *ngIf="freePlanLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -61,10 +67,16 @@
 					<li class="list-group-item border-left-0 border-right-0">{{ locale.plus.features }}</li>
 				</ul>
 				<br>
-				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
-				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0" (click)="PlanButtonClick(1)">{{ locale.upgrade }}</button>
-				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 1">{{ locale.currentPlan }}</button>
-				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2" (click)="PlanButtonClick(1)" [disabled]="dataService.user.SubscriptionStatus == 1">{{ locale.downgrade }}</button>
+
+				<div style="display: inline-block">
+					<div class="d-flex">
+						<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
+						<button type="button" class="btn btn-primary" [style.marginLeft]="plusPlanLoading ? '32px' : '0px'" [disabled]="!dataService.user.Confirmed || freePlanLoading || plusPlanLoading || proPlanLoading" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0" (click)="PlanButtonClick(1)">{{ locale.upgrade }}</button>
+						<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 1">{{ locale.currentPlan }}</button>
+						<button type="button" class="btn btn-outline-danger" [style.marginLeft]="plusPlanLoading ? '32px' : '0px'" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2" (click)="PlanButtonClick(1)" [disabled]="dataService.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading">{{ locale.downgrade }}</button>
+						<div style="margin-top: 11px; margin-left: 16px" *ngIf="plusPlanLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -83,9 +95,15 @@
 					<li class="list-group-item border-left-0 border-right-0">{{ locale.pro.features }}</li>
 				</ul>
 				<br>
-				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
-				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 0 || dataService.user.Plan == 1)" (click)="PlanButtonClick(2)" [disabled]="dataService.user.SubscriptionStatus == 1">{{ locale.upgrade }}</button>
-				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">{{ locale.currentPlan }}</button>
+
+				<div style="display: inline-block">
+					<div class="d-flex">
+						<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
+						<button type="button" class="btn btn-primary" [style.marginLeft]="proPlanLoading ? '32px' : '0px'" [disabled]="!dataService.user.Confirmed || dataService.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 0 || dataService.user.Plan == 1)" (click)="PlanButtonClick(2)">{{ locale.upgrade }}</button>
+						<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">{{ locale.currentPlan }}</button>
+						<div style="margin-top: 11px; margin-left: 16px" *ngIf="proPlanLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
