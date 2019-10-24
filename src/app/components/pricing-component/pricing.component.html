@@ -16,7 +16,7 @@
 		</div>
 	</div>
 	
-	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="dataService.user.Plan > 0 && dataService.user.PeriodEnd">
+	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="dataService.user.Plan > 0 && periodEndDate">
 		<div class="card-body">
 			<h5 class="font-weight-light">{{ dataService.user.SubscriptionStatus == 0 ? locale.nextPayment : locale.subscriptionEnd }}</h5>
 			<p>{{ periodEndDate }}</p>
@@ -118,6 +118,17 @@
 	<fab-dialog-footer>
 		<div [style.display]="paymentFormLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 		<fab-default-button (click)="paymentFormDialogVisible = false" [disabled]="paymentFormLoading">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button id="paymentFormDialogSaveButton" [styles]="paymentFormSaveDialogButtonStyles" [disabled]="paymentFormLoading" (click)="PaymentDialogSaveClick()">{{ locale.save }}</fab-primary-button>
+		<fab-primary-button id="paymentFormDialogSaveButton" [styles]="dialogPrimaryButtonStyles" [disabled]="paymentFormLoading" (click)="PaymentDialogSaveClick()">{{ locale.save }}</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>
+
+<fab-dialog
+	[hidden]="!upgradeDialogVisible"
+	[dialogContentProps]="upgradeDialogContent"
+	(onDismiss)="upgradeDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">
+
+	<fab-dialog-footer>
+		<fab-default-button (click)="upgradeDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="SetStripeSubscription()">{{ locale.continue }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

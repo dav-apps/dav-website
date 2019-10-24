@@ -254,7 +254,12 @@ const enDefaults = {
 		continueSubscription: "Continue subscription",
 		cancelSubscription: "Cancel subscription",
 		continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
-		cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}"
+		cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
+		upgradePlusDialogTitle: "Upgrade to Plus",
+		upgradeProDialogTitle: "Upgrade to Pro",
+		upgradePlusDialogSubtext: "Do you want to upgrade to dav Plus for 3 € per month?",
+		upgradeProDialogSubtext: "Do you want to upgrade to dav Pro for 10 € per month?",
+		continue: "Continue"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -524,7 +529,12 @@ const deDefaults = {
 		continueSubscription: "Abo fortführen",
 		cancelSubscription: "Abo beenden",
 		continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
-		cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert"
+		cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
+		upgradePlusDialogTitle: "Upgrade auf Plus",
+		upgradeProDialogTitle: "Upgrade auf Pro",
+		upgradePlusDialogSubtext: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
+		upgradeProDialogSubtext: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
+		continue: "Weiter"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

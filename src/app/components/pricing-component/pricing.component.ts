@@ -39,11 +39,12 @@ export class PricingComponent{
 	freePlanLoading: boolean = false;
 	plusPlanLoading: boolean = false;
 	proPlanLoading: boolean = false;
+	upgradeDialogVisible: boolean = false;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
 	}
-	paymentFormSaveDialogButtonStyles: IButtonStyles = {
+	dialogPrimaryButtonStyles: IButtonStyles = {
 		root: {
 			transition: buttonTransition,
 			marginLeft: 10
@@ -53,6 +54,15 @@ export class PricingComponent{
 		root: {
 			float: 'right',
 			marginBottom: 16
+		}
+	}
+	upgradeDialogContent: IDialogContentProps = {
+		title: this.locale.upgradePlusDialogTitle,
+		subText: this.locale.upgradePlusDialogSubtext,
+		styles: {
+			subText: {
+				fontSize: 14
+			}
 		}
 	}
 
@@ -87,29 +97,23 @@ export class PricingComponent{
 		this.selectedPlan = plan;
 		let paymentMethod = await this.paymentMethod;
 
-		switch (this.selectedPlan) {
-			case 0:
-				this.freePlanLoading = true;
-				this.plusPlanLoading = false;
-				this.proPlanLoading = false;
-				break;
-			case 1:
-				this.freePlanLoading = false;
-				this.plusPlanLoading = true;
-				this.proPlanLoading = false;
-				break;
-			case 2:
-				this.freePlanLoading = false;
-				this.plusPlanLoading = false;
-				this.proPlanLoading = true;
-				break;
-		}
-
 		if(!paymentMethod){
 			// Show the payment form
 			this.editPaymentMethod = false;
 			this.paymentFormDialogVisible = true;
 			setTimeout(() => this.paymentForm.Init(), 1);
+		}else if(this.dataService.user.Plan == 0){
+			// Update the values of the upgrade dialog
+			if(this.selectedPlan == 2){
+				this.upgradeDialogContent.title = this.locale.upgradeProDialogTitle;
+				this.upgradeDialogContent.subText = this.locale.upgradeProDialogSubtext;
+			}else{
+				this.upgradeDialogContent.title = this.locale.upgradePlusDialogTitle;
+				this.upgradeDialogContent.subText = this.locale.upgradePlusDialogSubtext;
+			}
+
+			// Show the upgrade dialog
+			this.upgradeDialogVisible = true;
 		}else{
 			// Update the subscription as the user has a payment method
 			this.SetStripeSubscription();
@@ -139,13 +143,32 @@ export class PricingComponent{
 		}else{
 			this.errorMessage = "";
 			this.successMessage = this.locale.changePaymentMethodSuccessMessage;
-
-			// Get the new payment method from the server
-			this.UpdateSubscriptionDetails();
 		}
+
+		// Get the new payment method from the server
+		this.UpdateSubscriptionDetails();
 	}
 
 	SetStripeSubscription(){
+		this.upgradeDialogVisible = false;
+		switch (this.selectedPlan) {
+			case 0:
+				this.freePlanLoading = true;
+				this.plusPlanLoading = false;
+				this.proPlanLoading = false;
+				break;
+			case 1:
+				this.freePlanLoading = false;
+				this.plusPlanLoading = true;
+				this.proPlanLoading = false;
+				break;
+			case 2:
+				this.freePlanLoading = false;
+				this.plusPlanLoading = false;
+				this.proPlanLoading = true;
+				break;
+		}
+
 		let planId = null;
 		if(this.selectedPlan == 1) planId = environment.stripeDavPlusEurPlanId;
 		else if(this.selectedPlan == 2) planId = environment.stripeDavProEurPlanId;
