@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IDialogContentProps, IButtonStyles, MessageBarType } from 'office-ui-fabric-react';
+import { IDialogContentProps, IButtonStyles, MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
 import { DataService, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
@@ -27,6 +27,7 @@ export class PricingComponent{
 	successMessage: string = "";
 	errorMessageBarType: MessageBarType = MessageBarType.error;
 	successMessageBarType: MessageBarType = MessageBarType.success;
+	spinnerSize: SpinnerSize = SpinnerSize.small;
 	paymentMethod: Promise<any> = new Promise((resolve) => this.paymentMethodResolve = resolve);
 	paymentMethodResolve: Function;
 	paymentMethodLast4: string;
@@ -34,6 +35,7 @@ export class PricingComponent{
 	paymentMethodExpirationYear: string;
 	editPaymentMethod: boolean = false;
 	periodEndDate: string;
+	continueOrCancelSubscriptionLoading: boolean = false;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
@@ -48,13 +50,6 @@ export class PricingComponent{
 		root: {
 			float: 'right',
 			marginBottom: 16
-		}
-	}
-	continueOrCancelSubscriptionButtonStles: IButtonStyles = {
-		root: {
-			float: 'right',
-			marginBottom: 16,
-			marginTop: 27
 		}
 	}
 
@@ -107,6 +102,8 @@ export class PricingComponent{
 	}
 
 	ContinueOrCancelButtonClick(){
+		this.continueOrCancelSubscriptionLoading = true;
+		
 		this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscriptionCancelled, {
 			customerId: this.dataService.user.StripeCustomerId,
 			cancel: this.dataService.user.SubscriptionStatus == 0
@@ -192,6 +189,8 @@ export class PricingComponent{
 	}
 
 	SetStripeSubscriptionCancelledResponse(message: StripeApiResponse){
+		this.continueOrCancelSubscriptionLoading = false;
+
 		if(message.success){
 			this.errorMessage = "";
 			this.successMessage = (this.dataService.user.SubscriptionStatus == 0 ? this.locale.cancelSubscriptionSuccessMessage : this.locale.continueSubscriptionSuccessMessage).replace('{0}', this.periodEndDate);

@@ -21,7 +21,10 @@
 			<h5 class="font-weight-light">{{ dataService.user.SubscriptionStatus == 0 ? locale.nextPayment : locale.subscriptionEnd }}</h5>
 			<p>{{ periodEndDate }}</p>
 
-			<fab-default-button [styles]="continueOrCancelSubscriptionButtonStles" (click)="ContinueOrCancelButtonClick()">{{ dataService.user.SubscriptionStatus == 0 ? locale.cancelSubscription : locale.continueSubscription }}</fab-default-button>
+			<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
+				<div style="margin-top: 8px; margin-right: 14px" *ngIf="continueOrCancelSubscriptionLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+				<fab-default-button (click)="ContinueOrCancelButtonClick()" [disabled]="continueOrCancelSubscriptionLoading">{{ dataService.user.SubscriptionStatus == 0 ? locale.cancelSubscription : locale.continueSubscription }}</fab-default-button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -95,6 +98,7 @@
 	<dav-website-payment-form #paymentForm [showSaveButton]="false" (completed)="PaymentMethodInputCompleted()" (loadingStart)="paymentFormLoading = true" (loadingEnd)="paymentFormLoading = false"></dav-website-payment-form>
 
 	<fab-dialog-footer>
+		<div [style.display]="paymentFormLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 		<fab-default-button (click)="paymentFormDialogVisible = false" [disabled]="paymentFormLoading">{{ locale.cancel }}</fab-default-button>
 		<fab-primary-button id="paymentFormDialogSaveButton" [styles]="paymentFormSaveDialogButtonStyles" [disabled]="paymentFormLoading" (click)="PaymentDialogSaveClick()">{{ locale.save }}</fab-primary-button>
 	</fab-dialog-footer>
