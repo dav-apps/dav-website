@@ -1,17 +1,26 @@
 <div class="mb-3 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
 <div class="mb-3 mx-auto" style="max-width: 300px" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
-<div class="card shadow" style="display: inline-block" *ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
-	<div class="card-body">
-		<h5 class="font-weight-light mb-3">{{ locale.paymentMethodCardHeader }}</h5>
-
-		<div class="d-flex">
-			<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
-			<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
+<div class="row">
+	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
+		<div class="card-body">
+			<h5 class="font-weight-light mb-3">{{ locale.paymentMethodCardHeader }}</h5>
+	
+			<div class="d-flex">
+				<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+				<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
+			</div>
+			<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
+	
+			<fab-default-button [styles]="editPaymentMethodButtonStyles" (click)="EditPaymentMethodClick()">{{ locale.edit }}</fab-default-button>
 		</div>
-		<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
-
-		<fab-default-button [styles]="editPaymentMethodButtonStyles" (click)="EditPaymentMethodClick()">{{ locale.edit }}</fab-default-button>
+	</div>
+	
+	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px">
+		<div class="card-body">
+			<h5 class="font-weight-light">{{ locale.nextPayment }}</h5>
+			<p>{{ periodEndDate }}</p>
+		</div>
 	</div>
 </div>
 

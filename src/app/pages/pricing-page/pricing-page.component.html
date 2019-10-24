@@ -1,5 +1,5 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn">
-	<h1 class="text-center font-weight-light mb-3">{{ locale.title }}</h1>
+	<h1 class="text-center font-weight-light" [ngClass]="dataService.user.Plan == 0 ? 'mb-3' : 'mb-0'">{{ locale.title }}</h1>
 
 	<dav-website-pricing></dav-website-pricing>
 </div>

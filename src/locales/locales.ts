@@ -248,7 +248,8 @@ const enDefaults = {
 		paymentMethodCardHeader: "Your payment method",
 		cardExpires: "Expires",
 		edit: "Edit",
-		changePaymentMethodSuccessMessage: "Your payment method has been successfully updated"
+		changePaymentMethodSuccessMessage: "Your payment method has been successfully updated",
+		nextPayment: "Next payment"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -512,7 +513,8 @@ const deDefaults = {
 		paymentMethodCardHeader: "Deine Zahlungsmethode",
 		cardExpires: "Ablaufdatum:",
 		edit: "Bearbeiten",
-		changePaymentMethodSuccessMessage: "Deine Zahlungsmethode wurde erfolgreich aktualisiert"
+		changePaymentMethodSuccessMessage: "Deine Zahlungsmethode wurde erfolgreich aktualisiert",
+		nextPayment: "Nächste Zahlung"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

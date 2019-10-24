@@ -27,7 +27,8 @@ export async function setStripeSubscription(message: {customerId: string, planId
 					items: [{
 						id: subscriptionItem.id,
 						plan: message.planId
-					}]
+					}],
+					cancel_at_period_end: false
 				});
 			}
 		}else{

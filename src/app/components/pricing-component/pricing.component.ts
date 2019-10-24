@@ -5,6 +5,7 @@ import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websoc
 import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
 import { PaymentFormComponent } from '../payment-form-component/payment-form.component';
+import * as moment from 'moment';
 
 const buttonTransition = "all 0.15s";
 
@@ -31,6 +32,7 @@ export class PricingComponent{
 	paymentMethodExpirationMonth: string;
 	paymentMethodExpirationYear: string;
 	editPaymentMethod: boolean = false;
+	periodEndDate: string;
 
 	paymentFormDialogContent: IDialogContentProps = {
 		title: this.locale.paymentFormDialogTitle
@@ -60,7 +62,7 @@ export class PricingComponent{
 		this.setStripeSubscriptionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscription, (message: StripeApiResponse) => this.SetStripeSubscriptionResponse(message));
 		this.getStripePaymentMethodSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetStripePaymentMethod, (message: StripeApiResponse) => this.GetStripePaymentMethodResponse(message));
 
-		this.LoadPaymentMethod();
+		this.UpdateSubscriptionDetails();
 	}
 
 	ngOnDestroy(){
@@ -105,7 +107,7 @@ export class PricingComponent{
 			this.successMessage = this.locale.changePaymentMethodSuccessMessage;
 
 			// Get the new payment method from the server
-			this.LoadPaymentMethod();
+			this.UpdateSubscriptionDetails();
 		}
 	}
 
@@ -120,14 +122,19 @@ export class PricingComponent{
 		});
 	}
 
-	async LoadPaymentMethod(){
+	async UpdateSubscriptionDetails(){
 		await this.dataService.userPromise;
 
+		// Get the payment method
 		if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
 			this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
 		}else{
 			this.paymentMethodResolve();
 		}
+
+		// Show the date of the next payment or the subscription end
+		moment.locale(this.dataService.locale);
+		this.periodEndDate = moment(this.dataService.user.PeriodEnd).format('LL');
 	}
 
 	SetStripeSubscriptionResponse(message: StripeApiResponse){
