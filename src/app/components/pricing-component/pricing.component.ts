@@ -18,6 +18,7 @@ export class PricingComponent{
 	socket: any;
 	setStripeSubscriptionSubscriptionKey: number;
 	getStripePaymentMethodSubscriptionKey: number;
+	setStripeSubscriptionCancelledSubscriptionKey: number;
 	@ViewChild('paymentForm', {static: true}) paymentForm: PaymentFormComponent;
 	selectedPlan: number = -1;
 	paymentFormDialogVisible: boolean = false;
@@ -68,6 +69,7 @@ export class PricingComponent{
 	ngOnInit(){
 		this.setStripeSubscriptionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscription, (message: StripeApiResponse) => this.SetStripeSubscriptionResponse(message));
 		this.getStripePaymentMethodSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetStripePaymentMethod, (message: StripeApiResponse) => this.GetStripePaymentMethodResponse(message));
+		this.setStripeSubscriptionCancelledSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscriptionCancelled, (message: StripeApiResponse) => this.SetStripeSubscriptionCancelledResponse(message));
 
 		this.UpdateSubscriptionDetails();
 	}
@@ -105,7 +107,10 @@ export class PricingComponent{
 	}
 
 	ContinueOrCancelButtonClick(){
-		
+		this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscriptionCancelled, {
+			customerId: this.dataService.user.StripeCustomerId,
+			cancel: this.dataService.user.SubscriptionStatus == 0
+		});
 	}
 
 	PaymentMethodInputCompleted(){
@@ -173,6 +178,17 @@ export class PricingComponent{
 			if(this.paymentMethodExpirationMonth.length == 1){
 				this.paymentMethodExpirationMonth = "0" + this.paymentMethodExpirationMonth;
 			}
+		}else{
+			this.successMessage = "";
+			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
+		}
+	}
+
+	SetStripeSubscriptionCancelledResponse(message: StripeApiResponse){
+		if(message.success){
+			this.errorMessage = "";
+			this.successMessage = (this.dataService.user.SubscriptionStatus == 0 ? this.locale.cancelSubscriptionSuccessMessage : this.locale.continueSubscriptionSuccessMessage).replace('{0}', this.periodEndDate);
+			this.dataService.user.SubscriptionStatus = this.dataService.user.SubscriptionStatus == 0 ? 1 : 0;
 		}else{
 			this.successMessage = "";
 			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);

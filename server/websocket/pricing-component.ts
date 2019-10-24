@@ -4,6 +4,7 @@ import * as websocket from '../websocket';
 
 export const setStripeSubscriptionKey = "setStripeSubscription";
 export const getStripePaymentMethodKey = "getStripePaymentMethod";
+export const setStripeSubscriptionCancelledKey = "setStripeSubscriptionCancelled";
 
 export async function setStripeSubscription(message: {customerId: string, planId: string}){
 	try{
@@ -68,6 +69,32 @@ export async function getStripePaymentMethod(message: {customerId: string}){
 		});
 	}catch(error){
 		websocket.emit(getStripePaymentMethodKey, {
+			success: false,
+			response: error.raw
+		});
+	}
+}
+
+export async function setStripeSubscriptionCancelled(message: {customerId: string, cancel: boolean}){
+	try{
+		// Get the current subscription of the customer
+		let subscriptions = await stripe.subscriptions.list({customer: message.customerId});
+		let subscriptionId = "";
+
+		if(subscriptions.data.length > 0){
+			subscriptionId = subscriptions.data[0].id;
+		}
+
+		let result = await stripe.subscriptions.update(subscriptionId, {
+			cancel_at_period_end: message.cancel
+		});
+
+		websocket.emit(setStripeSubscriptionCancelledKey, {
+			success: true,
+			response: result
+		});
+	}catch(error){
+		websocket.emit(setStripeSubscriptionCancelledKey, {
 			success: false,
 			response: error.raw
 		});
