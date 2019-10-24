@@ -249,7 +249,12 @@ const enDefaults = {
 		cardExpires: "Expires",
 		edit: "Edit",
 		changePaymentMethodSuccessMessage: "Your payment method has been successfully updated",
-		nextPayment: "Next payment"
+		nextPayment: "Next payment",
+		subscriptionEnd: "Subscription end",
+		continueSubscription: "Continue subscription",
+		cancelSubscription: "Cancel subscription",
+		continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
+		cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -514,7 +519,12 @@ const deDefaults = {
 		cardExpires: "Ablaufdatum:",
 		edit: "Bearbeiten",
 		changePaymentMethodSuccessMessage: "Deine Zahlungsmethode wurde erfolgreich aktualisiert",
-		nextPayment: "Nächste Zahlung"
+		nextPayment: "Nächste Zahlung",
+		subscriptionEnd: "Ende deines Abos",
+		continueSubscription: "Abo fortführen",
+		cancelSubscription: "Abo beenden",
+		continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
+		cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

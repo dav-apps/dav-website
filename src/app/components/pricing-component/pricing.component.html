@@ -1,5 +1,5 @@
-<div class="mb-3 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
-<div class="mb-3 mx-auto" style="max-width: 300px" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
+<div class="my-3 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
+<div class="my-3 mx-auto" style="max-width: 300px" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
 <div class="row">
 	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
@@ -18,8 +18,10 @@
 	
 	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px">
 		<div class="card-body">
-			<h5 class="font-weight-light">{{ locale.nextPayment }}</h5>
+			<h5 class="font-weight-light">{{ dataService.user.SubscriptionStatus == 0 ? locale.nextPayment : locale.subscriptionEnd }}</h5>
 			<p>{{ periodEndDate }}</p>
+
+			<fab-default-button [styles]="continueOrCancelSubscriptionButtonStles" (click)="ContinueOrCancelButtonClick()">{{ dataService.user.SubscriptionStatus == 0 ? locale.cancelSubscription : locale.continueSubscription }}</fab-default-button>
 		</div>
 	</div>
 </div>
@@ -38,7 +40,7 @@
 				<br>
 				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
 				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0">{{ locale.currentPlan }}</button>
-				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 1 || dataService.user.Plan == 2)" (click)="PlanButtonClick(0)">{{ locale.downgrade }}</button>
+				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 1 || dataService.user.Plan == 2)" (click)="PlanButtonClick(0)" [disabled]="dataService.user.SubscriptionStatus == 1">{{ locale.downgrade }}</button>
 			</div>
 		</div>
 	</div>
@@ -59,7 +61,7 @@
 				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
 				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 0" (click)="PlanButtonClick(1)">{{ locale.upgrade }}</button>
 				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 1">{{ locale.currentPlan }}</button>
-				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2" (click)="PlanButtonClick(1)">{{ locale.downgrade }}</button>
+				<button type="button" class="btn btn-outline-danger" *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2" (click)="PlanButtonClick(1)" [disabled]="dataService.user.SubscriptionStatus == 1">{{ locale.downgrade }}</button>
 			</div>
 		</div>
 	</div>

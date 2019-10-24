@@ -49,6 +49,13 @@ export class PricingComponent{
 			marginBottom: 16
 		}
 	}
+	continueOrCancelSubscriptionButtonStles: IButtonStyles = {
+		root: {
+			float: 'right',
+			marginBottom: 16,
+			marginTop: 27
+		}
+	}
 
 	constructor(
 		public dataService: DataService,
@@ -95,6 +102,10 @@ export class PricingComponent{
 		this.editPaymentMethod = true;
 		this.paymentFormDialogVisible = true;
 		setTimeout(() => this.paymentForm.Init(), 1);
+	}
+
+	ContinueOrCancelButtonClick(){
+		
 	}
 
 	PaymentMethodInputCompleted(){
