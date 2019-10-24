@@ -155,10 +155,17 @@ export class PricingComponent{
 
 	SetStripeSubscriptionResponse(message: StripeApiResponse){
 		if(message.success){
-			// Set the plan of the user
-			this.dataService.user.Plan = this.selectedPlan;
-			this.errorMessage = "";
-			this.successMessage = this.locale.changePlanSuccessMessage;
+			if(this.selectedPlan == 0){
+				// Set the subscription status of the user
+				this.errorMessage = "";
+				this.successMessage = this.locale.cancelSubscriptionSuccessMessage.replace('{0}', this.periodEndDate);
+				this.dataService.user.SubscriptionStatus = 1;
+			}else{
+				// Set the plan of the user
+				this.errorMessage = "";
+				this.successMessage = this.locale.changePlanSuccessMessage;
+				this.dataService.user.Plan = this.selectedPlan;
+			}
 		}else{
 			// Show error
 			this.successMessage = "";

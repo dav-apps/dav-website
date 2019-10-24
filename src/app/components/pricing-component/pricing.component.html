@@ -81,7 +81,7 @@
 				</ul>
 				<br>
 				<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.user.IsLoggedIn">{{ locale.signup }}</button>
-				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 0 || dataService.user.Plan == 1)" (click)="PlanButtonClick(2)">{{ locale.upgrade }}</button>
+				<button type="button" class="btn btn-primary" [disabled]="!dataService.user.Confirmed" *ngIf="dataService.user.IsLoggedIn && (dataService.user.Plan == 0 || dataService.user.Plan == 1)" (click)="PlanButtonClick(2)" [disabled]="dataService.user.SubscriptionStatus == 1">{{ locale.upgrade }}</button>
 				<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.user.IsLoggedIn && dataService.user.Plan == 2">{{ locale.currentPlan }}</button>
 			</div>
 		</div>
