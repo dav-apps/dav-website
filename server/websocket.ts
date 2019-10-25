@@ -6,6 +6,7 @@ import * as userPage from './websocket/user-page';
 import * as emailLinkPage from './websocket/email-link-page';
 import * as pricingComponent from './websocket/pricing-component';
 import * as paymentFormComponent from './websocket/payment-form-component';
+import * as appComponent from './websocket/app-component';
 
 var socket = null;
 export var auth: Auth;
@@ -37,6 +38,7 @@ export function init(s: any){
 	socket.on(pricingComponent.setStripeSubscriptionCancelledKey, pricingComponent.setStripeSubscriptionCancelled);
 	socket.on(paymentFormComponent.createStripeCustomerForUserKey, paymentFormComponent.createStripeCustomerForUser);
 	socket.on(paymentFormComponent.saveStripePaymentMethodKey, paymentFormComponent.saveStripePaymentMethod);
+	socket.on(appComponent.createEventLogKey, appComponent.createEventLog);
 
 	InitStatic(DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);
