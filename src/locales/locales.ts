@@ -217,7 +217,8 @@ const enDefaults = {
 			passwordTooLong: "Your new password is too long",
 			emailAlreadyConfirmed: "Your email address is already confirmed"
 		},
-		cancel: "Cancel"
+		cancel: "Cancel",
+		loginRequiredMessage: "You need to log in to access this page"
 	},
 	pricingComponent: {
 		free: {
@@ -492,7 +493,8 @@ const deDefaults = {
 			passwordTooLong: "Dein neues Passwort ist zu lang",
 			emailAlreadyConfirmed: "Deine Email-Adresse ist bereits bestätigt"
 		},
-		cancel: "Abbrechen"
+		cancel: "Abbrechen",
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},
 	pricingComponent: {
 		free: {

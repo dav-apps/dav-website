@@ -175,6 +175,11 @@ export class UserPageComponent{
 		this.sendRemoveAppEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendRemoveAppEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendRemoveAppEmailResponse(message));
 
 		await this.dataService.userPromise;
+		if(!this.dataService.user.IsLoggedIn){
+			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
+			this.router.navigate(['/']);
+		}
+
 		this.UpdateUsedStoragePercent();
 
 		// Set the values for the text fields
