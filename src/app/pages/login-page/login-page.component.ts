@@ -4,12 +4,16 @@ import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-rea
 import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
+import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
 declare var deviceAPI: any;
 
 const loginTypeImplicit = "implicit";
 const loginTypeSession = "session";
 const deviceInfoNotAvailable = "Not available";
+const loginEventName = "login";
+const loginImplicitEventName = "login_implicit";
+const loginSessionEventName = "login_session";
 
 @Component({
 	selector: 'dav-website-login-page',
@@ -160,6 +164,9 @@ export class LoginPageComponent{
 			// Save the jwt
 			await this.dataService.user.Login((response as ApiResponse<LoginResponseData>).data.jwt);
 
+			// Log the event
+			this.LogEvent(loginEventName);
+
 			// Redirect to the start page
 			this.router.navigate(['/']);
 		}else{
@@ -169,14 +176,17 @@ export class LoginPageComponent{
 			if(errorCode != 2106){
 				this.password = "";
 			}
-		}
 
-		// Hide the spinner
-		this.loginLoading = false;
+			// Hide the spinner
+			this.loginLoading = false;
+		}
 	}
 
 	async LoginImplicitResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
 		if(response.status == 200){
+			// Log the event
+			this.LogEvent(loginImplicitEventName);
+
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<LoginResponseData>).data.jwt}`;
 		}else{
@@ -186,14 +196,17 @@ export class LoginPageComponent{
 			if(errorCode != 2106){
 				this.password = "";
 			}
-		}
 
-		// Hide the spinner
-		this.loginLoading = false;
+			// Hide the spinner
+			this.loginLoading = false;
+		}
 	}
 
 	async CreateSessionResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)){
 		if(response.status == 201){
+			// Log the event
+			this.LogEvent(loginSessionEventName);
+
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<CreateSessionResponseData>).data.jwt}`;
 		}else{
@@ -203,14 +216,17 @@ export class LoginPageComponent{
 			if(errorCode != 2106){
 				this.password = "";
 			}
-		}
 
-		// Hide the spinner
-		this.loginLoading = false;
+			// Hide the spinner
+			this.loginLoading = false;
+		}
 	}
 
 	async CreateSessionWithJwtResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)){
 		if(response.status == 201){
+			// Log the event
+			this.LogEvent(loginSessionEventName);
+
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<CreateSessionResponseData>).data.jwt}`;
 		}else{
@@ -245,6 +261,20 @@ export class LoginPageComponent{
 		}else if(this.loginType == LoginType.Session){
 			this.router.navigateByUrl(`/signup?type=${loginTypeSession}&api_key=${this.apiKey}&app_id=${this.appId}&redirect_url=${this.redirectUrl}`);
 		}
+	}
+
+	LogEvent(name: string){
+		this.websocketService.Emit(WebsocketCallbackType.CreateEventLog, {
+			name: name,
+			appId: environment.appId,
+			saveCountry: true,
+			properties: {
+				browser_name: deviceAPI.browserName,
+				browser_version: deviceAPI.browserVersion,
+				os_name: deviceAPI.osCodeName,
+				os_version: deviceAPI.osVersion
+			}
+		});
 	}
 
 	Capitalize(s: string){

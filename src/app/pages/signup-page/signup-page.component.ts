@@ -4,11 +4,15 @@ import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
+import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
 declare var deviceAPI: any;
 
 const signupTypeImplicit = "implicit";
 const signupTypeSession = "session";
+const signupEventName = "signup";
+const signupImplicitEventName = "signup_implicit";
+const signupSessionEventName = "signup_session";
 
 @Component({
 	selector: 'dav-website-signup-page',
@@ -140,6 +144,9 @@ export class SignupPageComponent{
 			// Save the jwt
 			await this.dataService.user.Login((response as ApiResponse<SignupResponseData>).data.jwt);
 
+			// Log the event
+			this.LogEvent(signupEventName);
+
 			// Redirect to the start page
 			this.router.navigate(['/']);
 		}else{
@@ -150,14 +157,17 @@ export class SignupPageComponent{
 				this.password = "";
 				this.passwordConfirmation = "";
 			}
-		}
 
-		// Hide the spinner
-		this.signupLoading = false;
+			// Hide the spinner
+			this.signupLoading = false;
+		}
 	}
 
 	async SignupImplicitResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
 		if(response.status == 200){
+			// Log the event
+			this.LogEvent(signupImplicitEventName);
+
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<LoginResponseData>).data.jwt}`;
 		}else{
@@ -168,14 +178,17 @@ export class SignupPageComponent{
 				this.password = "";
 				this.passwordConfirmation = "";
 			}
-		}
 
-		// Hide the spinner
-		this.signupLoading = false;
+			// Hide the spinner
+			this.signupLoading = false;
+		}
 	}
 
 	async SignupSessionResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
 		if(response.status == 201){
+			// Log the event
+			this.LogEvent(signupSessionEventName);
+
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<SignupResponseData>).data.jwt}`;
 		}else{
@@ -186,10 +199,10 @@ export class SignupPageComponent{
 				this.password = "";
 				this.passwordConfirmation = "";
 			}
-		}
 
-		// Hide the spinner
-		this.signupLoading = false;
+			// Hide the spinner
+			this.signupLoading = false;
+		}
 	}
 
 	GetSignupErrorMessage(errorCode: number) : string{
@@ -222,6 +235,20 @@ export class SignupPageComponent{
 	RedirectToStartPageWithError(){
 		this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong;
 		this.router.navigate(['/']);
+	}
+
+	LogEvent(name: string){
+		this.websocketService.Emit(WebsocketCallbackType.CreateEventLog, {
+			name: name,
+			appId: environment.appId,
+			saveCountry: true,
+			properties: {
+				browser_name: deviceAPI.browserName,
+				browser_version: deviceAPI.browserVersion,
+				os_name: deviceAPI.osCodeName,
+				os_version: deviceAPI.osVersion
+			}
+		});
 	}
 
 	Capitalize(s: string){
