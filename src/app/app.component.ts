@@ -80,6 +80,11 @@ export class AppComponent {
 		return false;
 	}
 
+	HideNavbar(){
+		let navbar = document.getElementById('navbar-responsive');
+		if(navbar) navbar.classList.remove('show');
+	}
+
 	LogVisit(){
 		// Get the device info
 		this.websocketService.Emit(WebsocketCallbackType.CreateEventLog, {

@@ -32,26 +32,26 @@
 			<!-- Not logged in -->
 			<ul class="navbar-nav ml-auto" *ngIf="!dataService.user.IsLoggedIn">
 				<li class="nav-item">
-					<a routerLink="/pricing" class="nav-link navbar-item">{{ locale.navbar.pricing }}</a>
+					<a routerLink="/pricing" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.pricing }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/login" class="nav-link navbar-item">{{ locale.navbar.login }}</a>
+					<a routerLink="/login" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.login }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/signup" class="nav-link navbar-item">{{ locale.navbar.signup }}</a>
+					<a routerLink="/signup" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.signup }}</a>
 				</li>
 			</ul>
 
 			<!-- Logged in -->
 			<ul class="navbar-nav ml-auto" *ngIf="dataService.user.IsLoggedIn">
 				<li class="nav-item">
-					<a routerLink="/apps" class="nav-link navbar-item">{{ locale.navbar.allApps }}</a>
+					<a routerLink="/apps" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.allApps }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/user" class="nav-link navbar-item">{{ dataService.user.Username }}</a>
+					<a routerLink="/user" class="nav-link navbar-item" (click)="HideNavbar()">{{ dataService.user.Username }}</a>
 				</li>
 				<li class="nav-item">
-					<a href="#logout" class="nav-link navbar-item" (click)="Logout()">{{ locale.navbar.logout }}</a>
+					<a href="#logout" class="nav-link navbar-item" (click)="HideNavbar(); Logout()">{{ locale.navbar.logout }}</a>
 				</li>
 			</ul>
 		</div>
