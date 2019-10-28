@@ -139,6 +139,7 @@ export class UserPageComponent{
 
 	//#region Apps page
 	usedStoragePercent: number = 0;
+	appsUsedStoragePercent: number[] = [];
 	sendRemoveAppEmailLoading: boolean = false;
 	//#endregion
 
@@ -180,11 +181,8 @@ export class UserPageComponent{
 			this.router.navigate(['/']);
 		}
 
-		this.UpdateUsedStoragePercent();
-
-		// Set the values for the text fields
-		this.username = this.dataService.user.Username;
-		this.email = this.dataService.user.Email;
+		this.UpdateValues();
+		this.dataService.userDownloadPromise.then(() => this.UpdateValues());
 	}
 
 	ngAfterViewInit(){
@@ -215,6 +213,14 @@ export class UserPageComponent{
 
 		if(!this.sideNavHidden) this.sideNavOpened = true;
 		else this.sideNavOpened = false;
+	}
+
+	UpdateValues(){
+		// Set the values for the text fields
+		this.username = this.dataService.user.Username;
+		this.email = this.dataService.user.Email;
+
+		this.UpdateUsedStoragePercent();
 	}
 
 	ShowGeneralMenu(){
@@ -504,6 +510,11 @@ export class UserPageComponent{
 
 	UpdateUsedStoragePercent(){
 		this.usedStoragePercent = (this.dataService.user.UsedStorage / this.dataService.user.TotalStorage) * 100;
+
+		this.appsUsedStoragePercent = [];
+		for(let app of this.dataService.user.Apps){
+			this.appsUsedStoragePercent.push((app.UsedStorage / this.dataService.user.TotalStorage) * 100);
+		}
 	}
 
 	BytesToGigabytes(bytes: number){

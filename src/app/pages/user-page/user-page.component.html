@@ -170,14 +170,14 @@
 			</div>
 
 			<div class="mx-auto mb-4 px-4" style="max-width: 600px">
-				<mat-accordion *ngFor="let app of dataService.user.Apps">
+				<mat-accordion *ngFor="let app of dataService.user.Apps; let i = index">
 					<mat-expansion-panel>
 						<mat-expansion-panel-header>
 							<mat-panel-title style="font-size: 20px">{{ app.Name }}</mat-panel-title>
 						</mat-expansion-panel-header>
 	
 						<div style="width: 60%; font-size: 16px" class="mx-auto mt-3">
-							<mat-progress-bar></mat-progress-bar>
+							<mat-progress-bar [value]="appsUsedStoragePercent[i]"></mat-progress-bar>
 							<p class="mt-2">{{ locale.apps.appStorageUsed.replace("{0}", BytesToGigabytes(app.UsedStorage).toString()) }}</p>
 						</div>
 	

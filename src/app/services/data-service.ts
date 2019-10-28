@@ -35,8 +35,7 @@ export class DataService{
 	}
 
 	async LogEvent(name: string, saveCountry: boolean, properties: any){
-		let response = await CreateEventLog(environment.apiKey, name, environment.appId, saveCountry, properties);
-		console.log(response)
+		await CreateEventLog(environment.apiKey, name, environment.appId, saveCountry, properties);
 	}
 }
 
