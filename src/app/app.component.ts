@@ -5,7 +5,6 @@ import { Init, DavEnvironment } from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from './services/data-service';
 import { environment } from 'src/environments/environment';
-import { WebsocketService, WebsocketCallbackType } from './services/websocket-service';
 declare var deviceAPI: any;
 
 const visitEventName = "visit";
@@ -22,7 +21,6 @@ export class AppComponent {
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
 		public router: Router
 	){
 		this.locale = this.dataService.GetLocale().appComponent;
@@ -86,17 +84,11 @@ export class AppComponent {
 	}
 
 	LogVisit(){
-		// Get the device info
-		this.websocketService.Emit(WebsocketCallbackType.CreateEventLog, {
-			name: visitEventName,
-			appId: environment.appId,
-			saveCountry: true,
-			properties: {
-				browser_name: deviceAPI.browserName,
-				browser_version: deviceAPI.browserVersion,
-				os_name: deviceAPI.osCodeName,
-				os_version: deviceAPI.osVersion
-			}
+		this.dataService.LogEvent(visitEventName, true, {
+			browser_name: deviceAPI.browserName,
+			browser_version: deviceAPI.browserVersion,
+			os_name: deviceAPI.osCodeName,
+			os_version: deviceAPI.osVersion
 		});
 	}
 }

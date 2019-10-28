@@ -145,7 +145,7 @@ export class SignupPageComponent{
 			await this.dataService.user.Login((response as ApiResponse<SignupResponseData>).data.jwt);
 
 			// Log the event
-			this.LogEvent(signupEventName);
+			await this.LogEvent(signupEventName);
 
 			// Redirect to the start page
 			this.router.navigate(['/']);
@@ -166,7 +166,7 @@ export class SignupPageComponent{
 	async SignupImplicitResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
 		if(response.status == 200){
 			// Log the event
-			this.LogEvent(signupImplicitEventName);
+			await this.LogEvent(signupImplicitEventName);
 
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<LoginResponseData>).data.jwt}`;
@@ -187,7 +187,7 @@ export class SignupPageComponent{
 	async SignupSessionResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
 		if(response.status == 201){
 			// Log the event
-			this.LogEvent(signupSessionEventName);
+			await this.LogEvent(signupSessionEventName);
 
 			// Redirect to the redirect url
 			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<SignupResponseData>).data.jwt}`;
@@ -237,17 +237,12 @@ export class SignupPageComponent{
 		this.router.navigate(['/']);
 	}
 
-	LogEvent(name: string){
-		this.websocketService.Emit(WebsocketCallbackType.CreateEventLog, {
-			name: name,
-			appId: environment.appId,
-			saveCountry: true,
-			properties: {
-				browser_name: deviceAPI.browserName,
-				browser_version: deviceAPI.browserVersion,
-				os_name: deviceAPI.osCodeName,
-				os_version: deviceAPI.osVersion
-			}
+	async LogEvent(name: string){
+		await this.dataService.LogEvent(name, true, {
+			browser_name: deviceAPI.browserName,
+			browser_version: deviceAPI.browserVersion,
+			os_name: deviceAPI.osCodeName,
+			os_version: deviceAPI.osVersion
 		});
 	}
 

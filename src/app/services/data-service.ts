@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { DavUser } from 'dav-npm';
+import { DavUser, CreateEventLog } from 'dav-npm';
 import * as locales from 'src/locales/locales';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class DataService{
@@ -31,6 +32,11 @@ export class DataService{
 		}
 
 		return locales.enUS;
+	}
+
+	async LogEvent(name: string, saveCountry: boolean, properties: any){
+		let response = await CreateEventLog(environment.apiKey, name, environment.appId, saveCountry, properties);
+		console.log(response)
 	}
 }
 
