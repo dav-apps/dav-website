@@ -20,17 +20,14 @@ export async function updateUser(message: {
 	email?: string,
 	username?: string,
 	password?: string,
-	avatar?: string,
-	paymentToken?: string
-	plan?: number
+	avatar?: string
 }){
 	let updateUserResponse = await UpdateUser(message.jwt, {
 		email: message.email, 
 		username: message.username, 
 		password: message.password, 
-		avatar: message.avatar, 
-		paymentToken: message.paymentToken, 
-		plan: message.plan});
+		avatar: message.avatar
+	});
 
 	websocket.emit(updateUserKey, updateUserResponse);
 }
