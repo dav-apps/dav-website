@@ -1,11 +1,10 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
-import { Init, DavEnvironment } from 'dav-npm';
+import { Init, DavEnvironment, Log } from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from './services/data-service';
 import { environment } from 'src/environments/environment';
-declare var deviceAPI: any;
 
 const visitEventName = "visit";
 
@@ -58,7 +57,7 @@ export class AppComponent {
 		)
 
 		// Log the visit
-		this.LogVisit();
+		Log(environment.apiKey, visitEventName);
 	}
 
 	@HostListener('window:resize')
@@ -81,14 +80,5 @@ export class AppComponent {
 	HideNavbar(){
 		let navbar = document.getElementById('navbar-responsive');
 		if(navbar) navbar.classList.remove('show');
-	}
-
-	LogVisit(){
-		this.dataService.LogEvent(visitEventName, true, {
-			browser_name: deviceAPI.browserName,
-			browser_version: deviceAPI.browserVersion,
-			os_name: deviceAPI.osCodeName,
-			os_version: deviceAPI.osVersion
-		});
 	}
 }
