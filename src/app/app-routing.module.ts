@@ -12,6 +12,7 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
 import { PasswordResetPageComponent } from './pages/password-reset-page/password-reset-page.component';
 import { ResetPasswordPageComponent } from './pages/reset-password-page/reset-password-page.component';
 import { EmailLinkPageComponent } from './pages/email-link-page/email-link-page.component';
+import { LoginSessionPageComponent } from './pages/login-session-page/login-session-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
 	{ path: "user", component: UserPageComponent },
 	{ path: "password_reset", component: PasswordResetPageComponent },
 	{ path: "reset_password", component: ResetPasswordPageComponent },
-	{ path: "email_link", component: EmailLinkPageComponent }
+	{ path: "email_link", component: EmailLinkPageComponent },
+	{ path: "login_session", component: LoginSessionPageComponent }
 ];
 
 @NgModule({

@@ -4,7 +4,6 @@ import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
-import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
 declare var deviceAPI: any;
 

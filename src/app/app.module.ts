@@ -45,6 +45,7 @@ import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
 import { PasswordResetPageComponent } from 'src/app/pages/password-reset-page/password-reset-page.component';
 import { ResetPasswordPageComponent } from 'src/app/pages/reset-password-page/reset-password-page.component';
 import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link-page.component';
+import { LoginSessionPageComponent } from 'src/app/pages/login-session-page/login-session-page.component';
 
 @NgModule({
   	declarations: [
@@ -64,7 +65,8 @@ import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link
 		UserPageComponent,
 		PasswordResetPageComponent,
 		ResetPasswordPageComponent,
-		EmailLinkPageComponent
+		EmailLinkPageComponent,
+		LoginSessionPageComponent
   	],
   	imports: [
 		AngularReactBrowserModule,
