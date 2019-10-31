@@ -30,8 +30,9 @@ export class LoginPageComponent{
 	password: string = "";
 	errorMessage: string = "";
 	appId: number = -1;
-	apiKey: string = null;
-	redirectUrl: string = null;
+	apiKey: string;
+	redirectUrl: string;
+	redirect: string;
 	loginLoading: boolean = false;
 	spinnerSize: SpinnerSize = SpinnerSize.small;
 	messageBarType: MessageBarType = MessageBarType.error;
@@ -55,17 +56,21 @@ export class LoginPageComponent{
 		this.createSessionWithJwtSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateSessionWithJwt, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionWithJwtResponse(response));
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
-		if(!type) return;
 
 		if(type == loginTypeImplicit){
 			this.loginType = LoginType.Implicit;
 		}else if(type == loginTypeSession){
 			this.loginType = LoginType.Session;
+		}else{
+			this.loginType = LoginType.Normal;
 		}
 
 		this.appId = +this.activatedRoute.snapshot.queryParamMap.get("app_id");
 		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get("api_key");
-		this.redirectUrl = decodeURIComponent(this.activatedRoute.snapshot.queryParamMap.get("redirect_url"));
+		let redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirect_url");
+		if(redirectUrl) this.redirectUrl = decodeURIComponent(redirectUrl).trim();
+		let redirect = this.activatedRoute.snapshot.queryParamMap.get("redirect");
+		if(redirect) this.redirect = decodeURIComponent(redirect).trim();
 
 		if(this.loginType == LoginType.Implicit){
 			// Check if apiKey and redirectUrl are present
@@ -167,8 +172,13 @@ export class LoginPageComponent{
 			// Log the event
 			await this.LogEvent(loginEventName);
 
-			// Redirect to the start page
-			this.router.navigate(['/']);
+			if(this.redirect){
+				// Redirect to the redirect url
+				this.router.navigateByUrl(this.redirect);
+			}else{
+				// Redirect to the start page
+				this.router.navigate(['/']);
+			}
 		}else{
 			let errorCode = (response as ApiErrorResponse).errors[0].code;
 			this.errorMessage = this.GetLoginErrorMessage(errorCode);
