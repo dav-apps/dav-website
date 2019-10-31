@@ -15,3 +15,11 @@ body{
 	width: 30px;
 	font-size: 16px;
 }
+
+@font-face {
+	font-family: 'mvboli';
+	src: url('/assets/fonts/mvboli.woff2') format('woff2'),
+		  url('/assets/fonts/mvboli.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
