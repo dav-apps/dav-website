@@ -1,6 +1,6 @@
 {
-  "name": "dav-website",
-  "short_name": "dav-website",
+  "name": "dav",
+  "short_name": "dav",
   "theme_color": "#2e3c7c",
   "background_color": "#fafafa",
   "display": "standalone",
