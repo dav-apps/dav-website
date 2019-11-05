@@ -224,6 +224,9 @@ const enDefaults = {
 		loginRequiredMessage: "You need to log in to access this page",
 		unexpectedErrorShort: "Unexpected error ({0})"
 	},
+	appPage: {
+
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -503,6 +506,9 @@ const deDefaults = {
 	devPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		unexpectedErrorShort: "Unerwarteter Fehler ({0})"
+	},
+	appPage: {
+
 	},
 	pricingComponent: {
 		free: {

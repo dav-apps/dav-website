@@ -25,7 +25,6 @@ export class DevPageComponent{
 		private router: Router
 	){
 		this.locale = this.dataService.GetLocale().devPage;
-
 		this.getDevSubscriptionKey = websocketService.Subscribe(WebsocketCallbackType.GetDev, (response: ApiResponse<DevResponseData> | ApiErrorResponse) => this.GetDevResponse(response));
 	}
 
@@ -38,6 +37,10 @@ export class DevPageComponent{
 		}
 
 		this.websocketService.Emit(WebsocketCallbackType.GetDev, {jwt: this.dataService.user.JWT});
+	}
+
+	ngOnDestroy(){
+		this.websocketService.Unsubscribe(this.getDevSubscriptionKey);
 	}
 
 	GetDevResponse(response: ApiResponse<DevResponseData> | ApiErrorResponse){
