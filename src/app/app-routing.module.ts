@@ -14,6 +14,7 @@ import { ResetPasswordPageComponent } from './pages/reset-password-page/reset-pa
 import { EmailLinkPageComponent } from './pages/email-link-page/email-link-page.component';
 import { LoginSessionPageComponent } from './pages/login-session-page/login-session-page.component';
 import { DevPageComponent } from './pages/dev-page/dev-page.component';
+import { AppPageComponent } from './pages/app-page/app-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -28,7 +29,8 @@ const routes: Routes = [
 	{ path: "reset_password", component: ResetPasswordPageComponent },
 	{ path: "email_link", component: EmailLinkPageComponent },
 	{ path: "login_session", component: LoginSessionPageComponent },
-	{ path: "dev", component: DevPageComponent }
+	{ path: "dev", component: DevPageComponent },
+	{ path: "dev/:id", component: AppPageComponent }
 ];
 
 @NgModule({
