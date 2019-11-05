@@ -1,1 +1,32 @@
-<h1>Your Apps</h1>
+<div class="container navbar-margin pt-4 ms-motion-slideUpIn">
+	<h1 class="text-center font-weight-light mb-3">Developer Dashboard</h1>
+
+	<div class="mb-3 mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0">
+		<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
+	</div>
+
+	<div class="row">
+		<div 
+			class="card text-center m-3 cursor"
+			[ngClass]="addAppHovered ? 'shadow' : 'shadow-sm'"
+			style="transition: 0.12s"
+			(mouseover)="addAppHovered = true"
+			(mouseout)="addAppHovered = false">
+			<div class="card-body d-flex justify-content-center align-items-center">
+				<i class="ms-Icon ms-Icon--Add text-color" aria-hidden="true" style="font-size: 16px"></i>
+			</div>
+		</div>
+
+		<div 
+			class="card text-center m-3 cursor" 
+			[ngClass]="hoveredAppIndex == i ? 'shadow' : 'shadow-sm'"
+			style="transition: 0.12s"
+			*ngFor="let app of apps; let i = index"
+			(mouseover)="hoveredAppIndex = i"
+			(mouseout)="hoveredAppIndex = -1">
+			<div class="card-body">
+				<p class="card-text">{{ app.Name }}</p>
+			</div>
+		</div>
+	</div>
+</div>

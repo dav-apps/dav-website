@@ -221,7 +221,8 @@ const enDefaults = {
 		loginRequiredMessage: "You need to log in to access this page"
 	},
 	devPage: {
-		loginRequiredMessage: "You need to log in to access this page"
+		loginRequiredMessage: "You need to log in to access this page",
+		unexpectedErrorShort: "Unexpected error ({0})"
 	},
 	pricingComponent: {
 		free: {
@@ -500,7 +501,8 @@ const deDefaults = {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},
 	devPage: {
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
+		unexpectedErrorShort: "Unerwarteter Fehler ({0})"
 	},
 	pricingComponent: {
 		free: {

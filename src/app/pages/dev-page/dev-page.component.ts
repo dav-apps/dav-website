@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApiResponse, ApiErrorResponse, DevResponseData } from 'dav-npm';
+import { MessageBarType } from 'office-ui-fabric-react';
+import { ApiResponse, ApiErrorResponse, DevResponseData, App } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
@@ -12,6 +13,11 @@ import { enUS } from 'src/locales/locales';
 export class DevPageComponent{
 	locale = enUS.devPage;
 	getDevSubscriptionKey: number;
+	apps: App[] = [];
+	hoveredAppIndex: number = -1;
+	addAppHovered: boolean = false;
+	errorMessage: string = "";
+	messageBarType: MessageBarType = MessageBarType.error;
 	
 	constructor(
 		public dataService: DataService,
@@ -35,6 +41,11 @@ export class DevPageComponent{
 	}
 
 	GetDevResponse(response: ApiResponse<DevResponseData> | ApiErrorResponse){
-		console.log(response)
+		if(response.status == 200){
+			this.apps = (response as ApiResponse<DevResponseData>).data.apps;
+		}else{
+			// Show error
+			this.errorMessage = this.locale.unexpectedErrorShort.replace('{0}', (response as ApiErrorResponse).errors[0].code.toString());
+		}
 	}
 }

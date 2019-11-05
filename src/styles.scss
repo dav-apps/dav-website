@@ -16,6 +16,10 @@ body{
 	font-size: 16px;
 }
 
+.cursor:hover{
+	cursor: pointer;
+}
+
 @font-face {
 	font-family: 'mvboli';
 	src: url('/assets/fonts/mvboli.woff2') format('woff2'),
