@@ -43,6 +43,10 @@ export class DevPageComponent{
 		this.websocketService.Unsubscribe(this.getDevSubscriptionKey);
 	}
 
+	ShowApp(appId: number){
+		this.router.navigate(['dev', appId])
+	}
+
 	GetDevResponse(response: ApiResponse<DevResponseData> | ApiErrorResponse){
 		if(response.status == 200){
 			this.apps = (response as ApiResponse<DevResponseData>).data.apps;

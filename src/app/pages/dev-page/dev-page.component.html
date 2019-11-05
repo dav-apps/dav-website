@@ -23,7 +23,8 @@
 			style="transition: 0.12s"
 			*ngFor="let app of apps; let i = index"
 			(mouseover)="hoveredAppIndex = i"
-			(mouseout)="hoveredAppIndex = -1">
+			(mouseout)="hoveredAppIndex = -1"
+			(click)="ShowApp(app.Id)">
 			<div class="card-body">
 				<p class="card-text">{{ app.Name }}</p>
 			</div>

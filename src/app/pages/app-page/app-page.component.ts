@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { IIconStyles } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, App } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -13,6 +14,11 @@ export class AppPageComponent{
 	locale = enUS.appPage;
 	getAppSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
+	backButtonIconStyles: IIconStyles = {
+		root: {
+         fontSize: 19
+		}
+	}
 
 	constructor(
 		public dataService: DataService,
@@ -37,6 +43,10 @@ export class AppPageComponent{
 
 	ngOnDestroy(){
 		this.websocketService.Unsubscribe(this.getAppSubscriptionKey);
+	}
+
+	GoBack(){
+		this.router.navigate(['dev']);
 	}
 
 	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){
