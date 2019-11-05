@@ -220,6 +220,9 @@ const enDefaults = {
 		cancel: "Cancel",
 		loginRequiredMessage: "You need to log in to access this page"
 	},
+	devPage: {
+		loginRequiredMessage: "You need to log in to access this page"
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -494,6 +497,9 @@ const deDefaults = {
 			emailAlreadyConfirmed: "Deine Email-Adresse ist bereits bestätigt"
 		},
 		cancel: "Abbrechen",
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
+	},
+	devPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},
 	pricingComponent: {

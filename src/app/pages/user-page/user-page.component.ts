@@ -179,6 +179,7 @@ export class UserPageComponent{
 		if(!this.dataService.user.IsLoggedIn){
 			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
 			this.router.navigate(['/']);
+			return;
 		}
 
 		this.UpdateValues();
