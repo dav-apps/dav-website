@@ -47,7 +47,8 @@
 		<fab-text-field
 			[(value)]="newName"
 			[label]="locale.editAppDialog.nameTextfieldLabel"
-			[placeholder]="locale.editAppDialog.nameTextfieldPlaceholder">
+			[placeholder]="locale.editAppDialog.nameTextfieldPlaceholder"
+			[errorMessage]="editAppDialogNameError">
 		</fab-text-field>
 	</div>
 	
@@ -56,12 +57,13 @@
 			[(value)]="newDescription"
 			[label]="locale.editAppDialog.descriptionTextfieldLabel"
 			[placeholder]="locale.editAppDialog.descriptionTextfieldPlaceholder"
+			[errorMessage]="editAppDialogDescriptionError"
 			multiline="true">
 		</fab-text-field>
 	</div>
 	
 	<fab-dialog-footer>
 		<fab-default-button (click)="editAppDialogVisible = false">{{ locale.editAppDialog.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="editAppDialogSaveButtonStyles">{{ locale.editAppDialog.save }}</fab-primary-button>
+		<fab-primary-button [styles]="editAppDialogSaveButtonStyles" (click)="UpdateApp()">{{ locale.editAppDialog.save }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

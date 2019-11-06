@@ -237,7 +237,14 @@ const enDefaults = {
 			descriptionTextfieldLabel: "Description",
 			descriptionTextfieldPlaceholder: "The description of your app",
 			cancel: "Cancel",
-			save: "Save"
+			save: "Save",
+			errors: {
+				nameTooShort: "The name is too short",
+				descriptionTooShort: "The description is too short",
+				nameTooLong: "The name is too long",
+				descriptionTooLong: "The description is too long",
+				unexpectedError: "Unexpected error ({0})"
+			}
 		}
 	},
 	pricingComponent: {
@@ -533,7 +540,14 @@ const deDefaults = {
 			descriptionTextfieldLabel: "Beschreibung",
 			descriptionTextfieldPlaceholder: "Die Beschreibung deiner App",
 			cancel: "Abbrechen",
-			save: "Speichern"
+			save: "Speichern",
+			errors: {
+				nameTooShort: "Der Name ist zu kurz",
+				descriptionTooShort: "Die Beschreibung ist zu kurz",
+				nameTooLong: "Der Name ist zu lang",
+				descriptionTooLong: "Die Beschreibung ist zu lang",
+				unexpectedError: "Unerwarteter Fehler ({0})"
+			}
 		}
 	},
 	pricingComponent: {
