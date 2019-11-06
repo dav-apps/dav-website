@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IIconStyles, IButtonStyles } from 'office-ui-fabric-react';
+import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, App } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -14,6 +14,9 @@ export class AppPageComponent{
 	locale = enUS.appPage;
 	getAppSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
+	editAppDialogVisible: boolean = false;
+	newName: string = "";
+	newDescription: string = "";
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
@@ -23,6 +26,14 @@ export class AppPageComponent{
 		root: {
 			marginLeft: 10
 		}
+	}
+	editAppDialogSaveButtonStyles: IButtonStyles = {
+		root: {
+			marginLeft: 10
+		}
+	}
+	editAppDialogContent: IDialogContentProps = {
+		title: this.locale.editAppDialog.title
 	}
 
 	constructor(
@@ -52,6 +63,13 @@ export class AppPageComponent{
 
 	GoBack(){
 		this.router.navigate(['dev']);
+	}
+
+	ShowEditAppDialog(){
+		this.editAppDialogContent.title = this.locale.editAppDialog.title;
+		this.newName = this.app.Name;
+		this.newDescription = this.app.Description;
+		this.editAppDialogVisible = true;
 	}
 
 	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){

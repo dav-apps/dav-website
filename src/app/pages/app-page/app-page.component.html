@@ -15,7 +15,7 @@
 	<div>
 		<p class="mb-3 font-weight-light" style="font-size: 18px">{{ app.Description }}</p>
 		<fab-primary-button>{{ locale.statistics }}</fab-primary-button>
-		<fab-default-button [styles]="editButtonStyles">{{ locale.edit }}</fab-default-button>
+		<fab-default-button [styles]="editButtonStyles" (click)="ShowEditAppDialog()">{{ locale.edit }}</fab-default-button>
 
 		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
 		<fab-toggle></fab-toggle>
@@ -37,3 +37,31 @@
 		</div>
 	</div>
 </div>
+
+<fab-dialog
+	[hidden]="!editAppDialogVisible"
+	[dialogContentProps]="editAppDialogContent"
+	(onDismiss)="editAppDialogVisible = false">
+
+	<div class="mb-3">
+		<fab-text-field
+			[(value)]="newName"
+			[label]="locale.editAppDialog.nameTextfieldLabel"
+			[placeholder]="locale.editAppDialog.nameTextfieldPlaceholder">
+		</fab-text-field>
+	</div>
+	
+	<div class="mb-4">
+		<fab-text-field
+			[(value)]="newDescription"
+			[label]="locale.editAppDialog.descriptionTextfieldLabel"
+			[placeholder]="locale.editAppDialog.descriptionTextfieldPlaceholder"
+			multiline="true">
+		</fab-text-field>
+	</div>
+	
+	<fab-dialog-footer>
+		<fab-default-button (click)="editAppDialogVisible = false">{{ locale.editAppDialog.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="editAppDialogSaveButtonStyles">{{ locale.editAppDialog.save }}</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>

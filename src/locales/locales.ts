@@ -229,7 +229,16 @@ const enDefaults = {
 		edit: "Edit",
 		published: "Published",
 		tables: "Tables",
-		events: "Events"
+		events: "Events",
+		editAppDialog: {
+			title: "Edit app",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "The name of your app",
+			descriptionTextfieldLabel: "Description",
+			descriptionTextfieldPlaceholder: "The description of your app",
+			cancel: "Cancel",
+			save: "Save"
+		}
 	},
 	pricingComponent: {
 		free: {
@@ -516,7 +525,16 @@ const deDefaults = {
 		edit: "Bearbeiten",
 		published: "Veröffentlicht",
 		tables: "Tabellen",
-		events: "Events"
+		events: "Events",
+		editAppDialog: {
+			title: "App bearbeiten",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "Der Name deiner App",
+			descriptionTextfieldLabel: "Beschreibung",
+			descriptionTextfieldPlaceholder: "Die Beschreibung deiner App",
+			cancel: "Abbrechen",
+			save: "Speichern"
+		}
 	},
 	pricingComponent: {
 		free: {
