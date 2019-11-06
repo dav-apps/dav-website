@@ -41,6 +41,7 @@ export function init(s: any){
 	socket.on(paymentFormComponent.saveStripePaymentMethodKey, paymentFormComponent.saveStripePaymentMethod);
 	socket.on(devPage.getDevKey, devPage.getDev);
 	socket.on(appPage.getAppKey, appPage.getApp);
+	socket.on(appPage.updateAppKey, appPage.updateApp);
 
 	InitStatic(process.env.ENV == "production" ? DavEnvironment.Production : DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);

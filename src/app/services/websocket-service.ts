@@ -81,7 +81,8 @@ export enum WebsocketCallbackType{
 	CreateStripeCustomerForUser = 24,
 	SaveStripePaymentMethod = 25,
 	GetDev = 26,
-	GetApp = 27
+	GetApp = 27,
+	UpdateApp = 28
 }
 
 export const Callbacks = {
@@ -111,7 +112,8 @@ export const Callbacks = {
 	createStripeCustomerForUser: WebsocketCallbackType.CreateStripeCustomerForUser,
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,
 	getDev: WebsocketCallbackType.GetDev,
-	getApp: WebsocketCallbackType.GetApp
+	getApp: WebsocketCallbackType.GetApp,
+	updateApp: WebsocketCallbackType.UpdateApp
 }
 
 function getKeyByValue(object: any, value: any) {
