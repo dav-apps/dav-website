@@ -11,4 +11,29 @@
 			<h1 class="text-left ml-3 font-weight-light">{{ app.Name }}</h1>
 		</div>
 	</div>
+
+	<div>
+		<p class="mb-3 font-weight-light" style="font-size: 18px">{{ app.Description }}</p>
+		<fab-primary-button>{{ locale.statistics }}</fab-primary-button>
+		<fab-default-button [styles]="editButtonStyles">{{ locale.edit }}</fab-default-button>
+
+		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
+		<fab-toggle></fab-toggle>
+	</div>
+
+	<div class="row">
+		<div class="mx-4">
+			<h3 class="font-weight-light mb-3 mt-4">{{ locale.tables }}</h3>
+			<ul class="list-group" style="display: inline-block">
+				<li class="list-group-item" *ngFor="let table of app.Tables">{{ table.Name }}</li>
+			</ul>
+		</div>
+
+		<div class="mx-4">
+			<h3 class="font-weight-light mb-3 mt-4">{{ locale.events }}</h3>
+			<div class="list-group" style="display: inline-block">
+				<a routerLink="/" class="list-group-item list-group-item-action" *ngFor="let event of app.Events">{{ event.Name }}</a>
+			</div>
+		</div>
+	</div>
 </div>

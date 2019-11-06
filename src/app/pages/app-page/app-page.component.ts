@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IIconStyles } from 'office-ui-fabric-react';
+import { IIconStyles, IButtonStyles } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, App } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -17,6 +17,11 @@ export class AppPageComponent{
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
+		}
+	}
+	editButtonStyles: IButtonStyles = {
+		root: {
+			marginLeft: 10
 		}
 	}
 

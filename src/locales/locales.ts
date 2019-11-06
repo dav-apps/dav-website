@@ -225,7 +225,11 @@ const enDefaults = {
 		unexpectedErrorShort: "Unexpected error ({0})"
 	},
 	appPage: {
-
+		statistics: "Statistics",
+		edit: "Edit",
+		published: "Published",
+		tables: "Tables",
+		events: "Events"
 	},
 	pricingComponent: {
 		free: {
@@ -508,7 +512,11 @@ const deDefaults = {
 		unexpectedErrorShort: "Unerwarteter Fehler ({0})"
 	},
 	appPage: {
-
+		statistics: "Statistiken",
+		edit: "Bearbeiten",
+		published: "Veröffentlicht",
+		tables: "Tabellen",
+		events: "Events"
 	},
 	pricingComponent: {
 		free: {
