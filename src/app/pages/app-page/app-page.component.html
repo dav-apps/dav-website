@@ -18,7 +18,7 @@
 		<fab-default-button [styles]="editButtonStyles" (click)="ShowEditAppDialog()">{{ locale.edit }}</fab-default-button>
 
 		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
-		<fab-toggle></fab-toggle>
+		<fab-toggle [checked]="app.Published" (onChange)="ShowPublishAppDialog()"></fab-toggle>
 	</div>
 
 	<div class="row">
@@ -95,7 +95,17 @@
 	</div>
 	
 	<fab-dialog-footer>
-		<fab-default-button (click)="editAppDialogVisible = false">{{ locale.editAppDialog.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="editAppDialogSaveButtonStyles" (click)="UpdateApp()">{{ locale.editAppDialog.save }}</fab-primary-button>
+		<fab-default-button (click)="editAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="UpdateApp()">{{ locale.editAppDialog.save }}</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>
+
+<fab-dialog
+	[hidden]="!publishAppDialogVisible"
+	[dialogContentProps]="publishAppDialogContent"
+	(onDismiss)="publishAppDialogVisible = false">
+	<fab-dialog-footer>
+		<fab-default-button (click)="publishAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="PublishApp()">{{ locale.publishAppDialog.confirm }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

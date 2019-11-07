@@ -16,6 +16,7 @@ export class AppPageComponent{
 	updateAppSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
 	editAppDialogVisible: boolean = false;
+	publishAppDialogVisible: boolean = false;
 	newName: string = "";
 	newDescription: string = "";
 	newLinkWeb: string = "";
@@ -36,13 +37,22 @@ export class AppPageComponent{
 			marginLeft: 10
 		}
 	}
-	editAppDialogSaveButtonStyles: IButtonStyles = {
+	dialogPrimaryButtonStyles: IButtonStyles = {
 		root: {
 			marginLeft: 10
 		}
 	}
 	editAppDialogContent: IDialogContentProps = {
 		title: this.locale.editAppDialog.title
+	}
+	publishAppDialogContent: IDialogContentProps = {
+		title: this.locale.publishAppDialog.publishTitle,
+		subText: this.locale.publishAppDialog.publishSubtext,
+		styles: {
+			subText: {
+				fontSize: 14
+			}
+		}
 	}
 
 	constructor(
@@ -110,6 +120,20 @@ export class AppPageComponent{
 		});
 	}
 
+	ShowPublishAppDialog(){
+		this.publishAppDialogContent.title = this.app.Published ? this.locale.publishAppDialog.unpublishTitle : this.locale.publishAppDialog.publishTitle;
+		this.publishAppDialogContent.subText = this.app.Published ? this.locale.publishAppDialog.unpublishSubtext : this.locale.publishAppDialog.publishSubtext;
+		this.publishAppDialogVisible = true;
+	}
+
+	PublishApp(){
+		this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
+			jwt: this.dataService.user.JWT,
+			id: this.app.Id,
+			published: !this.app.Published
+		});
+	}
+
 	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){
 		if(response.status == 200){
 			this.app = (response as ApiResponse<App>).data;
@@ -120,54 +144,62 @@ export class AppPageComponent{
 	}
 
 	UpdateAppResponse(response: ApiResponse<App> | ApiErrorResponse){
-		if(response.status == 200){
-			this.editAppDialogVisible = false;
-			this.app.Name = this.newName;
-			this.app.Description = this.newDescription;
-			this.app.LinkWeb = this.newLinkWeb;
-			this.app.LinkPlay = this.newLinkPlay;
-			this.app.LinkWindows = this.newLinkWindows;
-			this.newName = "";
-			this.newDescription = "";
-			this.newLinkWeb = "";
-			this.newLinkPlay = "";
-			this.newLinkWindows = "";
-		}else{
-			this.ClearEditAppDialogErrors();
-			let errors = (response as ApiErrorResponse).errors;
-
-			for(let error of errors){
-				let errorCode = error.code;
-
-				switch(errorCode){
-					case 2203:
-						this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooShort;
-						break;
-					case 2204:
-						this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooShort;
-						break;
-					case 2303:
-						this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooLong;
-						break;
-					case 2304:
-						this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooLong;
-						break;
-					case 2402:
-						this.editAppDialogLinkWebError = this.locale.editAppDialog.errors.linkInvalid;
-						break;
-					case 2403:
-						this.editAppDialogLinkPlayError = this.locale.editAppDialog.errors.linkInvalid;
-						break;
-					case 2404:
-						this.editAppDialogLinkWindowsError = this.locale.editAppDialog.errors.linkInvalid;
-						break;
-					default:
-						if(errors.length == 1){
-							this.editAppDialogNameError = this.locale.editAppDialog.errors.unexpectedError.replace('{0}', errorCode.toString());
-						}
-						break;
+		if(this.editAppDialogVisible){
+			if(response.status == 200){
+				this.editAppDialogVisible = false;
+				this.app.Name = this.newName;
+				this.app.Description = this.newDescription;
+				this.app.LinkWeb = this.newLinkWeb;
+				this.app.LinkPlay = this.newLinkPlay;
+				this.app.LinkWindows = this.newLinkWindows;
+				this.newName = "";
+				this.newDescription = "";
+				this.newLinkWeb = "";
+				this.newLinkPlay = "";
+				this.newLinkWindows = "";
+			}else{
+				this.ClearEditAppDialogErrors();
+				let errors = (response as ApiErrorResponse).errors;
+	
+				for(let error of errors){
+					let errorCode = error.code;
+	
+					switch(errorCode){
+						case 2203:
+							this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooShort;
+							break;
+						case 2204:
+							this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooShort;
+							break;
+						case 2303:
+							this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooLong;
+							break;
+						case 2304:
+							this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooLong;
+							break;
+						case 2402:
+							this.editAppDialogLinkWebError = this.locale.editAppDialog.errors.linkInvalid;
+							break;
+						case 2403:
+							this.editAppDialogLinkPlayError = this.locale.editAppDialog.errors.linkInvalid;
+							break;
+						case 2404:
+							this.editAppDialogLinkWindowsError = this.locale.editAppDialog.errors.linkInvalid;
+							break;
+						default:
+							if(errors.length == 1){
+								this.editAppDialogNameError = this.locale.editAppDialog.errors.unexpectedError.replace('{0}', errorCode.toString());
+							}
+							break;
+					}
 				}
 			}
+		}else if(this.publishAppDialogVisible){
+			if(response.status == 200){
+				this.app.Published = !this.app.Published;
+			}
+
+			this.publishAppDialogVisible = false;
 		}
 	}
 

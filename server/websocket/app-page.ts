@@ -14,6 +14,7 @@ export async function updateApp(message: {
 	id: number,
 	name?: string,
 	description?: string,
+	published?: boolean,
 	linkWeb?: string,
 	linkPlay?: string,
 	linkWindows?: string
@@ -21,6 +22,7 @@ export async function updateApp(message: {
 	let result = await UpdateApp(message.jwt, message.id, {
 		name: message.name,
 		description: message.description,
+		published: message.published,
 		linkWeb: message.linkWeb,
 		linkPlay: message.linkPlay,
 		linkWindows: message.linkWindows

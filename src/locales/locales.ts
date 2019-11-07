@@ -242,7 +242,6 @@ const enDefaults = {
 			linkPlayTextfieldPlaceholder: "Link to the Google Play Store entry",
 			linkWindowsTextfieldLabel: "Microsoft Store",
 			linkWindowsTextifieldPlaceholder: "Link to the Microsoft Store entry",
-			cancel: "Cancel",
 			save: "Save",
 			errors: {
 				nameTooShort: "The name is too short",
@@ -252,7 +251,15 @@ const enDefaults = {
 				linkInvalid: "The link is invalid",
 				unexpectedError: "Unexpected error ({0})"
 			}
-		}
+		},
+		publishAppDialog: {
+			publishTitle: "Publish app",
+			unpublishTitle: "Unpublish app",
+			publishSubtext: "Are you sure you want to publish this app?",
+			unpublishSubtext: "Are you sure you want to unpublish this app?",
+			confirm: "Confirm"
+		},
+		cancel: "Cancel"
 	},
 	pricingComponent: {
 		free: {
@@ -552,7 +559,6 @@ const deDefaults = {
 			linkPlayTextfieldPlaceholder: "Link zum Google Play-Eintrag",
 			linkWindowsTextfieldLabel: "Microsoft Store",
 			linkWindowsTextifieldPlaceholder: "Link zum Microsoft Store-Eintrag",
-			cancel: "Abbrechen",
 			save: "Speichern",
 			errors: {
 				nameTooShort: "Der Name ist zu kurz",
@@ -562,7 +568,15 @@ const deDefaults = {
 				linkInvalid: "Der Link ist ungültig",
 				unexpectedError: "Unerwarteter Fehler ({0})"
 			}
-		}
+		},
+		publishAppDialog: {
+			publishTitle: "App veröffentlichen",
+			unpublishTitle: "Veröffentlichung aufheben",
+			publishSubtext: "Bist du dir sicher, dass du diese App veröffentlichen willst?",
+			unpublishSubtext: "Bist du dir sicher, dass du die Veröffentlichung dieser App aufheben willst?",
+			confirm: "Bestätigen"
+		},
+		cancel: "Abbrechen"
 	},
 	pricingComponent: {
 		free: {
