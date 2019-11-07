@@ -15,6 +15,7 @@ import { EmailLinkPageComponent } from './pages/email-link-page/email-link-page.
 import { LoginSessionPageComponent } from './pages/login-session-page/login-session-page.component';
 import { DevPageComponent } from './pages/dev-page/dev-page.component';
 import { AppPageComponent } from './pages/app-page/app-page.component';
+import { EventPageComponent } from './pages/event-page/event-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -30,7 +31,8 @@ const routes: Routes = [
 	{ path: "email_link", component: EmailLinkPageComponent },
 	{ path: "login_session", component: LoginSessionPageComponent },
 	{ path: "dev", component: DevPageComponent },
-	{ path: "dev/:id", component: AppPageComponent }
+	{ path: "dev/:id", component: AppPageComponent },
+	{ path: "dev/:id/:name", component: EventPageComponent }
 ];
 
 @NgModule({
