@@ -18,8 +18,14 @@ export class AppPageComponent{
 	editAppDialogVisible: boolean = false;
 	newName: string = "";
 	newDescription: string = "";
+	newLinkWeb: string = "";
+	newLinkPlay: string = "";
+	newLinkWindows: string = "";
 	editAppDialogNameError: string = "";
 	editAppDialogDescriptionError: string = "";
+	editAppDialogLinkWebError: string = "";
+	editAppDialogLinkPlayError: string = "";
+	editAppDialogLinkWindowsError: string = "";
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
@@ -74,10 +80,13 @@ export class AppPageComponent{
 
 	ShowEditAppDialog(){
 		this.editAppDialogContent.title = this.locale.editAppDialog.title;
-		this.editAppDialogNameError = "";
-		this.editAppDialogDescriptionError = "";
+		
+		this.ClearEditAppDialogErrors();
 		this.newName = this.app.Name;
 		this.newDescription = this.app.Description;
+		this.newLinkWeb = this.app.LinkWeb;
+		this.newLinkPlay = this.app.LinkPlay;
+		this.newLinkWindows = this.app.LinkWindows;
 		this.editAppDialogVisible = true;
 	}
 
@@ -94,7 +103,10 @@ export class AppPageComponent{
 			jwt: this.dataService.user.JWT,
 			id: this.app.Id,
 			name: this.newName,
-			description: this.newDescription
+			description: this.newDescription,
+			linkWeb: this.newLinkWeb,
+			linkPlay: this.newLinkPlay,
+			linkWindows: this.newLinkWindows
 		});
 	}
 
@@ -112,28 +124,58 @@ export class AppPageComponent{
 			this.editAppDialogVisible = false;
 			this.app.Name = this.newName;
 			this.app.Description = this.newDescription;
+			this.app.LinkWeb = this.newLinkWeb;
+			this.app.LinkPlay = this.newLinkPlay;
+			this.app.LinkWindows = this.newLinkWindows;
 			this.newName = "";
 			this.newDescription = "";
+			this.newLinkWeb = "";
+			this.newLinkPlay = "";
+			this.newLinkWindows = "";
 		}else{
-			let errorCode = (response as ApiErrorResponse).errors[0].code;
+			this.ClearEditAppDialogErrors();
+			let errors = (response as ApiErrorResponse).errors;
 
-			switch(errorCode){
-				case 2203:
-					this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooShort;
-					break;
-				case 2204:
-					this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooShort;
-					break;
-				case 2303:
-					this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooLong;
-					break;
-				case 2304:
-					this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooLong;
-					break;
-				default:
-					this.editAppDialogNameError = this.locale.editAppDialog.errors.unexpectedError.replace('{0}', errorCode.toString());
-					break;
+			for(let error of errors){
+				let errorCode = error.code;
+
+				switch(errorCode){
+					case 2203:
+						this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooShort;
+						break;
+					case 2204:
+						this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooShort;
+						break;
+					case 2303:
+						this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooLong;
+						break;
+					case 2304:
+						this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooLong;
+						break;
+					case 2402:
+						this.editAppDialogLinkWebError = this.locale.editAppDialog.errors.linkInvalid;
+						break;
+					case 2403:
+						this.editAppDialogLinkPlayError = this.locale.editAppDialog.errors.linkInvalid;
+						break;
+					case 2404:
+						this.editAppDialogLinkWindowsError = this.locale.editAppDialog.errors.linkInvalid;
+						break;
+					default:
+						if(errors.length == 1){
+							this.editAppDialogNameError = this.locale.editAppDialog.errors.unexpectedError.replace('{0}', errorCode.toString());
+						}
+						break;
+				}
 			}
 		}
+	}
+
+	ClearEditAppDialogErrors(){
+		this.editAppDialogNameError = "";
+		this.editAppDialogDescriptionError = "";
+		this.editAppDialogLinkWebError = "";
+		this.editAppDialogLinkPlayError = "";
+		this.editAppDialogLinkWindowsError = "";
 	}
 }

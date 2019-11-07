@@ -43,6 +43,7 @@
 	[dialogContentProps]="editAppDialogContent"
 	(onDismiss)="editAppDialogVisible = false">
 
+	<!-- Name -->
 	<div class="mb-3">
 		<fab-text-field
 			[(value)]="newName"
@@ -52,13 +53,44 @@
 		</fab-text-field>
 	</div>
 	
-	<div class="mb-4">
+	<!-- Description -->
+	<div class="mb-3">
 		<fab-text-field
 			[(value)]="newDescription"
 			[label]="locale.editAppDialog.descriptionTextfieldLabel"
 			[placeholder]="locale.editAppDialog.descriptionTextfieldPlaceholder"
 			[errorMessage]="editAppDialogDescriptionError"
 			multiline="true">
+		</fab-text-field>
+	</div>
+
+	<!-- Link Web -->
+	<div class="mb-3">
+		<fab-text-field
+			[(value)]="newLinkWeb"
+			[label]="locale.editAppDialog.linkWebTextfieldLabel"
+			[placeholder]="locale.editAppDialog.linkWebTextfieldPlaceholder"
+			[errorMessage]="editAppDialogLinkWebError">
+		</fab-text-field>
+	</div>
+
+	<!-- Link Play -->
+	<div class="mb-3">
+		<fab-text-field
+			[(value)]="newLinkPlay"
+			[label]="locale.editAppDialog.linkPlayTextfieldLabel"
+			[placeholder]="locale.editAppDialog.linkPlayTextfieldPlaceholder"
+			[errorMessage]="editAppDialogLinkPlayError">
+		</fab-text-field>
+	</div>
+
+	<!-- Link Windows -->
+	<div class="mb-4">
+		<fab-text-field
+			[(value)]="newLinkWindows"
+			[label]="locale.editAppDialog.linkWindowsTextfieldLabel"
+			[placeholder]="locale.editAppDialog.linkWindowsTextifieldPlaceholder"
+			[errorMessage]="editAppDialogLinkWindowsError">
 		</fab-text-field>
 	</div>
 	

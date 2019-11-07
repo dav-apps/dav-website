@@ -236,6 +236,12 @@ const enDefaults = {
 			nameTextfieldPlaceholder: "The name of your app",
 			descriptionTextfieldLabel: "Description",
 			descriptionTextfieldPlaceholder: "The description of your app",
+			linkWebTextfieldLabel: "Web App",
+			linkWebTextfieldPlaceholder: "The link to your web app",
+			linkPlayTextfieldLabel: "Google Play",
+			linkPlayTextfieldPlaceholder: "Link to the Google Play Store entry",
+			linkWindowsTextfieldLabel: "Microsoft Store",
+			linkWindowsTextifieldPlaceholder: "Link to the Microsoft Store entry",
 			cancel: "Cancel",
 			save: "Save",
 			errors: {
@@ -243,6 +249,7 @@ const enDefaults = {
 				descriptionTooShort: "The description is too short",
 				nameTooLong: "The name is too long",
 				descriptionTooLong: "The description is too long",
+				linkInvalid: "The link is invalid",
 				unexpectedError: "Unexpected error ({0})"
 			}
 		}
@@ -539,6 +546,12 @@ const deDefaults = {
 			nameTextfieldPlaceholder: "Der Name deiner App",
 			descriptionTextfieldLabel: "Beschreibung",
 			descriptionTextfieldPlaceholder: "Die Beschreibung deiner App",
+			linkWebTextfieldLabel: "Web App",
+			linkWebTextfieldPlaceholder: "Link zu deiner Web App",
+			linkPlayTextfieldLabel: "Google Play",
+			linkPlayTextfieldPlaceholder: "Link zum Google Play-Eintrag",
+			linkWindowsTextfieldLabel: "Microsoft Store",
+			linkWindowsTextifieldPlaceholder: "Link zum Microsoft Store-Eintrag",
 			cancel: "Abbrechen",
 			save: "Speichern",
 			errors: {
@@ -546,6 +559,7 @@ const deDefaults = {
 				descriptionTooShort: "Die Beschreibung ist zu kurz",
 				nameTooLong: "Der Name ist zu lang",
 				descriptionTooLong: "Die Beschreibung ist zu lang",
+				linkInvalid: "Der Link ist ungültig",
 				unexpectedError: "Unerwarteter Fehler ({0})"
 			}
 		}
