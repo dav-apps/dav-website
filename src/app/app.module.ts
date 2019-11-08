@@ -23,6 +23,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgxFileHelpersModule } from 'ngx-file-helpers';
+import { ChartsModule } from 'ng2-charts';
 
 // Services
 import { DataService } from './services/data-service';
@@ -94,7 +95,8 @@ import { EventPageComponent } from 'src/app/pages/event-page/event-page.componen
 		MatProgressBarModule,
 		MatSnackBarModule,
 		MatExpansionModule,
-		NgxFileHelpersModule
+		NgxFileHelpersModule,
+		ChartsModule
   	],
   	providers: [
 		DataService,

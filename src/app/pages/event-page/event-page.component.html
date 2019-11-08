@@ -11,4 +11,13 @@
 			<h1 class="text-left ml-3 font-weight-light">{{ event.Name }}</h1>
 		</div>
 	</div>
+
+	<canvas baseChart
+		style="max-width: 800px"
+		class="mx-auto"
+		[datasets]="eventDataSets"
+		[options]="eventChartOptions"
+		[labels]="eventChartLabels"
+		chartType="line">
+	</canvas>
 </div>
