@@ -8,6 +8,7 @@ import * as pricingComponent from './websocket/pricing-component';
 import * as paymentFormComponent from './websocket/payment-form-component';
 import * as devPage from './websocket/dev-page';
 import * as appPage from './websocket/app-page';
+import * as eventPage from './websocket/event-page';
 
 var socket = null;
 export var auth: Auth;
@@ -42,6 +43,7 @@ export function init(s: any){
 	socket.on(devPage.getDevKey, devPage.getDev);
 	socket.on(appPage.getAppKey, appPage.getApp);
 	socket.on(appPage.updateAppKey, appPage.updateApp);
+	socket.on(eventPage.getEventByNameKey, eventPage.getEventByName);
 
 	InitStatic(process.env.ENV == "production" ? DavEnvironment.Production : DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);
