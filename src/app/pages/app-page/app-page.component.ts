@@ -68,6 +68,11 @@ export class AppPageComponent{
 
 	async ngOnInit(){
 		await this.dataService.userPromise;
+		if(!this.dataService.user.IsLoggedIn){
+			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
+			this.router.navigate(['/']);
+			return;
+		}
 
 		let appId = this.activatedRoute.snapshot.paramMap.get('id');
 		

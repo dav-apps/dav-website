@@ -259,7 +259,11 @@ const enDefaults = {
 			unpublishSubtext: "Are you sure you want to unpublish this app?",
 			confirm: "Confirm"
 		},
-		cancel: "Cancel"
+		cancel: "Cancel",
+		loginRequiredMessage: "You need to log in to access this page"
+	},
+	eventPage: {
+		loginRequiredMessage: "You need to log in to access this page"
 	},
 	pricingComponent: {
 		free: {
@@ -576,7 +580,11 @@ const deDefaults = {
 			unpublishSubtext: "Bist du dir sicher, dass du die Veröffentlichung dieser App aufheben willst?",
 			confirm: "Bestätigen"
 		},
-		cancel: "Abbrechen"
+		cancel: "Abbrechen",
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
+	},
+	eventPage: {
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},
 	pricingComponent: {
 		free: {
