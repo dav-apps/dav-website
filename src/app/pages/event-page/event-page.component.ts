@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, Event } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, Event, EventSummaryPropertyCount } from 'dav-npm';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
+import Chartkick from "chartkick";
 import * as moment from 'moment';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -73,6 +74,25 @@ export class EventPageComponent{
 				this.eventChartLabels.push(moment(log.Time.toString()).format('l'));
 			}
 			this.chart.update();
+
+			// Get the countries
+			let countries: Map<string, number> = new Map();
+			for(let log of this.event.Logs){
+				for(let property of log.Properties){
+					if(property.Name == "country" && property.Value){
+						if(countries.has(property.Value)){
+							countries.set(property.Value, countries.get(property.Value) + property.Count);
+						}else{
+							countries.set(property.Value, property.Count);
+						}
+					}
+				}
+			}
+
+			let countriesArray = [];
+			for(let entry of countries.entries()) countriesArray.push(entry);
+
+			new Chartkick.GeoChart("map-chart", countriesArray);
 		}else{
 			this.GoBack();
 		}

@@ -39,6 +39,7 @@
     "@ng-bootstrap/ng-bootstrap": "^5.1.1",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.9.2",
+    "chartkick": "^3.1.3",
     "dav-npm": "git+https://github.com/dav-apps/dav-npm.git#development",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
