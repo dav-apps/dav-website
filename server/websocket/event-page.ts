@@ -9,7 +9,7 @@ export async function getEventByName(message: {
 	appId: number,
 	start?: number,
 	end?: number,
-	sort?: EventSummaryPeriod
+	period?: EventSummaryPeriod
 }){
 	let result = await GetEventByName(
 		message.jwt, 
@@ -17,7 +17,7 @@ export async function getEventByName(message: {
 		message.appId, 
 		message.start, 
 		message.end, 
-		message.sort
+		message.period
 	);
 	websocket.emit(getEventByNameKey, result);
 }

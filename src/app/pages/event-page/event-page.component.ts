@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, Event, EventSummaryPropertyCount } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, Event, EventSummaryOsCount, EventSummaryBrowserCount, EventSummaryCountryCount } from 'dav-npm';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import Chartkick from "chartkick";
@@ -28,6 +28,32 @@ export class EventPageComponent{
          fontSize: 19
 		}
 	}
+
+	//#region Pie chart variables
+	pieChartFormats: {name: string, os: boolean, selector?: string}[] = [		// name -> {0}: Name, {1}: Version
+		{name: "{0}", os: true},
+		{name: "{0} {1}", os: true},
+		{name: "{0} {1}", os: true, selector: "Windows"},
+		{name: "{0} {1}", os: true, selector: "Android"},
+		{name: "{0}", os: false},
+		{name: "{0} {1}", os: false, selector: "Edge"},
+		{name: "{0} {1}", os: false, selector: "Chrome"},
+		{name: "{0} {1}", os: false, selector: "Firefox"}
+	]
+	pieChartTitles: string[] = [
+		"Operating systems", 
+		"Operating systems with version", 
+		"Windows versions", 
+		"Android versions",
+		"Browser", 
+		"Microsoft Edge versions",
+		"Google Chrome versions",
+		"Firefox versions"
+	]
+	pieChartData: number[][] = [[], [], [], [], [], []];
+	pieChartLabels: Label[][] = [[], [], [], [], [], []];
+	pieChartsLoaded: boolean = false;
+	//#endregion
 	
 	constructor(
 		public dataService: DataService,
@@ -66,36 +92,95 @@ export class EventPageComponent{
 	}
 
 	GetEventByNameResponse(response: ApiResponse<Event> | ApiErrorResponse){
-		if(response.status == 200){
-			this.event = (response as ApiResponse<Event>).data;
+		if(response.status != 200){
+			this.GoBack();
+			return;
+		}
 
-			for(let log of this.event.Logs){
-				this.eventDataSets[0].data.push(log.Total);
-				this.eventChartLabels.push(moment(log.Time.toString()).format('l'));
-			}
-			this.chart.update();
+		this.event = (response as ApiResponse<Event>).data;
 
-			// Get the countries
-			let countries: Map<string, number> = new Map();
-			for(let log of this.event.Logs){
-				for(let property of log.Properties){
-					if(property.Name == "country" && property.Value){
-						if(countries.has(property.Value)){
-							countries.set(property.Value, countries.get(property.Value) + property.Count);
-						}else{
-							countries.set(property.Value, property.Count);
-						}
+		// Get the total count
+		for(let summary of this.event.Summaries){
+			this.eventDataSets[0].data.push(summary.Total);
+			this.eventChartLabels.push(moment(summary.Time.toString()).format('l'));
+		}
+		this.chart.update();
+
+		let countries: Map<string, number> = new Map();
+		let pieChartMaps: Map<string, number>[] = [];
+
+		// Init the pieChartMaps
+		pieChartMaps = [];
+		for(let i = 0; i < this.pieChartFormats.length; i++) pieChartMaps.push(new Map());
+
+		for(let summary of this.event.Summaries){
+			// Get the os and browser data
+			for(let i = 0; i < this.pieChartFormats.length; i++){
+				let formatName = this.pieChartFormats[i].name;
+				let formatOs = this.pieChartFormats[i].os;
+				let formatSelector = this.pieChartFormats[i].selector;
+
+				let map = pieChartMaps[i];
+				let counts = formatOs ? summary.OsCounts : summary.BrowserCounts;
+
+				for(let obj of counts){
+					// obj is either EventSummaryOsCount or EventSummaryBrowserCount
+					let entry = obj as EventSummaryOsCount | EventSummaryBrowserCount;
+					let entryName = formatName.replace("{0}", entry.Name).replace("{1}", entry.Version);
+
+					// Skip this object if there is a selector and if the name does not contain the selector
+					if(formatSelector && !entryName.includes(formatSelector)) continue;
+
+					if(map.has(entryName)){
+						// Add the count of the current entry
+						map.set(entryName, map.get(entryName) + entry.Count);
+					}else{
+						// Add the new entry to the map
+						map.set(entryName, entry.Count);
 					}
 				}
 			}
 
-			let countriesArray = [];
-			for(let entry of countries.entries()) countriesArray.push(entry);
-
-			new Chartkick.GeoChart("map-chart", countriesArray);
-		}else{
-			this.GoBack();
+			// Get the countries
+			for(let obj of summary.CountryCounts){
+				if(obj.Country){
+					if(countries.has(obj.Country)){
+						// Add the count of the current country
+						countries.set(obj.Country, countries.get(obj.Country) + obj.Count);
+					}else{
+						// Add the new country to the countries
+						countries.set(obj.Country, obj.Count);
+					}
+				}
+			}
 		}
+
+		// Init the map chart with the countries data
+		let countriesArray = [];
+		for(let entry of countries.entries()) countriesArray.push(entry);
+
+		new Chartkick.GeoChart("map-chart", countriesArray);
+
+		// Init the pie charts
+		for(let i = 0; i < this.pieChartFormats.length; i++){
+			let format = this.pieChartFormats[i];
+			this.pieChartData[i] = [];
+			this.pieChartLabels[i] = [];
+
+			if(format.os){
+				for(let entry of pieChartMaps[i].entries()){
+					this.pieChartLabels[i].push(entry[0]);
+					this.pieChartData[i].push(entry[1]);
+				}
+			}else{
+				for(let entry of pieChartMaps[i].entries()){
+					this.pieChartLabels[i].push(entry[0]);
+					this.pieChartData[i].push(entry[1]);
+				}
+			}
+		}
+		
+		this.pieChartsLoaded = true;
 	}
 
 	GoBack(){
