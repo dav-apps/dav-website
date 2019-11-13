@@ -43,6 +43,7 @@ export function init(s: any){
 	socket.on(devPage.getDevKey, devPage.getDev);
 	socket.on(appPage.getAppKey, appPage.getApp);
 	socket.on(appPage.updateAppKey, appPage.updateApp);
+	socket.on(appPage.createTableKey, appPage.createTable);
 	socket.on(eventPage.getEventByNameKey, eventPage.getEventByName);
 
 	InitStatic(process.env.ENV == "production" ? DavEnvironment.Production : DavEnvironment.Development);

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, App } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, App, Table } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
@@ -14,6 +14,7 @@ export class AppPageComponent{
 	locale = enUS.appPage;
 	getAppSubscriptionKey: number;
 	updateAppSubscriptionKey: number;
+	createTableSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
 	editAppDialogVisible: boolean = false;
 	publishAppDialogVisible: boolean = false;
@@ -64,6 +65,7 @@ export class AppPageComponent{
 		this.locale = this.dataService.GetLocale().appPage;
 		this.getAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetApp, (response: ApiResponse<App> | ApiErrorResponse) => this.GetAppResponse(response));
 		this.updateAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.UpdateApp, (response: ApiResponse<App> | ApiErrorResponse) => this.UpdateAppResponse(response));
+		this.createTableSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateTable, (response: ApiResponse<Table> | ApiErrorResponse) => this.CreateTableResponse(response));
 	}
 
 	async ngOnInit(){
@@ -85,7 +87,8 @@ export class AppPageComponent{
 	ngOnDestroy(){
 		this.websocketService.Unsubscribe(
 			this.getAppSubscriptionKey,
-			this.updateAppSubscriptionKey
+			this.updateAppSubscriptionKey,
+			this.createTableSubscriptionKey
 		)
 	}
 
@@ -206,6 +209,10 @@ export class AppPageComponent{
 
 			this.publishAppDialogVisible = false;
 		}
+	}
+
+	CreateTableResponse(response: (ApiResponse<Table> | ApiErrorResponse)){
+		console.log(response)
 	}
 
 	ClearEditAppDialogErrors(){
