@@ -41,14 +41,14 @@ export class EventPageComponent{
 		{name: "{0} {1}", os: false, selector: "Firefox"}
 	]
 	pieChartTitles: string[] = [
-		"Operating systems", 
-		"Operating systems with version", 
-		"Windows versions", 
-		"Android versions",
-		"Browser", 
-		"Microsoft Edge versions",
-		"Google Chrome versions",
-		"Firefox versions"
+		this.locale.pieChartTitles.operatingSystems, 
+		this.locale.pieChartTitles.operatingSystemsVersions, 
+		this.locale.pieChartTitles.windowsVersions, 
+		this.locale.pieChartTitles.androidVersions,
+		this.locale.pieChartTitles.browser, 
+		this.locale.pieChartTitles.edgeVersions,
+		this.locale.pieChartTitles.chromeVersions,
+		this.locale.pieChartTitles.firefoxVersions
 	]
 	pieChartData: number[][] = [[], [], [], [], [], []];
 	pieChartLabels: Label[][] = [[], [], [], [], [], []];
@@ -63,7 +63,18 @@ export class EventPageComponent{
 	){
 		this.locale = this.dataService.GetLocale().eventPage;
 		moment.locale(this.dataService.locale);
+
 		this.getEventByNameSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetEventByName, (response: ApiResponse<Event> | ApiErrorResponse) => this.GetEventByNameResponse(response));
+
+		// Update the pie chart titles
+		this.pieChartTitles[0] = this.locale.pieChartTitles.operatingSystems;
+		this.pieChartTitles[1] = this.locale.pieChartTitles.operatingSystemsVersions;
+		this.pieChartTitles[2] = this.locale.pieChartTitles.windowsVersions;
+		this.pieChartTitles[3] = this.locale.pieChartTitles.androidVersions;
+		this.pieChartTitles[4] = this.locale.pieChartTitles.browser;
+		this.pieChartTitles[5] = this.locale.pieChartTitles.edgeVersions;
+		this.pieChartTitles[6] = this.locale.pieChartTitles.chromeVersions;
+		this.pieChartTitles[7] = this.locale.pieChartTitles.firefoxVersions;
 	}
 
 	async ngOnInit(){
