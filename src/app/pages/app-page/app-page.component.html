@@ -32,7 +32,7 @@
 		<div class="mx-4">
 			<h3 class="font-weight-light mb-3 mt-4">{{ locale.events }}</h3>
 			<div class="list-group" style="display: inline-block">
-				<a [routerLink]="event.Name" class="list-group-item list-group-item-action" *ngFor="let event of app.Events">{{ event.Name }}</a>
+				<a [routerLink]="'event/' + event.Name" class="list-group-item list-group-item-action" *ngFor="let event of app.Events">{{ event.Name }}</a>
 			</div>
 		</div>
 	</div>

@@ -32,7 +32,7 @@ const routes: Routes = [
 	{ path: "login_session", component: LoginSessionPageComponent },
 	{ path: "dev", component: DevPageComponent },
 	{ path: "dev/:id", component: AppPageComponent },
-	{ path: "dev/:id/:name", component: EventPageComponent }
+	{ path: "dev/:id/event/:name", component: EventPageComponent }
 ];
 
 @NgModule({
