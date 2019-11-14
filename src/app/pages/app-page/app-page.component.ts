@@ -141,6 +141,9 @@ export class AppPageComponent{
 	}
 
 	ShowAddTableDialog(){
+		this.addTableDialogNewTableName = "";
+		this.addTableDialogNewTableError = "";
+
 		this.addTableDialogContent.title = this.locale.addTableDialog.title;
 		this.addTableDialogVisible = true;
 	}

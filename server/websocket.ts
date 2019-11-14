@@ -41,6 +41,7 @@ export function init(s: any){
 	socket.on(paymentFormComponent.createStripeCustomerForUserKey, paymentFormComponent.createStripeCustomerForUser);
 	socket.on(paymentFormComponent.saveStripePaymentMethodKey, paymentFormComponent.saveStripePaymentMethod);
 	socket.on(devPage.getDevKey, devPage.getDev);
+	socket.on(devPage.createAppKey, devPage.createApp);
 	socket.on(appPage.getAppKey, appPage.getApp);
 	socket.on(appPage.updateAppKey, appPage.updateApp);
 	socket.on(appPage.createTableKey, appPage.createTable);

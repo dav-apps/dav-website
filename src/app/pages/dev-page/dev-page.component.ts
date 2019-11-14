@@ -13,6 +13,7 @@ import { enUS } from 'src/locales/locales';
 export class DevPageComponent{
 	locale = enUS.devPage;
 	getDevSubscriptionKey: number;
+	createAppSubscriptionKey: number;
 	apps: App[] = [];
 	hoveredAppIndex: number = -1;
 	addAppHovered: boolean = false;
@@ -26,6 +27,7 @@ export class DevPageComponent{
 	){
 		this.locale = this.dataService.GetLocale().devPage;
 		this.getDevSubscriptionKey = websocketService.Subscribe(WebsocketCallbackType.GetDev, (response: ApiResponse<DevResponseData> | ApiErrorResponse) => this.GetDevResponse(response));
+		this.createAppSubscriptionKey = websocketService.Subscribe(WebsocketCallbackType.CreateApp, (response: ApiResponse<App> | ApiErrorResponse) => this.CreateAppResponse(response));
 	}
 
 	async ngOnInit(){
@@ -40,7 +42,10 @@ export class DevPageComponent{
 	}
 
 	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.getDevSubscriptionKey);
+		this.websocketService.Unsubscribe(
+			this.getDevSubscriptionKey,
+			this.createAppSubscriptionKey
+		)
 	}
 
 	ShowApp(appId: number){
@@ -54,5 +59,9 @@ export class DevPageComponent{
 			// Show error
 			this.errorMessage = this.locale.unexpectedErrorShort.replace('{0}', (response as ApiErrorResponse).errors[0].code.toString());
 		}
+	}
+
+	CreateAppResponse(response: ApiResponse<App> | ApiErrorResponse){
+
 	}
 }
