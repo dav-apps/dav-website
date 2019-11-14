@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MessageBarType } from 'office-ui-fabric-react';
+import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, DevResponseData, App } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -18,7 +18,20 @@ export class DevPageComponent{
 	hoveredAppIndex: number = -1;
 	addAppHovered: boolean = false;
 	errorMessage: string = "";
+	addAppDialogVisible: boolean = false;
+	addAppDialogName: string = "";
+	addAppDialogDescription: string = "";
+	addAppDialogNameError: string = "";
+	addAppDialogDescriptionError: string = "";
 	messageBarType: MessageBarType = MessageBarType.error;
+	dialogPrimaryButtonStyles: IButtonStyles = {
+		root: {
+			marginLeft: 10
+		}
+	}
+	addAppDialogContent: IDialogContentProps = {
+		title: this.locale.addAppDialog.title
+	}
 	
 	constructor(
 		public dataService: DataService,
@@ -52,6 +65,27 @@ export class DevPageComponent{
 		this.router.navigate(['dev', appId])
 	}
 
+	ShowAddAppDialog(){
+		this.addAppDialogName = "";
+		this.addAppDialogDescription = "";
+		this.addAppDialogNameError = "";
+		this.addAppDialogDescriptionError = "";
+
+		this.addAppDialogContent.title = this.locale.addAppDialog.title;
+		this.addAppDialogVisible = true;
+	}
+
+	AddApp(){
+		this.addAppDialogNameError = "";
+		this.addAppDialogDescriptionError = "";
+
+		this.websocketService.Emit(WebsocketCallbackType.CreateApp, {
+			jwt: this.dataService.user.JWT,
+			name: this.addAppDialogName,
+			description: this.addAppDialogDescription
+		});
+	}
+
 	GetDevResponse(response: ApiResponse<DevResponseData> | ApiErrorResponse){
 		if(response.status == 200){
 			this.apps = (response as ApiResponse<DevResponseData>).data.apps;
@@ -62,6 +96,36 @@ export class DevPageComponent{
 	}
 
 	CreateAppResponse(response: ApiResponse<App> | ApiErrorResponse){
+		if(response.status == 201){
+			this.apps.push((response as ApiResponse<App>).data);
+			this.addAppDialogVisible = false;
+		}else{
+			let errors = (response as ApiErrorResponse).errors;
 
+			for(let error of errors){
+				let errorCode = error.code;
+
+				switch(errorCode){
+					case 2111:
+						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort;
+						break;
+					case 2112:
+						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort;
+						break;
+					case 2203:
+						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort;
+						break;
+					case 2204:
+						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort;
+						break;
+					case 2303:
+						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooLong;
+						break;
+					case 2304:
+						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooLong;
+						break;
+				}
+			}
+		}
 	}
 }

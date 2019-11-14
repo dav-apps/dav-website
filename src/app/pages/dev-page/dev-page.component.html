@@ -11,7 +11,8 @@
 			[ngClass]="addAppHovered ? 'shadow' : 'shadow-sm'"
 			style="transition: 0.12s"
 			(mouseover)="addAppHovered = true"
-			(mouseout)="addAppHovered = false">
+			(mouseout)="addAppHovered = false"
+			(click)="ShowAddAppDialog()">
 			<div class="card-body d-flex justify-content-center align-items-center">
 				<i class="ms-Icon ms-Icon--Add text-color" aria-hidden="true" style="font-size: 16px"></i>
 			</div>
@@ -31,3 +32,35 @@
 		</div>
 	</div>
 </div>
+
+<fab-dialog
+	[hidden]="!addAppDialogVisible"
+	[dialogContentProps]="addAppDialogContent"
+	(onDismiss)="addAppDialogVisible = false">
+
+	<!-- Name -->
+	<div class="mb-4">
+		<fab-text-field
+			[(value)]="addAppDialogName"
+			[label]="locale.addAppDialog.nameTextfieldLabel"
+			[placeholder]="locale.addAppDialog.nameTextfieldPlaceholder"
+			[errorMessage]="addAppDialogNameError">
+		</fab-text-field>
+	</div>
+
+	<!-- Description -->
+	<div class="mb-4">
+		<fab-text-field
+			[(value)]="addAppDialogDescription"
+			[label]="locale.addAppDialog.descriptionTextfieldLabel"
+			[placeholder]="locale.addAppDialog.descriptionTextfieldPlaceholder"
+			[errorMessage]="addAppDialogDescriptionError"
+			multiline="true">
+		</fab-text-field>
+	</div>
+
+	<fab-dialog-footer>
+		<fab-default-button (click)="addAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="AddApp()">{{ locale.save }}</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>

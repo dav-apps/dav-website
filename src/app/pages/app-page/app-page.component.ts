@@ -115,6 +115,8 @@ export class AppPageComponent{
 	}
 
 	UpdateApp(){
+		this.ClearEditAppDialogErrors();
+		
 		if(this.newName.length == 0){
 			this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooShort;
 			return;
@@ -190,7 +192,6 @@ export class AppPageComponent{
 				this.newLinkPlay = "";
 				this.newLinkWindows = "";
 			}else{
-				this.ClearEditAppDialogErrors();
 				let errors = (response as ApiErrorResponse).errors;
 	
 				for(let error of errors){

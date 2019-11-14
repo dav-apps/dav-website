@@ -222,7 +222,22 @@ const enDefaults = {
 	},
 	devPage: {
 		loginRequiredMessage: "You need to log in to access this page",
-		unexpectedErrorShort: "Unexpected error ({0})"
+		unexpectedErrorShort: "Unexpected error ({0})",
+		save: "Save",
+		cancel: "Cancel",
+		addAppDialog: {
+			title: "Add app",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "The name of the app",
+			descriptionTextfieldLabel: "Description",
+			descriptionTextfieldPlaceholder: "The description of the app",
+			errors: {
+				nameTooShort: "The name is too short",
+				descriptionTooShort: "The description is too short",
+				nameTooLong: "The name is too long",
+				descriptionTooLong: "The description is too long"
+			}
+		}
 	},
 	appPage: {
 		statistics: "Statistics",
@@ -563,7 +578,22 @@ const deDefaults = {
 	},
 	devPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		unexpectedErrorShort: "Unerwarteter Fehler ({0})"
+		unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+		save: "Speichern",
+		cancel: "Abbrechen",
+		addAppDialog: {
+			title: "App hinzufügen",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "Der Name der App",
+			descriptionTextfieldLabel: "Beschreibung",
+			descriptionTextfieldPlaceholder: "Die Beschreibung der App",
+			errors: {
+				nameTooShort: "Der Name ist zu kurz",
+				descriptionTooShort: "Die Beschreibung ist zu kurz",
+				nameTooLong: "Der Name ist zu lang",
+				descriptionTooLong: "Die Beschreibung ist zu lang"
+			}
+		}
 	},
 	appPage: {
 		statistics: "Statistiken",
