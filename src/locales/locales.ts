@@ -242,7 +242,6 @@ const enDefaults = {
 			linkPlayTextfieldPlaceholder: "Link to the Google Play Store entry",
 			linkWindowsTextfieldLabel: "Microsoft Store",
 			linkWindowsTextifieldPlaceholder: "Link to the Microsoft Store entry",
-			save: "Save",
 			errors: {
 				nameTooShort: "The name is too short",
 				descriptionTooShort: "The description is too short",
@@ -259,6 +258,17 @@ const enDefaults = {
 			unpublishSubtext: "Are you sure you want to unpublish this app?",
 			confirm: "Confirm"
 		},
+		addTableDialog: {
+			title: "Add table",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "The name of the table",
+			errors: {
+				nameTooShort: "The name is too short",
+				nameTooLong: "The name is too long",
+				nameInvalid: "The name is invalid"
+			}
+		},
+		save: "Save",
 		cancel: "Cancel",
 		loginRequiredMessage: "You need to log in to access this page"
 	},
@@ -573,7 +583,6 @@ const deDefaults = {
 			linkPlayTextfieldPlaceholder: "Link zum Google Play-Eintrag",
 			linkWindowsTextfieldLabel: "Microsoft Store",
 			linkWindowsTextifieldPlaceholder: "Link zum Microsoft Store-Eintrag",
-			save: "Speichern",
 			errors: {
 				nameTooShort: "Der Name ist zu kurz",
 				descriptionTooShort: "Die Beschreibung ist zu kurz",
@@ -590,6 +599,17 @@ const deDefaults = {
 			unpublishSubtext: "Bist du dir sicher, dass du die Veröffentlichung dieser App aufheben willst?",
 			confirm: "Bestätigen"
 		},
+		addTableDialog: {
+			title: "Tabelle hinzufügen",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "Der Name der Tabelle",
+			errors: {
+				nameTooShort: "Der Name ist zu kurz",
+				nameTooLong: "Der Name ist zu lang",
+				nameInvalid: "Der Name ist ungültig"
+			}
+		},
+		save: "Speichern",
 		cancel: "Abbrechen",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},

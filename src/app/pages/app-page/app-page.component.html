@@ -24,8 +24,9 @@
 	<div class="row">
 		<div class="mx-4">
 			<h3 class="font-weight-light mb-3 mt-4">{{ locale.tables }}</h3>
-			<ul class="list-group" style="display: inline-block">
-				<li class="list-group-item" *ngFor="let table of app.Tables">{{ table.Name }}</li>
+			<ul class="list-group">
+				<li class="list-group-item text-center cursor font-weight-light p-1" style="font-size: 26px" (click)="ShowAddTableDialog()">+</li>
+				<li class="list-group-item text-center" *ngFor="let table of app.Tables">{{ table.Name }}</li>
 			</ul>
 		</div>
 
@@ -96,7 +97,7 @@
 	
 	<fab-dialog-footer>
 		<fab-default-button (click)="editAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="UpdateApp()">{{ locale.editAppDialog.save }}</fab-primary-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="UpdateApp()">{{ locale.save }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>
 
@@ -107,5 +108,26 @@
 	<fab-dialog-footer>
 		<fab-default-button (click)="publishAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
 		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="PublishApp()">{{ locale.publishAppDialog.confirm }}</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>
+
+<fab-dialog
+	[hidden]="!addTableDialogVisible"
+	[dialogContentProps]="addTableDialogContent"
+	(onDismiss)="addTableDialogVisible = false">
+	
+	<div class="mb-4">
+		<fab-text-field
+			[(value)]="addTableDialogNewTableName"
+			[label]="locale.addTableDialog.nameTextfieldLabel"
+			[placeholder]="locale.addTableDialog.nameTextfieldPlaceholder"
+			[errorMessage]="addTableDialogNewTableError"
+			(keydown.enter)="AddTable()">
+		</fab-text-field>
+	</div>
+
+	<fab-dialog-footer>
+		<fab-default-button (click)="addTableDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="AddTable()">{{ locale.save }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

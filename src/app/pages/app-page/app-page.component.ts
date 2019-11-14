@@ -18,6 +18,7 @@ export class AppPageComponent{
 	app: App = new App(0, "", "", false, null, null, null);
 	editAppDialogVisible: boolean = false;
 	publishAppDialogVisible: boolean = false;
+	addTableDialogVisible: boolean = false;
 	newName: string = "";
 	newDescription: string = "";
 	newLinkWeb: string = "";
@@ -28,6 +29,8 @@ export class AppPageComponent{
 	editAppDialogLinkWebError: string = "";
 	editAppDialogLinkPlayError: string = "";
 	editAppDialogLinkWindowsError: string = "";
+	addTableDialogNewTableName: string = "";
+	addTableDialogNewTableError: string = "";
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
@@ -54,6 +57,9 @@ export class AppPageComponent{
 				fontSize: 14
 			}
 		}
+	}
+	addTableDialogContent: IDialogContentProps = {
+		title: this.locale.addTableDialog.title
 	}
 
 	constructor(
@@ -134,11 +140,26 @@ export class AppPageComponent{
 		this.publishAppDialogVisible = true;
 	}
 
+	ShowAddTableDialog(){
+		this.addTableDialogContent.title = this.locale.addTableDialog.title;
+		this.addTableDialogVisible = true;
+	}
+
 	PublishApp(){
 		this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
 			jwt: this.dataService.user.JWT,
 			id: this.app.Id,
 			published: !this.app.Published
+		});
+	}
+
+	AddTable(){
+		this.addTableDialogNewTableError = "";
+		
+		this.websocketService.Emit(WebsocketCallbackType.CreateTable, {
+			jwt: this.dataService.user.JWT,
+			appId: this.app.Id,
+			name: this.addTableDialogNewTableName
 		});
 	}
 
@@ -212,7 +233,27 @@ export class AppPageComponent{
 	}
 
 	CreateTableResponse(response: (ApiResponse<Table> | ApiErrorResponse)){
-		console.log(response)
+		if(response.status == 201){
+			this.app.Tables.push((response as ApiResponse<Table>).data);
+			this.addTableDialogVisible = false;
+		}else{
+			let errorCode = (response as ApiErrorResponse).errors[0].code;
+
+			switch(errorCode){
+				case 2111:
+					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameTooShort;
+					break;
+				case 2203:
+					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameTooShort;
+					break;
+				case 2303:
+					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameTooLong;
+					break;
+				case 2502:
+					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameInvalid;
+					break;
+			}
+		}
 	}
 
 	ClearEditAppDialogErrors(){
