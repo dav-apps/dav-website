@@ -16,6 +16,7 @@ import { LoginSessionPageComponent } from './pages/login-session-page/login-sess
 import { DevPageComponent } from './pages/dev-page/dev-page.component';
 import { AppPageComponent } from './pages/app-page/app-page.component';
 import { EventPageComponent } from './pages/event-page/event-page.component';
+import { StatisticsPageComponent } from './pages/statistics-page/statistics-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -31,6 +32,7 @@ const routes: Routes = [
 	{ path: "email_link", component: EmailLinkPageComponent },
 	{ path: "login_session", component: LoginSessionPageComponent },
 	{ path: "dev", component: DevPageComponent },
+	{ path: "dev/statistics", component: StatisticsPageComponent },
 	{ path: "dev/:id", component: AppPageComponent },
 	{ path: "dev/:id/event/:name", component: EventPageComponent }
 ];

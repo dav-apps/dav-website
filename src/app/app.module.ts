@@ -51,6 +51,7 @@ import { LoginSessionPageComponent } from 'src/app/pages/login-session-page/logi
 import { DevPageComponent } from 'src/app/pages/dev-page/dev-page.component';
 import { AppPageComponent } from 'src/app/pages/app-page/app-page.component';
 import { EventPageComponent } from 'src/app/pages/event-page/event-page.component';
+import { StatisticsPageComponent } from 'src/app/pages/statistics-page/statistics-page.component';
 
 @NgModule({
   	declarations: [
@@ -74,7 +75,8 @@ import { EventPageComponent } from 'src/app/pages/event-page/event-page.componen
 		LoginSessionPageComponent,
 		DevPageComponent,
 		AppPageComponent,
-		EventPageComponent
+		EventPageComponent,
+		StatisticsPageComponent
   	],
   	imports: [
 		AngularReactBrowserModule,
