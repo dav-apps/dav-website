@@ -300,6 +300,9 @@ const enDefaults = {
 			firefoxVersions: "Firefox"
 		}
 	},
+	statisticsPage: {
+		
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -655,6 +658,9 @@ const deDefaults = {
 			chromeVersions: "Google Chrome",
 			firefoxVersions: "Firefox"
 		}
+	},
+	statisticsPage: {
+
 	},
 	pricingComponent: {
 		free: {
