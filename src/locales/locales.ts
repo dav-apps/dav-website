@@ -221,6 +221,8 @@ const enDefaults = {
 		loginRequiredMessage: "You need to log in to access this page"
 	},
 	devPage: {
+		title: "Developer Dashboard",
+		statistics: "Statistics",
 		loginRequiredMessage: "You need to log in to access this page",
 		unexpectedErrorShort: "Unexpected error ({0})",
 		save: "Save",
@@ -301,7 +303,7 @@ const enDefaults = {
 		}
 	},
 	statisticsPage: {
-		
+		title: "General statistics"
 	},
 	appStatisticsPage: {
 
@@ -583,6 +585,8 @@ const deDefaults = {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},
 	devPage: {
+		title: "Entwickler-Dashboard",
+		statistics: "Statistiken",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		unexpectedErrorShort: "Unerwarteter Fehler ({0})",
 		save: "Speichern",
@@ -663,7 +667,7 @@ const deDefaults = {
 		}
 	},
 	statisticsPage: {
-
+		title: "Allgemeine Statistiken"
 	},
 	appStatisticsPage: {
 

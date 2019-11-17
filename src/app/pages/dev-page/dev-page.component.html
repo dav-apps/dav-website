@@ -1,5 +1,5 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn">
-	<h1 class="text-center font-weight-light mb-3">Developer Dashboard</h1>
+	<h1 class="text-center font-weight-light mb-3">{{ locale.title }}</h1>
 
 	<div class="mb-3 mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0">
 		<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
@@ -30,6 +30,10 @@
 				<p class="card-text">{{ app.Name }}</p>
 			</div>
 		</div>
+	</div>
+
+	<div class="mt-3 ml-1">
+		<fab-primary-button (click)="ShowStatistics()">{{ locale.statistics }}</fab-primary-button>
 	</div>
 </div>
 

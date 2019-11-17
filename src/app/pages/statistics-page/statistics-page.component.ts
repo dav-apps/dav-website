@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { IIconStyles } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, GetUsersResponseData } from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from 'src/app/services/data-service';
@@ -12,9 +14,16 @@ export class StatisticsPageComponent{
 	locale = enUS.statisticsPage;
 	getUsersSubscriptionKey: number;
 
+	backButtonIconStyles: IIconStyles = {
+		root: {
+         fontSize: 19
+		}
+	}
+
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService
+		public websocketService: WebsocketService,
+		private router: Router
 	){
 		this.locale = this.dataService.GetLocale().statisticsPage;
 		this.getUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetUsers, (response: ApiResponse<GetUsersResponseData> | ApiErrorResponse) => this.GetUsersResponse(response));
@@ -26,5 +35,9 @@ export class StatisticsPageComponent{
 
 	GetUsersResponse(message: ApiResponse<GetUsersResponseData> | ApiErrorResponse){
 		console.log(message)
+	}
+
+	GoBack(){
+		this.router.navigate(['dev']);
 	}
 }

@@ -65,6 +65,10 @@ export class DevPageComponent{
 		this.router.navigate(['dev', appId])
 	}
 
+	ShowStatistics(){
+		this.router.navigate(['dev', 'statistics'])
+	}
+
 	ShowAddAppDialog(){
 		this.addAppDialogName = "";
 		this.addAppDialogDescription = "";
