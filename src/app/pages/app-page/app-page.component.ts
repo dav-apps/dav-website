@@ -102,6 +102,10 @@ export class AppPageComponent{
 		this.router.navigate(['dev']);
 	}
 
+	ShowAppStatistics(){
+		this.router.navigate(['dev', this.app.Id, 'statistics']);
+	}
+
 	ShowEditAppDialog(){
 		this.editAppDialogContent.title = this.locale.editAppDialog.title;
 		

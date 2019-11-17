@@ -14,7 +14,7 @@
 
 	<div>
 		<p class="mb-3 font-weight-light" style="font-size: 18px">{{ app.Description }}</p>
-		<fab-primary-button>{{ locale.statistics }}</fab-primary-button>
+		<fab-primary-button (click)="ShowAppStatistics()">{{ locale.statistics }}</fab-primary-button>
 		<fab-default-button [styles]="editButtonStyles" (click)="ShowEditAppDialog()">{{ locale.edit }}</fab-default-button>
 
 		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
