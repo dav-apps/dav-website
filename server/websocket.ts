@@ -10,6 +10,7 @@ import * as devPage from './websocket/dev-page';
 import * as appPage from './websocket/app-page';
 import * as eventPage from './websocket/event-page';
 import * as statisticsPage from './websocket/statistics-page';
+import * as appStatisticsPage from './websocket/app-statistics-page';
 
 var socket = null;
 export var auth: Auth;
@@ -48,6 +49,7 @@ export function init(s: any){
 	socket.on(appPage.createTableKey, appPage.createTable);
 	socket.on(eventPage.getEventByNameKey, eventPage.getEventByName);
 	socket.on(statisticsPage.getUsersKey, statisticsPage.getUsers);
+	socket.on(appStatisticsPage.getAppUsersKey, appStatisticsPage.getAppUsers);
 
 	InitStatic(process.env.ENV == "production" ? DavEnvironment.Production : DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);

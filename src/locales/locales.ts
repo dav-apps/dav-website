@@ -303,6 +303,9 @@ const enDefaults = {
 	statisticsPage: {
 		
 	},
+	appStatisticsPage: {
+
+	},
 	pricingComponent: {
 		free: {
 			storage: "2 GB of storage"
@@ -660,6 +663,9 @@ const deDefaults = {
 		}
 	},
 	statisticsPage: {
+
+	},
+	appStatisticsPage: {
 
 	},
 	pricingComponent: {
