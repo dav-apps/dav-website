@@ -303,10 +303,11 @@ const enDefaults = {
 		}
 	},
 	statisticsPage: {
+		loginRequiredMessage: "You need to log in to access this page",
 		title: "General statistics"
 	},
 	appStatisticsPage: {
-
+		loginRequiredMessage: "You need to log in to access this page"
 	},
 	pricingComponent: {
 		free: {
@@ -667,10 +668,11 @@ const deDefaults = {
 		}
 	},
 	statisticsPage: {
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		title: "Allgemeine Statistiken"
 	},
 	appStatisticsPage: {
-
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},
 	pricingComponent: {
 		free: {

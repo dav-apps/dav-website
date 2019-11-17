@@ -29,6 +29,19 @@ export class StatisticsPageComponent{
 		this.getUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetUsers, (response: ApiResponse<GetUsersResponseData> | ApiErrorResponse) => this.GetUsersResponse(response));
 	}
 
+	async ngOnInit(){
+		await this.dataService.userPromise;
+		if(!this.dataService.user.IsLoggedIn){
+			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
+			this.router.navigate(['/']);
+			return;
+		}
+
+		this.websocketService.Emit(WebsocketCallbackType.GetUsers, {
+			jwt: this.dataService.user.JWT
+		})
+	}
+
 	ngOnDestroy(){
 		this.websocketService.Unsubscribe(this.getUsersSubscriptionKey);
 	}
