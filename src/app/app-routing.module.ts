@@ -17,6 +17,7 @@ import { DevPageComponent } from './pages/dev-page/dev-page.component';
 import { AppPageComponent } from './pages/app-page/app-page.component';
 import { EventPageComponent } from './pages/event-page/event-page.component';
 import { StatisticsPageComponent } from './pages/statistics-page/statistics-page.component';
+import { AppStatisticsPageComponent } from './pages/app-statistics-page/app-statistics-page.component'
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
 	{ path: "dev", component: DevPageComponent },
 	{ path: "dev/statistics", component: StatisticsPageComponent },
 	{ path: "dev/:id", component: AppPageComponent },
+	{ path: "dev/:id/statistics", component: AppStatisticsPageComponent },
 	{ path: "dev/:id/event/:name", component: EventPageComponent }
 ];
 
