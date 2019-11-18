@@ -18,6 +18,10 @@ export class StatisticsPageComponent{
 	getUsersSubscriptionKey: number;
 	userChartDataSets: ChartDataSets[] = [{data: [], label: this.locale.numberOfUsers}];
 	userChartLabels: Label[] = [];
+	plansChartData: number[] = [0, 0, 0];
+	plansChartLabels: Label[] = ["Free", "Plus", "Pro"];
+	confirmationsChartData: number[] = [0, 0];
+	confirmationsChartLabels: Label[] = [this.locale.confirmed, this.locale.unconfirmed];
 
 	backButtonIconStyles: IIconStyles = {
 		root: {
@@ -33,6 +37,11 @@ export class StatisticsPageComponent{
 		this.locale = this.dataService.GetLocale().statisticsPage;
 		moment.locale(this.dataService.locale);
 		this.getUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetUsers, (response: ApiResponse<GetUsersResponseData> | ApiErrorResponse) => this.GetUsersResponse(response));
+
+		// Set the labels
+		this.userChartDataSets[0].label = this.locale.numberOfUsers;
+		this.confirmationsChartLabels[0] = this.locale.confirmed;
+		this.confirmationsChartLabels[1] = this.locale.unconfirmed;
 	}
 
 	async ngOnInit(){
@@ -53,19 +62,19 @@ export class StatisticsPageComponent{
 	}
 
 	ProcessData(users: GetUsersResponseData){
-		// Set the label
-		this.userChartDataSets[0].label = this.locale.numberOfUsers;
-
 		let start = moment().startOf('month').subtract(5, 'months');
 		let months: Map<string, number> = new Map();
+		this.plansChartData = [0, 0, 0];
+		this.confirmationsChartData = [0, 0];
 
+		// Get the last 6 months
 		for(let i = 0; i < 6; i++){
 			months.set(start.format('MMMM YYYY'), 0);
 			start.add(1, 'month');
 		}
 
-		// Add the cumulative user counts
 		for(let user of users.users){
+			// Add the cumulative user counts
 			let createdAt = moment(user.createdAt).startOf('month');
 			let createdMonth = createdAt.format('MMMM YYYY');
 
@@ -78,9 +87,15 @@ export class StatisticsPageComponent{
 					months.set(month[0], month[1] + 1);
 				}
 			}
+
+			// Count the plan
+			this.plansChartData[user.plan]++
+
+			// Count the email confirmation
+			this.confirmationsChartData[user.confirmed ? 0 : 1]++
 		}
 
-		// Show the data on the chart
+		// Show the number of users
 		this.userChartDataSets[0].data = [];
 		this.userChartLabels = [];
 		for(let month of months.entries()){

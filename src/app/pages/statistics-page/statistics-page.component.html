@@ -19,4 +19,26 @@
 		[labels]="userChartLabels"
 		chartType="line">
 	</canvas>
+
+	<div class="row d-flex justify-content-center my-5">
+		<div>
+			<h3 class="text-center font-weight-light">{{ locale.plans }}</h3>
+			<canvas baseChart
+				style="height: 250px"
+				[data]="plansChartData"
+				[labels]="plansChartLabels"
+				chartType="pie">
+			</canvas>
+		</div>
+
+		<div>
+			<h3 class="text-center font-weight-light">{{ locale.confirmations }}</h3>
+			<canvas baseChart
+				style="height: 250px"
+				[data]="confirmationsChartData"
+				[labels]="confirmationsChartLabels"
+				chartType="pie">
+			</canvas>
+		</div>
+	</div>
 </div>

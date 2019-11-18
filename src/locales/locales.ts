@@ -305,7 +305,11 @@ const enDefaults = {
 	statisticsPage: {
 		title: "General statistics",
 		loginRequiredMessage: "You need to log in to access this page",
-		numberOfUsers: "Number of users"
+		numberOfUsers: "Number of users",
+		plans: "Plans",
+		confirmations: "Email confirmations",
+		confirmed: "Confirmed",
+		unconfirmed: "Unconfirmed"
 	},
 	appStatisticsPage: {
 		loginRequiredMessage: "You need to log in to access this page"
@@ -671,7 +675,11 @@ const deDefaults = {
 	statisticsPage: {
 		title: "Allgemeine Statistiken",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		numberOfUsers: "Anzahl Nutzer"
+		numberOfUsers: "Anzahl Nutzer",
+		plans: "Pläne",
+		confirmations: "Email-Bestätigungen",
+		confirmed: "Bestätigt",
+		unconfirmed: "Unbestätigt"
 	},
 	appStatisticsPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
