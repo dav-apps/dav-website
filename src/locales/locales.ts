@@ -303,8 +303,9 @@ const enDefaults = {
 		}
 	},
 	statisticsPage: {
+		title: "General statistics",
 		loginRequiredMessage: "You need to log in to access this page",
-		title: "General statistics"
+		numberOfUsers: "Number of users"
 	},
 	appStatisticsPage: {
 		loginRequiredMessage: "You need to log in to access this page"
@@ -668,8 +669,9 @@ const deDefaults = {
 		}
 	},
 	statisticsPage: {
+		title: "Allgemeine Statistiken",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		title: "Allgemeine Statistiken"
+		numberOfUsers: "Anzahl Nutzer"
 	},
 	appStatisticsPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"

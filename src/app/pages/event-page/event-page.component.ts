@@ -20,9 +20,8 @@ export class EventPageComponent{
 	@ViewChild(BaseChartDirective, {static: true}) chart: BaseChartDirective;
 	appId: number;
 	event: Event = new Event(0, 0, "", []);
-	eventDataSets: ChartDataSets[] = [{ data: [], label: "Event" }]
+	eventChartDataSets: ChartDataSets[] = [{ data: [], label: "Event" }]
 	eventChartLabels: Label[] = []
-	eventChartOptions: ChartOptions = {}
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
@@ -87,7 +86,7 @@ export class EventPageComponent{
 
 		this.appId = +this.activatedRoute.snapshot.paramMap.get('id');
 		let eventName = this.activatedRoute.snapshot.paramMap.get('name');
-		this.eventDataSets[0].label = eventName;
+		this.eventChartDataSets[0].label = eventName;
 
 		this.websocketService.Emit(WebsocketCallbackType.GetEventByName, {
 			jwt: this.dataService.user.JWT,
@@ -112,7 +111,7 @@ export class EventPageComponent{
 
 		// Get the total count
 		for(let summary of this.event.Summaries){
-			this.eventDataSets[0].data.push(summary.Total);
+			this.eventChartDataSets[0].data.push(summary.Total);
 			this.eventChartLabels.push(moment(summary.Time.toString()).format('l'));
 		}
 		this.chart.update();

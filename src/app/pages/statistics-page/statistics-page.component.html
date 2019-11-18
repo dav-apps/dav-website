@@ -11,4 +11,12 @@
 			<h1 class="text-left ml-3 font-weight-light">{{ locale.title }}</h1>
 		</div>
 	</div>
+
+	<canvas baseChart
+		style="max-width: 800px"
+		class="mx-auto"
+		[datasets]="userChartDataSets"
+		[labels]="userChartLabels"
+		chartType="line">
+	</canvas>
 </div>
