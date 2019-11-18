@@ -87,7 +87,8 @@ export enum WebsocketCallbackType{
 	CreateTable = 30,
 	CreateApp = 31,
 	GetUsers = 32,
-	GetAppUsers = 33
+	GetActiveUsers = 33,
+	GetAppUsers = 34
 }
 
 export const Callbacks = {
@@ -123,6 +124,7 @@ export const Callbacks = {
 	createTable: WebsocketCallbackType.CreateTable,
 	createApp: WebsocketCallbackType.CreateApp,
 	getUsers: WebsocketCallbackType.GetUsers,
+	getActiveUsers: WebsocketCallbackType.GetActiveUsers,
 	getAppUsers: WebsocketCallbackType.GetAppUsers
 }
 

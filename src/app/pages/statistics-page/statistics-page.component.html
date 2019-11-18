@@ -20,8 +20,8 @@
 		chartType="line">
 	</canvas>
 
-	<div class="row d-flex justify-content-center my-5">
-		<div>
+	<div class="row d-flex justify-content-center">
+		<div class="my-5">
 			<h3 class="text-center font-weight-light">{{ locale.plans }}</h3>
 			<canvas baseChart
 				style="height: 250px"
@@ -31,7 +31,7 @@
 			</canvas>
 		</div>
 
-		<div>
+		<div class="my-5">
 			<h3 class="text-center font-weight-light">{{ locale.confirmations }}</h3>
 			<canvas baseChart
 				style="height: 250px"
@@ -41,4 +41,12 @@
 			</canvas>
 		</div>
 	</div>
+
+	<canvas baseChart
+		style="max-width: 800px"
+		class="mx-auto"
+		[datasets]="activeUsersChartDataSets"
+		[labels]="activeUsersChartLabels"
+		chartType="line">
+	</canvas>
 </div>

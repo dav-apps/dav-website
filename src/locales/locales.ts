@@ -309,7 +309,11 @@ const enDefaults = {
 		plans: "Plans",
 		confirmations: "Email confirmations",
 		confirmed: "Confirmed",
-		unconfirmed: "Unconfirmed"
+		unconfirmed: "Unconfirmed",
+		activeUsers: "Active users",
+		daily: "Daily",
+		monthly: "Monthly",
+		yearly: "Yearly"
 	},
 	appStatisticsPage: {
 		loginRequiredMessage: "You need to log in to access this page"
@@ -679,7 +683,11 @@ const deDefaults = {
 		plans: "Pläne",
 		confirmations: "Email-Bestätigungen",
 		confirmed: "Bestätigt",
-		unconfirmed: "Unbestätigt"
+		unconfirmed: "Unbestätigt",
+		activeUsers: "Aktive Nutzer",
+		daily: "Täglich",
+		monthly: "Monatlich",
+		yearly: "Jährlich"
 	},
 	appStatisticsPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"

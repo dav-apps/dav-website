@@ -4,7 +4,7 @@ import { IIconStyles } from 'office-ui-fabric-react';
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as moment from 'moment';
-import { ApiResponse, ApiErrorResponse, GetUsersResponseData } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, GetUsersResponseData, GetActiveUsersResponseData } from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -16,12 +16,19 @@ import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websoc
 export class StatisticsPageComponent{
 	locale = enUS.statisticsPage;
 	getUsersSubscriptionKey: number;
+	getActiveUsersSubscriptionKey: number;
 	userChartDataSets: ChartDataSets[] = [{data: [], label: this.locale.numberOfUsers}];
 	userChartLabels: Label[] = [];
 	plansChartData: number[] = [0, 0, 0];
 	plansChartLabels: Label[] = ["Free", "Plus", "Pro"];
 	confirmationsChartData: number[] = [0, 0];
 	confirmationsChartLabels: Label[] = [this.locale.confirmed, this.locale.unconfirmed];
+	activeUsersChartDataSets: ChartDataSets[] = [
+		{data: [], label: this.locale.daily},
+		{data: [], label: this.locale.monthly},
+		{data: [], label: this.locale.yearly}
+	]
+	activeUsersChartLabels: Label[] = [];
 
 	backButtonIconStyles: IIconStyles = {
 		root: {
@@ -37,11 +44,15 @@ export class StatisticsPageComponent{
 		this.locale = this.dataService.GetLocale().statisticsPage;
 		moment.locale(this.dataService.locale);
 		this.getUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetUsers, (response: ApiResponse<GetUsersResponseData> | ApiErrorResponse) => this.GetUsersResponse(response));
+		this.getActiveUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetActiveUsers, (response: ApiResponse<GetActiveUsersResponseData> | ApiErrorResponse) => this.GetActiveUsersResponse(response));
 
 		// Set the labels
 		this.userChartDataSets[0].label = this.locale.numberOfUsers;
 		this.confirmationsChartLabels[0] = this.locale.confirmed;
 		this.confirmationsChartLabels[1] = this.locale.unconfirmed;
+		this.activeUsersChartDataSets[0].label = this.locale.daily;
+		this.activeUsersChartDataSets[1].label = this.locale.monthly;
+		this.activeUsersChartDataSets[2].label = this.locale.yearly;
 	}
 
 	async ngOnInit(){
@@ -55,13 +66,22 @@ export class StatisticsPageComponent{
 		this.websocketService.Emit(WebsocketCallbackType.GetUsers, {
 			jwt: this.dataService.user.JWT
 		})
+
+		let start = moment().startOf('day').subtract(6, 'months').unix();
+		this.websocketService.Emit(WebsocketCallbackType.GetActiveUsers, {
+			jwt: this.dataService.user.JWT,
+			start
+		})
 	}
 
 	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.getUsersSubscriptionKey);
+		this.websocketService.Unsubscribe(
+			this.getUsersSubscriptionKey,
+			this.getActiveUsersSubscriptionKey
+		)
 	}
 
-	ProcessData(users: GetUsersResponseData){
+	ProcessUsers(users: GetUsersResponseData){
 		let start = moment().startOf('month').subtract(5, 'months');
 		let months: Map<string, number> = new Map();
 		this.plansChartData = [0, 0, 0];
@@ -104,9 +124,55 @@ export class StatisticsPageComponent{
 		}
 	}
 
+	ProcessActiveUsers(activeUsers: GetActiveUsersResponseData){
+		// Save the days in a separate array with timestamps
+		let days: {timestamp: number, daily: number, monthly: number, yearly: number}[] = [];
+		for(let day of activeUsers.days){
+			let timestamp = moment(day.time).subtract(1, 'day').unix();
+			days.push({
+				timestamp,
+				daily: day.countDaily,
+				monthly: day.countMonthly,
+				yearly: day.countYearly
+			})
+		}
+
+		// Sort the days by time
+		days.sort((a, b) => {
+			if(a.timestamp > b.timestamp){
+				return 1
+			}else if(a.timestamp < b.timestamp){
+				return -1
+			}else{
+				return 0
+			}
+		});
+
+		// Show the days on the active users chart
+		this.activeUsersChartDataSets[0].data = [];
+		this.activeUsersChartDataSets[1].data = [];
+		this.activeUsersChartDataSets[2].data = [];
+
+		for(let day of days){
+			this.activeUsersChartDataSets[0].data.push(day.daily);
+			this.activeUsersChartDataSets[1].data.push(day.monthly);
+			this.activeUsersChartDataSets[2].data.push(day.yearly);
+			this.activeUsersChartLabels.push(moment.unix(day.timestamp).format('LL'));
+		}
+	}
+
 	GetUsersResponse(response: ApiResponse<GetUsersResponseData> | ApiErrorResponse){
 		if(response.status == 200){
-			this.ProcessData((response as ApiResponse<GetUsersResponseData>).data);
+			this.ProcessUsers((response as ApiResponse<GetUsersResponseData>).data);
+		}else{
+			// Redirect to the Dev page
+			this.router.navigate(['dev']);
+		}
+	}
+
+	GetActiveUsersResponse(response: ApiResponse<GetActiveUsersResponseData> | ApiErrorResponse){
+		if(response.status == 200){
+			this.ProcessActiveUsers((response as ApiResponse<GetActiveUsersResponseData>).data);
 		}else{
 			// Redirect to the Dev page
 			this.router.navigate(['dev']);
