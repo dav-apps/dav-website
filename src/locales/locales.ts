@@ -314,16 +314,19 @@ const enDefaults = {
 		currentlyActiveUsers: "Currently active users",
 		daily: "Daily",
 		monthly: "Monthly",
-		yearly: "Yearly"
+		yearly: "Yearly",
+		totalUsers: "Total users: {0}"
 	},
 	appStatisticsPage: {
 		title: "Statistics of {0}",
 		loginRequiredMessage: "You need to log in to access this page",
 		numberOfUsers: "Number of users",
 		activeUsers: "Active users",
+		currentlyActiveUsers: "Currently active users",
 		daily: "Daily",
 		monthly: "Monthly",
-		yearly: "Yearly"
+		yearly: "Yearly",
+		totalUsers: "Total users: {0}"
 	},
 	pricingComponent: {
 		free: {
@@ -695,16 +698,19 @@ const deDefaults = {
 		currentlyActiveUsers: "Aktuell aktive Nutzer",
 		daily: "Täglich",
 		monthly: "Monatlich",
-		yearly: "Jährlich"
+		yearly: "Jährlich",
+		totalUsers: "Nutzer insgesamt: {0}"
 	},
 	appStatisticsPage: {
 		title: "Statistiken von {0}",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		numberOfUsers: "Anzahl Nutzer",
 		activeUsers: "Aktive Nutzer",
+		currentlyActiveUsers: "Aktuell aktive Nutzer",
 		daily: "Täglich",
 		monthly: "Monatlich",
-		yearly: "Jährlich"
+		yearly: "Jährlich",
+		totalUsers: "Nutzer insgesamt: {0}"
 	},
 	pricingComponent: {
 		free: {

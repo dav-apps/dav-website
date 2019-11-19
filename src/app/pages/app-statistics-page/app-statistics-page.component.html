@@ -14,11 +14,12 @@
 
 	<canvas baseChart
 		style="max-width: 800px"
-		class="mx-auto mb-5"
+		class="mx-auto"
 		[datasets]="userChartDataSets"
 		[labels]="userChartLabels"
 		chartType="line">
 	</canvas>
+	<p class="mx-auto mt-3 mb-5 pl-4 font-weight-light" style="max-width: 800px">{{ locale.totalUsers.replace('{0}', totalUsers) }}</p>
 
 	<h2 class="text-center font-weight-light mb-3">{{ locale.activeUsers }}</h2>
 
@@ -28,5 +29,13 @@
 		[datasets]="activeUsersChartDataSets"
 		[labels]="activeUsersChartLabels"
 		chartType="line">
+	</canvas>
+
+	<canvas baseChart
+		class="mx-auto"
+		style="max-width: 500px"
+		[datasets]="currentlyActiveUsersDataSets"
+		[labels]="currentlyActiveUsersChartLabels"
+		chartType="bar">
 	</canvas>
 </div>
