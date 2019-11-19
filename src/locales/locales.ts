@@ -317,7 +317,9 @@ const enDefaults = {
 		yearly: "Yearly"
 	},
 	appStatisticsPage: {
-		loginRequiredMessage: "You need to log in to access this page"
+		title: "Statistics of {0}",
+		loginRequiredMessage: "You need to log in to access this page",
+		numberOfUsers: "Number of users"
 	},
 	pricingComponent: {
 		free: {
@@ -692,7 +694,9 @@ const deDefaults = {
 		yearly: "Jährlich"
 	},
 	appStatisticsPage: {
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
+		title: "Statistiken von {0}",
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
+		numberOfUsers: "Anzahl Nutzer"
 	},
 	pricingComponent: {
 		free: {

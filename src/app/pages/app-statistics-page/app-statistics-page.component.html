@@ -8,7 +8,15 @@
 				(click)="GoBack()">
 				<fab-icon iconName="Back" [styles]="backButtonIconStyles"></fab-icon>
 			</button>
-			<h1 class="text-left ml-3 font-weight-light">Statistiken von {{ app.Name }}</h1>
+			<h1 class="text-left ml-3 font-weight-light">{{ locale.title.replace('{0}', app.Name) }}</h1>
 		</div>
 	</div>
+
+	<canvas baseChart
+		style="max-width: 800px"
+		class="mx-auto"
+		[datasets]="userChartDataSets"
+		[labels]="userChartLabels"
+		chartType="line">
+	</canvas>
 </div>
