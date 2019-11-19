@@ -51,6 +51,7 @@ export function init(s: any){
 	socket.on(statisticsPage.getUsersKey, statisticsPage.getUsers);
 	socket.on(statisticsPage.getActiveUsersKey, statisticsPage.getActiveUsers);
 	socket.on(appStatisticsPage.getAppUsersKey, appStatisticsPage.getAppUsers);
+	socket.on(appStatisticsPage.getActiveAppUsersKey, appStatisticsPage.getActiveAppUsers);
 
 	InitStatic(process.env.ENV == "production" ? DavEnvironment.Production : DavEnvironment.Development);
 	auth = new Auth(process.env.DAV_API_KEY, process.env.DAV_SECRET_KEY, process.env.DAV_UUID);

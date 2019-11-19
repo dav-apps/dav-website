@@ -4,7 +4,7 @@ import { IIconStyles } from 'office-ui-fabric-react';
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as moment from 'moment';
-import { ApiResponse, ApiErrorResponse, GetAppUsersResponseData, App } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, GetAppUsersResponseData, GetActiveAppUsersResponseData, App } from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -17,6 +17,7 @@ export class AppStatisticsPageComponent{
 	locale = enUS.appStatisticsPage;
 	getAppSubscriptionKey: number;
 	getAppUsersSubscriptionKey: number;
+	getActiveAppUsersSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
 	userChartDataSets: ChartDataSets[] = [{data: [], label: this.locale.numberOfUsers}];
 	userChartLabels: Label[] = [];
@@ -37,6 +38,7 @@ export class AppStatisticsPageComponent{
 		moment.locale(this.dataService.locale);
 		this.getAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetApp, (response: ApiResponse<App> | ApiErrorResponse) => this.GetAppResponse(response));
 		this.getAppUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetAppUsers, (response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse) => this.GetAppUsersResponse(response));
+		this.getActiveAppUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetActiveAppUsers, (response: ApiResponse<GetActiveAppUsersResponseData> | ApiErrorResponse) => this.GetActiveAppUsersResponse(response));
 
 		// Set the labels
 		this.userChartDataSets[0].label = this.locale.numberOfUsers;
@@ -61,10 +63,19 @@ export class AppStatisticsPageComponent{
 			jwt: this.dataService.user.JWT,
 			id: appId
 		})
+
+		this.websocketService.Emit(WebsocketCallbackType.GetActiveAppUsers, {
+			jwt: this.dataService.user.JWT,
+			id: appId
+		})
 	}
 
 	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.getAppUsersSubscriptionKey);
+		this.websocketService.Unsubscribe(
+			this.getAppSubscriptionKey,
+			this.getAppUsersSubscriptionKey,
+			this.getActiveAppUsersSubscriptionKey
+		)
 	}
 
 	ProcessUsers(users: GetAppUsersResponseData){
@@ -117,6 +128,15 @@ export class AppStatisticsPageComponent{
 	GetAppUsersResponse(response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse){
 		if(response.status == 200){
 			this.ProcessUsers((response as ApiResponse<GetAppUsersResponseData>).data);
+		}else{
+			// Redirect to the App page
+			this.router.navigate(['dev', this.app.Id]);
+		}
+	}
+
+	GetActiveAppUsersResponse(response: ApiResponse<GetActiveAppUsersResponseData> | ApiErrorResponse){
+		if(response.status == 200){
+			console.log(response)
 		}else{
 			// Redirect to the App page
 			this.router.navigate(['dev', this.app.Id]);

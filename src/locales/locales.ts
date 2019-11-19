@@ -319,7 +319,8 @@ const enDefaults = {
 	appStatisticsPage: {
 		title: "Statistics of {0}",
 		loginRequiredMessage: "You need to log in to access this page",
-		numberOfUsers: "Number of users"
+		numberOfUsers: "Number of users",
+		activeUsers: "Active users"
 	},
 	pricingComponent: {
 		free: {
@@ -696,7 +697,8 @@ const deDefaults = {
 	appStatisticsPage: {
 		title: "Statistiken von {0}",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		numberOfUsers: "Anzahl Nutzer"
+		numberOfUsers: "Anzahl Nutzer",
+		activeUsers: "Aktive Nutzer"
 	},
 	pricingComponent: {
 		free: {
