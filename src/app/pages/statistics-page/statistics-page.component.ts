@@ -29,6 +29,8 @@ export class StatisticsPageComponent{
 		{data: [], label: this.locale.yearly}
 	]
 	activeUsersChartLabels: Label[] = [];
+	currentlyActiveUsersDataSets: ChartDataSets[] = [{data: [], label: this.locale.currentlyActiveUsers}];
+	currentlyActiveUsersChartLabels: Label[] = [this.locale.daily, this.locale.monthly, this.locale.yearly];
 
 	backButtonIconStyles: IIconStyles = {
 		root: {
@@ -53,6 +55,10 @@ export class StatisticsPageComponent{
 		this.activeUsersChartDataSets[0].label = this.locale.daily;
 		this.activeUsersChartDataSets[1].label = this.locale.monthly;
 		this.activeUsersChartDataSets[2].label = this.locale.yearly;
+		this.currentlyActiveUsersDataSets[0].label = this.locale.currentlyActiveUsers;
+		this.currentlyActiveUsersChartLabels[0] = this.locale.daily;
+		this.currentlyActiveUsersChartLabels[1] = this.locale.monthly;
+		this.currentlyActiveUsersChartLabels[2] = this.locale.yearly;
 	}
 
 	async ngOnInit(){
@@ -148,7 +154,7 @@ export class StatisticsPageComponent{
 			}
 		});
 
-		// Show the days on the active users chart
+		// Show the days on the active users line chart
 		this.activeUsersChartDataSets[0].data = [];
 		this.activeUsersChartDataSets[1].data = [];
 		this.activeUsersChartDataSets[2].data = [];
@@ -159,6 +165,9 @@ export class StatisticsPageComponent{
 			this.activeUsersChartDataSets[2].data.push(day.yearly);
 			this.activeUsersChartLabels.push(moment.unix(day.timestamp).format('LL'));
 		}
+
+		// Show the currently active users on the bar chart
+		this.currentlyActiveUsersDataSets[0].data = [days[days.length - 1].daily, days[days.length - 1].monthly, days[days.length - 1].yearly];
 	}
 
 	GetUsersResponse(response: ApiResponse<GetUsersResponseData> | ApiErrorResponse){

@@ -311,6 +311,7 @@ const enDefaults = {
 		confirmed: "Confirmed",
 		unconfirmed: "Unconfirmed",
 		activeUsers: "Active users",
+		currentlyActiveUsers: "Currently active users",
 		daily: "Daily",
 		monthly: "Monthly",
 		yearly: "Yearly"
@@ -685,6 +686,7 @@ const deDefaults = {
 		confirmed: "Bestätigt",
 		unconfirmed: "Unbestätigt",
 		activeUsers: "Aktive Nutzer",
+		currentlyActiveUsers: "Aktuell aktive Nutzer",
 		daily: "Täglich",
 		monthly: "Monatlich",
 		yearly: "Jährlich"
