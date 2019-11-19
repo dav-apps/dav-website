@@ -320,7 +320,10 @@ const enDefaults = {
 		title: "Statistics of {0}",
 		loginRequiredMessage: "You need to log in to access this page",
 		numberOfUsers: "Number of users",
-		activeUsers: "Active users"
+		activeUsers: "Active users",
+		daily: "Daily",
+		monthly: "Monthly",
+		yearly: "Yearly"
 	},
 	pricingComponent: {
 		free: {
@@ -698,7 +701,10 @@ const deDefaults = {
 		title: "Statistiken von {0}",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		numberOfUsers: "Anzahl Nutzer",
-		activeUsers: "Aktive Nutzer"
+		activeUsers: "Aktive Nutzer",
+		daily: "Täglich",
+		monthly: "Monatlich",
+		yearly: "Jährlich"
 	},
 	pricingComponent: {
 		free: {

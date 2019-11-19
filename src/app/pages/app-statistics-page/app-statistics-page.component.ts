@@ -21,6 +21,12 @@ export class AppStatisticsPageComponent{
 	app: App = new App(0, "", "", false, null, null, null);
 	userChartDataSets: ChartDataSets[] = [{data: [], label: this.locale.numberOfUsers}];
 	userChartLabels: Label[] = [];
+	activeUsersChartDataSets: ChartDataSets[] = [
+		{data: [], label: this.locale.daily},
+		{data: [], label: this.locale.monthly},
+		{data: [], label: this.locale.yearly}
+	]
+	activeUsersChartLabels: Label[] = [];
 
 	backButtonIconStyles: IIconStyles = {
 		root: {
@@ -42,6 +48,9 @@ export class AppStatisticsPageComponent{
 
 		// Set the labels
 		this.userChartDataSets[0].label = this.locale.numberOfUsers;
+		this.activeUsersChartDataSets[0].label = this.locale.daily;
+		this.activeUsersChartDataSets[1].label = this.locale.monthly;
+		this.activeUsersChartDataSets[2].label = this.locale.yearly;
 	}
 
 	async ngOnInit(){
@@ -112,6 +121,43 @@ export class AppStatisticsPageComponent{
 		}
 	}
 
+	ProcessActiveUsers(activeUsers: GetActiveAppUsersResponseData){
+		// Save the days in a separate array with timestamps
+		let days: {timestamp: number, daily: number, monthly: number, yearly: number}[] = [];
+		for(let day of activeUsers.days){
+			let timestamp = moment(day.time).subtract(1, 'day').unix();
+			days.push({
+				timestamp, 
+				daily: day.countDaily,
+				monthly: day.countMonthly,
+				yearly: day.countYearly
+			})
+		}
+
+		// Sort the days by time
+		days.sort((a, b) => {
+			if(a.timestamp > b.timestamp){
+				return 1
+			}else if(a.timestamp < b.timestamp){
+				return -1
+			}else{
+				return 0
+			}
+		});
+
+		// Show the days on the active users line chart
+		this.activeUsersChartDataSets[0].data = [];
+		this.activeUsersChartDataSets[1].data = [];
+		this.activeUsersChartDataSets[2].data = [];
+
+		for(let day of days){
+			this.activeUsersChartDataSets[0].data.push(day.daily);
+			this.activeUsersChartDataSets[1].data.push(day.monthly);
+			this.activeUsersChartDataSets[2].data.push(day.yearly);
+			this.activeUsersChartLabels.push(moment.unix(day.timestamp).format('LL'));
+		}
+	}
+
 	GoBack(){
 		this.router.navigate(['dev', this.app.Id]);
 	}
@@ -136,7 +182,7 @@ export class AppStatisticsPageComponent{
 
 	GetActiveAppUsersResponse(response: ApiResponse<GetActiveAppUsersResponseData> | ApiErrorResponse){
 		if(response.status == 200){
-			console.log(response)
+			this.ProcessActiveUsers((response as ApiResponse<GetActiveAppUsersResponseData>).data);
 		}else{
 			// Redirect to the App page
 			this.router.navigate(['dev', this.app.Id]);
