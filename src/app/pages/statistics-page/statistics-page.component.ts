@@ -92,25 +92,27 @@ export class StatisticsPageComponent{
 		// Set the total users
 		this.totalUsersText = this.locale.totalUsers.replace('{0}', users.users.length.toString());
 
-		let start = moment().startOf('month').subtract(5, 'months');
+		let currentDate = moment().startOf('month').subtract(5, 'months');
+		let start = currentDate.clone();
 		let months: Map<string, number> = new Map();
 		this.plansChartData = [0, 0, 0];
 		this.confirmationsChartData = [0, 0];
 
 		// Get the last 6 months
 		for(let i = 0; i < 6; i++){
-			months.set(start.format('MMMM YYYY'), 0);
-			start.add(1, 'month');
+			months.set(currentDate.format('MMMM YYYY'), 0);
+			currentDate.add(1, 'month');
 		}
 
 		for(let user of users.users){
 			// Add the cumulative user counts
 			let createdAt = moment(user.createdAt).startOf('month');
 			let createdMonth = createdAt.format('MMMM YYYY');
+			let createdBeforeStart: boolean = createdAt.isBefore(start);
 
 			let createdMonthFound: boolean = false;
 			for(let month of months.entries()){
-				if(createdMonthFound){
+				if(createdMonthFound || createdBeforeStart){
 					months.set(month[0], month[1] + 1);
 				}else if(createdMonth == month[0]){
 					createdMonthFound = true;
@@ -171,7 +173,11 @@ export class StatisticsPageComponent{
 		}
 
 		// Show the currently active users on the bar chart
-		this.currentlyActiveUsersDataSets[0].data = [days[days.length - 1].daily, days[days.length - 1].monthly, days[days.length - 1].yearly];
+		if(days.length > 0){
+			this.currentlyActiveUsersDataSets[0].data = [days[days.length - 1].daily, days[days.length - 1].monthly, days[days.length - 1].yearly];
+		}else{
+			this.currentlyActiveUsersDataSets[0].data = [0, 0, 0];
+		}
 	}
 
 	GetUsersResponse(response: ApiResponse<GetUsersResponseData> | ApiErrorResponse){
