@@ -31,7 +31,7 @@ export class StatisticsPageComponent{
 	activeUsersChartLabels: Label[] = [];
 	currentlyActiveUsersDataSets: ChartDataSets[] = [{data: [], label: this.locale.currentlyActiveUsers}];
 	currentlyActiveUsersChartLabels: Label[] = [this.locale.daily, this.locale.monthly, this.locale.yearly];
-	totalUsers: number = 0;
+	totalUsersText: string = this.locale.totalUsers.replace('{0}', '0');
 
 	backButtonIconStyles: IIconStyles = {
 		root: {
@@ -90,7 +90,7 @@ export class StatisticsPageComponent{
 
 	ProcessUsers(users: GetUsersResponseData){
 		// Set the total users
-		this.totalUsers = users.users.length;
+		this.totalUsersText = this.locale.totalUsers.replace('{0}', users.users.length.toString());
 
 		let start = moment().startOf('month').subtract(5, 'months');
 		let months: Map<string, number> = new Map();
