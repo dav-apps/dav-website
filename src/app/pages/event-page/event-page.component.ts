@@ -82,6 +82,10 @@ export class EventPageComponent{
 			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
 			this.router.navigate(['/']);
 			return;
+		}else if(!this.dataService.user.IsDev){
+			this.dataService.startPageErrorMessage = this.locale.accessNotAllowedMessage;
+			this.router.navigate(['/']);
+			return;
 		}
 
 		this.appId = +this.activatedRoute.snapshot.paramMap.get('id');

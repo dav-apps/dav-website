@@ -225,6 +225,7 @@ const enDefaults = {
 		title: "Developer Dashboard",
 		statistics: "Statistics",
 		loginRequiredMessage: "You need to log in to access this page",
+		accessNotAllowedMessage: "You can't access this page",
 		unexpectedErrorShort: "Unexpected error ({0})",
 		save: "Save",
 		cancel: "Cancel",
@@ -288,10 +289,12 @@ const enDefaults = {
 		},
 		save: "Save",
 		cancel: "Cancel",
-		loginRequiredMessage: "You need to log in to access this page"
+		loginRequiredMessage: "You need to log in to access this page",
+		accessNotAllowedMessage: "You can't access this page"
 	},
 	eventPage: {
 		loginRequiredMessage: "You need to log in to access this page",
+		accessNotAllowedMessage: "You can't access this page",
 		pieChartTitles: {
 			operatingSystems: "Operating systems",
 			operatingSystemsVersions: "Operating systems with versions",
@@ -306,6 +309,7 @@ const enDefaults = {
 	statisticsPage: {
 		title: "General statistics",
 		loginRequiredMessage: "You need to log in to access this page",
+		accessNotAllowedMessage: "You can't access this page",
 		numberOfUsers: "Number of users",
 		plans: "Plans",
 		confirmations: "Email confirmations",
@@ -321,6 +325,7 @@ const enDefaults = {
 	appStatisticsPage: {
 		title: "Statistics of {0}",
 		loginRequiredMessage: "You need to log in to access this page",
+		accessNotAllowedMessage: "You can't access this page",
 		numberOfUsers: "Number of users",
 		activeUsers: "Active users",
 		currentlyActiveUsers: "Currently active users",
@@ -610,6 +615,7 @@ const deDefaults = {
 		title: "Entwickler-Dashboard",
 		statistics: "Statistiken",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
+		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		unexpectedErrorShort: "Unerwarteter Fehler ({0})",
 		save: "Speichern",
 		cancel: "Abbrechen",
@@ -673,10 +679,12 @@ const deDefaults = {
 		},
 		save: "Speichern",
 		cancel: "Abbrechen",
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
+		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
+		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen"
 	},
 	eventPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
+		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		pieChartTitles: {
 			operatingSystems: "Betriebssysteme",
 			operatingSystemsVersions: "Betriebssysteme mit Versionen",
@@ -691,6 +699,7 @@ const deDefaults = {
 	statisticsPage: {
 		title: "Allgemeine Statistiken",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
+		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		numberOfUsers: "Anzahl Nutzer",
 		plans: "Pläne",
 		confirmations: "Email-Bestätigungen",
@@ -706,6 +715,7 @@ const deDefaults = {
 	appStatisticsPage: {
 		title: "Statistiken von {0}",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
+		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		numberOfUsers: "Anzahl Nutzer",
 		activeUsers: "Aktive Nutzer",
 		currentlyActiveUsers: "Aktuell aktive Nutzer",
