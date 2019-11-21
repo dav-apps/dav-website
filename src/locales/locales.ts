@@ -4,6 +4,7 @@ const enDefaults = {
 		navbar: {
 			pricing: "Pricing",
 			allApps: "All Apps",
+			devDashboard: "Developer Dashboard",
 			login: "Log in",
 			logout: "Log out",
 			signup: "Sign up"
@@ -388,6 +389,7 @@ const deDefaults = {
 		navbar: {
 			pricing: "Pläne",
 			allApps: "Alle Apps",
+			devDashboard: "Entwickler-Dashboard",
 			login: "Anmelden",
 			logout: "Abmelden",
 			signup: "Registrieren"
