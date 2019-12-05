@@ -36,6 +36,13 @@
 				<a [routerLink]="'event/' + event.Name" class="list-group-item list-group-item-action" *ngFor="let event of app.Events">{{ event.Name }}</a>
 			</div>
 		</div>
+
+		<div class="mx-4">
+			<h3 class="font-weight-light mb-3 mt-4">{{ locale.apis }}</h3>
+			<div class="list-group" style="display: inline-block">
+				<a [routerLink]="'api/' + api.Id" class="list-group-item list-group-item-action" *ngFor="let api of app.Apis">{{ api.Name }}</a>
+			</div>
+		</div>
 	</div>
 </div>
 
