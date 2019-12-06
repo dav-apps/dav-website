@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, App, Table } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, App, Table, Api } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
@@ -15,6 +15,7 @@ export class AppPageComponent{
 	getAppSubscriptionKey: number;
 	updateAppSubscriptionKey: number;
 	createTableSubscriptionKey: number;
+	createApiSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
 	editAppDialogVisible: boolean = false;
 	publishAppDialogVisible: boolean = false;
@@ -78,6 +79,7 @@ export class AppPageComponent{
 		this.getAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetApp, (response: ApiResponse<App> | ApiErrorResponse) => this.GetAppResponse(response));
 		this.updateAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.UpdateApp, (response: ApiResponse<App> | ApiErrorResponse) => this.UpdateAppResponse(response));
 		this.createTableSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateTable, (response: ApiResponse<Table> | ApiErrorResponse) => this.CreateTableResponse(response));
+		this.createApiSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateApi, (response: ApiResponse<Api> | ApiErrorResponse) => this.CreateApiResponse(response));
 	}
 
 	async ngOnInit(){
@@ -104,7 +106,8 @@ export class AppPageComponent{
 		this.websocketService.Unsubscribe(
 			this.getAppSubscriptionKey,
 			this.updateAppSubscriptionKey,
-			this.createTableSubscriptionKey
+			this.createTableSubscriptionKey,
+			this.createApiSubscriptionKey
 		)
 	}
 
@@ -189,7 +192,13 @@ export class AppPageComponent{
 	}
 
 	AddApi(){
-		
+		this.addApiDialogApiNameError = "";
+
+		this.websocketService.Emit(WebsocketCallbackType.CreateApi, {
+			jwt: this.dataService.user.JWT,
+			appId: this.app.Id,
+			name: this.addApiDialogApiName
+		});
 	}
 
 	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){
@@ -280,6 +289,26 @@ export class AppPageComponent{
 				case 2502:
 					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameInvalid;
 					break;
+			}
+		}
+	}
+
+	CreateApiResponse(response: (ApiResponse<Api> | ApiErrorResponse)){
+		if(response.status == 201){
+			this.app.Apis.push((response as ApiResponse<Api>).data);
+			this.addApiDialogVisible = false;
+		}else{
+			let errorCode = (response as ApiErrorResponse).errors[0].code;
+
+			switch(errorCode) {
+				case 2111:
+					this.addApiDialogApiNameError = this.locale.addApiDialog.errors.nameTooShort;
+					break;
+				case 2203:
+					this.addApiDialogApiNameError = this.locale.addApiDialog.errors.nameTooShort;
+					break;
+				case 2303:
+					this.addApiDialogApiNameError = this.locale.addApiDialog.errors.nameTooLong;
 			}
 		}
 	}
