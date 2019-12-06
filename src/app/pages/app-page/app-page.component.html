@@ -40,6 +40,7 @@
 		<div class="mx-4">
 			<h3 class="font-weight-light mb-3 mt-4">{{ locale.apis }}</h3>
 			<div class="list-group" style="display: inline-block">
+				<li class="list-group-item text-center cursor font-weight-light p-1" style="font-size: 26px" (click)="ShowAddApiDialog()">+</li>
 				<a [routerLink]="'api/' + api.Id" class="list-group-item list-group-item-action" *ngFor="let api of app.Apis">{{ api.Name }}</a>
 			</div>
 		</div>
@@ -136,5 +137,26 @@
 	<fab-dialog-footer>
 		<fab-default-button (click)="addTableDialogVisible = false">{{ locale.cancel }}</fab-default-button>
 		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="AddTable()">{{ locale.save }}</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>
+
+<fab-dialog
+	[hidden]="!addApiDialogVisible"
+	[dialogContentProps]="addApiDialogContent"
+	(onDismiss)="addApiDialogVisible = false">
+
+	<div class="mb-4">
+		<fab-text-field
+			[(value)]="addApiDialogApiName"
+			[label]="locale.addApiDialog.nameTextfieldLabel"
+			[placeholder]="locale.addApiDialog.nameTextfieldPlaceholder"
+			[errorMessage]="addApiDialogApiNameError"
+			(keydown.error)="AddApi()">
+		</fab-text-field>
+	</div>
+
+	<fab-dialog-footer>
+		<fab-default-button (click)="addApiDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="AddApi()">{{ locale.save }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

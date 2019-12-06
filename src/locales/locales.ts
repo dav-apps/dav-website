@@ -288,6 +288,15 @@ const enDefaults = {
 				nameInvalid: "The name is invalid"
 			}
 		},
+		addApiDialog: {
+			title: "Add API",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "The name of the api",
+			errors: {
+				nameTooShort: "The name is too short",
+				nameTooLong: "The name is too long"
+			}
+		},
 		save: "Save",
 		cancel: "Cancel",
 		loginRequiredMessage: "You need to log in to access this page",
@@ -681,6 +690,15 @@ const deDefaults = {
 				nameTooShort: "Der Name ist zu kurz",
 				nameTooLong: "Der Name ist zu lang",
 				nameInvalid: "Der Name ist ungültig"
+			}
+		},
+		addApiDialog: {
+			title: "API hinzufügen",
+			nameTextfieldLabel: "Name",
+			nameTextfieldPlaceholder: "Der Name der API",
+			errors: {
+				nameTooShort: "Der Name ist zu kurz",
+				nameTooLong: "Der Name ist zu lang"
 			}
 		},
 		save: "Speichern",

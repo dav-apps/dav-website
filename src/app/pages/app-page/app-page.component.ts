@@ -19,6 +19,7 @@ export class AppPageComponent{
 	editAppDialogVisible: boolean = false;
 	publishAppDialogVisible: boolean = false;
 	addTableDialogVisible: boolean = false;
+	addApiDialogVisible: boolean = false;
 	newName: string = "";
 	newDescription: string = "";
 	newLinkWeb: string = "";
@@ -31,6 +32,8 @@ export class AppPageComponent{
 	editAppDialogLinkWindowsError: string = "";
 	addTableDialogNewTableName: string = "";
 	addTableDialogNewTableError: string = "";
+	addApiDialogApiName: string = "";
+	addApiDialogApiNameError: string = "";
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
@@ -60,6 +63,9 @@ export class AppPageComponent{
 	}
 	addTableDialogContent: IDialogContentProps = {
 		title: this.locale.addTableDialog.title
+	}
+	addApiDialogContent: IDialogContentProps = {
+		title: this.locale.addApiDialog.title
 	}
 
 	constructor(
@@ -153,9 +159,15 @@ export class AppPageComponent{
 	ShowAddTableDialog(){
 		this.addTableDialogNewTableName = "";
 		this.addTableDialogNewTableError = "";
-
 		this.addTableDialogContent.title = this.locale.addTableDialog.title;
 		this.addTableDialogVisible = true;
+	}
+
+	ShowAddApiDialog(){
+		this.addApiDialogApiName = "";
+		this.addApiDialogApiNameError = "";
+		this.addApiDialogContent.title = this.locale.addApiDialog.title;
+		this.addApiDialogVisible = true;
 	}
 
 	PublishApp(){
@@ -174,6 +186,10 @@ export class AppPageComponent{
 			appId: this.app.Id,
 			name: this.addTableDialogNewTableName
 		});
+	}
+
+	AddApi(){
+		
 	}
 
 	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){
