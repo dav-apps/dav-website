@@ -90,7 +90,8 @@ export enum WebsocketCallbackType{
 	GetActiveUsers = 33,
 	GetAppUsers = 34,
 	GetActiveAppUsers = 35,
-	GetApi = 36
+	GetApi = 36,
+	CreateApi = 37
 }
 
 export const Callbacks = {
@@ -129,7 +130,8 @@ export const Callbacks = {
 	getActiveUsers: WebsocketCallbackType.GetActiveUsers,
 	getAppUsers: WebsocketCallbackType.GetAppUsers,
 	getActiveAppUsers: WebsocketCallbackType.GetActiveAppUsers,
-	getApi: WebsocketCallbackType.GetApi
+	getApi: WebsocketCallbackType.GetApi,
+	createApi: WebsocketCallbackType.CreateApi
 }
 
 function getKeyByValue(object: any, value: any) {

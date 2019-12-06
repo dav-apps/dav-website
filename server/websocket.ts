@@ -48,6 +48,7 @@ export function init(s: any){
 	socket.on(appPage.getAppKey, appPage.getApp);
 	socket.on(appPage.updateAppKey, appPage.updateApp);
 	socket.on(appPage.createTableKey, appPage.createTable);
+	socket.on(appPage.createApiKey, appPage.createApi);
 	socket.on(eventPage.getEventByNameKey, eventPage.getEventByName);
 	socket.on(statisticsPage.getUsersKey, statisticsPage.getUsers);
 	socket.on(statisticsPage.getActiveUsersKey, statisticsPage.getActiveUsers);

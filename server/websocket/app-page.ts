@@ -1,9 +1,10 @@
-import { GetApp, UpdateApp, CreateTable } from 'dav-npm';
+import { GetApp, UpdateApp, CreateTable, CreateApi } from 'dav-npm';
 import * as websocket from '../websocket';
 
 export const getAppKey = "getApp";
 export const updateAppKey = "updateApp";
 export const createTableKey = "createTable";
+export const createApiKey = "createApi";
 
 export async function getApp(message: {jwt: string, id: number}){
 	let result = await GetApp(message.jwt, message.id);
@@ -34,4 +35,9 @@ export async function updateApp(message: {
 export async function createTable(message: {jwt: string, appId: number, name: string}){
 	let result = await CreateTable(message.jwt, message.appId, message.name);
 	websocket.emit(createTableKey, result);
+}
+
+export async function createApi(message: {jwt: string, appId: number, name: string}){
+	let result = await CreateApi(message.jwt, message.appId, message.name);
+	websocket.emit(createApiKey, result);
 }
