@@ -346,7 +346,10 @@ const enDefaults = {
 	},
 	apiPage: {
 		loginRequiredMessage: "You need to log in to access this page",
-		accessNotAllowedMessage: "You can't access this page"
+		accessNotAllowedMessage: "You can't access this page",
+		endpoints: "Endpoints",
+		functions: "Functions",
+		errors: "Errors"
 	},
 	pricingComponent: {
 		free: {
@@ -750,7 +753,10 @@ const deDefaults = {
 	},
 	apiPage: {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen"
+		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
+		endpoints: "Endpunkte",
+		functions: "Funktionen",
+		errors: "Fehler"
 	},
 	pricingComponent: {
 		free: {

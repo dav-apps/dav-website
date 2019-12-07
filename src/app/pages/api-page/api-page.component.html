@@ -1,5 +1,5 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn">
-	<div class="d-flex mb-3">
+	<div class="d-flex">
 		<div class="mx-auto d-flex">
 			<button
 				type="button"
@@ -8,9 +8,33 @@
 				(click)="GoBack()">
 				<fab-icon iconName="Back" [styles]="backButtonIconStyles"></fab-icon>
 			</button>
-			<h1 class="text-left ml-3 font-weight-light">{{ api.Name }}</h1>
+			<h1 class="text-left font-weight-light ml-3 mb-0">{{ api.Name }}</h1>
 		</div>
 	</div>
 
-	
+	<div class="row text-center">
+		<div class="col-10 offset-1 col-md-4 offset-md-0 mt-4">
+			<h3 class="font-weight-light">{{ locale.endpoints }}</h3>
+
+			<ul class="list-group mt-3">
+				<li class="list-group-item" *ngFor="let endpoint of api.Endpoints">{{ endpoint.Method }} {{ endpoint.Path }}</li>
+			</ul>
+		</div>
+
+		<div class="col-10 offset-1 col-md-4 offset-md-0 mt-4">
+			<h3 class="font-weight-light">{{ locale.functions }}</h3>
+
+			<ul class="list-group mt-3">
+				<li class="list-group-item" *ngFor="let function of api.Functions">{{ function.Name }}</li>
+			</ul>
+		</div>
+
+		<div class="col-10 offset-1 col-md-4 offset-md-0 mt-4">
+			<h3 class="font-weight-light">{{ locale.errors }}</h3>
+
+			<ul class="list-group mt-3">
+				<li class="list-group-item" *ngFor="let error of api.Errors">{{ error.Code }}</li>
+			</ul>
+		</div>
+	</div>
 </div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, Api } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, Api, ApiError } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
@@ -63,6 +63,13 @@ export class ApiPageComponent{
 	GetApiResponse(response: ApiResponse<Api> | ApiErrorResponse){
 		if(response.status == 200){
 			this.api = (response as ApiResponse<Api>).data;
+
+			// Sort the errors by error code
+			this.api.Errors.sort((a: ApiError, b: ApiError) => {
+				if(a.Code > b.Code) return 1;
+				else if(a.Code < b.Code) return -1;
+				return 0;
+			});
 		}else{
 			// Redirect to the app page
 			this.router.navigate(['dev', this.appId]);
