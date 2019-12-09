@@ -349,7 +349,16 @@ const enDefaults = {
 		accessNotAllowedMessage: "You can't access this page",
 		endpoints: "Endpoints",
 		functions: "Functions",
-		errors: "Errors"
+		errors: "Errors",
+		addErrorDialog: {
+			title: "Add error",
+			codeTextfieldLabel: "Code",
+			codeTextfieldPlaceholder: "Error code",
+			messageTextfieldLabel: "Message",
+			messageTextfieldPlaceholder: "Error message"
+		},
+		save: "Save",
+		cancel: "Cancel"
 	},
 	pricingComponent: {
 		free: {
@@ -756,7 +765,16 @@ const deDefaults = {
 		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		endpoints: "Endpunkte",
 		functions: "Funktionen",
-		errors: "Fehler"
+		errors: "Fehler",
+		addErrorDialog: {
+			title: "Fehler hinzufügen",
+			codeTextfieldLabel: "Code",
+			codeTextfieldPlaceholder: "Fehler-Code",
+			messageTextfieldLabel: "Nachricht",
+			messageTextfieldPlaceholder: "Fehler-Nachricht"
+		},
+		save: "Speichern",
+		cancel: "Abbrechen"
 	},
 	pricingComponent: {
 		free: {

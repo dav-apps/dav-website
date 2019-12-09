@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IIconStyles } from 'office-ui-fabric-react';
+import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, Api, ApiError } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -15,10 +15,23 @@ export class ApiPageComponent{
 	getApiSubscriptionKey: number;
 	api: Api = new Api(0, "", [], [], []);
 	appId: number = 0;
+	addErrorDialogVisible: boolean = false;
+	addErrorDialogCode: string = "";
+	addErrorDialogCodeError: string = "";
+	addErrorDialogMessage: string = "";
+	addErrorDialogMessageError: string = "";
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
 		}
+	}
+	dialogPrimaryButtonStyles: IButtonStyles = {
+		root: {
+			marginLeft: 10
+		}
+	}
+	addErrorDialogContentProps: IDialogContentProps = {
+		title: this.locale.addErrorDialog.title
 	}
 
 	constructor(
@@ -58,6 +71,17 @@ export class ApiPageComponent{
 
 	GoBack(){
 		this.router.navigate(['dev', this.appId]);
+	}
+
+	ShowAddErrorDialog(){
+		this.addErrorDialogCode = "";
+		this.addErrorDialogMessage = "";
+		this.addErrorDialogContentProps.title = this.locale.addErrorDialog.title;
+		this.addErrorDialogVisible = true;
+	}
+
+	AddError(){
+
 	}
 
 	GetApiResponse(response: ApiResponse<Api> | ApiErrorResponse){
