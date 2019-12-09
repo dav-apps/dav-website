@@ -355,7 +355,13 @@ const enDefaults = {
 			codeTextfieldLabel: "Code",
 			codeTextfieldPlaceholder: "Error code",
 			messageTextfieldLabel: "Message",
-			messageTextfieldPlaceholder: "Error message"
+			messageTextfieldPlaceholder: "Error message",
+			errors: {
+				codeMissing: "Pease enter an error code",
+				codeInvalid: "The error code is invalid",
+				messageTooShort: "The message is too short",
+				messageTooLong: "The message is too long"
+			}
 		},
 		save: "Save",
 		cancel: "Cancel"
@@ -771,7 +777,13 @@ const deDefaults = {
 			codeTextfieldLabel: "Code",
 			codeTextfieldPlaceholder: "Fehler-Code",
 			messageTextfieldLabel: "Nachricht",
-			messageTextfieldPlaceholder: "Fehler-Nachricht"
+			messageTextfieldPlaceholder: "Fehler-Nachricht",
+			errors: {
+				codeMissing: "Bitte gib einen Fehler-Code ein",
+				codeInvalid: "Der Fehler-Code ist ungültig",
+				messageTooShort: "Die Nachricht ist zu kurz",
+				messageTooLong: "Die Nachricht ist zu lang"
+			}
 		},
 		save: "Speichern",
 		cancel: "Abbrechen"

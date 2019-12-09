@@ -13,6 +13,7 @@ import { enUS } from 'src/locales/locales';
 export class ApiPageComponent{
 	locale = enUS.apiPage;
 	getApiSubscriptionKey: number;
+	setApiErrorSubscriptionKey: number;
 	api: Api = new Api(0, "", [], [], []);
 	appId: number = 0;
 	addErrorDialogVisible: boolean = false;
@@ -42,6 +43,7 @@ export class ApiPageComponent{
 	){
 		this.locale = this.dataService.GetLocale().apiPage;
 		this.getApiSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetApi, (response: ApiResponse<Api> | ApiErrorResponse) => this.GetApiResponse(response));
+		this.setApiErrorSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetApiError, (response: ApiResponse<ApiError> | ApiErrorResponse) => this.SetApiErrorResponse(response));
 	}
 
 	async ngOnInit(){
@@ -66,7 +68,10 @@ export class ApiPageComponent{
 	}
 
 	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.getApiSubscriptionKey);
+		this.websocketService.Unsubscribe(
+			this.getApiSubscriptionKey,
+			this.setApiErrorSubscriptionKey
+		)
 	}
 
 	GoBack(){
@@ -81,22 +86,59 @@ export class ApiPageComponent{
 	}
 
 	AddError(){
+		this.addErrorDialogCodeError = "";
+		this.addErrorDialogMessageError = "";
 
+		this.websocketService.Emit(WebsocketCallbackType.SetApiError, {
+			apiId: this.api.Id,
+			code: +this.addErrorDialogCode,
+			message: this.addErrorDialogMessage
+		});
+	}
+
+	SortErrors(){
+		// Sort the errors by error code
+		this.api.Errors.sort((a: ApiError, b: ApiError) => {
+			if(a.Code > b.Code) return 1;
+			else if(a.Code < b.Code) return -1;
+			return 0;
+		});
 	}
 
 	GetApiResponse(response: ApiResponse<Api> | ApiErrorResponse){
 		if(response.status == 200){
 			this.api = (response as ApiResponse<Api>).data;
-
-			// Sort the errors by error code
-			this.api.Errors.sort((a: ApiError, b: ApiError) => {
-				if(a.Code > b.Code) return 1;
-				else if(a.Code < b.Code) return -1;
-				return 0;
-			});
+			this.SortErrors();
 		}else{
 			// Redirect to the app page
 			this.router.navigate(['dev', this.appId]);
+		}
+	}
+
+	SetApiErrorResponse(response: ApiResponse<ApiError> | ApiErrorResponse){
+		if(response.status == 200){
+			this.api.Errors.push((response as ApiResponse<ApiError>).data);
+			this.SortErrors();
+			this.addErrorDialogVisible = false;
+		}else{
+			let errors = (response as ApiErrorResponse).errors;
+
+			for(let error of errors){
+				switch(error.code){
+					case 2135:
+						this.addErrorDialogCodeError = this.locale.addErrorDialog.errors.codeMissing;
+						break;
+					case 2136 || 2210:
+						this.addErrorDialogMessageError = this.locale.addErrorDialog.errors.messageTooShort;
+						break;
+					case 2310:
+						this.addErrorDialogMessageError = this.locale.addErrorDialog.errors.messageTooLong;
+						break;
+					case 2407:
+						this.addErrorDialogCodeError = this.locale.addErrorDialog.errors.codeInvalid;
+						break;
+				}
+			}
 		}
 	}
 }

@@ -60,7 +60,8 @@
 			[(value)]="addErrorDialogMessage"
 			[label]="locale.addErrorDialog.messageTextfieldLabel"
 			[placeholder]="locale.addErrorDialog.messageTextfieldPlaceholder"
-			[errorMessage]="addErrorDialogMessageError">
+			[errorMessage]="addErrorDialogMessageError"
+			(keydown.enter)="AddError()">
 		</fab-text-field>
 	</div>
 
