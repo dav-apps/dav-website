@@ -66,3 +66,11 @@
 		</button>
 	</div>
 </div>
+
+<button mat-button
+	style="position: absolute; min-width: 0px; padding: 0px; left: 0; top: 0; z-index: 2; font-size: 16px"
+	[style.height.px]="height"
+	[style.width.px]="backButtonWidth"
+	(click)="GoBack()">
+	<i class="ms-Icon ms-Icon--ChevronLeft" aria-hidden="true"></i>
+</button>

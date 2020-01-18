@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData, Log } from 'dav-npm';
@@ -34,8 +34,11 @@ export class LoginPageComponent{
 	redirectUrl: string;
 	redirect: string;
 	loginLoading: boolean = false;
+	height: number = 400;
+	backButtonWidth: number = 40;
 	spinnerSize: SpinnerSize = SpinnerSize.small;
 	messageBarType: MessageBarType = MessageBarType.error;
+
 	loginButtonStyles: IButtonStyles = {
 		root: {
 			marginTop: 24
@@ -83,6 +86,10 @@ export class LoginPageComponent{
 		}
 	}
 
+	ngOnInit(){
+		this.setSize();
+	}
+
 	ngAfterViewInit(){
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
@@ -98,6 +105,16 @@ export class LoginPageComponent{
 			this.createSessionSubscriptionKey,
 			this.createSessionWithJwtSubscriptionKey
 		)
+	}
+
+	@HostListener('window:resize')
+	onResize(){
+		this.setSize();
+	}
+
+	setSize(){
+		this.height = window.innerHeight;
+		this.backButtonWidth = window.innerWidth < 576 ? 25 : 40;
 	}
 
 	Login(){
@@ -175,6 +192,10 @@ export class LoginPageComponent{
 			deviceType,
 			deviceOs
 		});
+	}
+
+	GoBack(){
+		window.history.back();
 	}
 
 	async LoginResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){

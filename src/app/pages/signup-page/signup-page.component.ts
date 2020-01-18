@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse, Log } from 'dav-npm';
@@ -32,6 +32,8 @@ export class SignupPageComponent{
 	apiKey: string = null;
 	redirectUrl: string = null;
 	errorMessage: string = "";
+	height: number = 400;
+	backButtonWidth: number = 40;
 	messageBarType: MessageBarType = MessageBarType.error;
 	spinnerSize: SpinnerSize = SpinnerSize.small;
 	signupLoading: boolean = false;
@@ -72,6 +74,10 @@ export class SignupPageComponent{
 		}
 	}
 
+	ngOnInit(){
+		this.setSize();
+	}
+
 	ngAfterViewInit(){
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
@@ -88,6 +94,16 @@ export class SignupPageComponent{
 			this.signupImplicitSubscriptionKey,
 			this.signupSessionSubscriptionKey
 		)
+	}
+
+	@HostListener('window:resize')
+	onResize(){
+		this.setSize();
+	}
+
+	setSize(){
+		this.height = window.innerHeight;
+		this.backButtonWidth = window.innerWidth < 576 ? 25 : 40;
 	}
 
 	Signup(){
@@ -144,6 +160,10 @@ export class SignupPageComponent{
 				});
 				break;
 		}
+	}
+
+	GoBack(){
+		window.history.back();
 	}
 
 	async SignupResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
