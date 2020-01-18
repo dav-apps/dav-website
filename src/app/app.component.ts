@@ -17,6 +17,7 @@ export class AppComponent {
 	locale = enUS.appComponent;
 	width: number = 500;
 	offsetTop: number = 0;
+	year = (new Date()).getFullYear();
 
 	constructor(
 		public dataService: DataService,
