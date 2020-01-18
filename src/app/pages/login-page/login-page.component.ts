@@ -122,15 +122,21 @@ export class LoginPageComponent{
 				break;
 			case LoginType.Session:
 				// Get device info
-				let deviceName = deviceAPI.deviceName;
-				let deviceType = this.Capitalize(deviceAPI.deviceType as string);
-				let deviceOs = deviceAPI.osName;
+				let deviceName = this.locale.deviceInfoUnknown;
+				let deviceType = this.locale.deviceInfoUnknown;
+				let deviceOs = this.locale.deviceInfoUnknown;
+				
+				if(deviceAPI){
+					deviceName = deviceAPI.deviceName;
+					deviceType = this.Capitalize(deviceAPI.deviceType as string);
+					deviceOs = deviceAPI.osName;
 
-				if(deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown;
-				if(deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown;
-				if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
+					if(deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown;
+					if(deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown;
+					if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
+				}
 
-				// Call createSession on the server
+				// Create the session on the server
 				this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
 					email: this.email,
 					password: this.password,
@@ -146,14 +152,21 @@ export class LoginPageComponent{
 
 	LoginAsLoggedInUser(){
 		// Get device info
-		let deviceName = deviceAPI.deviceName;
-		let deviceType = this.Capitalize(deviceAPI.deviceType as string);
-		let deviceOs = deviceAPI.osName;
+		let deviceName = this.locale.deviceInfoUnknown;
+		let deviceType = this.locale.deviceInfoUnknown;
+		let deviceOs = this.locale.deviceInfoUnknown;
 
-		if(deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown;
-		if(deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown;
-		if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
+		if(deviceAPI){
+			deviceName = deviceAPI.deviceName;
+			deviceType = this.Capitalize(deviceAPI.deviceType as string);
+			deviceOs = deviceAPI.osName;
 
+			if(deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown;
+			if(deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown;
+			if(deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown;
+		}
+
+		// Create the session on the server
 		this.websocketService.Emit(WebsocketCallbackType.CreateSessionWithJwt, {
 			jwt: this.dataService.user.JWT,
 			appId: this.appId,
