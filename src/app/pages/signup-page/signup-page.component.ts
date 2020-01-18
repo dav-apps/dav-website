@@ -117,14 +117,21 @@ export class SignupPageComponent{
 				break;
 			case SignupType.Session:
 				// Get device info
-				let deviceName = deviceAPI.deviceName;
-				let deviceType = this.Capitalize(deviceAPI.deviceType as string);
-				let deviceOs = deviceAPI.osName;
+				let deviceName = this.locale.deviceInfoUnknown;
+				let deviceType = this.locale.deviceInfoUnknown;
+				let deviceOs = this.locale.deviceInfoUnknown;
 
-				if(deviceName == "Not available") deviceName = this.locale.deviceInfoUnknown;
-				if(deviceType == "Not available") deviceType = this.locale.deviceInfoUnknown;
-				if(deviceOs == "Not available") deviceOs = this.locale.deviceInfoUnknown;
+				if(deviceAPI){
+					deviceName = deviceAPI.deviceName;
+					deviceType = this.Capitalize(deviceAPI.deviceType as string);
+					deviceOs = deviceAPI.osName;
 
+					if(deviceName == "Not available") deviceName = this.locale.deviceInfoUnknown;
+					if(deviceType == "Not available") deviceType = this.locale.deviceInfoUnknown;
+					if(deviceOs == "Not available") deviceOs = this.locale.deviceInfoUnknown;
+				}
+
+				// Create the user on the server
 				this.websocketService.Emit(WebsocketCallbackType.SignupSession, {
 					username: this.username,
 					email: this.email,
