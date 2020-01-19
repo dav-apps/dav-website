@@ -42,8 +42,8 @@
 						<div style="margin-top: 32px; margin-left: 14px" *ngIf="loginLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 					</div>
 					
-					<div class="d-flex ml-auto">
-						<a style="color: black; font-size: 15px; margin-top: 12px;" 
+					<div class="d-flex ml-auto text-right">
+						<a style="color: black; font-size: 15px; margin-top: 28px;" 
 							routerLink="/password_reset" 
 							tabindex="-1"
 							*ngIf="loginType == 0">{{ locale.forgotPassword }}</a>
