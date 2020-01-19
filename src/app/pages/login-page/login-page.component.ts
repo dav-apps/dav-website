@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData, Log } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
@@ -195,7 +195,8 @@ export class LoginPageComponent{
 	}
 
 	GoBack(){
-		window.history.back();
+		// Redirect back to the app
+		window.location.href = this.redirectUrl;
 	}
 
 	async LoginResponse(response: (ApiResponse<LoginResponseData> | ApiErrorResponse)){
@@ -300,10 +301,16 @@ export class LoginPageComponent{
 	}
 
 	NavigateToSignup(){
+		let extras: NavigationExtras = {
+			state: {
+				redirectedFromLogin: true
+			}
+		}
+		
 		if(this.loginType == LoginType.Implicit){
-			this.router.navigateByUrl(`/signup?type=${loginTypeImplicit}&api_key=${this.apiKey}&redirect_url=${this.redirectUrl}`);
+			this.router.navigateByUrl(`/signup?type=${loginTypeImplicit}&api_key=${this.apiKey}&redirect_url=${this.redirectUrl}`, extras);
 		}else if(this.loginType == LoginType.Session){
-			this.router.navigateByUrl(`/signup?type=${loginTypeSession}&api_key=${this.apiKey}&app_id=${this.appId}&redirect_url=${this.redirectUrl}`);
+			this.router.navigateByUrl(`/signup?type=${loginTypeSession}&api_key=${this.apiKey}&app_id=${this.appId}&redirect_url=${this.redirectUrl}`, extras);
 		}
 	}
 

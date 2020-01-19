@@ -37,6 +37,7 @@ export class SignupPageComponent{
 	messageBarType: MessageBarType = MessageBarType.error;
 	spinnerSize: SpinnerSize = SpinnerSize.small;
 	signupLoading: boolean = false;
+	redirectedFromLogin: boolean = false;
 
 	constructor(
 		public dataService: DataService,
@@ -49,6 +50,10 @@ export class SignupPageComponent{
 		this.signupSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.Signup, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupResponse(message));
 		this.signupImplicitSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SignupImplicit, (message: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.SignupImplicitResponse(message));
 		this.signupSessionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SignupSession, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupSessionResponse(message));
+
+		// Check if the user is coming from the login page
+		let extras = this.router.getCurrentNavigation().extras;
+		if(extras.state && extras.state.redirectedFromLogin) this.redirectedFromLogin = true;
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 		if(!type) return;
@@ -163,7 +168,13 @@ export class SignupPageComponent{
 	}
 
 	GoBack(){
-		window.history.back();
+		if(this.redirectedFromLogin){
+			// Go back to the login page
+			window.history.back();
+		}else{
+			// Redirect back to the app
+			window.location.href = this.redirectUrl;
+		}
 	}
 
 	async SignupResponse(response: (ApiResponse<SignupResponseData> | ApiErrorResponse)){
