@@ -15,6 +15,7 @@ const dangerButtonHoverBackgroundColor = "#c82333";
 const buttonTransition = "all 0.15s";
 const plansHash = "plans";
 const appsHash = "apps";
+const providerHash = "provider";
 
 @Component({
 	selector: 'dav-website-user-page',
@@ -161,6 +162,9 @@ export class UserPageComponent{
 				case appsHash:
 					this.ShowAppsMenu();
 					break;
+				case providerHash:
+					this.ShowProviderMenu();
+					break;
 				default:
 					this.ShowGeneralMenu();
 					break;
@@ -261,6 +265,15 @@ export class UserPageComponent{
 		this.ClearMessages();
 
 		this.router.navigateByUrl(`user#${appsHash}`);
+	}
+
+	ShowProviderMenu(){
+		if(this.selectedMenu == Menu.Provider) return;
+		this.selectedMenu = Menu.Provider;
+		if(this.sideNavHidden) this.sideNavOpened = false;
+		this.ClearMessages();
+
+		this.router.navigateByUrl(`user#${providerHash}`);
 	}
 
 	UpdateAvatar(file: ReadFile){
@@ -541,7 +554,8 @@ export class UserPageComponent{
 enum Menu{
 	General,
 	Plans,
-	Apps
+	Apps,
+	Provider
 }
 
 enum UserAttribute{

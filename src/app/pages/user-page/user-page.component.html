@@ -4,6 +4,7 @@
 			<mat-list-item (click)="ShowGeneralMenu()" disableRipple [ngClass]="selectedMenu == 0 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.general }}</mat-list-item>
 			<mat-list-item (click)="ShowPlansMenu()" disableRipple [ngClass]="selectedMenu == 1 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.plans }}</mat-list-item>
 			<mat-list-item (click)="ShowAppsMenu()" disableRipple [ngClass]="selectedMenu == 2 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.apps }}</mat-list-item>
+			<mat-list-item (click)="ShowProviderMenu()" disableRipple [ngClass]="selectedMenu == 3 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.provider }}</mat-list-item>
 		</mat-nav-list>
 	</mat-sidenav>
   	<mat-sidenav-content style="overflow: hidden">
@@ -187,6 +188,22 @@
 						</div>
 					</mat-expansion-panel>
 				</mat-accordion>
+			</div>
+		</div>
+
+		<!-- Provider -->
+		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 3">
+			<h1 class="text-center font-weight-light mb-4">{{ locale.provider.title }}</h1>
+			<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
+
+			<p class="text-center font-weight-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
+			<div class="d-flex justify-content-center">
+				<a class="text-center font-weight-light" style="color: black; font-size: 19px" href="https://pocketlib.dav-apps.tech" target="blank">PocketLib</a>
+			</div>
+
+			<div class="mt-5 d-flex flex-column align-items-center">
+				<p class="text-center font-weight-light" [innerHTML]="locale.provider.setupExplanation"></p>
+				<fab-primary-button>{{ locale.provider.startSetup }}</fab-primary-button>
 			</div>
 		</div>
 	</mat-sidenav-content>

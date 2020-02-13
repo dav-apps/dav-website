@@ -161,7 +161,8 @@ const enDefaults = {
 		sideNav: {
 			general: "General",
 			plans: "Plans",
-			apps: "Apps"
+			apps: "Apps",
+			provider: "Provider"
 		},
 		general: {
 			title: "General Settings",
@@ -196,6 +197,13 @@ const enDefaults = {
 				title: "Removing {0}",
 				subText: "Are you sure you want to remove this app from your account? All app data will be irreversibly deleted."
 			}
+		},
+		provider: {
+			title: "Become a provider",
+			subTitle: "Distribute your digital content on dav platforms and earn money",
+			supportedApps: "Supported apps",
+			setupExplanation: "To become a provider, we need to collect some information about you. <br>(You will be redirected to a page of <a href='https://stripe.com' target='blank'>Stripe</a>)",
+			startSetup: "Start setup"
 		},
 		messages: {
 			avatarUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
@@ -583,7 +591,8 @@ const deDefaults = {
 		sideNav: {
 			general: "Allgemein",
 			plans: "Pläne",
-			apps: "Apps"
+			apps: "Apps",
+			provider: "Anbieter"
 		},
 		general: {
 			title: "Allgemeine Einstellungen",
@@ -618,6 +627,13 @@ const deDefaults = {
 				title: "{0} entfernen",
 				subText: "Bist du dir sicher, dass du diese App von deinem Account entfernen willst? Alle App-Daten werden unwiderruflich gelöscht."
 			}
+		},
+		provider: {
+			title: "Werde ein Anbieter",
+			subTitle: "Vertreibe deine digitalen Inhalte auf Plattformen von dav und verdiene Geld",
+			supportedApps: "Unterstützte Apps",
+			setupExplanation: "Um ein Anbieter zu werden, müssen wir einige Informationen über dich sammeln. <br>(Du wirst auf eine Seite von <a href='https://stripe.com' target='blank'>Stripe</a> weitergeleitet)",
+			startSetup: "Einrichtung beginnen"
 		},
 		messages: {
 			avatarUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
