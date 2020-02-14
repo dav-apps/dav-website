@@ -1,7 +1,9 @@
 import { GetEventByName, EventSummaryPeriod } from 'dav-npm';
 import * as websocket from '../websocket';
 
-export const getEventByNameKey = "getEventByName";
+export const sockets = {
+	getEventByName
+}
 
 export async function getEventByName(message: {
 	jwt: string,
@@ -19,5 +21,5 @@ export async function getEventByName(message: {
 		message.end, 
 		message.period
 	);
-	websocket.emit(getEventByNameKey, result);
+	websocket.emit(getEventByName.name, result);
 }
