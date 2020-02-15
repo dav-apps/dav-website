@@ -12,7 +12,6 @@ import { enUS } from 'src/locales/locales';
 })
 export class PasswordResetPageComponent{
 	locale = enUS.passwordResetPage;
-	sendPasswordResetEmailSubscriptionKey: number;
 	email: string = "";
 	errorMessage: string = "";
 	loading: boolean = false;
@@ -26,10 +25,6 @@ export class PasswordResetPageComponent{
 		this.locale = this.dataService.GetLocale().passwordResetPage;
 	}
 
-	ngOnInit(){
-		this.sendPasswordResetEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendPasswordResetEmail, (response: ApiResponse<{}> | ApiErrorResponse) => this.SendPasswordResetEmailResponse(response));
-	}
-
 	ngAfterViewInit(){
 		// Set the autocomplete attribute of the input element
 		setTimeout(() => {
@@ -37,16 +32,14 @@ export class PasswordResetPageComponent{
 		}, 1);
 	}
 
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.sendPasswordResetEmailSubscriptionKey);
-	}
-
-	SendPasswordResetEmail(){
+	async SendPasswordResetEmail(){
 		if(this.email.length < 3 || !this.email.includes('@')) return;
 
 		this.errorMessage = "";
 		this.loading = true;
-		this.websocketService.Emit(WebsocketCallbackType.SendPasswordResetEmail, {email: this.email});
+		this.SendPasswordResetEmailResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SendPasswordResetEmail, {email: this.email})
+		)
 	}
 
 	SendPasswordResetEmailResponse(response: ApiResponse<{}> | ApiErrorResponse){

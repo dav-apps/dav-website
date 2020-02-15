@@ -20,9 +20,6 @@ const signupSessionEventName = "signup_session";
 })
 export class SignupPageComponent{
 	locale = enUS.signupPage;
-	signupSubscriptionKey: number;
-	signupImplicitSubscriptionKey: number;
-	signupSessionSubscriptionKey: number;
 	username: string = "";
 	email: string = "";
 	password: string = "";
@@ -46,10 +43,6 @@ export class SignupPageComponent{
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().signupPage;
-
-		this.signupSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.Signup, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupResponse(message));
-		this.signupImplicitSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SignupImplicit, (message: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.SignupImplicitResponse(message));
-		this.signupSessionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SignupSession, (message: (ApiResponse<SignupResponseData> | ApiErrorResponse)) => this.SignupSessionResponse(message));
 
 		// Check if the user is coming from the login page
 		let extras = this.router.getCurrentNavigation().extras;
@@ -93,14 +86,6 @@ export class SignupPageComponent{
 		}, 1);
 	}
 
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.signupSubscriptionKey,
-			this.signupImplicitSubscriptionKey,
-			this.signupSessionSubscriptionKey
-		)
-	}
-
 	@HostListener('window:resize')
 	onResize(){
 		this.setSize();
@@ -111,7 +96,7 @@ export class SignupPageComponent{
 		this.backButtonWidth = window.innerWidth < 576 ? 25 : 40;
 	}
 
-	Signup(){
+	async Signup(){
 		if(this.password != this.passwordConfirmation){
 			this.errorMessage = this.locale.errors.passwordConfirmationNotMatching;
 			this.passwordConfirmation = "";
@@ -122,19 +107,23 @@ export class SignupPageComponent{
 
 		switch (this.signupType) {
 			case SignupType.Normal:
-				this.websocketService.Emit(WebsocketCallbackType.Signup, {
-					username: this.username,
-					email: this.email,
-					password: this.password
-				});
+				this.SignupResponse(
+					await this.websocketService.Emit(WebsocketCallbackType.Signup, {
+						username: this.username,
+						email: this.email,
+						password: this.password
+					})
+				)
 				break;
 			case SignupType.Implicit:
-				this.websocketService.Emit(WebsocketCallbackType.SignupImplicit, {
-					apiKey: this.apiKey,
-					username: this.username,
-					email: this.email,
-					password: this.password
-				});
+				this.SignupImplicitResponse(
+					await this.websocketService.Emit(WebsocketCallbackType.SignupImplicit, {
+						apiKey: this.apiKey,
+						username: this.username,
+						email: this.email,
+						password: this.password
+					})
+				)
 				break;
 			case SignupType.Session:
 				// Get device info
@@ -153,16 +142,18 @@ export class SignupPageComponent{
 				}
 
 				// Create the user on the server
-				this.websocketService.Emit(WebsocketCallbackType.SignupSession, {
-					username: this.username,
-					email: this.email,
-					password: this.password,
-					appId: this.appId,
-					apiKey: this.apiKey,
-					deviceName,
-					deviceType,
-					deviceOs
-				});
+				this.SignupSessionResponse(
+					await this.websocketService.Emit(WebsocketCallbackType.SignupSession, {
+						username: this.username,
+						email: this.email,
+						password: this.password,
+						appId: this.appId,
+						apiKey: this.apiKey,
+						deviceName,
+						deviceType,
+						deviceOs
+					})
+				)
 				break;
 		}
 	}

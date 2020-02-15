@@ -12,12 +12,6 @@ import { enUS } from 'src/locales/locales';
 })
 export class EmailLinkPageComponent{
 	locale = enUS.emailLinkPage;
-	deleteUserSubscriptionKey: number;
-	removeAppSubscriptionKey: number;
-	confirmUserSubscriptionKey: number;
-	saveNewPasswordSubscriptionKey: number;
-	saveNewEmailSubscriptionKey: number;
-	resetNewEmailSubscriptionKey: number;
 	spinnerSize: SpinnerSize = SpinnerSize.large;
 	height: number = 500;
 
@@ -39,13 +33,6 @@ export class EmailLinkPageComponent{
 			this.RedirectToStartPageWithError();
 			return;
 		}
-
-		this.deleteUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.DeleteUser, (response: ApiResponse<{}> | ApiErrorResponse) => this.DeleteUserResponse(response));
-		this.removeAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.RemoveApp, (response: ApiResponse<{}> | ApiErrorResponse) => this.RemoveAppResponse(response));
-		this.confirmUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.ConfirmUser, (response: ApiResponse<{}> | ApiErrorResponse) => this.ConfirmUserResponse(response));
-		this.saveNewPasswordSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SaveNewPassword, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewPasswordResponse(response));
-		this.saveNewEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SaveNewEmail, (response: ApiResponse<{}> | ApiErrorResponse) => this.SaveNewEmailResponse(response));
-		this.resetNewEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.ResetNewEmail, (response: ApiResponse<{}> | ApiErrorResponse) => this.ResetNewEmailResponse(response));
 
 		// Get all possible variables from the url params
 		let userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id');
@@ -89,17 +76,6 @@ export class EmailLinkPageComponent{
 		}
 	}
 
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.deleteUserSubscriptionKey,
-			this.removeAppSubscriptionKey,
-			this.confirmUserSubscriptionKey,
-			this.saveNewPasswordSubscriptionKey,
-			this.saveNewEmailSubscriptionKey,
-			this.resetNewEmailSubscriptionKey
-		)
-	}
-
 	@HostListener('window:resize')
 	onResize(){
 		this.setSize();
@@ -109,45 +85,57 @@ export class EmailLinkPageComponent{
 		this.height = window.innerHeight;
 	}
 
-	HandleDeleteUser(userId: number, emailConfirmationToken: string, passwordConfirmationToken: string){
-		this.websocketService.Emit(WebsocketCallbackType.DeleteUser, {
-			userId,
-			emailConfirmationToken,
-			passwordConfirmationToken
-		});
+	async HandleDeleteUser(userId: number, emailConfirmationToken: string, passwordConfirmationToken: string){
+		this.DeleteUserResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.DeleteUser, {
+				userId,
+				emailConfirmationToken,
+				passwordConfirmationToken
+			})
+		)
 	}
 
-	HandleRemoveApp(appId: number, userId: number, passwordConfirmationToken: string){
-		this.websocketService.Emit(WebsocketCallbackType.RemoveApp, {
-			appId,
-			userId,
-			passwordConfirmationToken
-		});
+	async HandleRemoveApp(appId: number, userId: number, passwordConfirmationToken: string){
+		this.RemoveAppResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.RemoveApp, {
+				appId,
+				userId,
+				passwordConfirmationToken
+			})
+		)
 	}
 
-	HandleConfirmUser(userId: number, emailConfirmationToken: string){
-		this.websocketService.Emit(WebsocketCallbackType.ConfirmUser, {
-			userId,
-			emailConfirmationToken
-		});
+	async HandleConfirmUser(userId: number, emailConfirmationToken: string){
+		this.ConfirmUserResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.ConfirmUser, {
+				userId,
+				emailConfirmationToken
+			})
+		)
 	}
 
-	HandleChangePassword(userId: number, passwordConfirmationToken: string){
-		this.websocketService.Emit(WebsocketCallbackType.SaveNewPassword, {
-			userId,
-			passwordConfirmationToken
-		});
+	async HandleChangePassword(userId: number, passwordConfirmationToken: string){
+		this.SaveNewPasswordResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SaveNewPassword, {
+				userId,
+				passwordConfirmationToken
+			})
+		)
 	}
 
-	HandleChangeEmail(userId: number, emailConfirmationToken: string){
-		this.websocketService.Emit(WebsocketCallbackType.SaveNewEmail, {
-			userId,
-			emailConfirmationToken
-		});
+	async HandleChangeEmail(userId: number, emailConfirmationToken: string){
+		this.SaveNewEmailResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SaveNewEmail, {
+				userId,
+				emailConfirmationToken
+			})
+		)
 	}
 
-	HandleResetNewEmail(userId: number){
-		this.websocketService.Emit(WebsocketCallbackType.ResetNewEmail, {userId});
+	async HandleResetNewEmail(userId: number){
+		this.ResetNewEmailResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.ResetNewEmail, {userId})
+		)
 	}
 
 	async DeleteUserResponse(response: ApiResponse<{}> | ApiErrorResponse){

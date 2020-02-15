@@ -21,10 +21,6 @@ const loginSessionEventName = "login_session";
 })
 export class LoginPageComponent{
 	locale = enUS.loginPage;
-	loginSubscriptionKey: number;
-	loginImplicitSubscriptionKey: number;
-	createSessionSubscriptionKey: number;
-	createSessionWithJwtSubscriptionKey: number;
 	loginType: LoginType = LoginType.Normal;
 	email: string = "";
 	password: string = "";
@@ -52,12 +48,6 @@ export class LoginPageComponent{
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().loginPage;
-
-		this.loginSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.Login, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginResponse(response));
-		this.loginImplicitSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.LoginImplicit, (response: (ApiResponse<LoginResponseData> | ApiErrorResponse)) => this.LoginImplicitResponse(response));
-		this.createSessionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateSession, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionResponse(response));
-		this.createSessionWithJwtSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateSessionWithJwt, (response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) => this.CreateSessionWithJwtResponse(response));
-
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type');
 
 		if(type == loginTypeImplicit){
@@ -98,15 +88,6 @@ export class LoginPageComponent{
 		}, 1);
 	}
 
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.loginSubscriptionKey,
-			this.loginImplicitSubscriptionKey,
-			this.createSessionSubscriptionKey,
-			this.createSessionWithJwtSubscriptionKey
-		)
-	}
-
 	@HostListener('window:resize')
 	onResize(){
 		this.setSize();
@@ -117,25 +98,29 @@ export class LoginPageComponent{
 		this.backButtonWidth = window.innerWidth < 576 ? 25 : 40;
 	}
 
-	Login(){
+	async Login(){
 		this.errorMessage = "";
 		this.loginLoading = true;
 
 		switch (this.loginType) {
 			case LoginType.Normal:
 				// Call login on the server
-				this.websocketService.Emit(WebsocketCallbackType.Login, {
-					email: this.email,
-					password: this.password
-				});
+				this.LoginResponse(
+					await this.websocketService.Emit(WebsocketCallbackType.Login, {
+						email: this.email,
+						password: this.password
+					})
+				)
 				break;
 			case LoginType.Implicit:
 				// Call loginImplicit on the server
-				this.websocketService.Emit(WebsocketCallbackType.LoginImplicit, {
-					apiKey: this.apiKey,
-					email: this.email,
-					password: this.password
-				});
+				this.LoginImplicitResponse(
+					await this.websocketService.Emit(WebsocketCallbackType.LoginImplicit, {
+						apiKey: this.apiKey,
+						email: this.email,
+						password: this.password
+					})
+				)
 				break;
 			case LoginType.Session:
 				// Get device info
@@ -154,20 +139,22 @@ export class LoginPageComponent{
 				}
 
 				// Create the session on the server
-				this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
-					email: this.email,
-					password: this.password,
-					appId: this.appId,
-					apiKey: this.apiKey,
-					deviceName,
-					deviceType,
-					deviceOs
-				});
+				this.CreateSessionResponse(
+					await this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
+						email: this.email,
+						password: this.password,
+						appId: this.appId,
+						apiKey: this.apiKey,
+						deviceName,
+						deviceType,
+						deviceOs
+					})
+				)
 				break;
 		}
 	}
 
-	LoginAsLoggedInUser(){
+	async LoginAsLoggedInUser(){
 		// Get device info
 		let deviceName = this.locale.deviceInfoUnknown;
 		let deviceType = this.locale.deviceInfoUnknown;
@@ -184,14 +171,16 @@ export class LoginPageComponent{
 		}
 
 		// Create the session on the server
-		this.websocketService.Emit(WebsocketCallbackType.CreateSessionWithJwt, {
-			jwt: this.dataService.user.JWT,
-			appId: this.appId,
-			apiKey: this.apiKey,
-			deviceName,
-			deviceType,
-			deviceOs
-		});
+		this.CreateSessionWithJwtResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.CreateSessionWithJwt, {
+				jwt: this.dataService.user.JWT,
+				appId: this.appId,
+				apiKey: this.apiKey,
+				deviceName,
+				deviceType,
+				deviceOs
+			})
+		)
 	}
 
 	GoBack(){

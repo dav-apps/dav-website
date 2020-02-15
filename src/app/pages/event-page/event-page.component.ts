@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles } from 'office-ui-fabric-react';
 import { ApiResponse, ApiErrorResponse, Event, EventSummaryOsCount, EventSummaryBrowserCount, EventSummaryCountryCount } from 'dav-npm';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataSets } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import Chartkick from "chartkick";
 import * as moment from 'moment';
@@ -16,7 +16,6 @@ import { enUS } from 'src/locales/locales';
 })
 export class EventPageComponent{
 	locale = enUS.eventPage;
-	getEventByNameSubscriptionKey: number;
 	@ViewChild(BaseChartDirective, {static: true}) chart: BaseChartDirective;
 	appId: number;
 	event: Event = new Event(0, 0, "", []);
@@ -63,8 +62,6 @@ export class EventPageComponent{
 		this.locale = this.dataService.GetLocale().eventPage;
 		moment.locale(this.dataService.locale);
 
-		this.getEventByNameSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetEventByName, (response: ApiResponse<Event> | ApiErrorResponse) => this.GetEventByNameResponse(response));
-
 		// Update the pie chart titles
 		this.pieChartTitles[0] = this.locale.pieChartTitles.operatingSystems;
 		this.pieChartTitles[1] = this.locale.pieChartTitles.operatingSystemsVersions;
@@ -92,16 +89,12 @@ export class EventPageComponent{
 		let eventName = this.activatedRoute.snapshot.paramMap.get('name');
 		this.eventChartDataSets[0].label = eventName;
 
-		this.websocketService.Emit(WebsocketCallbackType.GetEventByName, {
-			jwt: this.dataService.user.JWT,
-			name: eventName,
-			appId: this.appId
-		});
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.getEventByNameSubscriptionKey
+		this.GetEventByNameResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetEventByName, {
+				jwt: this.dataService.user.JWT,
+				name: eventName,
+				appId: this.appId
+			})
 		)
 	}
 

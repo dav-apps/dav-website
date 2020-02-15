@@ -15,8 +15,6 @@ declare var Stripe: any;
 })
 export class PaymentFormComponent{
 	locale = enUS.paymentFormComponent;
-	createStripeCustomerForUserSubscriptionKey: number;
-	saveStripePaymentMethodSubscriptionKey: number;
 	@Input() showSaveButton: boolean = true;
 	@Output() completed = new EventEmitter();
 	@Output() loadingStart = new EventEmitter();
@@ -37,21 +35,11 @@ export class PaymentFormComponent{
 		this.locale = this.dataService.GetLocale().paymentFormComponent;
 	}
 
-	ngOnInit(){
-		this.createStripeCustomerForUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateStripeCustomerForUser, (message: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse) => this.CreateStripeCustomerForUserResponse(message));
-		this.saveStripePaymentMethodSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SaveStripePaymentMethod, (message: StripeApiResponse) => this.SaveStripePaymentMethodResponse(message));
-	}
-
 	ngOnDestroy(){
 		if(this.card){
 			this.card.removeEventListener('change', this.cardHandler);
 			this.card.destroy();
 		}
-
-		this.websocketService.Unsubscribe(
-			this.createStripeCustomerForUserSubscriptionKey, 
-			this.saveStripePaymentMethodSubscriptionKey
-		);
 	}
 
 	Init(){
@@ -81,9 +69,11 @@ export class PaymentFormComponent{
 
 		// Create a stripe customer if the user has no stripe customer
 		if(!this.dataService.user.StripeCustomerId){
-			this.websocketService.Emit(WebsocketCallbackType.CreateStripeCustomerForUser, {
-				jwt: this.dataService.user.JWT
-			});
+			this.CreateStripeCustomerForUserResponse(
+				await this.websocketService.Emit(WebsocketCallbackType.CreateStripeCustomerForUser, {
+					jwt: this.dataService.user.JWT
+				})
+			)
 
 			if(!this.loading){
 				this.loadingStart.emit();
@@ -102,10 +92,12 @@ export class PaymentFormComponent{
 			this.errorMessage = result.error.message;
 		}else{
 			// Send the payment method to the server
-			this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
-				paymentMethodId: result.paymentMethod.id,
-				customerId: this.dataService.user.StripeCustomerId
-			});
+			this.SaveStripePaymentMethodResponse(
+				await this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
+					paymentMethodId: result.paymentMethod.id,
+					customerId: this.dataService.user.StripeCustomerId
+				})
+			)
 
 			if(!this.loading){
 				this.loadingStart.emit();

@@ -15,10 +15,6 @@ const buttonTransition = "all 0.15s";
 })
 export class PricingComponent{
 	locale = enUS.pricingComponent;
-	socket: any;
-	setStripeSubscriptionSubscriptionKey: number;
-	getStripePaymentMethodSubscriptionKey: number;
-	setStripeSubscriptionCancelledSubscriptionKey: number;
 	@ViewChild('paymentForm', {static: true}) paymentForm: PaymentFormComponent;
 	selectedPlan: number = -1;
 	paymentFormDialogVisible: boolean = false;
@@ -75,18 +71,7 @@ export class PricingComponent{
 	}
 
 	ngOnInit(){
-		this.setStripeSubscriptionSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscription, (message: StripeApiResponse) => this.SetStripeSubscriptionResponse(message));
-		this.getStripePaymentMethodSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetStripePaymentMethod, (message: StripeApiResponse) => this.GetStripePaymentMethodResponse(message));
-		this.setStripeSubscriptionCancelledSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetStripeSubscriptionCancelled, (message: StripeApiResponse) => this.SetStripeSubscriptionCancelledResponse(message));
-
 		this.UpdateSubscriptionDetails();
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.setStripeSubscriptionSubscriptionKey,
-			this.getStripePaymentMethodSubscriptionKey
-		);
 	}
 
 	PaymentDialogSaveClick(){
@@ -126,13 +111,15 @@ export class PricingComponent{
 		setTimeout(() => this.paymentForm.Init(), 1);
 	}
 
-	ContinueOrCancelButtonClick(){
+	async ContinueOrCancelButtonClick(){
 		this.continueOrCancelSubscriptionLoading = true;
 		
-		this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscriptionCancelled, {
-			customerId: this.dataService.user.StripeCustomerId,
-			cancel: this.dataService.user.SubscriptionStatus == 0
-		});
+		this.SetStripeSubscriptionCancelledResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscriptionCancelled, {
+				customerId: this.dataService.user.StripeCustomerId,
+				cancel: this.dataService.user.SubscriptionStatus == 0
+			})
+		)
 	}
 
 	PaymentMethodInputCompleted(){
@@ -149,7 +136,7 @@ export class PricingComponent{
 		this.UpdateSubscriptionDetails();
 	}
 
-	SetStripeSubscription(){
+	async SetStripeSubscription(){
 		this.upgradeDialogVisible = false;
 		switch (this.selectedPlan) {
 			case 0:
@@ -173,10 +160,12 @@ export class PricingComponent{
 		if(this.selectedPlan == 1) planId = environment.stripeDavPlusEurPlanId;
 		else if(this.selectedPlan == 2) planId = environment.stripeDavProEurPlanId;
 
-		this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscription, {
-			customerId: this.dataService.user.StripeCustomerId,
-			planId
-		});
+		this.SetStripeSubscriptionResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscription, {
+				customerId: this.dataService.user.StripeCustomerId,
+				planId
+			})
+		)
 	}
 
 	async UpdateSubscriptionDetails(){
@@ -184,7 +173,9 @@ export class PricingComponent{
 
 		// Get the payment method
 		if(this.dataService.user.IsLoggedIn && this.dataService.user.StripeCustomerId){
-			this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
+			this.GetStripePaymentMethodResponse(
+				await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId})
+			)
 		}else{
 			this.paymentMethodResolve();
 		}

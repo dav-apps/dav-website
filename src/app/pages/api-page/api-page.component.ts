@@ -12,8 +12,6 @@ import { enUS } from 'src/locales/locales';
 })
 export class ApiPageComponent{
 	locale = enUS.apiPage;
-	getApiSubscriptionKey: number;
-	setApiErrorSubscriptionKey: number;
 	api: Api = new Api(0, "", [], [], []);
 	appId: number = 0;
 	addErrorDialogVisible: boolean = false;
@@ -42,8 +40,6 @@ export class ApiPageComponent{
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().apiPage;
-		this.getApiSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetApi, (response: ApiResponse<Api> | ApiErrorResponse) => this.GetApiResponse(response));
-		this.setApiErrorSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetApiError, (response: ApiResponse<ApiError> | ApiErrorResponse) => this.SetApiErrorResponse(response));
 	}
 
 	async ngOnInit(){
@@ -61,16 +57,11 @@ export class ApiPageComponent{
 		this.appId = +this.activatedRoute.snapshot.paramMap.get('id');
 		let apiId = this.activatedRoute.snapshot.paramMap.get('api_id');
 
-		this.websocketService.Emit(WebsocketCallbackType.GetApi, {
-			jwt: this.dataService.user.JWT, 
-			id: apiId
-		});
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.getApiSubscriptionKey,
-			this.setApiErrorSubscriptionKey
+		this.GetApiResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetApi, {
+				jwt: this.dataService.user.JWT, 
+				id: apiId
+			})
 		)
 	}
 
@@ -85,15 +76,17 @@ export class ApiPageComponent{
 		this.addErrorDialogVisible = true;
 	}
 
-	AddError(){
+	async AddError(){
 		this.addErrorDialogCodeError = "";
 		this.addErrorDialogMessageError = "";
 
-		this.websocketService.Emit(WebsocketCallbackType.SetApiError, {
-			apiId: this.api.Id,
-			code: +this.addErrorDialogCode,
-			message: this.addErrorDialogMessage
-		});
+		this.SetApiErrorResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SetApiError, {
+				apiId: this.api.Id,
+				code: +this.addErrorDialogCode,
+				message: this.addErrorDialogMessage
+			})
+		)
 	}
 
 	SortErrors(){

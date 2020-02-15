@@ -12,10 +12,6 @@ import { enUS } from 'src/locales/locales';
 })
 export class AppPageComponent{
 	locale = enUS.appPage;
-	getAppSubscriptionKey: number;
-	updateAppSubscriptionKey: number;
-	createTableSubscriptionKey: number;
-	createApiSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
 	editAppDialogVisible: boolean = false;
 	publishAppDialogVisible: boolean = false;
@@ -76,10 +72,6 @@ export class AppPageComponent{
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().appPage;
-		this.getAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetApp, (response: ApiResponse<App> | ApiErrorResponse) => this.GetAppResponse(response));
-		this.updateAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.UpdateApp, (response: ApiResponse<App> | ApiErrorResponse) => this.UpdateAppResponse(response));
-		this.createTableSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateTable, (response: ApiResponse<Table> | ApiErrorResponse) => this.CreateTableResponse(response));
-		this.createApiSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.CreateApi, (response: ApiResponse<Api> | ApiErrorResponse) => this.CreateApiResponse(response));
 	}
 
 	async ngOnInit(){
@@ -96,18 +88,11 @@ export class AppPageComponent{
 
 		let appId = this.activatedRoute.snapshot.paramMap.get('id');
 		
-		this.websocketService.Emit(WebsocketCallbackType.GetApp, {
-			jwt: this.dataService.user.JWT,
-			id: appId
-		});
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.getAppSubscriptionKey,
-			this.updateAppSubscriptionKey,
-			this.createTableSubscriptionKey,
-			this.createApiSubscriptionKey
+		this.GetAppResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetApp, {
+				jwt: this.dataService.user.JWT,
+				id: appId
+			})
 		)
 	}
 
@@ -131,7 +116,7 @@ export class AppPageComponent{
 		this.editAppDialogVisible = true;
 	}
 
-	UpdateApp(){
+	async UpdateApp(){
 		this.ClearEditAppDialogErrors();
 		
 		if(this.newName.length == 0){
@@ -142,15 +127,17 @@ export class AppPageComponent{
 			return;
 		}
 
-		this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
-			jwt: this.dataService.user.JWT,
-			id: this.app.Id,
-			name: this.newName,
-			description: this.newDescription,
-			linkWeb: this.newLinkWeb,
-			linkPlay: this.newLinkPlay,
-			linkWindows: this.newLinkWindows
-		});
+		this.UpdateAppResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
+				jwt: this.dataService.user.JWT,
+				id: this.app.Id,
+				name: this.newName,
+				description: this.newDescription,
+				linkWeb: this.newLinkWeb,
+				linkPlay: this.newLinkPlay,
+				linkWindows: this.newLinkWindows
+			})
+		)
 	}
 
 	ShowPublishAppDialog(){
@@ -173,32 +160,38 @@ export class AppPageComponent{
 		this.addApiDialogVisible = true;
 	}
 
-	PublishApp(){
-		this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
-			jwt: this.dataService.user.JWT,
-			id: this.app.Id,
-			published: !this.app.Published
-		});
+	async PublishApp(){
+		this.UpdateAppResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
+				jwt: this.dataService.user.JWT,
+				id: this.app.Id,
+				published: !this.app.Published
+			})
+		)
 	}
 
-	AddTable(){
+	async AddTable(){
 		this.addTableDialogNewTableError = "";
 		
-		this.websocketService.Emit(WebsocketCallbackType.CreateTable, {
-			jwt: this.dataService.user.JWT,
-			appId: this.app.Id,
-			name: this.addTableDialogNewTableName
-		});
+		this.CreateTableResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.CreateTable, {
+				jwt: this.dataService.user.JWT,
+				appId: this.app.Id,
+				name: this.addTableDialogNewTableName
+			})
+		)
 	}
 
-	AddApi(){
+	async AddApi(){
 		this.addApiDialogApiNameError = "";
 
-		this.websocketService.Emit(WebsocketCallbackType.CreateApi, {
-			jwt: this.dataService.user.JWT,
-			appId: this.app.Id,
-			name: this.addApiDialogApiName
-		});
+		this.CreateApiResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.CreateApi, {
+				jwt: this.dataService.user.JWT,
+				appId: this.app.Id,
+				name: this.addApiDialogApiName
+			})
+		)
 	}
 
 	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){

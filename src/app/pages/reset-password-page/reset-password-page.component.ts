@@ -12,7 +12,6 @@ import { enUS } from 'src/locales/locales';
 })
 export class ResetPasswordPageComponent{
 	locale = enUS.resetPasswordPage;
-	setPasswordSubscriptionKey: number;
 	userId: number = -1;
 	passwordConfirmationToken: string = "";
 	password: string = "";
@@ -37,10 +36,6 @@ export class ResetPasswordPageComponent{
 		}
 	}
 
-	ngOnInit(){
-		this.setPasswordSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SetPassword, (response: (ApiResponse<{}> | ApiErrorResponse)) => this.SetPasswordResponse(response));
-	}
-
 	ngAfterViewInit(){
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
@@ -49,20 +44,18 @@ export class ResetPasswordPageComponent{
 		}, 1);
 	}
 
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.setPasswordSubscriptionKey);
-	}
-
-	SavePassword(){
+	async SavePassword(){
 		if(this.password.length < 7 || this.password.length > 25 || this.password != this.passwordConfirmation) return;
 		
 		// Send new password to the server
 		this.loading = true;
-		this.websocketService.Emit(WebsocketCallbackType.SetPassword, {
-			userId: this.userId,
-			passwordConfirmationToken: this.passwordConfirmationToken,
-			password: this.password
-		});
+		this.SetPasswordResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SetPassword, {
+				userId: this.userId,
+				passwordConfirmationToken: this.passwordConfirmationToken,
+				password: this.password
+			})
+		)
 	}
 
 	async SetPasswordResponse(response: (ApiResponse<{}> | ApiErrorResponse)){

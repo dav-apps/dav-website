@@ -15,8 +15,6 @@ import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websoc
 })
 export class StatisticsPageComponent{
 	locale = enUS.statisticsPage;
-	getUsersSubscriptionKey: number;
-	getActiveUsersSubscriptionKey: number;
 	userChartDataSets: ChartDataSets[] = [{data: [], label: this.locale.numberOfUsers}];
 	userChartLabels: Label[] = [];
 	plansChartData: number[] = [0, 0, 0];
@@ -46,8 +44,6 @@ export class StatisticsPageComponent{
 	){
 		this.locale = this.dataService.GetLocale().statisticsPage;
 		moment.locale(this.dataService.locale);
-		this.getUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetUsers, (response: ApiResponse<GetUsersResponseData> | ApiErrorResponse) => this.GetUsersResponse(response));
-		this.getActiveUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetActiveUsers, (response: ApiResponse<GetActiveUsersResponseData> | ApiErrorResponse) => this.GetActiveUsersResponse(response));
 
 		// Set the labels
 		this.userChartDataSets[0].label = this.locale.numberOfUsers;
@@ -74,21 +70,18 @@ export class StatisticsPageComponent{
 			return;
 		}
 
-		this.websocketService.Emit(WebsocketCallbackType.GetUsers, {
-			jwt: this.dataService.user.JWT
-		})
+		this.GetUsersResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetUsers, {
+				jwt: this.dataService.user.JWT
+			})
+		)
 
 		let start = moment().startOf('day').subtract(6, 'months').unix();
-		this.websocketService.Emit(WebsocketCallbackType.GetActiveUsers, {
-			jwt: this.dataService.user.JWT,
-			start
-		})
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.getUsersSubscriptionKey,
-			this.getActiveUsersSubscriptionKey
+		this.GetActiveUsersResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetActiveUsers, {
+				jwt: this.dataService.user.JWT,
+				start
+			})
 		)
 	}
 

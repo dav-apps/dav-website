@@ -15,9 +15,6 @@ import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websoc
 })
 export class AppStatisticsPageComponent{
 	locale = enUS.appStatisticsPage;
-	getAppSubscriptionKey: number;
-	getAppUsersSubscriptionKey: number;
-	getActiveAppUsersSubscriptionKey: number;
 	app: App = new App(0, "", "", false, null, null, null);
 	userChartDataSets: ChartDataSets[] = [{data: [], label: this.locale.numberOfUsers}];
 	userChartLabels: Label[] = [];
@@ -45,9 +42,6 @@ export class AppStatisticsPageComponent{
 	){
 		this.locale = this.dataService.GetLocale().appStatisticsPage;
 		moment.locale(this.dataService.locale);
-		this.getAppSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetApp, (response: ApiResponse<App> | ApiErrorResponse) => this.GetAppResponse(response));
-		this.getAppUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetAppUsers, (response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse) => this.GetAppUsersResponse(response));
-		this.getActiveAppUsersSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetActiveAppUsers, (response: ApiResponse<GetActiveAppUsersResponseData> | ApiErrorResponse) => this.GetActiveAppUsersResponse(response));
 
 		// Set the labels
 		this.userChartDataSets[0].label = this.locale.numberOfUsers;
@@ -74,27 +68,25 @@ export class AppStatisticsPageComponent{
 
 		let appId = +this.activatedRoute.snapshot.paramMap.get('id');
 
-		this.websocketService.Emit(WebsocketCallbackType.GetApp, {
-			jwt: this.dataService.user.JWT,
-			id: appId
-		})
+		this.GetAppResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetApp, {
+				jwt: this.dataService.user.JWT,
+				id: appId
+			})
+		)
 
-		this.websocketService.Emit(WebsocketCallbackType.GetAppUsers, {
-			jwt: this.dataService.user.JWT,
-			id: appId
-		})
+		this.GetAppUsersResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetAppUsers, {
+				jwt: this.dataService.user.JWT,
+				id: appId
+			})
+		)
 
-		this.websocketService.Emit(WebsocketCallbackType.GetActiveAppUsers, {
-			jwt: this.dataService.user.JWT,
-			id: appId
-		})
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.getAppSubscriptionKey,
-			this.getAppUsersSubscriptionKey,
-			this.getActiveAppUsersSubscriptionKey
+		this.GetActiveAppUsersResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.GetActiveAppUsers, {
+				jwt: this.dataService.user.JWT,
+				id: appId
+			})
 		)
 	}
 

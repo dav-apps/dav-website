@@ -10,7 +10,6 @@ import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websoc
 })
 export class AppsPageComponent{
 	locale = enUS.appsPage;
-	getAllAppsSubscriptionKey: number;
 	apps: App[] = [];
 
 	constructor(
@@ -20,16 +19,8 @@ export class AppsPageComponent{
 		this.locale = this.dataService.GetLocale().appsPage;
 	}
 
-	ngOnInit(){
-		this.getAllAppsSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.GetAllApps, (message: (ApiResponse<App[]> | ApiErrorResponse)) => this.GetAllAppsResponse(message));
-		this.websocketService.Emit(WebsocketCallbackType.GetAllApps, {});
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(this.getAllAppsSubscriptionKey);
-	}
-
-	async GetAllAppsResponse(response: (ApiResponse<App[]> | ApiErrorResponse)){
+	async ngOnInit(){
+		let response: ApiResponse<App[]> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.GetAllApps, {});
 		if(response.status == 200){
 			this.apps = (response as ApiResponse<App[]>).data;
 		}
