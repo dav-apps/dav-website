@@ -49,7 +49,7 @@ export class DevPageComponent{
 			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
 			this.router.navigate(['/']);
 			return;
-		}else if(!this.dataService.user.IsDev){
+		}else if(!this.dataService.user.Dev){
 			this.dataService.startPageErrorMessage = this.locale.accessNotAllowedMessage;
 			this.router.navigate(['/']);
 			return;

@@ -44,7 +44,7 @@
 
 			<!-- Logged in -->
 			<ul class="navbar-nav ml-auto" *ngIf="dataService.user.IsLoggedIn">
-				<li class="nav-item" *ngIf="dataService.user.IsDev">
+				<li class="nav-item" *ngIf="dataService.user.Dev">
 					<a routerLink="/dev" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.devDashboard }}</a>
 				</li>
 				<li class="nav-item">
