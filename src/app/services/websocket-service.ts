@@ -5,105 +5,100 @@ declare var io: any;
 export class WebsocketService{
 	private socket: any;
 	private subscriptions: WebsocketSubscription[] = [];
-	private counter: number = 0;
 
 	constructor(){
 		this.socket = io();
-		
+
 		for(let key of Object.keys(Callbacks)){
 			this.socket.on(key, (message: any) => {
-				for(let subscription of this.subscriptions){
-					if(subscription.type == +Callbacks[key]) subscription.callback(message);
+				let i = this.subscriptions.findIndex(s => s.type == Callbacks[key]);
+				if(i != -1){
+					this.subscriptions[i].resolve(message);
+					this.subscriptions.splice(i, 1);
 				}
 			});
 		}
 	}
 
-	Subscribe(type: WebsocketCallbackType, callback: Function) : number{
-		let key = this.counter++;
+	async Emit(type: WebsocketCallbackType, message: any){
+		let key = getKeyByValue(Callbacks, type);
+		if(!key) return;
 
-		this.subscriptions.push({
-			key,
-			type,
-			callback
+		let r: Function;
+		let socketPromise: Promise<any> = new Promise((resolve: Function) => {
+			r = resolve;
 		});
 
-		return key;
-	}
+		this.subscriptions.push({
+			type,
+			resolve: r
+		});
 
-	Unsubscribe(...keys: number[]){
-		for(let key of keys){
-			let i = this.subscriptions.findIndex(c => c.key == key);
-
-			if(i !== -1){
-				this.subscriptions.splice(i, 1);
-			}
-		}
-	}
-
-	Emit(type: WebsocketCallbackType, message: any){
-		let key = getKeyByValue(Callbacks, type);
-
-		if(key) this.socket.emit(key, message);
+		this.socket.emit(key, message);
+		return await socketPromise;
 	}
 }
 
 interface WebsocketSubscription{
-	key: number;
-	type: WebsocketCallbackType;
-	callback: Function;
+	type: WebsocketCallbackType,
+	resolve: Function
 }
 
 export enum WebsocketCallbackType{
 	// Auth
-	Login = 1,
-	LoginImplicit = 2,
-	Signup = 3,
-	SignupImplicit = 4,
-	SignupSession = 5,
+	Login,
+	LoginImplicit,
+	Signup,
+	SignupImplicit,
+	SignupSession,
 	// Analytics
-	GetAppUsers = 6,
-	GetUsers = 7,
-	GetActiveUsers = 8,
+	GetAppUsers,
+	GetUsers,
+	GetActiveUsers,
 	// Session
-	CreateSession = 9,
-	CreateSessionWithJwt = 10,
+	CreateSession,
+	CreateSessionWithJwt,
 	// User
-	UpdateUser = 11,
-	CreateStripeCustomerForUser = 12,
-	DeleteUser = 13,
-	RemoveApp = 14,
-	ConfirmUser = 15,
-	SendVerificationEmail = 16,
-	SendDeleteAccountEmail = 17,
-	SendRemoveAppEmail = 18,
-	SendPasswordResetEmail = 19,
-	SetPassword = 20,
-	SaveNewPassword = 21,
-	SaveNewEmail = 22,
-	ResetNewEmail = 23,
+	UpdateUser,
+	CreateStripeCustomerForUser,
+	DeleteUser,
+	RemoveApp,
+	ConfirmUser,
+	SendVerificationEmail,
+	SendDeleteAccountEmail,
+	SendRemoveAppEmail,
+	SendPasswordResetEmail,
+	SetPassword,
+	SaveNewPassword,
+	SaveNewEmail,
+	ResetNewEmail,
 	// Dev
-	GetDev = 24,
+	GetDev,
+	// Provider
+	CreateProvider,
+	GetProvider,
 	// App
-	CreateApp = 25,
-	GetApp = 26,
-	GetActiveAppUsers = 27,
-	GetAllApps = 28,
-	UpdateApp = 29,
+	CreateApp,
+	GetApp,
+	GetActiveAppUsers,
+	GetAllApps,
+	UpdateApp,
 	// Table
-	CreateTable = 30,
+	CreateTable,
 	// Event
-	GetEventByName = 31,
+	GetEventByName,
 	// Api
-	CreateApi = 32,
-	GetApi = 33,
+	CreateApi,
+	GetApi,
 	// ApiError
-	SetApiError = 34,
+	SetApiError,
 	// Stripe
-	SaveStripePaymentMethod = 35,
-	GetStripePaymentMethod = 36,
-	SetStripeSubscription = 37,
-	SetStripeSubscriptionCancelled = 38
+	SaveStripePaymentMethod,
+	GetStripePaymentMethod,
+	SetStripeSubscription,
+	SetStripeSubscriptionCancelled,
+	RetrieveStripeAccount,
+	CreateStripeAccountLink
 }
 
 export const Callbacks = {
@@ -131,6 +126,8 @@ export const Callbacks = {
 	saveNewEmail: WebsocketCallbackType.SaveNewEmail,
 	resetNewEmail: WebsocketCallbackType.ResetNewEmail,
 	getDev: WebsocketCallbackType.GetDev,
+	createProvider: WebsocketCallbackType.CreateProvider,
+	getProvider: WebsocketCallbackType.GetProvider,
 	createApp: WebsocketCallbackType.CreateApp,
 	getApp: WebsocketCallbackType.GetApp,
 	getActiveAppUsers: WebsocketCallbackType.GetActiveAppUsers,
@@ -144,7 +141,9 @@ export const Callbacks = {
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,
 	getStripePaymentMethod: WebsocketCallbackType.GetStripePaymentMethod,
 	setStripeSubscription: WebsocketCallbackType.SetStripeSubscription,
-	setStripeSubscriptionCancelled: WebsocketCallbackType.SetStripeSubscriptionCancelled
+	setStripeSubscriptionCancelled: WebsocketCallbackType.SetStripeSubscriptionCancelled,
+	retrieveStripeAccount: WebsocketCallbackType.RetrieveStripeAccount,
+	createStripeAccountLink: WebsocketCallbackType.CreateStripeAccountLink
 }
 
 function getKeyByValue(object: any, value: any) {
