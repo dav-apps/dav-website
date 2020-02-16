@@ -1,12 +1,15 @@
-import * as Stripe from 'stripe';
+import Stripe from 'stripe';
 import * as websocket from '../websocket';
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {apiVersion: '2019-12-03'});
 
 export const sockets = {
 	saveStripePaymentMethod,
 	getStripePaymentMethod,
 	setStripeSubscription,
-	setStripeSubscriptionCancelled
+	setStripeSubscriptionCancelled,
+	retrieveStripeAccount,
+	createStripeAccountLink,
+	retrieveStripeBalance
 }
 
 export async function saveStripePaymentMethod(message: {paymentMethodId: string, customerId: string}){
@@ -80,7 +83,7 @@ export async function setStripeSubscription(message: {customerId: string, planId
 				// Create a new subscription
 				result = await stripe.subscriptions.create({
 					customer: message.customerId,
-					plan: message.planId
+					items: [{plan: message.planId}]
 				});
 			}else{
 				let subscriptionItem = subscriptions.data[0].items.data[0];
@@ -133,6 +136,58 @@ export async function setStripeSubscriptionCancelled(message: {customerId: strin
 		});
 	}catch(error){
 		websocket.emit(setStripeSubscriptionCancelled.name, {
+			success: false,
+			response: error.raw
+		});
+	}
+}
+
+export async function retrieveStripeAccount(message: {id: string}){
+	try{
+		let account = await stripe.accounts.retrieve(message.id);
+		websocket.emit(retrieveStripeAccount.name, {
+			success: true,
+			response: account
+		});
+	}catch(error){
+		websocket.emit(retrieveStripeAccount.name, {
+			success: false,
+			response: error.raw
+		});
+	}
+}
+
+export async function createStripeAccountLink(message: {account: string, successUrl: string, failureUrl: string, type: string}){
+	try{
+		let accountLink = await stripe.accountLinks.create({
+			account: message.account,
+			success_url: message.successUrl,
+			failure_url: message.failureUrl,
+			type: message.type
+		});
+
+		websocket.emit(createStripeAccountLink.name, {
+			success: true,
+			response: accountLink
+		});
+	}catch(error){
+		websocket.emit(createStripeAccountLink.name, {
+			success: false,
+			response: error.raw
+		});
+	}
+}
+
+export async function retrieveStripeBalance(message: {account: string}){
+	try{
+		let balance = await stripe.balance.retrieve({stripeAccount: message.account});
+
+		websocket.emit(retrieveStripeBalance.name, {
+			success: true,
+			response: balance
+		});
+	}catch(error){
+		websocket.emit(retrieveStripeBalance.name, {
 			success: false,
 			response: error.raw
 		});

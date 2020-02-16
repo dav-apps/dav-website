@@ -4,6 +4,7 @@ import * as analytics from './websocket/analytics';
 import * as session from './websocket/session';
 import * as user from './websocket/user';
 import * as dev from './websocket/dev';
+import * as provider from './websocket/provider';
 import * as app from './websocket/app';
 import * as table from './websocket/table';
 import * as event from './websocket/event';
@@ -21,6 +22,7 @@ export function init(s: any){
 	for(let name in session.sockets) socket.on(name, session.sockets[name]);
 	for(let name in user.sockets) socket.on(name, user.sockets[name]);
 	for(let name in dev.sockets) socket.on(name, dev.sockets[name]);
+	for(let name in provider.sockets) socket.on(name, provider.sockets[name]);
 	for(let name in app.sockets) socket.on(name, app.sockets[name]);
 	for(let name in table.sockets) socket.on(name, table.sockets[name]);
 	for(let name in event.sockets) socket.on(name, event.sockets[name]);
