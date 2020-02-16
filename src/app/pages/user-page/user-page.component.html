@@ -114,7 +114,7 @@
 						</fab-text-field>
 
 						<div class="d-flex">
-							<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation || passwordLoading" className="mt-3">{{ locale.general.save }}</fab-primary-button>
+							<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation || passwordLoading" className="mt-3">{{ locale.save }}</fab-primary-button>
 							<div style="margin-top: 24px; margin-left: 14px" *ngIf="passwordLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 						</div>
 					</div>
@@ -192,18 +192,73 @@
 		</div>
 
 		<!-- Provider -->
-		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 3">
-			<h1 class="text-center font-weight-light mb-4">{{ locale.provider.title }}</h1>
-			<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
+		<div class="container navbar-margin pt-4 ms-motion-slideUpIn mb-4" style="background-color: white" *ngIf="selectedMenu == 3">
+			<div *ngIf="!providerStripeAccount">
+				<h1 class="text-center font-weight-light mb-4">{{ locale.provider.title }}</h1>
+				<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
 
-			<p class="text-center font-weight-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
-			<div class="d-flex justify-content-center">
-				<a class="text-center font-weight-light" style="color: black; font-size: 19px" href="https://pocketlib.dav-apps.tech" target="blank">PocketLib</a>
+				<p class="text-center font-weight-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
+				<div class="d-flex justify-content-center">
+					<a class="text-center font-weight-light" style="color: black; font-size: 19px" href="https://pocketlib.dav-apps.tech" target="blank">PocketLib</a>
+				</div>
+
+				<div class="mt-5 d-flex flex-column align-items-center">
+					<p class="text-center font-weight-light" [innerHTML]="locale.provider.setupExplanation"></p>
+					<fab-primary-button (click)="StripeProviderSetup()">{{ locale.provider.startSetup }}</fab-primary-button>
+				</div>
 			</div>
 
-			<div class="mt-5 d-flex flex-column align-items-center">
-				<p class="text-center font-weight-light" [innerHTML]="locale.provider.setupExplanation"></p>
-				<fab-primary-button>{{ locale.provider.startSetup }}</fab-primary-button>
+			<div *ngIf="providerStripeAccount">
+				<h1 class="text-center font-weight-light mb-4">{{ locale.provider.dashboardTitle }}</h1>
+
+				<div class="row">
+					<!-- Card for the provider -->
+					<div
+						class="card shadow mt-3"
+						style="display: inline-block; margin: 0px 15px">
+						<div class="card-body">
+							<h5 class="font-weight-light mb-3">{{ locale.provider.aboutYou }}</h5>
+							<p>{{ providerStripeAccount.individual.first_name }} {{ providerStripeAccount.individual.last_name }}</p>
+
+							<fab-default-button [styles]="cardActionButtonStyles" (click)="StripeProviderUpdate()">{{ locale.provider.editDetails }}</fab-default-button>
+						</div>
+					</div>
+
+					<!-- Card for the bank account -->
+					<div
+						class="card shadow mt-3"
+						style="display: inline-block; margin: 0px 15px">
+						<div class="card-body">
+							<h5 class="font-weight-light mb-3">{{ locale.provider.yourPayoutAccount }}</h5>
+
+							<div *ngIf="providerStripeAccount.external_accounts.data.length > 0">
+								<p style="margin-bottom: 8px">{{ providerStripeAccount.external_accounts.data[0].bank_name }}</p>
+								<div class="d-flex">
+									<i class="ms-Icon ms-Icon--BankSolid mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+									<p style="margin-bottom: 8px">**** {{ providerStripeAccount.external_accounts.data[0].last4 }}</p>
+								</div>
+							</div>
+
+							<div *ngIf="providerStripeAccount.external_accounts.data.length == 0">
+								<p class="font-weight-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
+							</div>
+
+							<fab-default-button [styles]="cardActionButtonStyles">{{ locale.edit }}</fab-default-button>
+						</div>
+					</div>
+
+					<!-- Card for the payout -->
+					<div
+						class="card shadow mt-3"
+						style="display: inline-block; margin: 0px 15px"
+						*ngIf="providerStripeBalance">
+						<div class="card-body">
+							<h5 class="font-weight-light mb-3">{{ locale.provider.nextPayout }}</h5>
+
+							<p>{{ (providerStripeBalance.available[0].amount / 100).toFixed(2) }} {{ GetCharForCurrency(providerStripeBalance.available[0].currency) }}</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</mat-sidenav-content>

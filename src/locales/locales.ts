@@ -176,7 +176,6 @@ const enDefaults = {
 			passwordTextfieldPlaceholder: "Your new password",
 			passwordConfirmationTextfieldLabel: "Password confirmation",
 			passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
-			save: "Save",
 			deleteAccount: "Delete Account",
 			deleteAccountDialog: {
 				title: "Deleting your Account",
@@ -203,7 +202,13 @@ const enDefaults = {
 			subTitle: "Distribute your digital content on dav platforms and earn money",
 			supportedApps: "Supported apps",
 			setupExplanation: "To become a provider, we need to collect some information about you. <br>(You will be redirected to a page of <a href='https://stripe.com' target='blank'>Stripe</a>)",
-			startSetup: "Start setup"
+			startSetup: "Start setup",
+			dashboardTitle: "Provider Dashboard",
+			aboutYou: "About you",
+			editDetails: "Edit details",
+			yourPayoutAccount: "Your payout account",
+			noAccountProvided: "No bank account provided",
+			nextPayout: "Next payout"
 		},
 		messages: {
 			avatarUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
@@ -226,6 +231,8 @@ const enDefaults = {
 			passwordTooLong: "Your new password is too long",
 			emailAlreadyConfirmed: "Your email address is already confirmed"
 		},
+		save: "Save",
+		edit: "Edit",
 		cancel: "Cancel",
 		loginRequiredMessage: "You need to log in to access this page"
 	},
@@ -606,7 +613,6 @@ const deDefaults = {
 			passwordTextfieldPlaceholder: "Dein neues Passwort",
 			passwordConfirmationTextfieldLabel: "Passwortbestätigung",
 			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort",
-			save: "Speichern",
 			deleteAccount: "Account löschen",
 			deleteAccountDialog: {
 				title: "Löschen deines Accounts",
@@ -633,7 +639,13 @@ const deDefaults = {
 			subTitle: "Vertreibe deine digitalen Inhalte auf Plattformen von dav und verdiene Geld",
 			supportedApps: "Unterstützte Apps",
 			setupExplanation: "Um ein Anbieter zu werden, müssen wir einige Informationen über dich sammeln. <br>(Du wirst auf eine Seite von <a href='https://stripe.com' target='blank'>Stripe</a> weitergeleitet)",
-			startSetup: "Einrichtung beginnen"
+			startSetup: "Einrichtung beginnen",
+			dashboardTitle: "Anbieter-Dashboard",
+			aboutYou: "Über dich",
+			editDetails: "Daten bearbeiten",
+			yourPayoutAccount: "Dein Auszahlungskonto",
+			noAccountProvided: "Kein Bankkonto angegeben",
+			nextPayout: "Nächste Auszahlung"
 		},
 		messages: {
 			avatarUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
@@ -656,6 +668,8 @@ const deDefaults = {
 			passwordTooLong: "Dein neues Passwort ist zu lang",
 			emailAlreadyConfirmed: "Deine Email-Adresse ist bereits bestätigt"
 		},
+		save: "Speichern",
+		edit: "Bearbeiten",
 		cancel: "Abbrechen",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
 	},

@@ -3,8 +3,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
-import { ApiResponse, ApiErrorResponse, UserResponseData, App } from 'dav-npm';
-import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
+import Stripe from 'stripe';
+import { ApiResponse, ApiErrorResponse, UserResponseData, ProviderResponseData, App } from 'dav-npm';
+import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
 
@@ -26,10 +27,6 @@ const providerHash = "provider";
 })
 export class UserPageComponent{
 	locale = enUS.userPage;
-	updateUserSubscriptionKey: number;
-	sendVerificationEmailSubscriptionKey: number;
-	sendDeleteAccountEmailSubscriptionKey: number;
-	sendRemoveAppEmailSubscriptionKey: number;
 
 	selectedMenu: Menu = Menu.General;
 	sideNavHidden: boolean = false;
@@ -144,6 +141,18 @@ export class UserPageComponent{
 	sendRemoveAppEmailLoading: boolean = false;
 	//#endregion
 
+	//#region Provider page
+	providerStripeAccount: Stripe.Account = null;
+	providerStripeBalance: Stripe.Balance = null;
+
+	cardActionButtonStyles: IButtonStyles = {
+		root: {
+			float: 'right',
+			marginBottom: 16
+		}
+	}
+	//#endregion
+
 	constructor(
 		public dataService: DataService,
 		public websocketService: WebsocketService,
@@ -174,10 +183,6 @@ export class UserPageComponent{
 
 	async ngOnInit(){
 		this.setSize();
-		this.updateUserSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.UpdateUser, (message: ApiResponse<UserResponseData> | ApiErrorResponse) => this.UpdateUserResponse(message));
-		this.sendVerificationEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendVerificationEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendVerificationEmailResponse(message));
-		this.sendDeleteAccountEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendDeleteAccountEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendDeleteAccountEmailResponse(message));
-		this.sendRemoveAppEmailSubscriptionKey = this.websocketService.Subscribe(WebsocketCallbackType.SendRemoveAppEmail, (message: ApiResponse<{}> | ApiErrorResponse) => this.SendRemoveAppEmailResponse(message));
 
 		await this.dataService.userPromise;
 		if(!this.dataService.user.IsLoggedIn){
@@ -197,15 +202,6 @@ export class UserPageComponent{
 			SetTextFieldAutocomplete('email-text-field', 'email');
 			SetTextFieldAutocomplete('password-text-field', 'new-password');
 		}, 1);
-	}
-
-	ngOnDestroy(){
-		this.websocketService.Unsubscribe(
-			this.updateUserSubscriptionKey,
-			this.sendVerificationEmailSubscriptionKey,
-			this.sendDeleteAccountEmailSubscriptionKey,
-			this.sendRemoveAppEmailSubscriptionKey
-		)
 	}
 
 	@HostListener('window:resize')
@@ -274,9 +270,32 @@ export class UserPageComponent{
 		this.ClearMessages();
 
 		this.router.navigateByUrl(`user#${providerHash}`);
+
+		this.GetUserProvider();
 	}
 
-	UpdateAvatar(file: ReadFile){
+	async GetUserProvider(){
+		await this.dataService.userPromise;
+		if(!this.dataService.user.Provider) return;
+
+		// Get the provider
+		let providerResponse: ApiResponse<ProviderResponseData> = await this.websocketService.Emit(WebsocketCallbackType.GetProvider, {jwt: this.dataService.user.JWT});
+		if(providerResponse.status != 200) return;
+		
+		// Get the stripe account
+		let stripeAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeAccount, {id: (providerResponse as ApiResponse<ProviderResponseData>).data.stripeAccountId});
+		if(!stripeAccountResponse.success) return;
+
+		this.providerStripeAccount = stripeAccountResponse.response;
+
+		// Get the balance
+		let stripeBalanceResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeBalance, {account: this.providerStripeAccount.id});
+		if(!stripeBalanceResponse.success) return;
+
+		this.providerStripeBalance = stripeBalanceResponse.response;
+	}
+
+	async UpdateAvatar(file: ReadFile){
 		if(file.size > maxAvatarFileSize){
 			this.errorMessage = this.locale.errors.avatarFileTooLarge;
 			return;
@@ -289,67 +308,149 @@ export class UserPageComponent{
 		let content = file.content.substring(file.content.indexOf(',') + 1);
 
 		// Send the file content to the server
-		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-			jwt: this.dataService.user.JWT,
-			avatar: content
-		});
+		this.UpdateUserResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
+				jwt: this.dataService.user.JWT,
+				avatar: content
+			})
+		)
 	}
 
-	SaveUsername(){
+	async SaveUsername(){
 		if(!(this.username != this.dataService.user.Username && this.username.length >= 2 && this.username.length <= 25)) return;
 
 		this.updatedAttribute = UserAttribute.Username;
 		this.usernameLoading = true;
-		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-			jwt: this.dataService.user.JWT,
-			username: this.username
-		});
+		this.UpdateUserResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
+				jwt: this.dataService.user.JWT,
+				username: this.username
+			})
+		)
 	}
 
-	SaveEmail(){
+	async SaveEmail(){
 		if(!(this.email != this.dataService.user.Email && this.email != this.newEmail && this.email.length > 3 && this.email.includes('@'))) return;
 
 		this.updatedAttribute = UserAttribute.Email;
 		this.emailLoading = true;
-		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-			jwt: this.dataService.user.JWT,
-			email: this.email
-		});
+		this.UpdateUserResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
+				jwt: this.dataService.user.JWT,
+				email: this.email
+			})
+		)
 	}
 
-	SavePassword(){
+	async SavePassword(){
 		if(!(this.password.length >= 7 && this.password.length <= 25 && this.password == this.passwordConfirmation)) return;
 
 		this.updatedAttribute = UserAttribute.Password;
 		this.passwordLoading = true;
-		this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-			jwt: this.dataService.user.JWT,
-			password: this.password
-		});
+		this.UpdateUserResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
+				jwt: this.dataService.user.JWT,
+				password: this.password
+			})
+		)
 	}
 
-	SendVerificationEmail(){
-		this.websocketService.Emit(WebsocketCallbackType.SendVerificationEmail, {
-			jwt: this.dataService.user.JWT
-		});
+	async SendVerificationEmail(){
+		this.SendVerificationEmailResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SendVerificationEmail, {
+				jwt: this.dataService.user.JWT
+			})
+		)
 		return false;
 	}
 
-	DeleteAccount(){
+	async DeleteAccount(){
 		this.deleteAccountDialogVisible = false;
 		this.sendDeleteAccountEmailLoading = true;
-		this.websocketService.Emit(WebsocketCallbackType.SendDeleteAccountEmail, {
-			jwt: this.dataService.user.JWT
-		});
+		this.SendDeleteAccountEmailResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SendDeleteAccountEmail, {
+				jwt: this.dataService.user.JWT
+			})
+		)
 	}
 
-	RemoveApp(){
+	async RemoveApp(){
 		this.removeAppDialogVisible = false;
 		this.sendRemoveAppEmailLoading = true;
-		this.websocketService.Emit(WebsocketCallbackType.SendRemoveAppEmail, {
-			jwt: this.dataService.user.JWT,
-			appId: this.selectedAppToRemove.Id
-		});
+		this.SendRemoveAppEmailResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SendRemoveAppEmail, {
+				jwt: this.dataService.user.JWT,
+				appId: this.selectedAppToRemove.Id
+			})
+		)
+	}
+
+	async StripeProviderSetup(){
+		// Create the provider
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CreateProvider, {jwt: this.dataService.user.JWT});
+		
+		if(providerResponse.status != 201){
+			// Show error
+			// TODO
+			return;
+		}
+
+		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
+
+		// Create stripe account link
+		let stripeAccountLinkResponse: StripeApiResponse = await this.websocketService.Emit(
+			WebsocketCallbackType.CreateStripeAccountLink,
+			{
+				account: providerResponseData.stripeAccountId,
+				successUrl: "http://localhost:3000/user#provider",
+				failureUrl: "http://localhost:3000/user#provider",
+				type: "custom_account_verification"
+			}
+		)
+		
+		if(!stripeAccountLinkResponse.success){
+			// Show error
+			// TODO
+			return;
+		}
+
+		let stripeAccountLinkResponseData = (stripeAccountLinkResponse.response as Stripe.AccountLink);
+
+		// Redirect to the stripe account link url
+		window.location.href = stripeAccountLinkResponseData.url;
+	}
+
+	async StripeProviderUpdate(){
+		// Create stripe account link
+		let stripeAccountLinkResponse: StripeApiResponse = await this.websocketService.Emit(
+			WebsocketCallbackType.CreateStripeAccountLink,
+			{
+				account: this.providerStripeAccount.id,
+				successUrl: "http://localhost:3000/user#provider",
+				failureUrl: "http://localhost:3000/user#provider",
+				type: "custom_account_update"
+			}
+		)
+
+		if(!stripeAccountLinkResponse.success){
+			// Show error
+			// TODO
+			return;
+		}
+
+		let stripeAccountLinkResponseData = (stripeAccountLinkResponse.response as Stripe.AccountLink);
+
+		// Redirect to the stripe account link url
+		window.location.href = stripeAccountLinkResponseData.url;
+	}
+
+	GetCharForCurrency(currency: string){
+		switch (currency) {
+			case "usd":
+				return "$";
+			default:
+				return "€";
+		}
 	}
 
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){
