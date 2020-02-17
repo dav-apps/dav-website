@@ -35,6 +35,7 @@ import { AppComponent } from './app.component';
 import { PricingComponent } from 'src/app/components/pricing-component/pricing.component';
 import { AppCardComponent } from 'src/app/components/app-card-component/app-card.component';
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component';
+import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component';
 
 // Pages
 import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
@@ -63,6 +64,7 @@ import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component';
 		PricingComponent,
 		AppCardComponent,
 		PaymentFormComponent,
+		BankAccountFormComponent,
 		// Pages
 		StartPageComponent,
 		ContactPageComponent,
