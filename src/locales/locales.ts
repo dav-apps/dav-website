@@ -211,7 +211,10 @@ const enDefaults = {
 			nextPayout: "Next payout",
 			missingInformationWarningText: "To activate payouts, we need more information from you.",
 			missingInformationWarningLink: "Edit details",
-			missingBankAccountWarningText: "Don't forget to provide a bank account so that we can transfer your payouts."
+			missingBankAccountWarningText: "Don't forget to provide a bank account so that we can transfer your payouts.",
+			bankAccountDialog: {
+				title: "Set bank account"
+			}
 		},
 		messages: {
 			avatarUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
@@ -651,7 +654,10 @@ const deDefaults = {
 			nextPayout: "Nächste Auszahlung",
 			missingInformationWarningText: "Um Auszahlungen zu aktivieren, brauchen wir noch weitere Informationen von dir.",
 			missingInformationWarningLink: "Informationen bearbeiten",
-			missingBankAccountWarningText: "Denk daran, ein Bankkonto anzugeben, damit wir deine Auszahlungen überweisen können."
+			missingBankAccountWarningText: "Denk daran, ein Bankkonto anzugeben, damit wir deine Auszahlungen überweisen können.",
+			bankAccountDialog: {
+				title: "Bankkonto festlegen"
+			}
 		},
 		messages: {
 			avatarUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",

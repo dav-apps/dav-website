@@ -146,11 +146,20 @@ export class UserPageComponent{
 	providerStripeAccountId: string = null;
 	providerStripeAccount: Stripe.Account = null;
 	providerStripeBalance: Stripe.Balance = null;
+	bankAccountDialogVisible: boolean = false;
 
 	cardActionButtonStyles: IButtonStyles = {
 		root: {
 			float: 'right',
 			marginBottom: 16
+		}
+	}
+	bankAccountDialogContent: IDialogContentProps = {
+		title: this.locale.provider.bankAccountDialog.title
+	}
+	dialogPrimaryButtonStyles: IButtonStyles = {
+		root: {
+			marginLeft: 10
 		}
 	}
 	//#endregion
@@ -448,6 +457,11 @@ export class UserPageComponent{
 			default:
 				return "€";
 		}
+	}
+
+	ShowBankAccountDialog(){
+		this.bankAccountDialogContent.title = this.locale.provider.bankAccountDialog.title;
+		this.bankAccountDialogVisible = true;
 	}
 
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){

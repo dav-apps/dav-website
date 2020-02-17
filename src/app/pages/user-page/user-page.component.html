@@ -260,7 +260,7 @@
 								<p class="font-weight-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
 							</div>
 
-							<fab-default-button [styles]="cardActionButtonStyles">{{ locale.edit }}</fab-default-button>
+							<fab-default-button [styles]="cardActionButtonStyles" (click)="ShowBankAccountDialog()">{{ locale.edit }}</fab-default-button>
 						</div>
 					</div>
 
@@ -298,5 +298,17 @@
 	<fab-dialog-footer>
 		<fab-default-button (click)="removeAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
 		<fab-primary-button [styles]="removeAppDialogButtonStyles" (click)="RemoveApp()">{{ locale.apps.removeApp }}</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>
+
+<fab-dialog
+	[hidden]="!bankAccountDialogVisible"
+	[dialogContentProps]="bankAccountDialogContent"
+	(onDismiss)="bankAccountDialogVisible = false">
+	<dav-website-bank-account-form></dav-website-bank-account-form>
+
+	<fab-dialog-footer>
+		<fab-default-button (click)="bankAccountDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles">{{ locale.save }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>
