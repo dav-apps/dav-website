@@ -99,7 +99,8 @@ export enum WebsocketCallbackType{
 	SetStripeSubscriptionCancelled,
 	RetrieveStripeAccount,
 	CreateStripeAccountLink,
-	RetrieveStripeBalance
+	RetrieveStripeBalance,
+	UpdateStripeCustomAccount
 }
 
 export const Callbacks = {
@@ -145,7 +146,8 @@ export const Callbacks = {
 	setStripeSubscriptionCancelled: WebsocketCallbackType.SetStripeSubscriptionCancelled,
 	retrieveStripeAccount: WebsocketCallbackType.RetrieveStripeAccount,
 	createStripeAccountLink: WebsocketCallbackType.CreateStripeAccountLink,
-	retrieveStripeBalance: WebsocketCallbackType.RetrieveStripeBalance
+	retrieveStripeBalance: WebsocketCallbackType.RetrieveStripeBalance,
+	updateStripeCustomAccount: WebsocketCallbackType.UpdateStripeCustomAccount
 }
 
 function getKeyByValue(object: any, value: any) {

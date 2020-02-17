@@ -9,7 +9,8 @@ export const sockets = {
 	setStripeSubscriptionCancelled,
 	retrieveStripeAccount,
 	createStripeAccountLink,
-	retrieveStripeBalance
+	retrieveStripeBalance,
+	updateStripeCustomAccount
 }
 
 export async function saveStripePaymentMethod(message: {paymentMethodId: string, customerId: string}){
@@ -188,6 +189,24 @@ export async function retrieveStripeBalance(message: {account: string}){
 		});
 	}catch(error){
 		websocket.emit(retrieveStripeBalance.name, {
+			success: false,
+			response: error.raw
+		});
+	}
+}
+
+export async function updateStripeCustomAccount(message: {id: string, bankAccountToken: string}){
+	try{
+		let account = await stripe.accounts.update(message.id, {
+			external_account: message.bankAccountToken
+		});
+
+		websocket.emit(updateStripeCustomAccount.name, {
+			success: true,
+			response: account
+		});
+	}catch(error){
+		websocket.emit(updateStripeCustomAccount.name, {
 			success: false,
 			response: error.raw
 		});
