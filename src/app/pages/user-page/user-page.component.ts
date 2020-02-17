@@ -34,6 +34,7 @@ export class UserPageComponent{
 
 	//#region General page
 	successMessageBarType: MessageBarType = MessageBarType.success;
+	warningMessageBarType: MessageBarType = MessageBarType.warning;
 	errorMessageBarType: MessageBarType = MessageBarType.error;
 	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
@@ -142,6 +143,7 @@ export class UserPageComponent{
 	//#endregion
 
 	//#region Provider page
+	providerStripeAccountId: string = null;
 	providerStripeAccount: Stripe.Account = null;
 	providerStripeBalance: Stripe.Balance = null;
 
@@ -263,7 +265,7 @@ export class UserPageComponent{
 		this.router.navigateByUrl(`user#${appsHash}`);
 	}
 
-	ShowProviderMenu(){
+	async ShowProviderMenu(){
 		if(this.selectedMenu == Menu.Provider) return;
 		this.selectedMenu = Menu.Provider;
 		if(this.sideNavHidden) this.sideNavOpened = false;
@@ -271,28 +273,11 @@ export class UserPageComponent{
 
 		this.router.navigateByUrl(`user#${providerHash}`);
 
-		this.GetUserProvider();
-	}
-
-	async GetUserProvider(){
 		await this.dataService.userPromise;
 		if(!this.dataService.user.Provider) return;
 
-		// Get the provider
-		let providerResponse: ApiResponse<ProviderResponseData> = await this.websocketService.Emit(WebsocketCallbackType.GetProvider, {jwt: this.dataService.user.JWT});
-		if(providerResponse.status != 200) return;
-		
-		// Get the stripe account
-		let stripeAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeAccount, {id: (providerResponse as ApiResponse<ProviderResponseData>).data.stripeAccountId});
-		if(!stripeAccountResponse.success) return;
-
-		this.providerStripeAccount = stripeAccountResponse.response;
-
-		// Get the balance
-		let stripeBalanceResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeBalance, {account: this.providerStripeAccount.id});
-		if(!stripeBalanceResponse.success) return;
-
-		this.providerStripeBalance = stripeBalanceResponse.response;
+		await this.GetUserProvider();
+		await this.GetStripeData();
 	}
 
 	async UpdateAvatar(file: ReadFile){
@@ -385,7 +370,17 @@ export class UserPageComponent{
 		)
 	}
 
-	async StripeProviderSetup(){
+	async StartStripeProviderSetup(){
+		await this.CreateUserProvider();
+		await this.OpenStripeOnboardingPage();
+	}
+
+	StartStripeProviderUpdate(){
+		this.OpenStripeOnboardingPage();
+		return false;
+	}
+
+	async CreateUserProvider(){
 		// Create the provider
 		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CreateProvider, {jwt: this.dataService.user.JWT});
 		
@@ -396,39 +391,41 @@ export class UserPageComponent{
 		}
 
 		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
-
-		// Create stripe account link
-		let stripeAccountLinkResponse: StripeApiResponse = await this.websocketService.Emit(
-			WebsocketCallbackType.CreateStripeAccountLink,
-			{
-				account: providerResponseData.stripeAccountId,
-				successUrl: "http://localhost:3000/user#provider",
-				failureUrl: "http://localhost:3000/user#provider",
-				type: "custom_account_verification"
-			}
-		)
-		
-		if(!stripeAccountLinkResponse.success){
-			// Show error
-			// TODO
-			return;
-		}
-
-		let stripeAccountLinkResponseData = (stripeAccountLinkResponse.response as Stripe.AccountLink);
-
-		// Redirect to the stripe account link url
-		window.location.href = stripeAccountLinkResponseData.url;
+		this.providerStripeAccountId = providerResponseData.stripeAccountId;
 	}
 
-	async StripeProviderUpdate(){
+	async GetUserProvider(){
+		// Get the provider
+		let providerResponse: ApiResponse<ProviderResponseData> = await this.websocketService.Emit(WebsocketCallbackType.GetProvider, {jwt: this.dataService.user.JWT});
+		if(providerResponse.status != 200) return;
+
+		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
+		this.providerStripeAccountId = providerResponseData.stripeAccountId;
+	}
+
+	async GetStripeData(){
+		// Get the stripe account
+		let stripeAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeAccount, {id: this.providerStripeAccountId});
+		if(!stripeAccountResponse.success) return;
+
+		this.providerStripeAccount = stripeAccountResponse.response;
+
+		// Get the balance
+		let stripeBalanceResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeBalance, {account: this.providerStripeAccountId});
+		if(!stripeBalanceResponse.success) return;
+
+		this.providerStripeBalance = stripeBalanceResponse.response;
+	}
+
+	async OpenStripeOnboardingPage(update: boolean = false){
 		// Create stripe account link
 		let stripeAccountLinkResponse: StripeApiResponse = await this.websocketService.Emit(
 			WebsocketCallbackType.CreateStripeAccountLink,
 			{
-				account: this.providerStripeAccount.id,
+				account: this.providerStripeAccountId,
 				successUrl: "http://localhost:3000/user#provider",
 				failureUrl: "http://localhost:3000/user#provider",
-				type: "custom_account_update"
+				type: update ? "custom_account_update" : "custom_account_verification"
 			}
 		)
 

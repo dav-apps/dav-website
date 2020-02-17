@@ -194,7 +194,7 @@
 		<!-- Provider -->
 		<div class="container navbar-margin pt-4 ms-motion-slideUpIn mb-4" style="background-color: white" *ngIf="selectedMenu == 3">
 			<div *ngIf="!providerStripeAccount">
-				<h1 class="text-center font-weight-light mb-4">{{ locale.provider.title }}</h1>
+				<h1 class="text-center font-weight-light mb-3">{{ locale.provider.title }}</h1>
 				<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
 
 				<p class="text-center font-weight-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
@@ -204,14 +204,31 @@
 
 				<div class="mt-5 d-flex flex-column align-items-center">
 					<p class="text-center font-weight-light" [innerHTML]="locale.provider.setupExplanation"></p>
-					<fab-primary-button (click)="StripeProviderSetup()">{{ locale.provider.startSetup }}</fab-primary-button>
+					<fab-primary-button (click)="StartStripeProviderSetup()">{{ locale.provider.startSetup }}</fab-primary-button>
 				</div>
 			</div>
 
 			<div *ngIf="providerStripeAccount">
-				<h1 class="text-center font-weight-light mb-4">{{ locale.provider.dashboardTitle }}</h1>
+				<h1 class="text-center font-weight-light mb-3">{{ locale.provider.dashboardTitle }}</h1>
 
-				<div class="row">
+				<div class="mx-auto my-2" style="width: 300px">
+					<!-- Message bar for currently due requirements -->
+					<fab-message-bar 
+						[messageBarType]="warningMessageBarType" 
+						*ngIf="!(providerStripeAccount.requirements.currently_due.length == 1 && providerStripeAccount.requirements.currently_due[0] == 'external_account')">
+						{{ locale.provider.missingInformationWarningText }}
+						<br><a href="#" (click)="StartStripeProviderUpdate()">{{ locale.provider.missingInformationWarningLink }}</a>
+					</fab-message-bar>
+
+					<!-- Message bar for missing bank account -->
+					<fab-message-bar
+						[messageBarType]="warningMessageBarType"
+						*ngIf="providerStripeAccount.requirements.currently_due.length == 1 && providerStripeAccount.requirements.currently_due[0] == 'external_account'">
+						{{ locale.provider.missingBankAccountWarningText }}
+					</fab-message-bar>
+				</div>
+
+				<div class="row ml-2">
 					<!-- Card for the provider -->
 					<div
 						class="card shadow mt-3"
@@ -220,7 +237,7 @@
 							<h5 class="font-weight-light mb-3">{{ locale.provider.aboutYou }}</h5>
 							<p>{{ providerStripeAccount.individual.first_name }} {{ providerStripeAccount.individual.last_name }}</p>
 
-							<fab-default-button [styles]="cardActionButtonStyles" (click)="StripeProviderUpdate()">{{ locale.provider.editDetails }}</fab-default-button>
+							<fab-default-button [styles]="cardActionButtonStyles" (click)="OpenStripeOnboardingPage(true)">{{ locale.provider.editDetails }}</fab-default-button>
 						</div>
 					</div>
 
