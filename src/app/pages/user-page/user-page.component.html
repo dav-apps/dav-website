@@ -215,7 +215,7 @@
 					<!-- Message bar for currently due requirements -->
 					<fab-message-bar 
 						[messageBarType]="warningMessageBarType" 
-						*ngIf="!(providerStripeAccount.requirements.currently_due.length == 1 && providerStripeAccount.requirements.currently_due[0] == 'external_account')">
+						*ngIf="providerStripeAccount.requirements.currently_due.length > 0 && !(providerStripeAccount.requirements.currently_due.length == 1 && providerStripeAccount.requirements.currently_due[0] == 'external_account')">
 						{{ locale.provider.missingInformationWarningText }}
 						<br><a href="#" (click)="StartStripeProviderUpdate()">{{ locale.provider.missingInformationWarningLink }}</a>
 					</fab-message-bar>
@@ -303,12 +303,19 @@
 
 <fab-dialog
 	[hidden]="!bankAccountDialogVisible"
+	[minWidth]="'340px'"
 	[dialogContentProps]="bankAccountDialogContent"
 	(onDismiss)="bankAccountDialogVisible = false">
-	<dav-website-bank-account-form></dav-website-bank-account-form>
+	<dav-website-bank-account-form
+		#bankAccountForm
+		[stripeCustomAccountId]="providerStripeAccountId"
+		(completed)="BankAccountDialogCompleted($event)"
+		(loadingStart)="bankAccountDialogLoading = true"
+		(loadingEnd)="bankAccountDialogLoading = false"></dav-website-bank-account-form>
 
 	<fab-dialog-footer>
+		<div [style.display]="bankAccountDialogLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 		<fab-default-button (click)="bankAccountDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles">{{ locale.save }}</fab-primary-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="BankAccountDialogSave()">{{ locale.save }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

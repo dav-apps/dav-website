@@ -1,1 +1,39 @@
-Hello World
+<form (submit)="SaveBankAccount()">
+	<div class="form-row inline">
+		<div class="col mb-3">
+			<label class="mb-2" for="name">
+				{{ locale.name }}
+			</label>
+			<div>
+				<input
+					id="name"
+					name="name"
+					placeholder="Jenny Rosen"
+					type="text"
+					required
+					(keyup)="NameChange($event)">
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row my-2">
+		<label for="iban-element">
+			IBAN
+		</label>
+		<div id="iban-element" style="width: 100%">
+			<!-- A Stripe Element will be inserted here. -->
+		</div>
+
+		<!-- Error message -->
+		<p
+			class="mb-0 mt-1 ml-1"
+			role="alert"
+			style="color: #fa755a"
+			*ngIf="errorMessage">
+			{{ errorMessage }}
+		</p>
+
+		<!-- Bank name -->
+		<p class="mb-0 mt-1 ml-1" *ngIf="bankName">{{ bankName }}</p>
+	</div>
+</form>

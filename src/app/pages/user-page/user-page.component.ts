@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
@@ -8,6 +8,7 @@ import { ApiResponse, ApiErrorResponse, UserResponseData, ProviderResponseData, 
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
+import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component';
 
 const maxAvatarFileSize = 5000000;
 const snackBarDuration = 3000;
@@ -32,10 +33,12 @@ export class UserPageComponent{
 	sideNavHidden: boolean = false;
 	sideNavOpened: boolean = false;
 
-	//#region General page
 	successMessageBarType: MessageBarType = MessageBarType.success;
 	warningMessageBarType: MessageBarType = MessageBarType.warning;
 	errorMessageBarType: MessageBarType = MessageBarType.error;
+	spinnerSize: SpinnerSize = SpinnerSize.small;
+
+	//#region General page
 	updatedAttribute: UserAttribute = UserAttribute.Username;
 	newAvatarContent: string = null;
 	username: string = "";
@@ -60,7 +63,6 @@ export class UserPageComponent{
 	passwordLoading: boolean = false;
 	sendDeleteAccountEmailLoading: boolean = false;
 
-	spinnerSize: SpinnerSize = SpinnerSize.small;
 	textFieldStyles = {
 		root: {
 			width: 200
@@ -143,10 +145,12 @@ export class UserPageComponent{
 	//#endregion
 
 	//#region Provider page
+	@ViewChild('bankAccountForm', {static: true}) bankAccountForm: BankAccountFormComponent;
 	providerStripeAccountId: string = null;
 	providerStripeAccount: Stripe.Account = null;
 	providerStripeBalance: Stripe.Balance = null;
 	bankAccountDialogVisible: boolean = false;
+	bankAccountDialogLoading: boolean = false;
 
 	cardActionButtonStyles: IButtonStyles = {
 		root: {
@@ -462,6 +466,16 @@ export class UserPageComponent{
 	ShowBankAccountDialog(){
 		this.bankAccountDialogContent.title = this.locale.provider.bankAccountDialog.title;
 		this.bankAccountDialogVisible = true;
+		setTimeout(() => this.bankAccountForm.Init(), 1);
+	}
+
+	async BankAccountDialogSave(){
+		await this.bankAccountForm.SaveBankAccount();
+	}
+
+	BankAccountDialogCompleted(stripeAccount: Stripe.Account){
+		this.providerStripeAccount = stripeAccount;
+		this.bankAccountDialogVisible = false;
 	}
 
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){

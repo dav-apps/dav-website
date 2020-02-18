@@ -433,6 +433,10 @@ const enDefaults = {
 		header: "Credit or debit card",
 		save: "Save",
 		unexpectedError: "Unexpected error ({0})"
+	},
+	bankAccountFormComponent: {
+		name: "Name",
+		unexpectedError: "An unexpected error occured. Please try it again later."
 	}
 }
 
@@ -876,6 +880,10 @@ const deDefaults = {
 		header: "Kredit- oder Debitkarte",
 		save: "Speichern",
 		unexpectedError: "Unerwarteter Fehler ({0})"
+	},
+	bankAccountFormComponent: {
+		name: "Name",
+		unexpectedError: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
 	}
 }
 
