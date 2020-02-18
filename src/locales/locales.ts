@@ -227,6 +227,7 @@ const enDefaults = {
 		},
 		errors: {
 			unexpectedErrorShort: "Unexpected error ({0})",
+			unexpectedErrorLong: "An unexpected error occured. Please try it again later.",
 			avatarFileTooLarge: "The image file is too large",
 			usernameTooShort: "Your new username is too short",
 			usernameTooLong: "Your new username is too long",
@@ -674,6 +675,7 @@ const deDefaults = {
 		},
 		errors: {
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
 			avatarFileTooLarge: "Die Bilddatei ist zu groß",
 			usernameTooShort: "Dein neuer Nutzername ist zu kurz",
 			usernameTooLong: "Dein neuer Nutzername ist zu lang",

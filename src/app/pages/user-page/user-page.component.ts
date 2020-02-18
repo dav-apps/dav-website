@@ -7,6 +7,7 @@ import Stripe from 'stripe';
 import { ApiResponse, ApiErrorResponse, UserResponseData, ProviderResponseData, App } from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
+import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component';
 
@@ -245,7 +246,6 @@ export class UserPageComponent{
 		if(this.sideNavHidden) this.sideNavOpened = false;
 		
 		this.ClearMessages();
-		this.successMessage = "";
 		this.username = this.dataService.user.Username;
 		this.email = this.dataService.user.Email;
 		this.password = "";
@@ -287,7 +287,13 @@ export class UserPageComponent{
 		this.router.navigateByUrl(`user#${providerHash}`);
 
 		await this.dataService.userPromise;
-		if(!this.dataService.user.Provider) return;
+		if(!this.dataService.user.Provider){
+			// Wait for the update of the user from the server
+			await this.dataService.userDownloadPromise;
+			
+			// Return if the user is still not a provider
+			if(!this.dataService.user.Provider) return;
+		}
 
 		await this.GetUserProvider();
 		await this.GetStripeData();
@@ -399,7 +405,7 @@ export class UserPageComponent{
 		
 		if(providerResponse.status != 201){
 			// Show error
-			// TODO
+			this.errorMessage = this.locale.errors.unexpectedErrorShort.replace('{0}', (providerResponse as ApiErrorResponse).errors[0].code.toString());
 			return;
 		}
 
@@ -436,15 +442,15 @@ export class UserPageComponent{
 			WebsocketCallbackType.CreateStripeAccountLink,
 			{
 				account: this.providerStripeAccountId,
-				successUrl: "http://localhost:3000/user#provider",
-				failureUrl: "http://localhost:3000/user#provider",
+				successUrl: `${environment.baseUrl}/user#provider`,
+				failureUrl: `${environment.baseUrl}/user#provider`,
 				type: update ? "custom_account_update" : "custom_account_verification"
 			}
 		)
 
 		if(!stripeAccountLinkResponse.success){
 			// Show error
-			// TODO
+			this.errorMessage = this.locale.errors.unexpectedErrorLong;
 			return;
 		}
 

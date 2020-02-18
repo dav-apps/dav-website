@@ -195,6 +195,12 @@
 		<div class="container navbar-margin pt-4 ms-motion-slideUpIn mb-4" style="background-color: white" *ngIf="selectedMenu == 3">
 			<div *ngIf="!providerStripeAccount">
 				<h1 class="text-center font-weight-light mb-3">{{ locale.provider.title }}</h1>
+
+				<!-- Message bar for errors -->
+				<div class="mx-auto mb-3" style="width: 250px" *ngIf="errorMessage.length > 0">
+					<fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar>
+				</div>
+
 				<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
 
 				<p class="text-center font-weight-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
@@ -226,6 +232,9 @@
 						*ngIf="providerStripeAccount.requirements.currently_due.length == 1 && providerStripeAccount.requirements.currently_due[0] == 'external_account'">
 						{{ locale.provider.missingBankAccountWarningText }}
 					</fab-message-bar>
+
+					<!-- Message bar for errors -->
+					<fab-message-bar [messageBarType]="errorMessageBarType" *ngIf="errorMessage.length > 0">{{ errorMessage }}</fab-message-bar>
 				</div>
 
 				<div class="row ml-2">
@@ -305,7 +314,7 @@
 	[hidden]="!bankAccountDialogVisible"
 	[minWidth]="'340px'"
 	[dialogContentProps]="bankAccountDialogContent"
-	(onDismiss)="bankAccountDialogVisible = false">
+	(onDismiss)="bankAccountDialogVisible = bankAccountDialogLoading">
 	<dav-website-bank-account-form
 		#bankAccountForm
 		[stripeCustomAccountId]="providerStripeAccountId"
@@ -315,7 +324,7 @@
 
 	<fab-dialog-footer>
 		<div [style.display]="bankAccountDialogLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-		<fab-default-button (click)="bankAccountDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="BankAccountDialogSave()">{{ locale.save }}</fab-primary-button>
+		<fab-default-button [disabled]="bankAccountDialogLoading" (onClick)="bankAccountDialogVisible = false">{{ locale.cancel }}</fab-default-button>
+		<fab-primary-button [styles]="dialogPrimaryButtonStyles" [disabled]="bankAccountDialogLoading" (onClick)="BankAccountDialogSave()">{{ locale.save }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>

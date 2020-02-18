@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   appId: 7,
   apiKey: "eUzs3PQZYweXvumcWvagRHjdUroGe5Mo7kN1inHm",
+  baseUrl: "http://localhost:3000",
   stripePublishableKey: "pk_test_2n7dkdRDf19haHugZ0AJ2E5Q",
   stripeDavPlusEurPlanId: "plan_CmGzwEgBfEk5Ic",
   stripeDavProEurPlanId: "plan_EkH9nhgVhb46jt"
