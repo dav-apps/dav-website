@@ -201,7 +201,7 @@ const enDefaults = {
 			title: "Become a provider",
 			subTitle: "Distribute your digital content on dav platforms and earn money",
 			supportedApps: "Supported apps",
-			setupExplanation: "To become a provider, we need to collect some information about you. <br>(You will be redirected to a page of <a href='https://stripe.com' target='blank'>Stripe</a>)",
+			setupExplanation: "To become a provider, we need to collect some information about you.",
 			startSetup: "Start setup",
 			dashboardTitle: "Provider Dashboard",
 			aboutYou: "About you",
@@ -212,8 +212,17 @@ const enDefaults = {
 			missingInformationWarningText: "To activate payouts, we need more information from you.",
 			missingInformationWarningLink: "Edit details",
 			missingBankAccountWarningText: "Don't forget to provide a bank account so that we can transfer your payouts.",
+			startStripeSetupDialog: {
+				title: "Provider setup",
+				text1: "Please specify the country you live in.<br>(Contact us if your country is not listed so we can add support for it).",
+				text2: "For the setup you will be redirected to a page of <a href='https://stripe.com' target='blank'>Stripe</a>."
+			},
 			bankAccountDialog: {
 				title: "Set bank account"
+			},
+			countries: {
+				de: "Germany",
+				us: "United States"
 			}
 		},
 		messages: {
@@ -649,7 +658,7 @@ const deDefaults = {
 			title: "Werde ein Anbieter",
 			subTitle: "Vertreibe deine digitalen Inhalte auf Plattformen von dav und verdiene Geld",
 			supportedApps: "Unterstützte Apps",
-			setupExplanation: "Um ein Anbieter zu werden, müssen wir einige Informationen über dich sammeln. <br>(Du wirst auf eine Seite von <a href='https://stripe.com' target='blank'>Stripe</a> weitergeleitet)",
+			setupExplanation: "Um ein Anbieter zu werden, müssen wir einige Informationen über dich sammeln.",
 			startSetup: "Einrichtung beginnen",
 			dashboardTitle: "Anbieter-Dashboard",
 			aboutYou: "Über dich",
@@ -660,8 +669,17 @@ const deDefaults = {
 			missingInformationWarningText: "Um Auszahlungen zu aktivieren, brauchen wir noch weitere Informationen von dir.",
 			missingInformationWarningLink: "Informationen bearbeiten",
 			missingBankAccountWarningText: "Denk daran, ein Bankkonto anzugeben, damit wir deine Auszahlungen überweisen können.",
+			startStripeSetupDialog: {
+				title: "Anbieter-Einrichtung",
+				text1: "Bitte gebe das Land an, in dem du lebst.<br>(Kontaktiere uns, wenn dein Land nicht aufgeführt ist, damit wir Unterstützung dafür hinzufügen können.)",
+				text2: "Du wirst zur Einrichtung auf eine Seite von <a href='https://stripe.com' target='blank'>Stripe</a> weitergeleitet."
+			},
 			bankAccountDialog: {
 				title: "Bankkonto festlegen"
+			},
+			countries: {
+				de: "Deutschland",
+				us: "Vereinigte Staaten"
 			}
 		},
 		messages: {

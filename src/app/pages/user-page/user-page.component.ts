@@ -1,7 +1,7 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
+import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize, IDropdownOption } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import Stripe from 'stripe';
 import { ApiResponse, ApiErrorResponse, UserResponseData, ProviderResponseData, App } from 'dav-npm';
@@ -150,6 +150,9 @@ export class UserPageComponent{
 	providerStripeAccountId: string = null;
 	providerStripeAccount: Stripe.Account = null;
 	providerStripeBalance: Stripe.Balance = null;
+	startStripeSetupDialogVisible: boolean = false;
+	startStripeSetupDialogDropdownOptions: IDropdownOption[] = [];
+	startStripeSetupDialogDropdownSelectedKey: string = "us";
 	bankAccountDialogVisible: boolean = false;
 	bankAccountDialogLoading: boolean = false;
 
@@ -158,6 +161,9 @@ export class UserPageComponent{
 			float: 'right',
 			marginBottom: 16
 		}
+	}
+	startStripeSetupDialogContent: IDialogContentProps = {
+		title: this.locale.provider.startStripeSetupDialog.title
 	}
 	bankAccountDialogContent: IDialogContentProps = {
 		title: this.locale.provider.bankAccountDialog.title
@@ -283,6 +289,7 @@ export class UserPageComponent{
 		this.selectedMenu = Menu.Provider;
 		if(this.sideNavHidden) this.sideNavOpened = false;
 		this.ClearMessages();
+		this.InitStartStripeSetupDialogCountriesDropdown();
 
 		this.router.navigateByUrl(`user#${providerHash}`);
 
@@ -389,6 +396,33 @@ export class UserPageComponent{
 		)
 	}
 
+	InitStartStripeSetupDialogCountriesDropdown(){
+		// Add the countries options
+		this.startStripeSetupDialogDropdownOptions = [];
+
+		for(let key of Object.keys(this.locale.provider.countries)){
+			let value = this.locale.provider.countries[key];
+			this.startStripeSetupDialogDropdownOptions.push({key, text: value});
+		}
+
+		// Select the appropriate option
+		let lang = this.dataService.locale.slice(0, 2);
+		if(lang == "de"){
+			this.startStripeSetupDialogDropdownSelectedKey = "de";
+		}else{
+			this.startStripeSetupDialogDropdownSelectedKey = "us";
+		}
+	}
+
+	StartStripeSetupDialogDropdownChange(e: {event: MouseEvent, option: IDropdownOption, index: number}){
+		this.startStripeSetupDialogDropdownSelectedKey = e.option.key as string;
+	}
+
+	ShowStartStripeSetupDialog(){
+		this.startStripeSetupDialogContent.title = this.locale.provider.startStripeSetupDialog.title;
+		this.startStripeSetupDialogVisible = true;
+	}
+
 	async StartStripeProviderSetup(){
 		await this.CreateUserProvider();
 		await this.OpenStripeOnboardingPage();
@@ -401,7 +435,7 @@ export class UserPageComponent{
 
 	async CreateUserProvider(){
 		// Create the provider
-		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CreateProvider, {jwt: this.dataService.user.JWT});
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CreateProvider, {jwt: this.dataService.user.JWT, country: this.startStripeSetupDialogDropdownSelectedKey});
 		
 		if(providerResponse.status != 201){
 			// Show error

@@ -15,7 +15,8 @@ import {
 	FabIconModule,
 	FabDialogModule,
 	FabSpinnerModule,
-	FabToggleModule
+	FabToggleModule,
+	FabDropdownModule
 } from '@angular-react/fabric';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -99,6 +100,7 @@ import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component';
 		FabDialogModule,
 		FabSpinnerModule,
 		FabToggleModule,
+		FabDropdownModule,
 		MatSidenavModule,
 		MatListModule,
 		MatProgressBarModule,

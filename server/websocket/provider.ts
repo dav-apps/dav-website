@@ -6,8 +6,8 @@ export const sockets = {
 	getProvider
 }
 
-export async function createProvider(message: {jwt: string}){
-	let response = await CreateProvider(message.jwt);
+export async function createProvider(message: {jwt: string, country: string}){
+	let response = await CreateProvider(message.jwt, message.country);
 	websocket.emit(createProvider.name, response);
 }
 
