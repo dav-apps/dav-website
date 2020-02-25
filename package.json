@@ -18,6 +18,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-devkit/schematics": "^9.0.3",
     "@angular-react/core": "^1.0.1",
     "@angular-react/fabric": "^1.2.1",
     "@angular/animations": "~9.0.2",
