@@ -6,14 +6,13 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "dav-npm": "git+https://github.com/dav-apps/dav-npm.git#v1.3",
+    "dav-npm": "git+https://github.com/dav-apps/dav-npm.git#dev",
     "express": "^4.17.1",
     "socket.io": "^2.3.0",
-    "stripe": "^7.10.0",
-    "typescript": "^3.6.3"
+    "stripe": "^8.18.0",
+    "typescript": "^3.7.5"
   },
   "devDependencies": {
-    "@types/stripe": "^7.10.3",
     "dotenv": "^8.1.0"
   }
 }
