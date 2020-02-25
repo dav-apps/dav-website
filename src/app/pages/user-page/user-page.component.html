@@ -258,10 +258,10 @@
 							<h5 class="font-weight-light mb-3">{{ locale.provider.yourPayoutAccount }}</h5>
 
 							<div *ngIf="providerStripeAccount.external_accounts.data.length > 0">
-								<p style="margin-bottom: 8px">{{ providerStripeAccount.external_accounts.data[0].bank_name }}</p>
+								<p style="margin-bottom: 8px">{{ providerBankAccount.bank_name }}</p>
 								<div class="d-flex">
 									<i class="ms-Icon ms-Icon--BankSolid mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
-									<p style="margin-bottom: 8px">**** {{ providerStripeAccount.external_accounts.data[0].last4 }}</p>
+									<p style="margin-bottom: 8px">**** {{ providerBankAccount.last4 }}</p>
 								</div>
 							</div>
 

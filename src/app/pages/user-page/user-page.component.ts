@@ -150,6 +150,7 @@ export class UserPageComponent{
 	providerStripeAccountId: string = null;
 	providerStripeAccount: Stripe.Account = null;
 	providerStripeBalance: Stripe.Balance = null;
+	providerBankAccount: Stripe.BankAccount = null;
 	startStripeSetupDialogVisible: boolean = false;
 	startStripeSetupDialogDropdownOptions: IDropdownOption[] = [];
 	startStripeSetupDialogDropdownSelectedKey: string = "us";
@@ -462,6 +463,7 @@ export class UserPageComponent{
 		if(!stripeAccountResponse.success) return;
 
 		this.providerStripeAccount = stripeAccountResponse.response;
+		this.providerBankAccount = this.providerStripeAccount.external_accounts.data[0] as Stripe.BankAccount;
 
 		// Get the balance
 		let stripeBalanceResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeBalance, {account: this.providerStripeAccountId});
