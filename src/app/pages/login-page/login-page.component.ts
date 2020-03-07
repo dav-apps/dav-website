@@ -76,8 +76,19 @@ export class LoginPageComponent{
 		}
 	}
 
-	ngOnInit(){
+	async ngOnInit(){
 		this.setSize();
+		await this.dataService.userPromise;
+		
+		if(this.dataService.user.IsLoggedIn && this.loginType == LoginType.Normal){
+			if(this.redirect){
+				// Redirect to the redirect url
+				this.router.navigateByUrl(this.redirect);
+			}else{
+				// Redirect to the start page
+				this.router.navigate(['/']);
+			}
+		}
 	}
 
 	ngAfterViewInit(){
