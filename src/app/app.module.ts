@@ -57,6 +57,7 @@ import { EventPageComponent } from 'src/app/pages/event-page/event-page.componen
 import { StatisticsPageComponent } from 'src/app/pages/statistics-page/statistics-page.component';
 import { AppStatisticsPageComponent } from 'src/app/pages/app-statistics-page/app-statistics-page.component';
 import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component';
+import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page.component';
 
 @NgModule({
   	declarations: [
@@ -84,7 +85,8 @@ import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component';
 		EventPageComponent,
 		StatisticsPageComponent,
 		AppStatisticsPageComponent,
-		ApiPageComponent
+		ApiPageComponent,
+		PurchasePageComponent
   	],
   	imports: [
 		AngularReactBrowserModule,

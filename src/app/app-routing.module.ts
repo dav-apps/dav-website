@@ -19,6 +19,7 @@ import { EventPageComponent } from './pages/event-page/event-page.component';
 import { StatisticsPageComponent } from './pages/statistics-page/statistics-page.component';
 import { AppStatisticsPageComponent } from './pages/app-statistics-page/app-statistics-page.component';
 import { ApiPageComponent } from './pages/api-page/api-page.component';
+import { PurchasePageComponent } from './pages/purchase-page/purchase-page.component';
 
 const routes: Routes = [
 	{ path: "", component: StartPageComponent },
@@ -38,7 +39,8 @@ const routes: Routes = [
 	{ path: "dev/:id", component: AppPageComponent },
 	{ path: "dev/:id/statistics", component: AppStatisticsPageComponent },
 	{ path: "dev/:id/event/:name", component: EventPageComponent },
-	{ path: "dev/:id/api/:api_id", component: ApiPageComponent }
+	{ path: "dev/:id/api/:api_id", component: ApiPageComponent },
+	{ path: "purchase/:id", component: PurchasePageComponent }
 ];
 
 @NgModule({
