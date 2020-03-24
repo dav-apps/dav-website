@@ -418,9 +418,7 @@ const enDefaults = {
 		currentPlan: "Current plan",
 		upgrade: "Upgrade",
 		downgrade: "Downgrade",
-		save: "Save",
 		cancel: "Cancel",
-		paymentFormDialogTitle: "Enter payment information",
 		unexpectedError: "Unexpected error ({0})",
 		changePlanSuccessMessage: "Your plan has been successfully changed",
 		paymentMethodCardHeader: "Your payment method",
@@ -443,6 +441,11 @@ const enDefaults = {
 		header: "Credit or debit card",
 		save: "Save",
 		unexpectedError: "Unexpected error ({0})"
+	},
+	paymentFormDialogComponent: {
+		title: "Enter payment information",
+		save: "Save",
+		cancel: "Cancel"
 	},
 	bankAccountFormComponent: {
 		name: "Name",
@@ -875,9 +878,7 @@ const deDefaults = {
 		currentPlan: "Aktueller Plan",
 		upgrade: "Upgrade",
 		downgrade: "Downgrade",
-		save: "Speichern",
 		cancel: "Abbrechen",
-		paymentFormDialogTitle: "Zahlungsinformationen eingeben",
 		unexpectedError: "Unerwarteter Fehler ({0})",
 		changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert",
 		paymentMethodCardHeader: "Deine Zahlungsmethode",
@@ -900,6 +901,11 @@ const deDefaults = {
 		header: "Kredit- oder Debitkarte",
 		save: "Speichern",
 		unexpectedError: "Unerwarteter Fehler ({0})"
+	},
+	paymentFormDialogComponent: {
+		title: "Zahlungsinformationen eingeben",
+		save: "Speichern",
+		cancel: "Abbrechen"
 	},
 	bankAccountFormComponent: {
 		name: "Name",

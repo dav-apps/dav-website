@@ -1,0 +1,33 @@
+<fab-dialog
+	[hidden]="!paymentFormVisible"
+	[dialogContentProps]="dialogContentProps"
+	(onDismiss)="HideDialog()">
+
+	<div style="min-width: 340px"></div>
+	<dav-website-payment-form
+		#paymentForm
+		[showSaveButton]="false"
+		(completed)="PaymentMethodInputCompleted()"
+		(loadingStart)="paymentFormLoading = true"
+		(loadingEnd)="paymentFormLoading = false">
+	</dav-website-payment-form>
+
+	<fab-dialog-footer>
+		<div
+			[style.display]="paymentFormLoading ? 'inline-block' : 'none'"
+			style="margin-top: 8px; margin-right: 14px">
+			<fab-spinner [size]="spinnerSize"></fab-spinner>
+		</div>
+		<fab-default-button
+			[disabled]="paymentFormLoading"
+			(onClick)="HideDialog()">
+			{{ locale.cancel }}
+		</fab-default-button>
+		<fab-primary-button
+			[styles]="dialogPrimaryButtonStyles"
+			[disabled]="paymentFormLoading"
+			(onClick)="Save()">
+			{{ locale.save }}
+		</fab-primary-button>
+	</fab-dialog-footer>
+</fab-dialog>
