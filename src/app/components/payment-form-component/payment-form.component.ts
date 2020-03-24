@@ -67,17 +67,21 @@ export class PaymentFormComponent{
 	async SaveCard(){
 		if(!this.cardInputComplete) return;
 
+		if(!this.loading){
+			this.loadingStart.emit();
+			this.loading = true;
+		}
+
 		// Create a stripe customer if the user has no stripe customer
 		if(!this.dataService.user.StripeCustomerId){
-			this.CreateStripeCustomerForUserResponse(
-				await this.websocketService.Emit(WebsocketCallbackType.CreateStripeCustomerForUser, {
-					jwt: this.dataService.user.JWT
-				})
-			)
+			let CreateStripeCustomerForUserResponse: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CreateStripeCustomerForUser, {jwt: this.dataService.user.JWT});
 
-			if(!this.loading){
-				this.loadingStart.emit();
-				this.loading = true;
+			if(CreateStripeCustomerForUserResponse.status == 201){
+				this.dataService.user.StripeCustomerId = (CreateStripeCustomerForUserResponse as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripe_customer_id;
+				await this.CreatePaymentMethod();
+			}else{
+				// Show error message
+				this.errorMessage = this.locale.unexpectedError.replace('{0}', (CreateStripeCustomerForUserResponse as ApiErrorResponse).errors[0].code.toString());
 			}
 		}else{
 			await this.CreatePaymentMethod();
@@ -91,42 +95,28 @@ export class PaymentFormComponent{
 			// Show error
 			this.errorMessage = result.error.message;
 		}else{
-			// Send the payment method to the server
-			this.SaveStripePaymentMethodResponse(
-				await this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
-					paymentMethodId: result.paymentMethod.id,
-					customerId: this.dataService.user.StripeCustomerId
-				})
-			)
-
 			if(!this.loading){
 				this.loadingStart.emit();
 				this.loading = true;
 			}
-		}
-	}
+			
+			// Send the payment method to the server
+			let saveStripePaymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
+				paymentMethodId: result.paymentMethod.id,
+				customerId: this.dataService.user.StripeCustomerId
+			})
 
-	CreateStripeCustomerForUserResponse(message: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse){
-		if(message.status == 201){
-			this.dataService.user.StripeCustomerId = (message as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripe_customer_id;
-			this.CreatePaymentMethod();
-		}else{
-			// Show error message
-			this.errorMessage = this.locale.unexpectedError.replace('{0}', (message as ApiErrorResponse).errors[0].code.toString());
-		}
-	}
+			if(saveStripePaymentMethodResponse.success){
+				this.completed.emit();
+			}else{
+				// Show error
+				this.errorMessage = this.locale.unexpectedError.replace('{0}', saveStripePaymentMethodResponse.response.code);
+			}
 
-	SaveStripePaymentMethodResponse(message: StripeApiResponse){
-		if(message.success){
-			this.completed.emit();
-		}else{
-			// Show error
-			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code);
-		}
-
-		if(this.loading){
-			this.loadingEnd.emit();
-			this.loading = false;
+			if(this.loading){
+				this.loadingEnd.emit();
+				this.loading = false;
+			}
 		}
 	}
 }

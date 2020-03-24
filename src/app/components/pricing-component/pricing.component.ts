@@ -4,7 +4,7 @@ import { DataService, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
 import { enUS } from 'src/locales/locales';
-import { PaymentFormComponent } from '../payment-form-component/payment-form.component';
+import { PaymentFormDialogComponent } from '../payment-form-dialog-component/payment-form-dialog.component';
 import * as moment from 'moment';
 
 const buttonTransition = "all 0.15s";
@@ -15,10 +15,8 @@ const buttonTransition = "all 0.15s";
 })
 export class PricingComponent{
 	locale = enUS.pricingComponent;
-	@ViewChild('paymentForm', {static: true}) paymentForm: PaymentFormComponent;
+	@ViewChild('paymentFormDialog', {static: true}) paymentFormDialog: PaymentFormDialogComponent;
 	selectedPlan: number = -1;
-	paymentFormDialogVisible: boolean = false;
-	paymentFormLoading: boolean = false;
 	errorMessage: string = "";
 	successMessage: string = "";
 	errorMessageBarType: MessageBarType = MessageBarType.error;
@@ -37,9 +35,6 @@ export class PricingComponent{
 	proPlanLoading: boolean = false;
 	upgradeDialogVisible: boolean = false;
 
-	paymentFormDialogContent: IDialogContentProps = {
-		title: this.locale.paymentFormDialogTitle
-	}
 	dialogPrimaryButtonStyles: IButtonStyles = {
 		root: {
 			transition: buttonTransition,
@@ -67,15 +62,10 @@ export class PricingComponent{
 		public websocketService: WebsocketService
 	){
 		this.locale = this.dataService.GetLocale().pricingComponent;
-		this.paymentFormDialogContent.title = this.locale.paymentFormDialogTitle;
 	}
 
 	ngOnInit(){
 		this.UpdateSubscriptionDetails();
-	}
-
-	PaymentDialogSaveClick(){
-		this.paymentForm.SaveCard();
 	}
 
 	async PlanButtonClick(plan: number){
@@ -85,8 +75,7 @@ export class PricingComponent{
 		if(!paymentMethod){
 			// Show the payment form
 			this.editPaymentMethod = false;
-			this.paymentFormDialogVisible = true;
-			setTimeout(() => this.paymentForm.Init(), 1);
+			this.paymentFormDialog.ShowDialog();
 		}else if(this.dataService.user.Plan == 0){
 			// Update the values of the upgrade dialog
 			if(this.selectedPlan == 2){
@@ -107,8 +96,7 @@ export class PricingComponent{
 
 	EditPaymentMethodClick(){
 		this.editPaymentMethod = true;
-		this.paymentFormDialogVisible = true;
-		setTimeout(() => this.paymentForm.Init(), 1);
+		this.paymentFormDialog.ShowDialog();
 	}
 
 	async ContinueOrCancelButtonClick(){
@@ -122,11 +110,9 @@ export class PricingComponent{
 		)
 	}
 
-	PaymentMethodInputCompleted(){
-		this.paymentFormDialogVisible = false;
-
+	async PaymentMethodInputCompleted(){
 		if(!this.editPaymentMethod){
-			this.SetStripeSubscription();
+			await this.SetStripeSubscription();
 		}else{
 			this.errorMessage = "";
 			this.successMessage = this.locale.changePaymentMethodSuccessMessage;

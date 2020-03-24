@@ -109,18 +109,10 @@
 	</div>
 </div>
 
-<fab-dialog
-	[hidden]="!paymentFormDialogVisible"
-	[dialogContentProps]="paymentFormDialogContent"
-	(onDismiss)="paymentFormDialogVisible = paymentFormLoading">
-	<dav-website-payment-form #paymentForm [showSaveButton]="false" (completed)="PaymentMethodInputCompleted()" (loadingStart)="paymentFormLoading = true" (loadingEnd)="paymentFormLoading = false"></dav-website-payment-form>
-
-	<fab-dialog-footer>
-		<div [style.display]="paymentFormLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-		<fab-default-button (click)="paymentFormDialogVisible = false" [disabled]="paymentFormLoading">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button id="paymentFormDialogSaveButton" [styles]="dialogPrimaryButtonStyles" [disabled]="paymentFormLoading" (click)="PaymentDialogSaveClick()">{{ locale.save }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
+<dav-website-payment-form-dialog
+	#paymentFormDialog
+	(complete)="PaymentMethodInputCompleted()">
+</dav-website-payment-form-dialog>
 
 <fab-dialog
 	[hidden]="!upgradeDialogVisible"
