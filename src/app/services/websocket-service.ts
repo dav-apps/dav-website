@@ -59,6 +59,7 @@ export enum WebsocketCallbackType{
 	CreateSession,
 	CreateSessionWithJwt,
 	// User
+	GetUserByAuth,
 	UpdateUser,
 	CreateStripeCustomerForUser,
 	DeleteUser,
@@ -77,6 +78,8 @@ export enum WebsocketCallbackType{
 	// Provider
 	CreateProvider,
 	GetProvider,
+	// Purchase
+	GetPurchase,
 	// App
 	CreateApp,
 	GetApp,
@@ -114,6 +117,7 @@ export const Callbacks = {
 	getActiveUsers: WebsocketCallbackType.GetActiveUsers,
 	createSession: WebsocketCallbackType.CreateSession,
 	createSessionWithJwt: WebsocketCallbackType.CreateSessionWithJwt,
+	getUserByAuth: WebsocketCallbackType.GetUserByAuth,
 	updateUser: WebsocketCallbackType.UpdateUser,
 	createStripeCustomerForUser: WebsocketCallbackType.CreateStripeCustomerForUser,
 	deleteUser: WebsocketCallbackType.DeleteUser,
@@ -130,6 +134,7 @@ export const Callbacks = {
 	getDev: WebsocketCallbackType.GetDev,
 	createProvider: WebsocketCallbackType.CreateProvider,
 	getProvider: WebsocketCallbackType.GetProvider,
+	getPurchase: WebsocketCallbackType.GetPurchase,
 	createApp: WebsocketCallbackType.CreateApp,
 	getApp: WebsocketCallbackType.GetApp,
 	getActiveAppUsers: WebsocketCallbackType.GetActiveAppUsers,
