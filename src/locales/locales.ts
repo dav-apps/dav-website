@@ -157,6 +157,23 @@ const enDefaults = {
 		resetNewEmailMessage: "Your email address has been reset. You can now log in again with your old email address.",
 		errorMessage: "An unexpected error occured. Please try it again."
 	},
+	purchasePage: {
+		loginTitle: "Log in to dav",
+		passwordTextfieldLabel: "Password",
+		passwordTextfieldPlaceholder: "Your password",
+		login: "Log in",
+		forgotPassword: "Forgot password?",
+		errors: {
+			loginFailed: "Login failed",
+			passwordMissing: "Please enter your password",
+			unexpectedError: "Unexpected error ({0})"
+		},
+		paymentMethodCardHeader: "Your payment method",
+		cardExpires: "Expires",
+		addPaymentMethod: "Add payment method",
+		pay: "Pay {0}",
+		edit: "Edit"
+	},
 	userPage: {
 		sideNav: {
 			general: "General",
@@ -616,6 +633,23 @@ const deDefaults = {
 		saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
 		resetNewEmailMessage: "Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
 		errorMessage: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+	},
+	purchasePage: {
+		loginTitle: "Bei dav anmelden",
+		passwordTextfieldLabel: "Passwort",
+		passwordTextfieldPlaceholder: "Dein Passwort",
+		login: "Anmelden",
+		forgotPassword: "Passwort vergessen?",
+		errors: {
+			loginFailed: "Anmeldung fehlgeschlagen",
+			passwordMissing: "Bitte gib dein Passwort ein",
+			unexpectedError: "Unerwarteter Fehler ({0})"
+		},
+		paymentMethodCardHeader: "Deine Zahlungsmethode",
+		cardExpires: "Ablaufdatum:",
+		addPaymentMethod: "Zahlungsmethode hinzufügen",
+		pay: "{0} bezahlen",
+		edit: "Bearbeiten"
 	},
 	userPage: {
 		sideNav: {

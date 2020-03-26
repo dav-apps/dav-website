@@ -1,1 +1,205 @@
-<h1>Hello World</h1>
+<!-- Login form -->
+<div
+	class="container d-flex flex-column ms-motion-slideUpIn"
+	style="margin-top: 100px; margin-bottom: 100px;"
+	*ngIf="loginUser">
+	<img src="/assets/images/dav-logo.png" width="60" height="60" class="align-self-center" />
+
+	<h2 class="text-center font-weight-light mt-4 mb-3">{{ locale.loginTitle }}</h2>
+
+	<div class="d-flex flex-column">
+		<!-- User info -->
+		<div class="mx-auto list-group-item" style="border: none">
+			<div class="media">
+				<img class="mr-3 rounded" [src]="loginUser.avatar" alt="User avatar" height="70" width="70">
+				<h5 class="my-auto font-weight-light">{{ loginUser.username }}</h5>
+			</div>
+		</div>
+
+		<!-- Password -->
+		<div class="row mt-3">
+			<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<fab-text-field
+					id="password-text-field"
+					[(value)]="password"
+					[label]="locale.passwordTextfieldLabel"
+					[placeholder]="locale.passwordTextfieldPlaceholder"
+					[errorMessage]="loginErrorMessage"
+					type="password"
+					autocomplete="current-password"
+					(keydown.enter)="Login()">
+				</fab-text-field>
+
+				<div class="d-flex flex-row">
+					<div class="d-flex">
+						<fab-primary-button
+							(click)="Login()"
+							[styles]="loginButtonStyles"
+							[disabled]="loginLoading">
+							{{ locale.login }}
+						</fab-primary-button>
+						<div
+							style="margin-top: 32px; margin-left: 14px"
+							*ngIf="loginLoading">
+							<fab-spinner [size]="spinnerSize"></fab-spinner>
+						</div>
+					</div>
+
+					<div class="d-flex ml-auto text-right">
+						<a
+							style="color: black; font-size: 15px; margin-top: 28px"
+							href="/password_reset"
+							target="blank"
+							tabindex="-1">
+							{{ locale.forgotPassword }}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div
+	class="ms-motion-slideUpIn"
+	*ngIf="!loginUser">
+
+	<div class="container">
+		<!-- dav Logo -->
+		<p style="position: absolute; color: black; font-size: 30px; font-weight: bold; font-family: mvboli, 'MV Boli', Kalam">
+			dav
+		</p>
+
+		<div class="row" style="height: 100vh" [style.height.vh]="mobileView ? null : 100">
+			<!-- Left part -->
+			<div class="col-6 d-flex" *ngIf="!mobileView">
+				<div class="mx-auto my-auto d-flex flex-column" style="max-width: 80%">
+					<!-- Back button + Logo -->
+					<div class="d-flex mb-2">
+						<button
+							type="button"
+							class="btn"
+							style="height: 24px; width: 28px; padding: 0px">
+							<fab-icon iconName="Back" [styles]="backButtonIconStyles"></fab-icon>
+						</button>
+
+						<img src="/assets/images/pocketlib-logo.png" height="22" class="pl-2 cursor" style="margin-top: 1px" />
+						<p class="mb-0 pl-2 cursor" style="font-size: 15px; margin-top: 1px">PocketLib</p>
+					</div>
+
+					<!-- Product image -->
+					<div style="width: 250px; height: 300px">
+						<img
+							src="http://i.ebayimg.com/images/i/251487430447-0-1/s-l1000.jpg"
+							class="shadow-sm"
+							style="max-width: 100%; max-height: 100%;" />
+					</div>
+
+					<!-- Description -->
+					<h5 class="mt-4 font-weight-light">Eine Reihe betrüblicher Ereignisse - Das schaurige Spital</h5>
+
+					<!-- Price -->
+					<p>{{ price }}</p>
+				</div>
+			</div>
+
+			<!-- Top part -->
+			<div class="col-12 d-flex flex-column mb-4" style="margin-top: 40px" *ngIf="mobileView">
+				<!-- Product image -->
+				<div class="mx-auto" style="width: 180px">
+					<!-- Back button + Logo -->
+					<div class="d-flex mb-2">
+						<button
+							type="button"
+							class="btn"
+							style="height: 24px; width: 28px; padding: 0px">
+							<fab-icon iconName="Back" [styles]="backButtonIconStyles"></fab-icon>
+						</button>
+
+						<img src="/assets/images/pocketlib-logo.png" height="22" class="pl-2 cursor" style="margin-top: 1px" />
+						<p class="mb-0 pl-2 cursor" style="font-size: 15px; margin-top: 1px">PocketLib</p>
+					</div>
+
+					<img
+						src="http://i.ebayimg.com/images/i/251487430447-0-1/s-l1000.jpg"
+						class="shadow-sm"
+						style="max-width: 100%; max-height: 100%;" />
+				</div>
+
+				<!-- Description -->
+				<h5 class="mt-4 mx-auto font-weight-light text-center" style="max-width: 300px">Eine Reihe betrüblicher Ereignisse - Das schaurige Spital</h5>
+
+				<!-- Price -->
+				<p class="mx-auto mt-2">{{ price }}</p>
+			</div>
+
+			<!-- Right/Bottom part -->
+			<div class="col-12 col-md-6 d-flex">
+				<div class="mx-auto my-auto mt-n5 d-flex flex-column">
+					<!-- User info -->
+					<div class="list-group-item mb-3 shadow-sm">
+						<div class="media">
+							<img class="mr-3 rounded" [src]="dataService.user.Avatar" alt="User avatar" height="70" width="70">
+							<h5 class="my-auto font-weight-light">{{ dataService.user.Username }}</h5>
+						</div>
+					</div>
+
+					<!-- Payment method card -->
+					<div class="card shadow-sm" style="display: inline-block" *ngIf="hasPaymentMethod">
+						<div class="card-body">
+							<h5 class="font-weight-light mb-3">{{ locale.paymentMethodCardHeader }}</h5>
+
+							<div class="d-flex">
+								<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+								<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
+							</div>
+							<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
+
+							<fab-default-button
+								[styles]="editPaymentMethodButtonStyles"
+								[disabled]="paymentLoading"
+								(onClick)="ShowPaymentMethodDialog()">
+								{{ locale.edit }}
+							</fab-default-button>
+						</div>
+					</div>
+
+					<!-- Card for adding payment method -->
+					<div
+						class="card cursor"
+						[ngClass]="addPaymentMethodHover ? 'shadow' : 'shadow-sm'"
+						style="transition: 0.12s"
+						*ngIf="!hasPaymentMethod"
+						(click)="ShowPaymentMethodDialog()"
+						(mouseover)="addPaymentMethodHover = true"
+						(mouseout)="addPaymentMethodHover = false">
+						<div class="card-body">
+							<h6 class="m-0 font-weight-light">{{ locale.addPaymentMethod }}</h6>
+						</div>
+					</div>
+
+					<!-- Pay button -->
+					<div class="mx-auto mt-4 mb-5 d-flex">
+						<button
+							type="button"
+							class="btn btn-primary btn"
+							[style.marginLeft.px]="paymentLoading ? 32 : 0"
+							[disabled]="paymentLoading"
+							(click)="Pay()">
+							{{ locale.pay.replace('{0}', price) }}
+						</button>
+
+						<div style="margin-top: 11px; margin-left: 16px" *ngIf="paymentLoading">
+							<fab-spinner [size]="spinnerSize"></fab-spinner>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<dav-website-payment-form-dialog
+	#paymentFormDialog
+	(complete)="PaymentMethodChanged()">
+</dav-website-payment-form-dialog>
