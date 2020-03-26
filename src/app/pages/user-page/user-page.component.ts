@@ -367,12 +367,13 @@ export class UserPageComponent{
 		)
 	}
 
-	async SendVerificationEmail(){
-		this.SendVerificationEmailResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SendVerificationEmail, {
-				jwt: this.dataService.user.JWT
-			})
-		)
+	SendVerificationEmail(){
+		this.websocketService.Emit(WebsocketCallbackType.SendVerificationEmail, {
+			jwt: this.dataService.user.JWT
+		}).then((message: ApiResponse<{}> | ApiErrorResponse) => {
+			this.SendVerificationEmailResponse(message);
+		});
+
 		return false;
 	}
 
