@@ -79,27 +79,49 @@
 						<button
 							type="button"
 							class="btn"
-							style="height: 24px; width: 28px; padding: 0px">
+							style="height: 24px; width: 28px; padding: 0px"
+							(click)="NavigateBack()">
 							<fab-icon iconName="Back" [styles]="backButtonIconStyles"></fab-icon>
 						</button>
 
-						<img src="/assets/images/pocketlib-logo.png" height="22" class="pl-2 cursor" style="margin-top: 1px" />
-						<p class="mb-0 pl-2 cursor" style="font-size: 15px; margin-top: 1px">PocketLib</p>
+						<img
+							src="/assets/images/pocketlib-logo.png"
+							height="22"
+							class="pl-2 cursor"
+							style="margin-top: 1px"
+							(click)="NavigateBack()" />
+
+						<p
+							class="mb-0 pl-2 cursor"
+							style="font-size: 15px; margin-top: 1px"
+							(click)="NavigateBack()">
+							PocketLib
+						</p>
 					</div>
 
 					<!-- Product image -->
 					<div style="width: 250px; height: 300px">
 						<img
-							src="http://i.ebayimg.com/images/i/251487430447-0-1/s-l1000.jpg"
+							[src]="purchase.productImage"
 							class="shadow-sm"
 							style="max-width: 100%; max-height: 100%;" />
 					</div>
 
 					<!-- Description -->
-					<h5 class="mt-4 font-weight-light">Eine Reihe betrüblicher Ereignisse - Das schaurige Spital</h5>
+					<h5 class="mt-4 font-weight-light">{{ purchase.productName }}</h5>
 
-					<!-- Price -->
-					<p>{{ price }}</p>
+					<!-- Provider image and name -->
+					<div class="d-flex">
+						<img
+							[src]="purchase.providerImage"
+							class="rounded-circle shadow-sm"
+							style="width: 30px; height: 30px">
+						
+						<p class="font-weight-light my-auto"
+							style="font-size: 18px; margin-left: 13px">
+							{{ purchase.providerName }}
+						</p>
+					</div>
 				</div>
 			</div>
 
@@ -121,16 +143,26 @@
 					</div>
 
 					<img
-						src="http://i.ebayimg.com/images/i/251487430447-0-1/s-l1000.jpg"
+						[src]="purchase.productImage"
 						class="shadow-sm"
 						style="max-width: 100%; max-height: 100%;" />
 				</div>
 
 				<!-- Description -->
-				<h5 class="mt-4 mx-auto font-weight-light text-center" style="max-width: 300px">Eine Reihe betrüblicher Ereignisse - Das schaurige Spital</h5>
+				<h5 class="mt-4 mx-auto font-weight-light text-center" style="max-width: 300px">{{ purchase.productName }}</h5>
 
-				<!-- Price -->
-				<p class="mx-auto mt-2">{{ price }}</p>
+				<!-- Provider image and name -->
+				<div class="d-flex mx-auto">
+					<img
+						[src]="purchase.providerImage"
+						class="rounded-circle shadow-sm"
+						style="width: 30px; height: 30px">
+					
+					<p class="font-weight-light my-auto"
+						style="font-size: 18px; margin-left: 13px">
+						{{ purchase.providerName }}
+					</p>
+				</div>
 			</div>
 
 			<!-- Right/Bottom part -->
@@ -184,7 +216,7 @@
 							type="button"
 							class="btn btn-primary btn"
 							[style.marginLeft.px]="paymentLoading ? 32 : 0"
-							[disabled]="paymentLoading"
+							[disabled]="paymentLoading || !hasPaymentMethod"
 							(click)="Pay()">
 							{{ locale.pay.replace('{0}', price) }}
 						</button>

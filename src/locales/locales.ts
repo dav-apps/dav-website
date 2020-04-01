@@ -166,7 +166,8 @@ const enDefaults = {
 		errors: {
 			loginFailed: "Login failed",
 			passwordMissing: "Please enter your password",
-			unexpectedError: "Unexpected error ({0})"
+			unexpectedError: "Unexpected error ({0})",
+			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		},
 		paymentMethodCardHeader: "Your payment method",
 		cardExpires: "Expires",
@@ -643,7 +644,8 @@ const deDefaults = {
 		errors: {
 			loginFailed: "Anmeldung fehlgeschlagen",
 			passwordMissing: "Bitte gib dein Passwort ein",
-			unexpectedError: "Unerwarteter Fehler ({0})"
+			unexpectedError: "Unerwarteter Fehler ({0})",
+			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		},
 		paymentMethodCardHeader: "Deine Zahlungsmethode",
 		cardExpires: "Ablaufdatum:",

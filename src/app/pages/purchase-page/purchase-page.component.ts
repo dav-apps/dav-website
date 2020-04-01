@@ -1,7 +1,7 @@
 import { Component, ViewChild, HostListener } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { IButtonStyles, IIconStyles, SpinnerSize } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, LoginResponseData, Log } from 'dav-npm';
+import { ApiResponse, ApiErrorResponse, LoginResponseData, PurchaseResponseData, Log } from 'dav-npm';
 import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component';
 import { DataService, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
@@ -21,12 +21,16 @@ export class PurchasePageComponent{
 		id: number,
 		userId: number,
 		tableObjectId: number,
+		productImage: string,
+		productName: string,
+		providerImage: string,
+		providerName: string,
 		price: number,
 		currency: string,
-		paid: boolean,
 		completed: boolean
-	} = {id: 0, userId: 0, tableObjectId: 0, price: 0, currency: "eur", paid: false, completed: false};
+	} = {id: 0, userId: 0, tableObjectId: 0, productImage: "", productName: "", providerImage: "", providerName: "", price: 0, currency: "eur", completed: false};
 	price: string = "";
+	redirectUrl: string;
 	loginUser: {id: number, username: string, email: string, avatar: string};
 	loginPromise: Promise<null> = new Promise(resolve => this.loginPromiseResolve = resolve);
 	loginPromiseResolve: Function;
@@ -62,24 +66,28 @@ export class PurchasePageComponent{
 	constructor(
 		public dataService: DataService,
 		private websocketService: WebsocketService,
+		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
 		this.locale = this.dataService.GetLocale().purchasePage;
 		this.dataService.hideNavbarAndFooter = true;
+
+		this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirect_url");
+		if(!this.redirectUrl) this.RedirectToStartPageWithError();
 	}
 
 	async ngOnInit(){
 		this.setSize();
-		await this.dataService.userPromise;
+		await this.dataService.userDownloadPromise;
 
 		// Get the id from the url
 		let purchaseId = this.activatedRoute.snapshot.paramMap.get('id');
 
 		// Get the purchase from the server
-		let response = await this.websocketService.Emit(WebsocketCallbackType.GetPurchase, {id: +purchaseId});
+		let response: ApiResponse<PurchaseResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.GetPurchase, {id: +purchaseId});
 
 		if(response.status == 200){
-			this.purchase = response.data;
+			this.purchase = (response as ApiResponse<PurchaseResponseData>).data;
 			this.price = (this.purchase.price / 100).toFixed(2) + " €";
 
 			if(this.dataService.locale.slice(0, 2) == "de"){
@@ -96,7 +104,7 @@ export class PurchasePageComponent{
 			(this.dataService.user.IsLoggedIn && this.dataService.user.Id != this.purchase.userId)
 		){
 			// Get the user of the purchase
-			let getUserByAuthResponse = await this.websocketService.Emit(WebsocketCallbackType.GetUserByAuth, {id: response.data.userId});
+			let getUserByAuthResponse = await this.websocketService.Emit(WebsocketCallbackType.GetUserByAuth, {id: this.purchase.userId});
 
 			if(getUserByAuthResponse.status == 200){
 				this.loginUser = {
@@ -165,10 +173,10 @@ export class PurchasePageComponent{
 
 	async GetPaymentMethod(){
 		if(this.dataService.user.StripeCustomerId){
-			let paymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId})
-			this.hasPaymentMethod = paymentMethodResponse.success;
+			let paymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
+			this.hasPaymentMethod = paymentMethodResponse.success && paymentMethodResponse.response;
 
-			if(paymentMethodResponse.success){
+			if(this.hasPaymentMethod){
 				this.paymentMethodLast4 = paymentMethodResponse.response.card.last4;
 				this.paymentMethodExpirationMonth = paymentMethodResponse.response.card.exp_month.toString();
 				this.paymentMethodExpirationYear = paymentMethodResponse.response.card.exp_year.toString().substring(2);
@@ -188,7 +196,28 @@ export class PurchasePageComponent{
 		await this.GetPaymentMethod();
 	}
 
-	Pay(){
+	async Pay(){
 		this.paymentLoading = true;
+
+		// Complete the purchase on the server
+		let completePurchaseResponse: ApiResponse<PurchaseResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CompletePurchase, {id: this.purchase.id});
+
+		if(completePurchaseResponse.status == 200){
+			// Redirect to the redirect url
+			window.location.href = this.redirectUrl;
+		}else{
+			// Redirect back to redirect url with error
+			// TODO
+		}
+	}
+
+	NavigateBack(){
+		// Redirect back to the app
+		window.location.href = this.redirectUrl;
+	}
+
+	RedirectToStartPageWithError(){
+		this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong;
+		this.router.navigate(['/']);
 	}
 }
