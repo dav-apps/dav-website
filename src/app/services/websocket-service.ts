@@ -80,6 +80,7 @@ export enum WebsocketCallbackType{
 	GetProvider,
 	// Purchase
 	GetPurchase,
+	CompletePurchase,
 	// App
 	CreateApp,
 	GetApp,
@@ -135,6 +136,7 @@ export const Callbacks = {
 	createProvider: WebsocketCallbackType.CreateProvider,
 	getProvider: WebsocketCallbackType.GetProvider,
 	getPurchase: WebsocketCallbackType.GetPurchase,
+	completePurchase: WebsocketCallbackType.CompletePurchase,
 	createApp: WebsocketCallbackType.CreateApp,
 	getApp: WebsocketCallbackType.GetApp,
 	getActiveAppUsers: WebsocketCallbackType.GetActiveAppUsers,
