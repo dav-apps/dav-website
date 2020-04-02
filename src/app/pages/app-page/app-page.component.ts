@@ -1,7 +1,14 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, App, Table, Api } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	GetApp,
+	App,
+	Table,
+	Api
+} from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
@@ -86,14 +93,17 @@ export class AppPageComponent{
 			return;
 		}
 
-		let appId = this.activatedRoute.snapshot.paramMap.get('id');
+		// Get the app
+		let appId = +this.activatedRoute.snapshot.paramMap.get('id');
 		
-		this.GetAppResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetApp, {
-				jwt: this.dataService.user.JWT,
-				id: appId
-			})
-		)
+		let getAppResponse: ApiResponse<App> | ApiErrorResponse = await GetApp(this.dataService.user.JWT, appId);
+
+		if(getAppResponse.status == 200){
+			this.app = (getAppResponse as ApiResponse<App>).data;
+		}else{
+			// Redirect to the Dev page
+			this.router.navigate(['dev']);
+		}
 	}
 
 	GoBack(){
@@ -192,15 +202,6 @@ export class AppPageComponent{
 				name: this.addApiDialogApiName
 			})
 		)
-	}
-
-	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){
-		if(response.status == 200){
-			this.app = (response as ApiResponse<App>).data;
-		}else{
-			// Redirect to the Dev page
-			this.router.navigate(['dev']);
-		}
 	}
 
 	UpdateAppResponse(response: ApiResponse<App> | ApiErrorResponse){

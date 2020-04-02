@@ -4,10 +4,18 @@ import { IIconStyles } from 'office-ui-fabric-react';
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as moment from 'moment';
-import { ApiResponse, ApiErrorResponse, GetAppUsersResponseData, GetActiveAppUsersResponseData, App } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	GetAppUsers,
+	GetAppUsersResponseData,
+	GetApp,
+	App,
+	GetActiveAppUsers,
+	GetActiveAppUsersResponseData
+} from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 
 @Component({
 	selector: 'dav-website-app-statistics-page',
@@ -36,7 +44,6 @@ export class AppStatisticsPageComponent{
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
@@ -68,26 +75,42 @@ export class AppStatisticsPageComponent{
 
 		let appId = +this.activatedRoute.snapshot.paramMap.get('id');
 
-		this.GetAppResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetApp, {
-				jwt: this.dataService.user.JWT,
-				id: appId
-			})
-		)
+		await this.LoadApp(appId);
+		await this.LoadAppUsers(appId);
+		await this.LoadActiveAppUsers(appId);
+	}
 
-		this.GetAppUsersResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetAppUsers, {
-				jwt: this.dataService.user.JWT,
-				id: appId
-			})
-		)
+	async LoadApp(appId: number){
+		let response: ApiResponse<App> | ApiErrorResponse = await GetApp(this.dataService.user.JWT, appId);
 
-		this.GetActiveAppUsersResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetActiveAppUsers, {
-				jwt: this.dataService.user.JWT,
-				id: appId
-			})
-		)
+		if(response.status == 200){
+			this.app = (response as ApiResponse<App>).data;
+		}else{
+			// Redirect to the Dev page
+			this.router.navigate(['dev']);
+		}
+	}
+
+	async LoadAppUsers(appId: number){
+		let response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse = await GetAppUsers(this.dataService.user.JWT, appId);
+
+		if(response.status == 200){
+			this.ProcessUsers((response as ApiResponse<GetAppUsersResponseData>).data);
+		}else{
+			// Redirect to the App page
+			this.router.navigate(['dev', this.app.Id]);
+		}
+	}
+
+	async LoadActiveAppUsers(appId: number){
+		let response: ApiResponse<GetActiveAppUsersResponseData> | ApiErrorResponse = await GetActiveAppUsers(this.dataService.user.JWT, appId);
+
+		if(response.status == 200){
+			this.ProcessActiveUsers((response as ApiResponse<GetActiveAppUsersResponseData>).data);
+		}else{
+			// Redirect to the App page
+			this.router.navigate(['dev', this.app.Id]);
+		}
 	}
 
 	ProcessUsers(users: GetAppUsersResponseData){
@@ -175,32 +198,5 @@ export class AppStatisticsPageComponent{
 
 	GoBack(){
 		this.router.navigate(['dev', this.app.Id]);
-	}
-
-	GetAppResponse(response: ApiResponse<App> | ApiErrorResponse){
-		if(response.status == 200){
-			this.app = (response as ApiResponse<App>).data;
-		}else{
-			// Redirect to the Dev page
-			this.router.navigate(['dev']);
-		}
-	}
-
-	GetAppUsersResponse(response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse){
-		if(response.status == 200){
-			this.ProcessUsers((response as ApiResponse<GetAppUsersResponseData>).data);
-		}else{
-			// Redirect to the App page
-			this.router.navigate(['dev', this.app.Id]);
-		}
-	}
-
-	GetActiveAppUsersResponse(response: ApiResponse<GetActiveAppUsersResponseData> | ApiErrorResponse){
-		if(response.status == 200){
-			this.ProcessActiveUsers((response as ApiResponse<GetActiveAppUsersResponseData>).data);
-		}else{
-			// Redirect to the App page
-			this.router.navigate(['dev', this.app.Id]);
-		}
 	}
 }

@@ -52,7 +52,6 @@ export enum WebsocketCallbackType{
 	SignupImplicit,
 	SignupSession,
 	// Analytics
-	GetAppUsers,
 	GetUsers,
 	GetActiveUsers,
 	// Session
@@ -83,8 +82,6 @@ export enum WebsocketCallbackType{
 	CompletePurchase,
 	// App
 	CreateApp,
-	GetApp,
-	GetActiveAppUsers,
 	GetAllApps,
 	UpdateApp,
 	// Table
@@ -110,7 +107,6 @@ export const Callbacks = {
 	signup: WebsocketCallbackType.Signup,
 	signupImplicit: WebsocketCallbackType.SignupImplicit,
 	signupSession: WebsocketCallbackType.SignupSession,
-	getAppUsers: WebsocketCallbackType.GetAppUsers,
 	getUsers: WebsocketCallbackType.GetUsers,
 	getActiveUsers: WebsocketCallbackType.GetActiveUsers,
 	createSession: WebsocketCallbackType.CreateSession,
@@ -135,8 +131,6 @@ export const Callbacks = {
 	getPurchase: WebsocketCallbackType.GetPurchase,
 	completePurchase: WebsocketCallbackType.CompletePurchase,
 	createApp: WebsocketCallbackType.CreateApp,
-	getApp: WebsocketCallbackType.GetApp,
-	getActiveAppUsers: WebsocketCallbackType.GetActiveAppUsers,
 	getAllApps: WebsocketCallbackType.GetAllApps,
 	updateApp: WebsocketCallbackType.UpdateApp,
 	createTable: WebsocketCallbackType.CreateTable,
