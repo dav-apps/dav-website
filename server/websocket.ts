@@ -10,7 +10,6 @@ import * as app from './websocket/app';
 import * as table from './websocket/table';
 import * as event from './websocket/event';
 import * as api from './websocket/api';
-import * as apiError from './websocket/api-error';
 import * as stripe from './websocket/stripe';
 
 var socket = null;
@@ -29,7 +28,6 @@ export function init(s: any){
 	for(let name in table.sockets) socket.on(name, table.sockets[name]);
 	for(let name in event.sockets) socket.on(name, event.sockets[name]);
 	for(let name in api.sockets) socket.on(name, api.sockets[name]);
-	for(let name in apiError.sockets) socket.on(name, apiError.sockets[name]);
 	for(let name in stripe.sockets) socket.on(name, stripe.sockets[name]);
 
 	InitStatic(process.env.ENV == "production" ? DavEnvironment.Production : DavEnvironment.Development);

@@ -93,9 +93,6 @@ export enum WebsocketCallbackType{
 	GetEventByName,
 	// Api
 	CreateApi,
-	GetApi,
-	// ApiError
-	SetApiError,
 	// Stripe
 	SaveStripePaymentMethod,
 	GetStripePaymentMethod,
@@ -145,8 +142,6 @@ export const Callbacks = {
 	createTable: WebsocketCallbackType.CreateTable,
 	getEventByName: WebsocketCallbackType.GetEventByName,
 	createApi: WebsocketCallbackType.CreateApi,
-	getApi: WebsocketCallbackType.GetApi,
-	setApiError: WebsocketCallbackType.SetApiError,
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,
 	getStripePaymentMethod: WebsocketCallbackType.GetStripePaymentMethod,
 	setStripeSubscription: WebsocketCallbackType.SetStripeSubscription,

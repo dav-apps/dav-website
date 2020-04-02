@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, Api, ApiError } from 'dav-npm';
+import { IIconStyles } from 'office-ui-fabric-react';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	Api,
+	GetApi,
+	ApiError
+} from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
 
 @Component({
@@ -14,28 +19,14 @@ export class ApiPageComponent{
 	locale = enUS.apiPage;
 	api: Api = new Api(0, "", [], [], []);
 	appId: number = 0;
-	addErrorDialogVisible: boolean = false;
-	addErrorDialogCode: string = "";
-	addErrorDialogCodeError: string = "";
-	addErrorDialogMessage: string = "";
-	addErrorDialogMessageError: string = "";
 	backButtonIconStyles: IIconStyles = {
 		root: {
          fontSize: 19
 		}
 	}
-	dialogPrimaryButtonStyles: IButtonStyles = {
-		root: {
-			marginLeft: 10
-		}
-	}
-	addErrorDialogContentProps: IDialogContentProps = {
-		title: this.locale.addErrorDialog.title
-	}
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
@@ -55,38 +46,22 @@ export class ApiPageComponent{
 		}
 
 		this.appId = +this.activatedRoute.snapshot.paramMap.get('id');
-		let apiId = this.activatedRoute.snapshot.paramMap.get('api_id');
+		let apiId = +this.activatedRoute.snapshot.paramMap.get('api_id');
 
-		this.GetApiResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetApi, {
-				jwt: this.dataService.user.JWT, 
-				id: apiId
-			})
-		)
+		// Get the api
+		let getApiResponse: ApiResponse<Api> | ApiErrorResponse = await GetApi(this.dataService.user.JWT, apiId);
+
+		if(getApiResponse.status == 200){
+			this.api = (getApiResponse as ApiResponse<Api>).data;
+			this.SortErrors();
+		}else{
+			// Redirect to the app page
+			this.router.navigate(['dev', this.appId]);
+		}
 	}
 
 	GoBack(){
 		this.router.navigate(['dev', this.appId]);
-	}
-
-	ShowAddErrorDialog(){
-		this.addErrorDialogCode = "";
-		this.addErrorDialogMessage = "";
-		this.addErrorDialogContentProps.title = this.locale.addErrorDialog.title;
-		this.addErrorDialogVisible = true;
-	}
-
-	async AddError(){
-		this.addErrorDialogCodeError = "";
-		this.addErrorDialogMessageError = "";
-
-		this.SetApiErrorResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SetApiError, {
-				apiId: this.api.Id,
-				code: +this.addErrorDialogCode,
-				message: this.addErrorDialogMessage
-			})
-		)
 	}
 
 	SortErrors(){
@@ -96,42 +71,5 @@ export class ApiPageComponent{
 			else if(a.Code < b.Code) return -1;
 			return 0;
 		});
-	}
-
-	GetApiResponse(response: ApiResponse<Api> | ApiErrorResponse){
-		if(response.status == 200){
-			this.api = (response as ApiResponse<Api>).data;
-			this.SortErrors();
-		}else{
-			// Redirect to the app page
-			this.router.navigate(['dev', this.appId]);
-		}
-	}
-
-	SetApiErrorResponse(response: ApiResponse<ApiError> | ApiErrorResponse){
-		if(response.status == 200){
-			this.api.Errors.push((response as ApiResponse<ApiError>).data);
-			this.SortErrors();
-			this.addErrorDialogVisible = false;
-		}else{
-			let errors = (response as ApiErrorResponse).errors;
-
-			for(let error of errors){
-				switch(error.code){
-					case 2135:
-						this.addErrorDialogCodeError = this.locale.addErrorDialog.errors.codeMissing;
-						break;
-					case 2136 || 2210:
-						this.addErrorDialogMessageError = this.locale.addErrorDialog.errors.messageTooShort;
-						break;
-					case 2310:
-						this.addErrorDialogMessageError = this.locale.addErrorDialog.errors.messageTooLong;
-						break;
-					case 2407:
-						this.addErrorDialogCodeError = this.locale.addErrorDialog.errors.codeInvalid;
-						break;
-				}
-			}
-		}
 	}
 }

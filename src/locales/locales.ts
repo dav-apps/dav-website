@@ -398,22 +398,7 @@ const enDefaults = {
 		accessNotAllowedMessage: "You can't access this page",
 		endpoints: "Endpoints",
 		functions: "Functions",
-		errors: "Errors",
-		addErrorDialog: {
-			title: "Add error",
-			codeTextfieldLabel: "Code",
-			codeTextfieldPlaceholder: "Error code",
-			messageTextfieldLabel: "Message",
-			messageTextfieldPlaceholder: "Error message",
-			errors: {
-				codeMissing: "Pease enter an error code",
-				codeInvalid: "The error code is invalid",
-				messageTooShort: "The message is too short",
-				messageTooLong: "The message is too long"
-			}
-		},
-		save: "Save",
-		cancel: "Cancel"
+		errors: "Errors"
 	},
 	pricingComponent: {
 		free: {
@@ -876,22 +861,7 @@ const deDefaults = {
 		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		endpoints: "Endpunkte",
 		functions: "Funktionen",
-		errors: "Fehler",
-		addErrorDialog: {
-			title: "Fehler hinzufügen",
-			codeTextfieldLabel: "Code",
-			codeTextfieldPlaceholder: "Fehler-Code",
-			messageTextfieldLabel: "Nachricht",
-			messageTextfieldPlaceholder: "Fehler-Nachricht",
-			errors: {
-				codeMissing: "Bitte gib einen Fehler-Code ein",
-				codeInvalid: "Der Fehler-Code ist ungültig",
-				messageTooShort: "Die Nachricht ist zu kurz",
-				messageTooLong: "Die Nachricht ist zu lang"
-			}
-		},
-		save: "Speichern",
-		cancel: "Abbrechen"
+		errors: "Fehler"
 	},
 	pricingComponent: {
 		free: {
