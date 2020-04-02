@@ -22,7 +22,15 @@ app.get('/', getRoot);
 app.get('/*', getUndefined);
 
 io.on('connection', (socket) => {
-	websocket.init(socket);
+	// Check if the request has the referer header
+	let refererHeader = socket.handshake.headers.referer;
+	
+	if(!refererHeader || !refererHeader.startsWith(process.env.BASE_URL)){
+		// Close the connection
+		socket.disconnect();
+	}else{
+		websocket.init(socket);
+	}
 });
 
 http.listen(process.env.PORT || 3000);
