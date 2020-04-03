@@ -1,9 +1,15 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, DevResponseData, App } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	GetDev,
+	DevResponseData,
+	CreateApp,
+	App
+} from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
 
 @Component({
@@ -33,7 +39,6 @@ export class DevPageComponent{
 	
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
 		private router: Router
 	){
 		this.locale = this.dataService.GetLocale().devPage;
@@ -51,7 +56,15 @@ export class DevPageComponent{
 			return;
 		}
 
-		this.GetDevResponse(await this.websocketService.Emit(WebsocketCallbackType.GetDev, {jwt: this.dataService.user.JWT}));
+		// Get the dev
+		let getDevResponse: ApiResponse<DevResponseData> | ApiErrorResponse = await GetDev(this.dataService.user.JWT);
+		
+		if(getDevResponse.status == 200){
+			this.apps = (getDevResponse as ApiResponse<DevResponseData>).data.apps;
+		}else{
+			// Show error
+			this.errorMessage = this.locale.unexpectedErrorShort.replace('{0}', (getDevResponse as ApiErrorResponse).errors[0].code.toString());
+		}
 	}
 
 	ShowApp(appId: number){
@@ -76,25 +89,8 @@ export class DevPageComponent{
 		this.addAppDialogNameError = "";
 		this.addAppDialogDescriptionError = "";
 
-		this.CreateAppResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.CreateApp, {
-				jwt: this.dataService.user.JWT,
-				name: this.addAppDialogName,
-				description: this.addAppDialogDescription
-			})
-		)
-	}
+		let response: ApiResponse<App> | ApiErrorResponse = await CreateApp(this.dataService.user.JWT, this.addAppDialogName, this.addAppDialogDescription);
 
-	GetDevResponse(response: ApiResponse<DevResponseData> | ApiErrorResponse){
-		if(response.status == 200){
-			this.apps = (response as ApiResponse<DevResponseData>).data.apps;
-		}else{
-			// Show error
-			this.errorMessage = this.locale.unexpectedErrorShort.replace('{0}', (response as ApiErrorResponse).errors[0].code.toString());
-		}
-	}
-
-	CreateAppResponse(response: ApiResponse<App> | ApiErrorResponse){
 		if(response.status == 201){
 			this.apps.push((response as ApiResponse<App>).data);
 			this.addAppDialogVisible = false;

@@ -72,8 +72,6 @@ export enum WebsocketCallbackType{
 	SaveNewPassword,
 	SaveNewEmail,
 	ResetNewEmail,
-	// Dev
-	GetDev,
 	// Provider
 	CreateProvider,
 	GetProvider,
@@ -81,7 +79,6 @@ export enum WebsocketCallbackType{
 	GetPurchase,
 	CompletePurchase,
 	// App
-	CreateApp,
 	GetAllApps,
 	// Event
 	GetEventByName,
@@ -120,12 +117,10 @@ export const Callbacks = {
 	saveNewPassword: WebsocketCallbackType.SaveNewPassword,
 	saveNewEmail: WebsocketCallbackType.SaveNewEmail,
 	resetNewEmail: WebsocketCallbackType.ResetNewEmail,
-	getDev: WebsocketCallbackType.GetDev,
 	createProvider: WebsocketCallbackType.CreateProvider,
 	getProvider: WebsocketCallbackType.GetProvider,
 	getPurchase: WebsocketCallbackType.GetPurchase,
 	completePurchase: WebsocketCallbackType.CompletePurchase,
-	createApp: WebsocketCallbackType.CreateApp,
 	getAllApps: WebsocketCallbackType.GetAllApps,
 	getEventByName: WebsocketCallbackType.GetEventByName,
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,

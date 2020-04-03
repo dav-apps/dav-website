@@ -3,7 +3,6 @@ import * as authorization from './websocket/auth';
 import * as analytics from './websocket/analytics';
 import * as session from './websocket/session';
 import * as user from './websocket/user';
-import * as dev from './websocket/dev';
 import * as provider from './websocket/provider';
 import * as purchase from './websocket/purchase';
 import * as app from './websocket/app';
@@ -19,7 +18,6 @@ export function init(s: any){
 	for(let name in analytics.sockets) socket.on(name, analytics.sockets[name]);
 	for(let name in session.sockets) socket.on(name, session.sockets[name]);
 	for(let name in user.sockets) socket.on(name, user.sockets[name]);
-	for(let name in dev.sockets) socket.on(name, dev.sockets[name]);
 	for(let name in provider.sockets) socket.on(name, provider.sockets[name]);
 	for(let name in purchase.sockets) socket.on(name, purchase.sockets[name]);
 	for(let name in app.sockets) socket.on(name, app.sockets[name]);
