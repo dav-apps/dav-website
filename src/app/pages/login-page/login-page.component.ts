@@ -1,7 +1,14 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, LoginResponseData, CreateSessionResponseData, Log } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	LoginResponseData,
+	CreateSessionWithJwt,
+	CreateSessionResponseData,
+	Log
+} from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
@@ -183,14 +190,14 @@ export class LoginPageComponent{
 
 		// Create the session on the server
 		this.CreateSessionWithJwtResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.CreateSessionWithJwt, {
-				jwt: this.dataService.user.JWT,
-				appId: this.appId,
-				apiKey: this.apiKey,
+			await CreateSessionWithJwt(
+				this.dataService.user.JWT,
+				this.appId,
+				this.apiKey,
 				deviceName,
 				deviceType,
 				deviceOs
-			})
+			)
 		)
 	}
 

@@ -56,7 +56,6 @@ export enum WebsocketCallbackType{
 	GetActiveUsers,
 	// Session
 	CreateSession,
-	CreateSessionWithJwt,
 	// User
 	GetUserByAuth,
 	UpdateUser,
@@ -100,7 +99,6 @@ export const Callbacks = {
 	getUsers: WebsocketCallbackType.GetUsers,
 	getActiveUsers: WebsocketCallbackType.GetActiveUsers,
 	createSession: WebsocketCallbackType.CreateSession,
-	createSessionWithJwt: WebsocketCallbackType.CreateSessionWithJwt,
 	getUserByAuth: WebsocketCallbackType.GetUserByAuth,
 	updateUser: WebsocketCallbackType.UpdateUser,
 	createStripeCustomerForUser: WebsocketCallbackType.CreateStripeCustomerForUser,
