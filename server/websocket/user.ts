@@ -1,6 +1,5 @@
 import {
 	GetUserByAuth,
-	CreateStripeCustomerForUser,
 	DeleteUser,
 	RemoveApp,
 	ConfirmUser,
@@ -14,7 +13,6 @@ import * as websocket from '../websocket';
 
 export const sockets = {
 	getUserByAuth,
-	createStripeCustomerForUser,
 	deleteUser,
 	removeApp,
 	confirmUser,
@@ -28,11 +26,6 @@ export const sockets = {
 export async function getUserByAuth(message: {id: number}){
 	let response = await GetUserByAuth(websocket.auth, message.id);
 	websocket.emit(getUserByAuth.name, response);
-}
-
-export async function createStripeCustomerForUser(message: {jwt: string}){
-	let response = await CreateStripeCustomerForUser(message.jwt);
-	websocket.emit(createStripeCustomerForUser.name, response);
 }
 
 export async function deleteUser(message: {

@@ -55,7 +55,6 @@ export enum WebsocketCallbackType{
 	CreateSession,
 	// User
 	GetUserByAuth,
-	CreateStripeCustomerForUser,
 	DeleteUser,
 	RemoveApp,
 	ConfirmUser,
@@ -88,7 +87,6 @@ export const Callbacks = {
 	signupSession: WebsocketCallbackType.SignupSession,
 	createSession: WebsocketCallbackType.CreateSession,
 	getUserByAuth: WebsocketCallbackType.GetUserByAuth,
-	createStripeCustomerForUser: WebsocketCallbackType.CreateStripeCustomerForUser,
 	deleteUser: WebsocketCallbackType.DeleteUser,
 	removeApp: WebsocketCallbackType.RemoveApp,
 	confirmUser: WebsocketCallbackType.ConfirmUser,

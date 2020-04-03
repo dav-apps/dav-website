@@ -1,5 +1,10 @@
 import { Component, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
-import { ApiResponse, ApiErrorResponse, CreateStripeCustomerForUserResponseData } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	CreateStripeCustomerForUser,
+	CreateStripeCustomerForUserResponseData
+} from 'dav-npm';
 import { DataService, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
@@ -74,14 +79,14 @@ export class PaymentFormComponent{
 
 		// Create a stripe customer if the user has no stripe customer
 		if(!this.dataService.user.StripeCustomerId){
-			let CreateStripeCustomerForUserResponse: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CreateStripeCustomerForUser, {jwt: this.dataService.user.JWT});
+			let createStripeCustomerForUserResponse: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse = await CreateStripeCustomerForUser(this.dataService.user.JWT);
 
-			if(CreateStripeCustomerForUserResponse.status == 201){
-				this.dataService.user.StripeCustomerId = (CreateStripeCustomerForUserResponse as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripe_customer_id;
+			if(createStripeCustomerForUserResponse.status == 201){
+				this.dataService.user.StripeCustomerId = (createStripeCustomerForUserResponse as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripe_customer_id;
 				await this.CreatePaymentMethod();
 			}else{
 				// Show error message
-				this.errorMessage = this.locale.unexpectedError.replace('{0}', (CreateStripeCustomerForUserResponse as ApiErrorResponse).errors[0].code.toString());
+				this.errorMessage = this.locale.unexpectedError.replace('{0}', (createStripeCustomerForUserResponse as ApiErrorResponse).errors[0].code.toString());
 			}
 		}else{
 			await this.CreatePaymentMethod();
