@@ -1,13 +1,9 @@
 import {
 	GetUserByAuth,
-	UpdateUser,
 	CreateStripeCustomerForUser,
 	DeleteUser,
 	RemoveApp,
 	ConfirmUser,
-	SendVerificationEmail,
-	SendDeleteAccountEmail,
-	SendRemoveAppEmail,
 	SendPasswordResetEmail,
 	SetPassword,
 	SaveNewPassword,
@@ -18,14 +14,10 @@ import * as websocket from '../websocket';
 
 export const sockets = {
 	getUserByAuth,
-	updateUser,
 	createStripeCustomerForUser,
 	deleteUser,
 	removeApp,
 	confirmUser,
-	sendVerificationEmail,
-	sendDeleteAccountEmail,
-	sendRemoveAppEmail,
 	sendPasswordResetEmail,
 	setPassword,
 	saveNewPassword,
@@ -36,23 +28,6 @@ export const sockets = {
 export async function getUserByAuth(message: {id: number}){
 	let response = await GetUserByAuth(websocket.auth, message.id);
 	websocket.emit(getUserByAuth.name, response);
-}
-
-export async function updateUser(message: {
-	jwt: string,
-	email?: string,
-	username?: string,
-	password?: string,
-	avatar?: string
-}){
-	let updateUserResponse = await UpdateUser(message.jwt, {
-		email: message.email, 
-		username: message.username, 
-		password: message.password, 
-		avatar: message.avatar
-	});
-
-	websocket.emit(updateUser.name, updateUserResponse);
 }
 
 export async function createStripeCustomerForUser(message: {jwt: string}){
@@ -84,21 +59,6 @@ export async function confirmUser(message: {
 }){
 	let response = await ConfirmUser(websocket.auth, message.userId, message.emailConfirmationToken);
 	websocket.emit(confirmUser.name, response);
-}
-
-export async function sendVerificationEmail(message: {jwt: string}){
-	let response = await SendVerificationEmail(message.jwt);
-	websocket.emit(sendVerificationEmail.name, response);
-}
-
-export async function sendDeleteAccountEmail(message: {jwt: string}){
-	let response = await SendDeleteAccountEmail(message.jwt);
-	websocket.emit(sendDeleteAccountEmail.name, response);
-}
-
-export async function sendRemoveAppEmail(message: {jwt: string, appId: number}){
-	let response = await SendRemoveAppEmail(message.jwt, message.appId);
-	websocket.emit(sendRemoveAppEmail.name, response);
 }
 
 export async function sendPasswordResetEmail(message: {email: string}){

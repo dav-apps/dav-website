@@ -4,7 +4,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize, IDropdownOption } from 'office-ui-fabric-react';
 import { ReadFile } from 'ngx-file-helpers';
 import Stripe from 'stripe';
-import { ApiResponse, ApiErrorResponse, UserResponseData, ProviderResponseData, App } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	UpdateUser,
+	UserResponseData,
+	App,
+	SendVerificationEmail,
+	SendDeleteAccountEmail,
+	SendRemoveAppEmail,
+	CreateProvider,
+	GetProvider,
+	ProviderResponseData
+} from 'dav-npm';
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service';
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { environment } from 'src/environments/environment';
@@ -321,10 +333,7 @@ export class UserPageComponent{
 
 		// Send the file content to the server
 		this.UpdateUserResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-				jwt: this.dataService.user.JWT,
-				avatar: content
-			})
+			await UpdateUser(this.dataService.user.JWT, {avatar: content})
 		)
 	}
 
@@ -334,10 +343,7 @@ export class UserPageComponent{
 		this.updatedAttribute = UserAttribute.Username;
 		this.usernameLoading = true;
 		this.UpdateUserResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-				jwt: this.dataService.user.JWT,
-				username: this.username
-			})
+			await UpdateUser(this.dataService.user.JWT, {username: this.username})
 		)
 	}
 
@@ -347,10 +353,7 @@ export class UserPageComponent{
 		this.updatedAttribute = UserAttribute.Email;
 		this.emailLoading = true;
 		this.UpdateUserResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-				jwt: this.dataService.user.JWT,
-				email: this.email
-			})
+			await UpdateUser(this.dataService.user.JWT, {email: this.email})
 		)
 	}
 
@@ -360,18 +363,13 @@ export class UserPageComponent{
 		this.updatedAttribute = UserAttribute.Password;
 		this.passwordLoading = true;
 		this.UpdateUserResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.UpdateUser, {
-				jwt: this.dataService.user.JWT,
-				password: this.password
-			})
+			await UpdateUser(this.dataService.user.JWT, {password: this.password})
 		)
 	}
 
 	SendVerificationEmail(){
-		this.websocketService.Emit(WebsocketCallbackType.SendVerificationEmail, {
-			jwt: this.dataService.user.JWT
-		}).then((message: ApiResponse<{}> | ApiErrorResponse) => {
-			this.SendVerificationEmailResponse(message);
+		SendVerificationEmail(this.dataService.user.JWT).then((response: ApiResponse<{}> | ApiErrorResponse) => {
+			this.SendVerificationEmailResponse(response);
 		});
 
 		return false;
@@ -381,9 +379,7 @@ export class UserPageComponent{
 		this.deleteAccountDialogVisible = false;
 		this.sendDeleteAccountEmailLoading = true;
 		this.SendDeleteAccountEmailResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SendDeleteAccountEmail, {
-				jwt: this.dataService.user.JWT
-			})
+			await SendDeleteAccountEmail(this.dataService.user.JWT)
 		)
 	}
 
@@ -391,10 +387,7 @@ export class UserPageComponent{
 		this.removeAppDialogVisible = false;
 		this.sendRemoveAppEmailLoading = true;
 		this.SendRemoveAppEmailResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SendRemoveAppEmail, {
-				jwt: this.dataService.user.JWT,
-				appId: this.selectedAppToRemove.Id
-			})
+			await SendRemoveAppEmail(this.dataService.user.JWT, this.selectedAppToRemove.Id)
 		)
 	}
 
@@ -437,7 +430,7 @@ export class UserPageComponent{
 
 	async CreateUserProvider(){
 		// Create the provider
-		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CreateProvider, {jwt: this.dataService.user.JWT, country: this.startStripeSetupDialogDropdownSelectedKey});
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await CreateProvider(this.dataService.user.JWT, this.startStripeSetupDialogDropdownSelectedKey);
 		
 		if(providerResponse.status != 201){
 			// Show error
@@ -451,7 +444,7 @@ export class UserPageComponent{
 
 	async GetUserProvider(){
 		// Get the provider
-		let providerResponse: ApiResponse<ProviderResponseData> = await this.websocketService.Emit(WebsocketCallbackType.GetProvider, {jwt: this.dataService.user.JWT});
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await GetProvider(this.dataService.user.JWT);
 		if(providerResponse.status != 200) return;
 
 		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
