@@ -5,12 +5,14 @@ import {
 	ApiResponse,
 	ApiErrorResponse,
 	GetApp,
+	UpdateApp,
 	App,
+	CreateTable,
 	Table,
+	CreateApi,
 	Api
 } from 'dav-npm';
 import { DataService } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 import { enUS } from 'src/locales/locales';
 
 @Component({
@@ -74,7 +76,6 @@ export class AppPageComponent{
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
@@ -138,15 +139,17 @@ export class AppPageComponent{
 		}
 
 		this.UpdateAppResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
-				jwt: this.dataService.user.JWT,
-				id: this.app.Id,
-				name: this.newName,
-				description: this.newDescription,
-				linkWeb: this.newLinkWeb,
-				linkPlay: this.newLinkPlay,
-				linkWindows: this.newLinkWindows
-			})
+			await UpdateApp(
+				this.dataService.user.JWT,
+				this.app.Id,
+				{
+					name: this.newName,
+					description: this.newDescription,
+					linkWeb: this.newLinkWeb,
+					linkPlay: this.newLinkPlay,
+					linkWindows: this.newLinkWindows
+				}
+			)
 		)
 	}
 
@@ -172,9 +175,7 @@ export class AppPageComponent{
 
 	async PublishApp(){
 		this.UpdateAppResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.UpdateApp, {
-				jwt: this.dataService.user.JWT,
-				id: this.app.Id,
+			await UpdateApp(this.dataService.user.JWT, this.app.Id, {
 				published: !this.app.Published
 			})
 		)
@@ -182,13 +183,9 @@ export class AppPageComponent{
 
 	async AddTable(){
 		this.addTableDialogNewTableError = "";
-		
+
 		this.CreateTableResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.CreateTable, {
-				jwt: this.dataService.user.JWT,
-				appId: this.app.Id,
-				name: this.addTableDialogNewTableName
-			})
+			await CreateTable(this.dataService.user.JWT, this.app.Id, this.addTableDialogNewTableName)
 		)
 	}
 
@@ -196,11 +193,7 @@ export class AppPageComponent{
 		this.addApiDialogApiNameError = "";
 
 		this.CreateApiResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.CreateApi, {
-				jwt: this.dataService.user.JWT,
-				appId: this.app.Id,
-				name: this.addApiDialogApiName
-			})
+			await CreateApi(this.dataService.user.JWT, this.app.Id, this.addApiDialogApiName)
 		)
 	}
 

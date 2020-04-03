@@ -1,10 +1,9 @@
-import { CreateApp, GetAllApps, UpdateApp } from 'dav-npm';
+import { CreateApp, GetAllApps } from 'dav-npm';
 import * as websocket from '../websocket';
 
 export const sockets = {
 	createApp,
-	getAllApps,
-	updateApp
+	getAllApps
 }
 
 export async function createApp(message: {
@@ -22,25 +21,4 @@ export async function createApp(message: {
 export async function getAllApps(){
 	let getAllAppsResponse = await GetAllApps(websocket.auth);
 	websocket.emit(getAllApps.name, getAllAppsResponse);
-}
-
-export async function updateApp(message: {
-	jwt: string,
-	id: number,
-	name?: string,
-	description?: string,
-	published?: boolean,
-	linkWeb?: string,
-	linkPlay?: string,
-	linkWindows?: string
-}){
-	let result = await UpdateApp(message.jwt, message.id, {
-		name: message.name,
-		description: message.description,
-		published: message.published,
-		linkWeb: message.linkWeb,
-		linkPlay: message.linkPlay,
-		linkWindows: message.linkWindows
-	});
-	websocket.emit(updateApp.name, result);
 }

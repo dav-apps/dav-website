@@ -7,9 +7,7 @@ import * as dev from './websocket/dev';
 import * as provider from './websocket/provider';
 import * as purchase from './websocket/purchase';
 import * as app from './websocket/app';
-import * as table from './websocket/table';
 import * as event from './websocket/event';
-import * as api from './websocket/api';
 import * as stripe from './websocket/stripe';
 
 var socket = null;
@@ -25,9 +23,7 @@ export function init(s: any){
 	for(let name in provider.sockets) socket.on(name, provider.sockets[name]);
 	for(let name in purchase.sockets) socket.on(name, purchase.sockets[name]);
 	for(let name in app.sockets) socket.on(name, app.sockets[name]);
-	for(let name in table.sockets) socket.on(name, table.sockets[name]);
 	for(let name in event.sockets) socket.on(name, event.sockets[name]);
-	for(let name in api.sockets) socket.on(name, api.sockets[name]);
 	for(let name in stripe.sockets) socket.on(name, stripe.sockets[name]);
 
 	InitStatic(process.env.ENV == "production" ? DavEnvironment.Production : DavEnvironment.Development);
