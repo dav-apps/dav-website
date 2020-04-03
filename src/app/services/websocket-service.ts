@@ -51,9 +51,6 @@ export enum WebsocketCallbackType{
 	Signup,
 	SignupImplicit,
 	SignupSession,
-	// Analytics
-	GetUsers,
-	GetActiveUsers,
 	// Session
 	CreateSession,
 	// User
@@ -96,8 +93,6 @@ export const Callbacks = {
 	signup: WebsocketCallbackType.Signup,
 	signupImplicit: WebsocketCallbackType.SignupImplicit,
 	signupSession: WebsocketCallbackType.SignupSession,
-	getUsers: WebsocketCallbackType.GetUsers,
-	getActiveUsers: WebsocketCallbackType.GetActiveUsers,
 	createSession: WebsocketCallbackType.CreateSession,
 	getUserByAuth: WebsocketCallbackType.GetUserByAuth,
 	updateUser: WebsocketCallbackType.UpdateUser,

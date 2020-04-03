@@ -4,10 +4,16 @@ import { IIconStyles } from 'office-ui-fabric-react';
 import { ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as moment from 'moment';
-import { ApiResponse, ApiErrorResponse, GetUsersResponseData, GetActiveUsersResponseData } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	GetUsers,
+	GetUsersResponseData,
+	GetActiveUsers,
+	GetActiveUsersResponseData
+} from 'dav-npm';
 import { enUS } from 'src/locales/locales';
 import { DataService } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
 
 @Component({
 	selector: 'dav-website-statistics-page',
@@ -39,7 +45,6 @@ export class StatisticsPageComponent{
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
 		private router: Router
 	){
 		this.locale = this.dataService.GetLocale().statisticsPage;
@@ -71,17 +76,12 @@ export class StatisticsPageComponent{
 		}
 
 		this.GetUsersResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetUsers, {
-				jwt: this.dataService.user.JWT
-			})
+			await GetUsers(this.dataService.user.JWT)
 		)
 
 		let start = moment().startOf('day').subtract(6, 'months').unix();
 		this.GetActiveUsersResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetActiveUsers, {
-				jwt: this.dataService.user.JWT,
-				start
-			})
+			await GetActiveUsers(this.dataService.user.JWT, start)
 		)
 	}
 

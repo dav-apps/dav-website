@@ -1,6 +1,5 @@
 import { InitStatic, DavEnvironment, Auth } from 'dav-npm';
 import * as authorization from './websocket/auth';
-import * as analytics from './websocket/analytics';
 import * as session from './websocket/session';
 import * as user from './websocket/user';
 import * as provider from './websocket/provider';
@@ -14,7 +13,6 @@ export var auth: Auth;
 export function init(s: any){
 	socket = s;
 	for(let name in authorization.sockets) socket.on(name, authorization.sockets[name]);
-	for(let name in analytics.sockets) socket.on(name, analytics.sockets[name]);
 	for(let name in session.sockets) socket.on(name, session.sockets[name]);
 	for(let name in user.sockets) socket.on(name, user.sockets[name]);
 	for(let name in provider.sockets) socket.on(name, provider.sockets[name]);
