@@ -1,7 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IIconStyles } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, Event, EventSummaryOsCount, EventSummaryBrowserCount, EventSummaryCountryCount } from 'dav-npm';
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	GetEventByName,
+	Event,
+	EventSummaryOsCount,
+	EventSummaryBrowserCount,
+	EventSummaryCountryCount
+} from 'dav-npm';
 import { ChartDataSets } from 'chart.js';
 import { BaseChartDirective, Label } from 'ng2-charts';
 import Chartkick from "chartkick";
@@ -90,11 +98,7 @@ export class EventPageComponent{
 		this.eventChartDataSets[0].label = eventName;
 
 		this.GetEventByNameResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.GetEventByName, {
-				jwt: this.dataService.user.JWT,
-				name: eventName,
-				appId: this.appId
-			})
+			await GetEventByName(this.dataService.user.JWT, eventName, this.appId)
 		)
 	}
 

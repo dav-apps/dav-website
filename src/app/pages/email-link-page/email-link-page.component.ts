@@ -17,7 +17,7 @@ export class EmailLinkPageComponent{
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
+		private websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	){
