@@ -29,7 +29,6 @@ import { ChartsModule } from 'ng2-charts';
 
 // Services
 import { DataService } from './services/data-service';
-import { ApiService } from './services/api-service';
 import { WebsocketService } from './services/websocket-service';
 
 // Components
@@ -117,7 +116,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
   	],
   	providers: [
 		DataService,
-		ApiService,
 		WebsocketService
 	],
   	bootstrap: [AppComponent]

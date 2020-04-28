@@ -59,7 +59,7 @@ export class PricingComponent{
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService
+		private websocketService: WebsocketService
 	){
 		this.locale = this.dataService.GetLocale().pricingComponent;
 	}
