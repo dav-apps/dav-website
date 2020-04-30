@@ -41,7 +41,7 @@
     "chart.js": "^2.9.2",
     "chartkick": "^3.2.0",
     "dav-npm": "git+https://github.com/dav-apps/dav-npm.git#v1.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "moment": "^2.24.0",
     "ng2-charts": "^2.3.0",
     "ngx-file-helpers": "^2.0.0",
