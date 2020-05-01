@@ -161,7 +161,7 @@ export class UserPageComponent{
 	@ViewChild('bankAccountForm', {static: true}) bankAccountForm: BankAccountFormComponent;
 	providerStripeAccountId: string = null;
 	providerStripeAccount: Stripe.Account = null;
-	providerStripeBalance: Stripe.Balance = null;
+	providerStripeBalance: string;
 	providerBankAccount: Stripe.BankAccount = null;
 	startStripeSetupDialogVisible: boolean = false;
 	startStripeSetupDialogDropdownOptions: IDropdownOption[] = [];
@@ -454,16 +454,24 @@ export class UserPageComponent{
 	async GetStripeData(){
 		// Get the stripe account
 		let stripeAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeAccount, {id: this.providerStripeAccountId});
-		if(!stripeAccountResponse.success) return;
+		if (!stripeAccountResponse.success) return;
 
 		this.providerStripeAccount = stripeAccountResponse.response;
 		this.providerBankAccount = this.providerStripeAccount.external_accounts.data[0] as Stripe.BankAccount;
 
 		// Get the balance
 		let stripeBalanceResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeBalance, {account: this.providerStripeAccountId});
-		if(!stripeBalanceResponse.success) return;
+		if (!stripeBalanceResponse.success) return;
 
-		this.providerStripeBalance = stripeBalanceResponse.response;
+		// Calculate the balance
+		let balance = stripeBalanceResponse.response as Stripe.Balance;
+		if (balance.pending.length == 0) return;
+
+		this.providerStripeBalance = `${(balance.pending[0].amount / 100).toFixed(2)} ${this.GetCharForCurrency(balance.pending[0].currency)}`;
+
+		if (this.dataService.locale.slice(0, 2) == "de") {
+			this.providerStripeBalance = this.providerStripeBalance.replace('.', ',');
+		}
 	}
 
 	async OpenStripeOnboardingPage(update: boolean = false){
