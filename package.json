@@ -45,7 +45,7 @@
     "jquery": "^3.4.1",
     "moment": "2.24.0",
     "ng2-charts": "^2.3.0",
-    "ngx-file-helpers": "^2.0.0",
+    "ngx-file-helpers": "^4.0.0",
     "office-ui-fabric-core": "^10.1.0",
     "office-ui-fabric-react": "^6.211.5",
     "react": "^16.12.0",
