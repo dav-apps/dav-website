@@ -234,8 +234,8 @@ export class UserPageComponent{
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
 			SetTextFieldAutocomplete('first-name-textfield', 'given-name')
-			SetTextFieldAutocomplete('email-text-field', 'email')
-			SetTextFieldAutocomplete('password-text-field', 'new-password')
+			SetTextFieldAutocomplete('email-textfield', 'email')
+			SetTextFieldAutocomplete('password-textfield', 'new-password')
 		}, 1)
 	}
 
@@ -668,25 +668,37 @@ export class UserPageComponent{
 		return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 	}
 
-	FirstNameTextFieldChanged(event: KeyboardEvent){
-		if(event.keyCode == 13) this.SaveUsername()
-		else this.ClearMessages()
+	async FirstNameTextFieldChanged(event: KeyboardEvent) {
+		if (event.key == "Enter") {
+			event.preventDefault()
+			await this.SaveUsername()
+		} else {
+			this.ClearMessages()
+		}
 	}
 
-	EmailTextFieldChanged(event: KeyboardEvent){
-		if(event.keyCode == 13) this.SaveEmail();
-		else this.ClearMessages();
+	async EmailTextFieldChanged(event: KeyboardEvent) {
+		if (event.key == "Enter") {
+			event.preventDefault()
+			await this.SaveEmail()
+		} else {
+			this.ClearMessages()
+		}
 	}
 
-	PasswordTextFieldChanged(event: KeyboardEvent){
-		if(event.keyCode == 13) this.SavePassword();
-		else this.ClearMessages();
+	async PasswordTextFieldChanged(event: KeyboardEvent) {
+		if (event.key == "Enter") {
+			event.preventDefault()
+			await this.SavePassword()
+		} else {
+			this.ClearMessages()
+		}
 
-		this.passwordConfirmationVisible = this.password.length >= 7 && this.password.length <= 25;
+		this.passwordConfirmationVisible = this.password.length >= 7 && this.password.length <= 25
 
 		if(this.passwordConfirmationVisible){
 			// Set the autocomplete attribute of the password confirmation text field
-			SetTextFieldAutocomplete('password-confirmation-text-field', 'new-password');
+			SetTextFieldAutocomplete('password-confirmation-textfield', 'new-password')
 		}
 	}
 

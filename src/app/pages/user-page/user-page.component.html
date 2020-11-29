@@ -35,93 +35,102 @@
 					</div>
 
 					<!-- First name -->
-					<div class="mt-4 d-flex" style="font-size: 18px">
-						<fab-text-field 
-							id="first-name-textfield"
-							[(value)]="firstName"
-							[label]="locale.general.firstNameTextfieldLabel"
-							[placeholder]="locale.general.firstNameTextfieldPlaceholder"
-							[errorMessage]="usernameErrorMessage"
-							[styles]="textFieldStyles"
-							type="text"
-							autocomplete="given-name"
-							(keydown)="FirstNameTextFieldChanged($event)"></fab-text-field>
-
-						<button
-							type="button"
-							class="btn btn-sm ml-2 icon-button"
-							style="margin-top: 32px"
-							[disabled]="usernameLoading"
-							(click)="SaveUsername()"
-							*ngIf="firstName != dataService.user.Username && firstName.length >= 2 && firstName.length <= 25">
-							<fab-icon iconName="Save"></fab-icon>
-						</button>
-
-						<div style="margin-top: 39px; margin-left: 10px" *ngIf="usernameLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-					</div>
+					<form>
+						<div class="mt-4 d-flex" style="font-size: 18px">
+							<fab-text-field 
+								id="first-name-textfield"
+								[(value)]="firstName"
+								[label]="locale.general.firstNameTextfieldLabel"
+								[placeholder]="locale.general.firstNameTextfieldPlaceholder"
+								[errorMessage]="usernameErrorMessage"
+								[styles]="textFieldStyles"
+								type="text"
+								autocomplete="given-name"
+								(keydown)="FirstNameTextFieldChanged($event)">
+							</fab-text-field>
+	
+							<button
+								type="button"
+								class="btn btn-sm ml-2 icon-button"
+								style="margin-top: 32px"
+								[disabled]="usernameLoading"
+								(click)="SaveUsername()"
+								*ngIf="firstName != dataService.user.Username && firstName.length >= 2 && firstName.length <= 25">
+								<fab-icon iconName="Save"></fab-icon>
+							</button>
+	
+							<div style="margin-top: 39px; margin-left: 10px" *ngIf="usernameLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+						</div>
+					</form>
 
 					<!-- Email -->
-					<div class="mt-4 d-flex" style="font-size: 18px">
-						<fab-text-field 
-							id="email-text-field"
-							[(value)]="email" 
-							[label]="locale.general.emailTextfieldLabel" 
-							[placeholder]="locale.general.emailTextfieldPlaceholder"
-							[errorMessage]="emailErrorMessage" 
-							[styles]="textFieldStyles"
-							type="email"
-							autocomplete="email"
-							(keydown)="EmailTextFieldChanged($event)"></fab-text-field>
-
-						<button
-							type="button"
-							class="btn btn-sm ml-2 icon-button"
-							style="margin-top: 32px"
-							[disabled]="emailLoading"
-							(click)="SaveEmail()"
-							*ngIf="email != dataService.user.Email && email != newEmail && email.length > 3 && email.includes('@')">
-							<fab-icon iconName="Save"></fab-icon>
-						</button>
-
-						<div style="margin-top: 39px; margin-left: 10px" *ngIf="emailLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-					</div>
-
-					<!-- Password -->
-					<div class="mt-4 d-flex flex-column" style="font-size: 18px">
-						<fab-text-field 
-							id="password-text-field"
-							[(value)]="password" 
-							[label]="locale.general.passwordTextfieldLabel" 
-							[placeholder]="locale.general.passwordTextfieldPlaceholder"
-							[errorMessage]="passwordErrorMessage"
-							[styles]="textFieldStyles"
-							type="password"
-							autocomplete="new-password"
-							(keydown)="PasswordTextFieldChanged($event)">
-						</fab-text-field>
-
-						<fab-text-field 
-							id="password-confirmation-text-field"
-							[(value)]="passwordConfirmation" 
-							[label]="locale.general.passwordConfirmationTextfieldLabel" 
-							[placeholder]="locale.general.passwordConfirmationTextfieldPlaceholder" 
-							className="mt-3" 
-							[styles]="textFieldStyles"
-							type="password"
-							autocomplete="new-password"
-							(keydown)="PasswordTextFieldChanged($event)"
-							*ngIf="password.length >= 7 && password.length <= 25">
-						</fab-text-field>
-
-						<div class="d-flex">
-							<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation || passwordLoading" className="mt-3">{{ locale.save }}</fab-primary-button>
-							<div style="margin-top: 24px; margin-left: 14px" *ngIf="passwordLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+					<form>
+						<div class="mt-4 d-flex" style="font-size: 18px">
+							<fab-text-field
+								id="email-textfield"
+								[(value)]="email"
+								[label]="locale.general.emailTextfieldLabel"
+								[placeholder]="locale.general.emailTextfieldPlaceholder"
+								[errorMessage]="emailErrorMessage"
+								[styles]="textFieldStyles"
+								type="email"
+								autocomplete="email"
+								(keydown)="EmailTextFieldChanged($event)">
+							</fab-text-field>
+	
+							<button
+								type="button"
+								class="btn btn-sm ml-2 icon-button"
+								style="margin-top: 32px"
+								[disabled]="emailLoading"
+								(click)="SaveEmail()"
+								*ngIf="email != dataService.user.Email && email != newEmail && email.length > 3 && email.includes('@')">
+								<fab-icon iconName="Save"></fab-icon>
+							</button>
+	
+							<div style="margin-top: 39px; margin-left: 10px" *ngIf="emailLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 						</div>
-					</div>
+					</form>
+					
+					<!-- Password -->
+					<form>
+						<div class="mt-4 d-flex flex-column" style="font-size: 18px">
+							<fab-text-field
+								id="password-textfield"
+								[(value)]="password"
+								[label]="locale.general.passwordTextfieldLabel"
+								[placeholder]="locale.general.passwordTextfieldPlaceholder"
+								[errorMessage]="passwordErrorMessage"
+								[styles]="textFieldStyles"
+								type="password"
+								autocomplete="new-password"
+								(keydown)="PasswordTextFieldChanged($event)">
+							</fab-text-field>
+	
+							<fab-text-field
+								id="password-confirmation-textfield"
+								[(value)]="passwordConfirmation"
+								[label]="locale.general.passwordConfirmationTextfieldLabel"
+								[placeholder]="locale.general.passwordConfirmationTextfieldPlaceholder"
+								className="mt-3"
+								[styles]="textFieldStyles"
+								type="password"
+								autocomplete="new-password"
+								(keydown)="PasswordTextFieldChanged($event)"
+								*ngIf="password.length >= 7 && password.length <= 25">
+							</fab-text-field>
+	
+							<div class="d-flex">
+								<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation || passwordLoading" className="mt-3">{{ locale.save }}</fab-primary-button>
+								<div style="margin-top: 24px; margin-left: 14px" *ngIf="passwordLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+							</div>
+						</div>
+					</form>
 
 					<div 
 						style="border: 0.5px solid #dadada; width: 200px; margin: 20px 0px"
-						*ngIf="!passwordConfirmationVisible"></div>
+						*ngIf="!passwordConfirmationVisible">
+					</div>
 
 					<div class="d-flex" style="float: right; margin-right: 80px">
 						<div style="margin-top: 8px; margin-right: 14px" *ngIf="sendDeleteAccountEmailLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
@@ -129,7 +138,9 @@
 							[styles]="deleteAccountButtonStyles"
 							[disabled]="sendDeleteAccountEmailLoading" 
 							*ngIf="!passwordConfirmationVisible"
-							(click)="deleteAccountDialogVisible = true">{{ locale.general.deleteAccount }}</fab-primary-button>
+							(click)="deleteAccountDialogVisible = true">
+							{{ locale.general.deleteAccount }}
+						</fab-primary-button>
 					</div>
 				</div>
 			</div>
