@@ -1,40 +1,40 @@
-import { Component, HostListener } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react';
-import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse, Log } from 'dav-npm';
-import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
-import { environment } from 'src/environments/environment';
-import { enUS } from 'src/locales/locales';
-declare var deviceAPI: any;
+import { Component, HostListener } from '@angular/core'
+import { Router, ActivatedRoute } from '@angular/router'
+import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react'
+import { ApiResponse, SignupResponseData, LoginResponseData, ApiErrorResponse, Log } from 'dav-npm'
+import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service'
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { environment } from 'src/environments/environment'
+import { enUS } from 'src/locales/locales'
+declare var deviceAPI: any
 
-const signupTypeImplicit = "implicit";
-const signupTypeSession = "session";
-const signupEventName = "signup";
-const signupImplicitEventName = "signup_implicit";
-const signupSessionEventName = "signup_session";
+const signupTypeImplicit = "implicit"
+const signupTypeSession = "session"
+const signupEventName = "signup"
+const signupImplicitEventName = "signup_implicit"
+const signupSessionEventName = "signup_session"
 
 @Component({
 	selector: 'dav-website-signup-page',
 	templateUrl: './signup-page.component.html'
 })
 export class SignupPageComponent{
-	locale = enUS.signupPage;
-	username: string = "";
-	email: string = "";
-	password: string = "";
-	passwordConfirmation: string = "";
-	signupType: SignupType = SignupType.Normal;
-	appId: number = -1;
-	apiKey: string = null;
-	redirectUrl: string = null;
-	errorMessage: string = "";
-	height: number = 400;
-	backButtonWidth: number = 40;
-	messageBarType: MessageBarType = MessageBarType.error;
-	spinnerSize: SpinnerSize = SpinnerSize.small;
-	signupLoading: boolean = false;
-	redirectedFromLogin: boolean = false;
+	locale = enUS.signupPage
+	firstName: string = ""
+	email: string = ""
+	password: string = ""
+	passwordConfirmation: string = ""
+	signupType: SignupType = SignupType.Normal
+	appId: number = -1
+	apiKey: string = null
+	redirectUrl: string = null
+	errorMessage: string = ""
+	height: number = 400
+	backButtonWidth: number = 40
+	messageBarType: MessageBarType = MessageBarType.error
+	spinnerSize: SpinnerSize = SpinnerSize.small
+	signupLoading: boolean = false
+	redirectedFromLogin: boolean = false
 
 	constructor(
 		public dataService: DataService,
@@ -73,22 +73,22 @@ export class SignupPageComponent{
 	}
 
 	ngOnInit(){
-		this.setSize();
+		this.setSize()
 	}
 
 	ngAfterViewInit(){
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
-			SetTextFieldAutocomplete('username-text-field', 'username', true);
-			SetTextFieldAutocomplete('email-text-field', 'email');
-			SetTextFieldAutocomplete('password-text-field', 'new-password');
-			SetTextFieldAutocomplete('password-confirmation-text-field', 'new-password');
-		}, 1);
+			SetTextFieldAutocomplete('first-name-textfield', 'given-name', true)
+			SetTextFieldAutocomplete('email-textfield', 'email')
+			SetTextFieldAutocomplete('password-textfield', 'new-password')
+			SetTextFieldAutocomplete('password-confirmation-textfield', 'new-password')
+		}, 1)
 	}
 
 	@HostListener('window:resize')
 	onResize(){
-		this.setSize();
+		this.setSize()
 	}
 
 	setSize(){
@@ -109,7 +109,7 @@ export class SignupPageComponent{
 			case SignupType.Normal:
 				this.SignupResponse(
 					await this.websocketService.Emit(WebsocketCallbackType.Signup, {
-						username: this.username,
+						username: this.firstName,
 						email: this.email,
 						password: this.password
 					})
@@ -119,7 +119,7 @@ export class SignupPageComponent{
 				this.SignupImplicitResponse(
 					await this.websocketService.Emit(WebsocketCallbackType.SignupImplicit, {
 						apiKey: this.apiKey,
-						username: this.username,
+						username: this.firstName,
 						email: this.email,
 						password: this.password
 					})
@@ -144,7 +144,7 @@ export class SignupPageComponent{
 				// Create the user on the server
 				this.SignupSessionResponse(
 					await this.websocketService.Emit(WebsocketCallbackType.SignupSession, {
-						username: this.username,
+						username: this.firstName,
 						email: this.email,
 						password: this.password,
 						appId: this.appId,
@@ -252,8 +252,6 @@ export class SignupPageComponent{
 				return this.locale.errors.passwordTooLong;
 			case 2401:
 				return this.locale.errors.emailInvalid;
-			case 2701:
-				return this.locale.errors.usernameTaken;
 			case 2702:
 				return this.locale.errors.emailTaken;
 			default:

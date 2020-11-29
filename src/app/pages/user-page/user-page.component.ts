@@ -1,9 +1,9 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize, IDropdownOption } from 'office-ui-fabric-react';
-import { ReadFile } from 'ngx-file-helpers';
-import Stripe from 'stripe';
+import { Component, HostListener, ViewChild } from '@angular/core'
+import { Router, ActivatedRoute } from '@angular/router'
+import { MatSnackBar } from '@angular/material/snack-bar'
+import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize, IDropdownOption } from 'office-ui-fabric-react'
+import { ReadFile } from 'ngx-file-helpers'
+import Stripe from 'stripe'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -16,21 +16,21 @@ import {
 	CreateProvider,
 	GetProvider,
 	ProviderResponseData
-} from 'dav-npm';
-import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
-import { environment } from 'src/environments/environment';
-import { enUS } from 'src/locales/locales';
-import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component';
+} from 'dav-npm'
+import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service'
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { environment } from 'src/environments/environment'
+import { enUS } from 'src/locales/locales'
+import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
 
-const maxAvatarFileSize = 5000000;
-const snackBarDuration = 3000;
-const dangerButtonBackgroundColor = "#dc3545";
-const dangerButtonHoverBackgroundColor = "#c82333";
-const buttonTransition = "all 0.15s";
-const plansHash = "plans";
-const appsHash = "apps";
-const providerHash = "provider";
+const maxAvatarFileSize = 5000000
+const snackBarDuration = 3000
+const dangerButtonBackgroundColor = "#dc3545"
+const dangerButtonHoverBackgroundColor = "#c82333"
+const buttonTransition = "all 0.15s"
+const plansHash = "plans"
+const appsHash = "apps"
+const providerHash = "provider"
 
 @Component({
 	selector: 'dav-website-user-page',
@@ -40,29 +40,29 @@ const providerHash = "provider";
 	]
 })
 export class UserPageComponent{
-	locale = enUS.userPage;
+	locale = enUS.userPage
 
-	selectedMenu: Menu = Menu.General;
-	sideNavHidden: boolean = false;
-	sideNavOpened: boolean = false;
+	selectedMenu: Menu = Menu.General
+	sideNavHidden: boolean = false
+	sideNavOpened: boolean = false
 
-	successMessageBarType: MessageBarType = MessageBarType.success;
-	warningMessageBarType: MessageBarType = MessageBarType.warning;
-	errorMessageBarType: MessageBarType = MessageBarType.error;
-	spinnerSize: SpinnerSize = SpinnerSize.small;
+	successMessageBarType: MessageBarType = MessageBarType.success
+	warningMessageBarType: MessageBarType = MessageBarType.warning
+	errorMessageBarType: MessageBarType = MessageBarType.error
+	spinnerSize: SpinnerSize = SpinnerSize.small
 
 	//#region General page
-	updatedAttribute: UserAttribute = UserAttribute.Username;
-	newAvatarContent: string = null;
-	username: string = "";
-	email: string = "";
-	newEmail: string = "";
-	password: string = "";
-	passwordConfirmation: string = "";
-	passwordConfirmationVisible: boolean = false;
-	deleteAccountDialogVisible: boolean = false;
-	removeAppDialogVisible: boolean = false;
-	selectedAppToRemove: App = null;
+	updatedAttribute: UserAttribute = UserAttribute.Username
+	newAvatarContent: string = null
+	firstName: string = ""
+	email: string = ""
+	newEmail: string = ""
+	password: string = ""
+	passwordConfirmation: string = ""
+	passwordConfirmationVisible: boolean = false
+	deleteAccountDialogVisible: boolean = false
+	removeAppDialogVisible: boolean = false
+	selectedAppToRemove: App = null
 
 	successMessage: string = "";
 	errorMessage: string = "";
@@ -233,15 +233,15 @@ export class UserPageComponent{
 	ngAfterViewInit(){
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
-			SetTextFieldAutocomplete('username-text-field', 'username');
-			SetTextFieldAutocomplete('email-text-field', 'email');
-			SetTextFieldAutocomplete('password-text-field', 'new-password');
-		}, 1);
+			SetTextFieldAutocomplete('first-name-textfield', 'given-name')
+			SetTextFieldAutocomplete('email-text-field', 'email')
+			SetTextFieldAutocomplete('password-text-field', 'new-password')
+		}, 1)
 	}
 
 	@HostListener('window:resize')
 	onResize(){
-		this.setSize();
+		this.setSize()
 	}
 
 	setSize(){
@@ -253,30 +253,30 @@ export class UserPageComponent{
 
 	UpdateValues(){
 		// Set the values for the text fields
-		this.username = this.dataService.user.Username;
-		this.email = this.dataService.user.Email;
+		this.firstName = this.dataService.user.Username
+		this.email = this.dataService.user.Email
 
-		this.UpdateUsedStoragePercent();
+		this.UpdateUsedStoragePercent()
 	}
 
 	ShowGeneralMenu(){
-		if(this.selectedMenu == Menu.General) return;
-		this.selectedMenu = Menu.General;
-		if(this.sideNavHidden) this.sideNavOpened = false;
+		if(this.selectedMenu == Menu.General) return
+		this.selectedMenu = Menu.General
+		if(this.sideNavHidden) this.sideNavOpened = false
 		
-		this.ClearMessages();
-		this.username = this.dataService.user.Username;
-		this.email = this.dataService.user.Email;
-		this.password = "";
-		this.passwordConfirmation = "";
-		this.passwordConfirmationVisible = false;
+		this.ClearMessages()
+		this.firstName = this.dataService.user.Username
+		this.email = this.dataService.user.Email
+		this.password = ""
+		this.passwordConfirmation = ""
+		this.passwordConfirmationVisible = false
 
 		// Set the content of the avatar image if it was updated
 		setTimeout(() => {
-			this.UpdateAvatarImageContent();
-		}, 1);
+			this.UpdateAvatarImageContent()
+		}, 1)
 
-		this.router.navigateByUrl('user');
+		this.router.navigateByUrl('user')
 	}
 
 	ShowPlansMenu(){
@@ -338,12 +338,12 @@ export class UserPageComponent{
 	}
 
 	async SaveUsername(){
-		if(!(this.username != this.dataService.user.Username && this.username.length >= 2 && this.username.length <= 25)) return;
+		if(!(this.firstName != this.dataService.user.Username && this.firstName.length >= 2 && this.firstName.length <= 25)) return
 
-		this.updatedAttribute = UserAttribute.Username;
-		this.usernameLoading = true;
+		this.updatedAttribute = UserAttribute.Username
+		this.usernameLoading = true
 		this.UpdateUserResponse(
-			await UpdateUser(this.dataService.user.JWT, {username: this.username})
+			await UpdateUser(this.dataService.user.JWT, {username: this.firstName})
 		)
 	}
 
@@ -529,8 +529,8 @@ export class UserPageComponent{
 				this.snackBar.open(this.locale.messages.avatarUpdateMessage, null, {duration: 5000});
 			}
 			else if(this.updatedAttribute == UserAttribute.Username){
-				this.dataService.user.Username = this.username;
-				this.snackBar.open(this.locale.messages.usernameUpdateMessage, null, {duration: snackBarDuration});
+				this.dataService.user.Username = this.firstName
+				this.snackBar.open(this.locale.messages.usernameUpdateMessage, null, {duration: snackBarDuration})
 			}else if(this.updatedAttribute == UserAttribute.Email){
 				this.successMessage = this.locale.messages.emailUpdateMessage;
 				this.newEmail = this.email;
@@ -624,8 +624,6 @@ export class UserPageComponent{
 				return this.locale.errors.usernameTooShort;
 			case 2301:
 				return this.locale.errors.usernameTooLong;
-			case 2701:
-				return this.locale.errors.usernameTaken;
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 		}
@@ -670,9 +668,9 @@ export class UserPageComponent{
 		return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString());
 	}
 
-	UsernameTextFieldChanged(event: KeyboardEvent){
-		if(event.keyCode == 13) this.SaveUsername();
-		else this.ClearMessages();
+	FirstNameTextFieldChanged(event: KeyboardEvent){
+		if(event.keyCode == 13) this.SaveUsername()
+		else this.ClearMessages()
 	}
 
 	EmailTextFieldChanged(event: KeyboardEvent){

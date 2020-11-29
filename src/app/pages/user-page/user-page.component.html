@@ -34,26 +34,26 @@
 						<div style="margin-top: 8px; margin-left: 14px" *ngIf="avatarLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 					</div>
 
-					<!-- Username -->
+					<!-- First name -->
 					<div class="mt-4 d-flex" style="font-size: 18px">
 						<fab-text-field 
-							id="username-text-field"
-							[(value)]="username" 
-							[label]="locale.general.usernameTextfieldLabel" 
-							[placeholder]="locale.general.usernameTextfieldPlaceholder"
-							[errorMessage]="usernameErrorMessage" 
+							id="first-name-textfield"
+							[(value)]="firstName"
+							[label]="locale.general.firstNameTextfieldLabel"
+							[placeholder]="locale.general.firstNameTextfieldPlaceholder"
+							[errorMessage]="usernameErrorMessage"
 							[styles]="textFieldStyles"
 							type="text"
-							autocomplete="username"
-							(keydown)="UsernameTextFieldChanged($event)"></fab-text-field>
+							autocomplete="given-name"
+							(keydown)="FirstNameTextFieldChanged($event)"></fab-text-field>
 
-						<button 
-							type="button" 
+						<button
+							type="button"
 							class="btn btn-sm ml-2 icon-button"
 							style="margin-top: 32px"
 							[disabled]="usernameLoading"
 							(click)="SaveUsername()"
-							*ngIf="username != dataService.user.Username && username.length >= 2 && username.length <= 25">
+							*ngIf="firstName != dataService.user.Username && firstName.length >= 2 && firstName.length <= 25">
 							<fab-icon iconName="Save"></fab-icon>
 						</button>
 
