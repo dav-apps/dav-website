@@ -250,7 +250,8 @@ const enDefaults = {
 			passwordUpdateMessage: "You will receive an email to confirm your new password",
 			sendVerificationEmailMessage: "A new confirmation email has been sent",
 			sendDeleteAccountEmailMessage: "You will receive an email to confirm the deletion of your account",
-			sendRemoveAppEmailMessage: "You will receive an email to confirm the removal of the app"
+			sendRemoveAppEmailMessage: "You will receive an email to confirm the removal of the app",
+			bankAccountUpdateMessage: "Your bank account has been updated successfully"
 		},
 		errors: {
 			unexpectedErrorShort: "Unexpected error ({0})",
@@ -713,7 +714,8 @@ const deDefaults = {
 			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts",
 			sendVerificationEmailMessage: "Eine neue Bestätigungsemail wurde gesendet",
 			sendDeleteAccountEmailMessage: "Du erhältst eine Email, um die Löschung deines Accounts zu bestätigen",
-			sendRemoveAppEmailMessage: "Du erhältst eine Email, um die Entfernung der App zu bestätigen"
+			sendRemoveAppEmailMessage: "Du erhältst eine Email, um die Entfernung der App zu bestätigen",
+			bankAccountUpdateMessage: "Dein Bankkonto wurde erfolgreich aktualisiert"
 		},
 		errors: {
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",

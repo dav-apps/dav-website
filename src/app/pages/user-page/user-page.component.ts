@@ -522,6 +522,7 @@ export class UserPageComponent{
 		this.providerStripeAccount = stripeAccount
 		this.providerBankAccount = stripeAccount.external_accounts.data[0] as Stripe.BankAccount
 		this.bankAccountDialogVisible = false
+		this.successMessage = this.locale.messages.bankAccountUpdateMessage
 	}
 
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){

@@ -277,7 +277,18 @@
 					</fab-message-bar>
 
 					<!-- Message bar for errors -->
-					<fab-message-bar [messageBarType]="errorMessageBarType" *ngIf="errorMessage.length > 0">{{ errorMessage }}</fab-message-bar>
+					<fab-message-bar
+						[messageBarType]="errorMessageBarType"
+						*ngIf="errorMessage.length > 0">
+						{{ errorMessage }}
+					</fab-message-bar>
+
+					<!-- Message bar for success -->
+					<fab-message-bar
+						[messageBarType]="successMessageBarType"
+						*ngIf="successMessage.length > 0">
+						{{ successMessage }}
+					</fab-message-bar>
 				</div>
 
 				<div class="row ml-2">
