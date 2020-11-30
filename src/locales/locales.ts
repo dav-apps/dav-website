@@ -239,6 +239,7 @@ const enDefaults = {
 			},
 			countries: {
 				de: "Germany",
+				at: "Austria",
 				us: "United States"
 			}
 		},
@@ -450,7 +451,8 @@ const enDefaults = {
 	},
 	bankAccountFormComponent: {
 		name: "Name",
-		unexpectedError: "An unexpected error occured. Please try it again later."
+		unexpectedError: "An unexpected error occured. Please try it again later.",
+		unexpectedErrorWithCode: "Unexpected error ({0})"
 	}
 }
 
@@ -700,6 +702,7 @@ const deDefaults = {
 			},
 			countries: {
 				de: "Deutschland",
+				at: "Österreich",
 				us: "Vereinigte Staaten"
 			}
 		},
@@ -911,7 +914,8 @@ const deDefaults = {
 	},
 	bankAccountFormComponent: {
 		name: "Name",
-		unexpectedError: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
+		unexpectedError: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
+		unexpectedErrorWithCode: "Unerwarteter Fehler ({0})"
 	}
 }
 

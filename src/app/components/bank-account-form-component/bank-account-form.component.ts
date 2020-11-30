@@ -23,7 +23,6 @@ export class BankAccountFormComponent{
 	name: string = "";
 	errorMessage: string = "";
 	bankName: string = "";
-	loading: boolean = false;
 
 	constructor(
 		public dataService: DataService,
@@ -86,20 +85,26 @@ export class BankAccountFormComponent{
 			currency: "eur",
 			account_holder_name: this.name,
 			account_holder_type: "individual"
-		});
+		})
 
-		// Save the token on the server
-		let updateStripeCustomAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.UpdateStripeCustomAccount, {
-			id: this.stripeCustomAccountId,
-			bankAccountToken: tokenResult.token.id
-		});
-		this.loadingEnd.emit(null);
+		if (tokenResult.error) {
+			this.errorMessage = this.locale.unexpectedErrorWithCode.replace('{0}', tokenResult.error.code)
+			this.loadingEnd.emit(null)
+		} else {
+			// Save the token on the server
+			let updateStripeCustomAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.UpdateStripeCustomAccount, {
+				id: this.stripeCustomAccountId,
+				bankAccountToken: tokenResult.token.id
+			})
 
-		if(!updateStripeCustomAccountResponse.success){
-			// Show error message
-			this.errorMessage = this.locale.unexpectedError;
-		}else{
-			this.completed.emit(updateStripeCustomAccountResponse.response);
+			this.loadingEnd.emit(null)
+
+			if(updateStripeCustomAccountResponse.success){
+				this.completed.emit(updateStripeCustomAccountResponse.response)
+			} else {
+				// Show error message
+				this.errorMessage = this.locale.unexpectedError
+			}
 		}
 	}
 }

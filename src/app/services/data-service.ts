@@ -15,22 +15,22 @@ export class DataService{
 	startPageSuccessMessage: string = "";
 
 	constructor(){
-		this.user = new DavUser(() => this.userPromiseResolve(this.user));
+		this.user = new DavUser(() => this.userPromiseResolve(this.user))
 	}
 
 	GetLocale(){
-		let l = this.locale.toLowerCase();
+		let l = this.locale.toLowerCase()
 
-		if(l.includes("en")){			// en
-			if(l == "en-gb")				return locales.enGB;
-			else								return locales.enUS;
-		}else if(l.includes("de")){	// de
-			if(l == "de-at")				return locales.deAT;
-			else if(l == "de-ch")		return locales.deCH;
-			else								return locales.deDE;
+		if(l.startsWith("en")){			// en
+			if(l == "en-gb")				return locales.enGB
+			else								return locales.enUS
+		}else if(l.startsWith("de")){	// de
+			if(l == "de-at")				return locales.deAT
+			else if(l == "de-ch")		return locales.deCH
+			else								return locales.deDE
 		}
 
-		return locales.enUS;
+		return locales.enUS
 	}
 }
 

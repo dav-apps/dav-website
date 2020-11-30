@@ -400,12 +400,13 @@ export class UserPageComponent{
 			this.startStripeSetupDialogDropdownOptions.push({key, text: value});
 		}
 
-		// Select the appropriate option
-		let lang = this.dataService.locale.slice(0, 2);
-		if(lang == "de"){
-			this.startStripeSetupDialogDropdownSelectedKey = "de";
-		}else{
-			this.startStripeSetupDialogDropdownSelectedKey = "us";
+		// Select the appropriate country
+		if (this.dataService.locale.toLowerCase() == "de-at") {
+			this.startStripeSetupDialogDropdownSelectedKey = "at"
+		} else if (this.dataService.locale.startsWith("de")) {
+			this.startStripeSetupDialogDropdownSelectedKey = "de"
+		} else {
+			this.startStripeSetupDialogDropdownSelectedKey = "us"
 		}
 	}
 
@@ -517,9 +518,10 @@ export class UserPageComponent{
 		await this.bankAccountForm.SaveBankAccount();
 	}
 
-	BankAccountDialogCompleted(stripeAccount: Stripe.Account){
-		this.providerStripeAccount = stripeAccount;
-		this.bankAccountDialogVisible = false;
+	BankAccountDialogCompleted(stripeAccount: Stripe.Account) {
+		this.providerStripeAccount = stripeAccount
+		this.providerBankAccount = stripeAccount.external_accounts.data[0] as Stripe.BankAccount
+		this.bankAccountDialogVisible = false
 	}
 
 	UpdateUserResponse(message: ApiResponse<UserResponseData> | ApiErrorResponse){

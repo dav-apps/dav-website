@@ -1,10 +1,42 @@
 <mat-sidenav-container>
 	<mat-sidenav #sideNav [mode]="sideNavHidden ? 'over' : 'side'" [(opened)]="sideNavOpened">
 		<mat-nav-list style="margin-top: 100px">
-			<mat-list-item (click)="ShowGeneralMenu()" disableRipple [ngClass]="selectedMenu == 0 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.general }}</mat-list-item>
-			<mat-list-item (click)="ShowPlansMenu()" disableRipple [ngClass]="selectedMenu == 1 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.plans }}</mat-list-item>
-			<mat-list-item (click)="ShowAppsMenu()" disableRipple [ngClass]="selectedMenu == 2 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.apps }}</mat-list-item>
-			<!--<mat-list-item (click)="ShowProviderMenu()" disableRipple [ngClass]="selectedMenu == 3 ? 'selected-menu-item' : ''" class="px-4">{{ locale.sideNav.provider }}</mat-list-item>-->
+			<!-- General -->
+			<mat-list-item
+				class="px-4"
+				[ngClass]="selectedMenu == 0 ? 'selected-menu-item' : ''"
+				disableRipple
+				(click)="ShowGeneralMenu()">
+				{{ locale.sideNav.general }}
+			</mat-list-item>
+
+			<!-- Plans -->
+			<mat-list-item
+				class="px-4"
+				[ngClass]="selectedMenu == 1 ? 'selected-menu-item' : ''"
+				disableRipple
+				(click)="ShowPlansMenu()">
+				{{ locale.sideNav.plans }}
+			</mat-list-item>
+
+			<!-- Apps -->
+			<mat-list-item
+				class="px-4"
+				[ngClass]="selectedMenu == 2 ? 'selected-menu-item' : ''"
+				disableRipple
+				(click)="ShowAppsMenu()">
+				{{ locale.sideNav.apps }}
+			</mat-list-item>
+
+			<!-- Provider -->
+			<mat-list-item
+				class="px-4"
+				[ngClass]="selectedMenu == 3 ? 'selected-menu-item' : ''"
+				disableRipple
+				(click)="ShowProviderMenu()"
+				*ngIf="dataService.user.Provider">
+				{{ locale.sideNav.provider }}
+			</mat-list-item>
 		</mat-nav-list>
 	</mat-sidenav>
   	<mat-sidenav-content style="overflow: hidden">
@@ -349,12 +381,14 @@
 	[minWidth]="'340px'"
 	[dialogContentProps]="bankAccountDialogContent"
 	(onDismiss)="bankAccountDialogVisible = bankAccountDialogLoading">
+
 	<dav-website-bank-account-form
 		#bankAccountForm
 		[stripeCustomAccountId]="providerStripeAccountId"
 		(completed)="BankAccountDialogCompleted($event)"
 		(loadingStart)="bankAccountDialogLoading = true"
-		(loadingEnd)="bankAccountDialogLoading = false"></dav-website-bank-account-form>
+		(loadingEnd)="bankAccountDialogLoading = false">
+	</dav-website-bank-account-form>
 
 	<fab-dialog-footer>
 		<div [style.display]="bankAccountDialogLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
