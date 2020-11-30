@@ -109,7 +109,7 @@ const enDefaults = {
 		signup: "Sign up",
 		deviceInfoUnknown: "Unknown",
 		errors: {
-			usernameMissing: "Please enter a username",
+			usernameMissing: "Please enter your name",
 			emailMissing: "Please enter your email",
 			passwordMissing: "Please enter a password",
 			passwordConfirmationNotMatching: "Your password doesn't match your password confirmation",
@@ -245,7 +245,7 @@ const enDefaults = {
 		},
 		messages: {
 			avatarUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
-			usernameUpdateMessage: "Your username has been updated successfully",
+			usernameUpdateMessage: "Your name has been updated successfully",
 			emailUpdateMessage: "You will receive an email to confirm your new email address",
 			passwordUpdateMessage: "You will receive an email to confirm your new password",
 			sendVerificationEmailMessage: "A new confirmation email has been sent",
@@ -572,7 +572,7 @@ const deDefaults = {
 		signup: "Registrieren",
 		deviceInfoUnknown: "Unbekannt",
 		errors: {
-			usernameMissing: "Bitte gib einen Nutzernamen ein",
+			usernameMissing: "Bitte gib deinen Namen ein",
 			emailMissing: "Bitte gib deine Email-Adresse ein",
 			passwordMissing: "Bitte gib ein Passwort ein",
 			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein",
@@ -708,7 +708,7 @@ const deDefaults = {
 		},
 		messages: {
 			avatarUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
-			usernameUpdateMessage: "Dein Nutzername wurde erfolgreich aktualisiert",
+			usernameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
 			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
 			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts",
 			sendVerificationEmailMessage: "Eine neue Bestätigungsemail wurde gesendet",
