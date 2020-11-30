@@ -1,12 +1,12 @@
-import { Component, HostListener } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
-import { Init, DavEnvironment, Log } from 'dav-npm';
-import { enUS } from 'src/locales/locales';
-import { DataService } from './services/data-service';
-import { environment } from 'src/environments/environment';
+import { Component, HostListener } from '@angular/core'
+import { Router, NavigationEnd } from '@angular/router'
+import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
+import { Init, DavEnvironment, Log } from 'dav-npm'
+import { enUS } from 'src/locales/locales'
+import { DataService } from './services/data-service'
+import { environment } from 'src/environments/environment'
 
-const visitEventName = "visit";
+const visitEventName = "visit"
 
 @Component({
 	selector: 'app-root',
@@ -14,22 +14,22 @@ const visitEventName = "visit";
 	styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-	locale = enUS.appComponent;
-	width: number = 500;
-	offsetTop: number = 0;
-	year = (new Date()).getFullYear();
+	locale = enUS.appComponent
+	width: number = 500
+	offsetTop: number = 0
+	year = (new Date()).getFullYear()
 
 	constructor(
 		public dataService: DataService,
 		public router: Router
 	){
-		this.locale = this.dataService.GetLocale().appComponent;
+		this.locale = this.dataService.GetLocale().appComponent
 	}
 
 	ngOnInit(){
-		this.setSize();
-		window.onscroll = () => this.offsetTop = window.scrollY;
-		initializeIcons();
+		this.setSize()
+		window.onscroll = () => this.offsetTop = window.scrollY
+		initializeIcons()
 
 		this.router.events.subscribe((navigation: any) => {
 			if(navigation instanceof NavigationEnd){
@@ -39,14 +39,13 @@ export class AppComponent {
 					this.dataService.startPageSuccessMessage = "";
 				}
 			}
-		});
+		})
 
 		Init(
 			environment.production ? DavEnvironment.Production : DavEnvironment.Development,
 			environment.appId,
 			[],
 			[],
-			true,
 			{icon: "", badge: ""},
 			{
 				UpdateAllOfTable: () => {},
@@ -58,28 +57,28 @@ export class AppComponent {
 		)
 
 		// Log the visit
-		Log(environment.apiKey, visitEventName);
+		Log(environment.apiKey, visitEventName)
 	}
 
 	@HostListener('window:resize')
 	onResize(){
-		this.setSize();
+		this.setSize()
 	}
 
 	setSize(){
-		this.width = window.outerWidth;
+		this.width = window.outerWidth
 	}
 
 	Logout(){
 		this.dataService.user.Logout().then(() => {
-			this.router.navigate(['/']);
+			this.router.navigate(['/'])
 		});
 
-		return false;
+		return false
 	}
 
 	HideNavbar(){
-		let navbar = document.getElementById('navbar-responsive');
-		if(navbar) navbar.classList.remove('show');
+		let navbar = document.getElementById('navbar-responsive')
+		if(navbar) navbar.classList.remove('show')
 	}
 }
