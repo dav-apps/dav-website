@@ -158,16 +158,17 @@ export class UserPageComponent{
 	//#endregion
 
 	//#region Provider page
-	@ViewChild('bankAccountForm', {static: true}) bankAccountForm: BankAccountFormComponent;
-	providerStripeAccountId: string = null;
-	providerStripeAccount: Stripe.Account = null;
-	providerStripeBalance: string;
-	providerBankAccount: Stripe.BankAccount = null;
-	startStripeSetupDialogVisible: boolean = false;
-	startStripeSetupDialogDropdownOptions: IDropdownOption[] = [];
-	startStripeSetupDialogDropdownSelectedKey: string = "us";
-	bankAccountDialogVisible: boolean = false;
-	bankAccountDialogLoading: boolean = false;
+	@ViewChild('bankAccountForm', {static: true}) bankAccountForm: BankAccountFormComponent
+	providerStripeAccountId: string = null
+	providerStripeAccount: Stripe.Account = null
+	providerStripeBalance: string
+	providerBankAccount: Stripe.BankAccount = null
+	startStripeSetupDialogVisible: boolean = false
+	startStripeSetupDialogLoading: boolean = false
+	startStripeSetupDialogDropdownOptions: IDropdownOption[] = []
+	startStripeSetupDialogDropdownSelectedKey: string = "us"
+	bankAccountDialogVisible: boolean = false
+	bankAccountDialogLoading: boolean = false
 
 	cardActionButtonStyles: IButtonStyles = {
 		root: {
@@ -419,24 +420,26 @@ export class UserPageComponent{
 		this.startStripeSetupDialogVisible = true;
 	}
 
-	async StartStripeProviderSetup(){
-		await this.CreateUserProvider();
-		await this.OpenStripeOnboardingPage();
+	async StartStripeProviderSetup() {
+		this.startStripeSetupDialogLoading = true
+		await this.CreateUserProvider()
+		await this.OpenStripeOnboardingPage()
 	}
 
 	StartStripeProviderUpdate(){
-		this.OpenStripeOnboardingPage();
-		return false;
+		this.OpenStripeOnboardingPage()
+		return false
 	}
 
 	async CreateUserProvider(){
 		// Create the provider
-		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await CreateProvider(this.dataService.user.JWT, this.startStripeSetupDialogDropdownSelectedKey);
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await CreateProvider(this.dataService.user.JWT, this.startStripeSetupDialogDropdownSelectedKey)
 		
 		if(providerResponse.status != 201){
 			// Show error
-			this.errorMessage = this.locale.errors.unexpectedErrorShort.replace('{0}', (providerResponse as ApiErrorResponse).errors[0].code.toString());
-			return;
+			this.errorMessage = this.locale.errors.unexpectedErrorShort.replace('{0}', (providerResponse as ApiErrorResponse).errors[0].code.toString())
+			this.startStripeSetupDialogLoading = false
+			return
 		}
 
 		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
