@@ -71,8 +71,84 @@ const enDefaults = {
 				For more information, we reference to the <a href="https://stripe.com/privacy" target="blank">Privacy Policy of Stripe</a>.
 			`
 		},
-		endText1: "These rules apply to all our apps and our websites, including web apps and our blog. If specific cases apply to certain apps or services, they will be listed below. If you have any questions, feel free to email us at support@dav-apps.tech",
-		endText2: "We reserve the right to change this privacy policy in the future.<br>Last updated: 14 Oktober 2019"
+		endText1: `These rules apply to all our apps and websites, including web apps and our blog. If specific cases apply to certain apps or services, they will be listed below. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
+		endText2: "We reserve the right to update this privacy policy in the future.",
+		endText3: "Last update: 3.12.2020"
+	},
+	pocketlibTermsPage: {
+		title: "Terms of Service for authors",
+		intro: "The following conditions apply if you register as an author on PocketLib.",
+		section1: {
+			title: "Definitions",
+			text1: `<a href="https://pocketlib.dav-apps.tech" class="font-weight-bold text-dark" target="blank">PocketLib</a> is an app for reading electronic books (ebooks).`,
+			text2: `The <a href="https://pocketlib.dav-apps.tech/store" class="font-weight-bold text-dark" target="blank">PocketLib Store</a> is a digital platform for publishing and purchasing ebooks.`,
+			text3: `
+				<a href="/" class="font-weight-bold text-dark" target="blank">dav</a> is a digital platform where users can sign up. PocketLib is an app of dav,
+				which means users can log in on PocketLib using dav. It is possible to purchase ebooks on the PocketLib Store using
+				the payment information stored in the dav account of the user. Furthermore, a user can access all ebooks in the PocketLib Store
+				if he is a subscriber of dav Pro.
+			`,
+			text4: `
+				<span class="font-weight-bold">dav Pro</span> is a subscription for users of dav, which is used to access all features and contents
+				in PocketLib and all other dav apps for a monthly fee.
+			`,
+			text5: `The <span>library</span> is a page in PocketLib that lists all ebooks that are stored on the user's device and are available for reading.`,
+			text6: `
+				<a href="https://stripe.com" class="font-weight-bold text-dark" target="blank">Stripe</a> is a company for online payment systems. dav uses the services of Stripe
+				for processing payments. Payments in the PocketLib Store are handled by dav.
+			`
+		},
+		section2: {
+			title: "Rights and responsibilities",
+			text1: "If you are an author submitting ebooks for publication on PocketLib, you grant us the rights",
+			list1: {
+				item1: "to offer your uploaded ebooks to users for the specified price or via a subscription",
+				item2: "to provide the user with a download of purchased ebooks without copy protection",
+				item3: "to use the metadata and cover of your ebooks for promotional purposes",
+				item4: "to reject ebooks submitted for publication without giving reasons or to remove already published ebooks from the PocketLib Store",
+				item5: "to correct possible errors in the metadata of uploaded ebooks",
+				item6: "to present and market your ebooks in the Pocketlib Store"
+			},
+			text2: "As an author you commit yourself",
+			list2: {
+				item1: "to submit only ebooks on PocketLib for publication",
+				sublist: {
+					item1: "of which you are the author",
+					item2: "whose content does not violate any legal regulations and does not infringe the rights of third parties"
+				},
+				item2: "to specify only prices that comply with the specifications of any existing fixed book price system"
+			},
+			text3: "As an author you are able to remove your published ebooks from the PocketLib Store at any time."
+		},
+		section3: {
+			title: "Publication and royalties",
+			text1: "In PocketLib there are two ways for users to access published ebooks.",
+			subtitle1: "Purchasing",
+			text2: `
+				As a user you can purchase ebooks in the PocketLib Store for the specified price. Users can add purchased ebooks
+				to their library again and again and download them as files without copy protection.
+			`,
+			text3: "In the case of a purchase, 80 percent of the purchase price goes to the author, while the remaining 20 percent goes to us.",
+			subtitle2: "Access via subscription",
+			text4: `
+				As a subscriber of dav Pro a user can access all ebooks in the PocketLib Store. The user has access to the content as long
+				as he pays the monthly fee. Up to 80 percent of the monthly fee is divided equally among the authors
+				from whom the user has ebooks in his library.
+			`,
+			text5: `
+				The following is an example: A user pays 10 € per month for dav Pro and has two ebooks from two different authors
+				in his library. Both authors earn 4 € per month from this user.<br>This is only a simplified scenario, since the amount
+				that is divided among the authors depends on further factors that are not further described here.
+			`,
+			subtitle3: "Payout of the earnings",
+			text6: `
+				In order for the appropriate amount to be paid out to you as an author, it is necessary for you to register as a provider on dav.
+				This process is handled through Stripe, where some information about you is collected.
+			`,
+			text7: "Your information as a provider is accessible in the settings of your account on dav. There you can also specify a bank account for the monthly payout."
+		},
+		endText1: `We reserve the right to update these terms in the future. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
+		endText2: "Last update: 3.12.2020"
 	},
 	pricingPage: {
 		title: "Pricing"
@@ -535,8 +611,91 @@ const deDefaults = {
 				Für mehr Informationen verweisen wir auf die <a href="https://stripe.com/privacy" target="blank">Datenschutzerklärung von Stripe</a>.
 			`
 		},
-		endText1: "Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Falls spezielle Fälle auf bestimmte Apps oder Dienste zutreffen, werden sie im Folgenden aufgeführt. Falls du Fragen hast, kannst du uns jederzeit eine Email an support@dav-apps.tech schreiben.",
-		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu ändern.<br>Zuletzt geändert: 14. Oktober 2019"
+		endText1: `Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Falls spezielle Fälle auf bestimmte Apps oder Dienste zutreffen, werden sie im Folgenden aufgeführt. Bei Fragen kannst Du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
+		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu aktualisieren.",
+		endText3: "Letzte Aktualisierung: 3.12.2020"
+	},
+	pocketlibTermsPage: {
+		title: "Allgemeine Geschäftsbedingungen für Autoren",
+		intro: "Die folgenden Bestimmungen gelten, wenn Du Dich auf PocketLib als Autor registrierst.",
+		section1: {
+			title: "Begriffserklärungen",
+			text1: `<a href="https://pocketlib.dav-apps.tech" class="font-weight-bold text-dark" target="blank">PocketLib</a> ist eine App zum Lesen von elektronischen Büchern (E-Books).`,
+			text2: `Der <a href="https://pocketlib.dav-apps.tech/store" class="font-weight-bold text-dark" target="blank">PocketLib Store</a> ist eine digitale Plattform zur Veröffentlichung und zum Verkauf von E-Books.`,
+			text3: `
+				<a href="/" class="font-weight-bold text-dark" target="blank">dav</a> ist eine digitale Plattform, auf der sich Nutzer registrieren können.
+				PocketLib ist eine App von dav, was bedeutet, dass man sich in PocketLib mit dav anmelden kann. Mit den in dav hinterlegten
+				Zahlungsinformationen ist es möglich, E-Books im PocketLib Store zu erwerben. Zusätzlich dazu kann man im PocketLib Store
+				auf alle E-Books zugreifen, wenn man Abonnent von dav Pro ist.
+			`,
+			text4: `
+				<span class="font-weight-bold">dav Pro</span> ist ein Abonnement für Nutzer von dav, mit dem man für einen monatlichen Betrag auf alle Funktionen
+				und veröffentlichten Inhalte in PocketLib und alle anderen Apps von dav zugreifen kann.
+			`,
+			text5: `
+				Die <span class="font-weight-bold">Bibliothek</span> bezeichnet eine Seite in PocketLib, auf der alle E-Books aufgelistet sind,
+				die auf dem Gerät des Nutzers gespeichert sind und zum Lesen zur Verfügung stehen.
+			`,
+			text6: `
+				<a href="https://stripe.com" class="font-weight-bold text-dark" target="blank">Stripe</a> ist ein Unternehmen für Online-Bezahlsysteme.
+				dav nutzt die Dienste von Stripe für die Abwicklung von Zahlungen. Zahlungen im PocketLib Store werden über dav abgewickelt.
+
+			`
+		},
+		section2: {
+			title: "Rechte und Verpflichtungen",
+			text1: "Wenn Du als Autor E-Books auf PocketLib zur Veröffentlichung einreichst, räumst Du uns die Rechte ein,",
+			list1: {
+				item1: "Deine hochgeladenen E-Books Nutzern für den angegebenen Preis oder über ein Abo anzubieten",
+				item2: "dem Nutzer die erworbenen E-Books ohne Kopierschutz als Download zur Verfügung zu stellen",
+				item3: "die Metadaten und die Cover Deiner E-Books für Werbezwecke zu nutzen",
+				item4: "ohne Angabe von Gründen die zur Veröffentlichung eingereichten E-Books abzulehnen oder bereits veröffentlichte E-Books aus dem PocketLib Store zu entfernen",
+				item5: "eventuelle Fehler in den Metadaten der hochgeladenen E-Books zu korrigieren",
+				item6: "Deine E-Books im PocketLib Store zu präsentieren und zu vermarkten"
+			},
+			text2: "Als Autor verpflichtest Du Dich dazu,",
+			list2: {
+				item1: "nur E-Books auf PocketLib zur Veröffentlichung einzureichen,",
+				sublist: {
+					item1: "deren Urheber Du selbst bist",
+					item2: "deren Inhalte nicht gegen gesetzlichen Bestimmungen verstoßen und keine Rechte Dritter verletzen"
+				},
+				item2: "mit den von Dir angegebenen Preisen die Vorgaben einer etwaig bestehenden Buchpreisbindung einzuhalten"
+			},
+			text3: "Als Autor bist Du in der Lage, Deine veröffentlichten E-Books jederzeit aus dem PocketLib Store zu entfernen."
+		},
+		section3: {
+			title: "Veröffentlichung und Honorare",
+			text1: "In PocketLib gibt es zwei Arten, um als Nutzer auf veröffentlichte E-Books zuzugreifen.",
+			subtitle1: "Käuflicher Erwerb",
+			text2: `
+				Als Nutzer kann man E-Books im PocketLib Store für den angegebenen Preis erwerben.
+				Nutzer können erworbene E-Books immer wieder zu ihrer Bibliothek hinzufügen und ohne Kopierschutz als Datei herunterladen.
+			`,
+			text3: "Beim käuflichen Erwerb gehen 80 Prozent des Kaufpreises an den Autor, während die restlichen 20 Prozent an uns gehen.",
+			subtitle2: "Zugriff über Abonnement",
+			text4: `
+				Als Abonnent von dav Pro kann man auf alle E-Books im PocketLib Store zugreifen. Dabei hat der Nutzer Zugriff auf die Inhalte,
+				solange er den monatlichen Betrag zahlt. Bis zu 80 Prozent des monatlichen Betrages werden gleichmäßig auf die Autoren, von denen
+				der Nutzer E-Books in seiner Bibliothek hat, aufgeteilt.
+			`,
+			text5: `
+				Im Folgenden ein Beispiel: Ein Nutzer bezahlt 10 € pro Monat für dav Pro
+				und hat zwei E-Books von zwei unterschiedlichen Autoren in seiner Bibliothek.
+				Beide Autoren verdienen damit 4 € im Monat an diesem Nutzer.<br>Dies ist nur ein
+				vereinfachtes Szenario, da der Betrag, der an die Autoren verteilt wird, von
+				weiteren Faktoren abhängt, die an dieser Stelle nicht weiter erläutert werden.
+			`,
+			subtitle3: "Auszahlung der Einnahmen",
+			text6: `
+				Damit der entsprechende Betrag an Dich als Autor ausgezahlt werden kann, ist es notwendig, dass Du Dich
+				bei dav als Anbieter registrierst. Dieser Prozess läuft über Stripe, wobei einige Informationen von Stripe
+				über Dich gesammelt werden.
+			`,
+			text7: "Deine Informationen als Anbieter sind in den Einstellungen deines Kontos auf dav einsehbar. Dort kannst Du auch ein Bankkonto für die monatliche Auszahlung angeben."
+		},
+		endText1: `Wir behalten uns das Recht vor, diese Bestimmungen in Zukunft zu aktualisieren. Bei Fragen kannst Du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
+		endText2: "Letzte Aktualisierung: 3.12.2020",
 	},
 	pricingPage: {
 		title: "Pläne"

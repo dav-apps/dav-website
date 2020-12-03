@@ -40,25 +40,26 @@ import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dial
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component';
 
 // Pages
-import { StartPageComponent } from 'src/app/pages/start-page/start-page.component';
-import { ContactPageComponent } from 'src/app/pages/contact-page/contact-page.component';
-import { PrivacyPageComponent } from 'src/app/pages/privacy-page/privacy-page.component';
-import { PricingPageComponent } from 'src/app/pages/pricing-page/pricing-page.component';
-import { LoginPageComponent } from 'src/app/pages/login-page/login-page.component';
-import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.component';
-import { AppsPageComponent } from 'src/app/pages/apps-page/apps-page.component';
-import { UserPageComponent } from 'src/app/pages/user-page/user-page.component';
-import { PasswordResetPageComponent } from 'src/app/pages/password-reset-page/password-reset-page.component';
-import { ResetPasswordPageComponent } from 'src/app/pages/reset-password-page/reset-password-page.component';
-import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link-page.component';
-import { LoginSessionPageComponent } from 'src/app/pages/login-session-page/login-session-page.component';
-import { DevPageComponent } from 'src/app/pages/dev-page/dev-page.component';
-import { AppPageComponent } from 'src/app/pages/app-page/app-page.component';
-import { EventPageComponent } from 'src/app/pages/event-page/event-page.component';
-import { StatisticsPageComponent } from 'src/app/pages/statistics-page/statistics-page.component';
-import { AppStatisticsPageComponent } from 'src/app/pages/app-statistics-page/app-statistics-page.component';
-import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component';
-import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page.component';
+import { StartPageComponent } from 'src/app/pages/start-page/start-page.component'
+import { ContactPageComponent } from 'src/app/pages/contact-page/contact-page.component'
+import { PrivacyPageComponent } from 'src/app/pages/privacy-page/privacy-page.component'
+import { PocketLibTermsPageComponent } from 'src/app/pages/pocketlib-terms-page/pocketlib-terms-page.component'
+import { PricingPageComponent } from 'src/app/pages/pricing-page/pricing-page.component'
+import { LoginPageComponent } from 'src/app/pages/login-page/login-page.component'
+import { SignupPageComponent } from 'src/app/pages/signup-page/signup-page.component'
+import { AppsPageComponent } from 'src/app/pages/apps-page/apps-page.component'
+import { UserPageComponent } from 'src/app/pages/user-page/user-page.component'
+import { PasswordResetPageComponent } from 'src/app/pages/password-reset-page/password-reset-page.component'
+import { ResetPasswordPageComponent } from 'src/app/pages/reset-password-page/reset-password-page.component'
+import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link-page.component'
+import { LoginSessionPageComponent } from 'src/app/pages/login-session-page/login-session-page.component'
+import { DevPageComponent } from 'src/app/pages/dev-page/dev-page.component'
+import { AppPageComponent } from 'src/app/pages/app-page/app-page.component'
+import { EventPageComponent } from 'src/app/pages/event-page/event-page.component'
+import { StatisticsPageComponent } from 'src/app/pages/statistics-page/statistics-page.component'
+import { AppStatisticsPageComponent } from 'src/app/pages/app-statistics-page/app-statistics-page.component'
+import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component'
+import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page.component'
 
 @NgModule({
   	declarations: [
@@ -73,6 +74,7 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		StartPageComponent,
 		ContactPageComponent,
 		PrivacyPageComponent,
+		PocketLibTermsPageComponent,
 		PricingPageComponent,
 		LoginPageComponent,
 		SignupPageComponent,
