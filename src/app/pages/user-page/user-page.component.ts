@@ -5,6 +5,7 @@ import { MessageBarType, IDialogContentProps, IButtonStyles, SpinnerSize, IDropd
 import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import {
+	Dav,
 	ApiResponse,
 	ApiErrorResponse,
 	UpdateUser,
@@ -52,7 +53,7 @@ export class UserPageComponent{
 	spinnerSize: SpinnerSize = SpinnerSize.small
 
 	//#region General page
-	updatedAttribute: UserAttribute = UserAttribute.Username
+	updatedAttribute: UserAttribute = UserAttribute.FirstName
 	newAvatarContent: string = null
 	firstName: string = ""
 	email: string = ""
@@ -218,17 +219,17 @@ export class UserPageComponent{
 	}
 
 	async ngOnInit(){
-		this.setSize();
+		this.setSize()
 
-		await this.dataService.userPromise;
-		if(!this.dataService.user.IsLoggedIn){
-			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
-			this.router.navigate(['/']);
-			return;
+		await this.dataService.userPromise
+		if(this.dataService.user == null){
+			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage
+			this.router.navigate(['/'])
+			return
 		}
 
-		this.UpdateValues();
-		this.dataService.userDownloadPromise.then(() => this.UpdateValues());
+		this.UpdateValues()
+		this.dataService.userDownloadPromise.then(() => this.UpdateValues())
 	}
 
 	ngAfterViewInit(){
@@ -254,7 +255,7 @@ export class UserPageComponent{
 
 	UpdateValues(){
 		// Set the values for the text fields
-		this.firstName = this.dataService.user.Username
+		this.firstName = this.dataService.user.FirstName
 		this.email = this.dataService.user.Email
 
 		this.UpdateUsedStoragePercent()
@@ -266,7 +267,7 @@ export class UserPageComponent{
 		if(this.sideNavHidden) this.sideNavOpened = false
 		
 		this.ClearMessages()
-		this.firstName = this.dataService.user.Username
+		this.firstName = this.dataService.user.FirstName
 		this.email = this.dataService.user.Email
 		this.password = ""
 		this.passwordConfirmation = ""
@@ -281,43 +282,43 @@ export class UserPageComponent{
 	}
 
 	ShowPlansMenu(){
-		if(this.selectedMenu == Menu.Plans) return;
-		this.selectedMenu = Menu.Plans;
-		if(this.sideNavHidden) this.sideNavOpened = false;
-		this.ClearMessages();
+		if(this.selectedMenu == Menu.Plans) return
+		this.selectedMenu = Menu.Plans
+		if(this.sideNavHidden) this.sideNavOpened = false
+		this.ClearMessages()
 
-		this.router.navigateByUrl(`user#${plansHash}`);
+		this.router.navigateByUrl(`user#${plansHash}`)
 	}
 
 	ShowAppsMenu(){
-		if(this.selectedMenu == Menu.Apps) return;
-		this.selectedMenu = Menu.Apps;
-		if(this.sideNavHidden) this.sideNavOpened = false;
-		this.ClearMessages();
+		if(this.selectedMenu == Menu.Apps) return
+		this.selectedMenu = Menu.Apps
+		if(this.sideNavHidden) this.sideNavOpened = false
+		this.ClearMessages()
 
-		this.router.navigateByUrl(`user#${appsHash}`);
+		this.router.navigateByUrl(`user#${appsHash}`)
 	}
 
 	async ShowProviderMenu(){
-		if(this.selectedMenu == Menu.Provider) return;
-		this.selectedMenu = Menu.Provider;
-		if(this.sideNavHidden) this.sideNavOpened = false;
-		this.ClearMessages();
-		this.InitStartStripeSetupDialogCountriesDropdown();
+		if(this.selectedMenu == Menu.Provider) return
+		this.selectedMenu = Menu.Provider
+		if(this.sideNavHidden) this.sideNavOpened = false
+		this.ClearMessages()
+		this.InitStartStripeSetupDialogCountriesDropdown()
 
-		this.router.navigateByUrl(`user#${providerHash}`);
+		this.router.navigateByUrl(`user#${providerHash}`)
 
-		await this.dataService.userPromise;
+		await this.dataService.userPromise
 		if(!this.dataService.user.Provider){
 			// Wait for the update of the user from the server
-			await this.dataService.userDownloadPromise;
+			await this.dataService.userDownloadPromise
 			
 			// Return if the user is still not a provider
-			if(!this.dataService.user.Provider) return;
+			if(!this.dataService.user.Provider) return
 		}
 
-		await this.GetUserProvider();
-		await this.GetStripeData();
+		await this.GetUserProvider()
+		await this.GetStripeData()
 	}
 
 	async UpdateAvatar(file: ReadFile){
@@ -334,17 +335,17 @@ export class UserPageComponent{
 
 		// Send the file content to the server
 		this.UpdateUserResponse(
-			await UpdateUser(this.dataService.user.JWT, {avatar: content})
+			await UpdateUser(Dav.jwt, {avatar: content})
 		)
 	}
 
 	async SaveUsername(){
-		if(!(this.firstName != this.dataService.user.Username && this.firstName.length >= 2 && this.firstName.length <= 25)) return
+		if(!(this.firstName != this.dataService.user.FirstName && this.firstName.length >= 2 && this.firstName.length <= 25)) return
 
-		this.updatedAttribute = UserAttribute.Username
+		this.updatedAttribute = UserAttribute.FirstName
 		this.usernameLoading = true
 		this.UpdateUserResponse(
-			await UpdateUser(this.dataService.user.JWT, {username: this.firstName})
+			await UpdateUser(Dav.jwt, {username: this.firstName})
 		)
 	}
 
@@ -354,7 +355,7 @@ export class UserPageComponent{
 		this.updatedAttribute = UserAttribute.Email;
 		this.emailLoading = true;
 		this.UpdateUserResponse(
-			await UpdateUser(this.dataService.user.JWT, {email: this.email})
+			await UpdateUser(Dav.jwt, {email: this.email})
 		)
 	}
 
@@ -364,41 +365,41 @@ export class UserPageComponent{
 		this.updatedAttribute = UserAttribute.Password;
 		this.passwordLoading = true;
 		this.UpdateUserResponse(
-			await UpdateUser(this.dataService.user.JWT, {password: this.password})
+			await UpdateUser(Dav.jwt, {password: this.password})
 		)
 	}
 
 	SendVerificationEmail(){
-		SendVerificationEmail(this.dataService.user.JWT).then((response: ApiResponse<{}> | ApiErrorResponse) => {
-			this.SendVerificationEmailResponse(response);
-		});
+		SendVerificationEmail(Dav.jwt).then((response: ApiResponse<{}> | ApiErrorResponse) => {
+			this.SendVerificationEmailResponse(response)
+		})
 
-		return false;
+		return false
 	}
 
 	async DeleteAccount(){
-		this.deleteAccountDialogVisible = false;
-		this.sendDeleteAccountEmailLoading = true;
+		this.deleteAccountDialogVisible = false
+		this.sendDeleteAccountEmailLoading = true
 		this.SendDeleteAccountEmailResponse(
-			await SendDeleteAccountEmail(this.dataService.user.JWT)
+			await SendDeleteAccountEmail(Dav.jwt)
 		)
 	}
 
 	async RemoveApp(){
-		this.removeAppDialogVisible = false;
-		this.sendRemoveAppEmailLoading = true;
+		this.removeAppDialogVisible = false
+		this.sendRemoveAppEmailLoading = true
 		this.SendRemoveAppEmailResponse(
-			await SendRemoveAppEmail(this.dataService.user.JWT, this.selectedAppToRemove.Id)
+			await SendRemoveAppEmail(Dav.jwt, this.selectedAppToRemove.Id)
 		)
 	}
 
 	InitStartStripeSetupDialogCountriesDropdown(){
 		// Add the countries options
-		this.startStripeSetupDialogDropdownOptions = [];
+		this.startStripeSetupDialogDropdownOptions = []
 
 		for(let key of Object.keys(this.locale.provider.countries)){
-			let value = this.locale.provider.countries[key];
-			this.startStripeSetupDialogDropdownOptions.push({key, text: value});
+			let value = this.locale.provider.countries[key]
+			this.startStripeSetupDialogDropdownOptions.push({key, text: value})
 		}
 
 		// Select the appropriate country
@@ -412,12 +413,12 @@ export class UserPageComponent{
 	}
 
 	StartStripeSetupDialogDropdownChange(e: {event: MouseEvent, option: IDropdownOption, index: number}){
-		this.startStripeSetupDialogDropdownSelectedKey = e.option.key as string;
+		this.startStripeSetupDialogDropdownSelectedKey = e.option.key as string
 	}
 
 	ShowStartStripeSetupDialog(){
-		this.startStripeSetupDialogContent.title = this.locale.provider.startStripeSetupDialog.title;
-		this.startStripeSetupDialogVisible = true;
+		this.startStripeSetupDialogContent.title = this.locale.provider.startStripeSetupDialog.title
+		this.startStripeSetupDialogVisible = true
 	}
 
 	async StartStripeProviderSetup() {
@@ -433,7 +434,7 @@ export class UserPageComponent{
 
 	async CreateUserProvider(){
 		// Create the provider
-		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await CreateProvider(this.dataService.user.JWT, this.startStripeSetupDialogDropdownSelectedKey)
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await CreateProvider(Dav.jwt, this.startStripeSetupDialogDropdownSelectedKey)
 		
 		if(providerResponse.status != 201){
 			// Show error
@@ -442,13 +443,13 @@ export class UserPageComponent{
 			return
 		}
 
-		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
-		this.providerStripeAccountId = providerResponseData.stripeAccountId;
+		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data
+		this.providerStripeAccountId = providerResponseData.stripeAccountId
 	}
 
 	async GetUserProvider(){
 		// Get the provider
-		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await GetProvider(this.dataService.user.JWT);
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await GetProvider(Dav.jwt)
 		if(providerResponse.status != 200) return;
 
 		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
@@ -492,33 +493,33 @@ export class UserPageComponent{
 
 		if(!stripeAccountLinkResponse.success){
 			// Show error
-			this.errorMessage = this.locale.errors.unexpectedErrorLong;
-			return;
+			this.errorMessage = this.locale.errors.unexpectedErrorLong
+			return
 		}
 
-		let stripeAccountLinkResponseData = (stripeAccountLinkResponse.response as Stripe.AccountLink);
+		let stripeAccountLinkResponseData = (stripeAccountLinkResponse.response as Stripe.AccountLink)
 
 		// Redirect to the stripe account link url
-		window.location.href = stripeAccountLinkResponseData.url;
+		window.location.href = stripeAccountLinkResponseData.url
 	}
 
 	GetCharForCurrency(currency: string){
 		switch (currency) {
 			case "usd":
-				return "$";
+				return "$"
 			default:
-				return "€";
+				return "€"
 		}
 	}
 
 	ShowBankAccountDialog(){
-		this.bankAccountDialogContent.title = this.locale.provider.bankAccountDialog.title;
-		this.bankAccountDialogVisible = true;
-		setTimeout(() => this.bankAccountForm.Init(), 1);
+		this.bankAccountDialogContent.title = this.locale.provider.bankAccountDialog.title
+		this.bankAccountDialogVisible = true
+		setTimeout(() => this.bankAccountForm.Init(), 1)
 	}
 
 	async BankAccountDialogSave(){
-		await this.bankAccountForm.SaveBankAccount();
+		await this.bankAccountForm.SaveBankAccount()
 	}
 
 	BankAccountDialogCompleted(stripeAccount: Stripe.Account) {
@@ -534,36 +535,36 @@ export class UserPageComponent{
 				this.UpdateAvatarImageContent();
 				this.snackBar.open(this.locale.messages.avatarUpdateMessage, null, {duration: 5000});
 			}
-			else if(this.updatedAttribute == UserAttribute.Username){
-				this.dataService.user.Username = this.firstName
+			else if(this.updatedAttribute == UserAttribute.FirstName){
+				this.dataService.user.FirstName = this.firstName
 				this.snackBar.open(this.locale.messages.usernameUpdateMessage, null, {duration: snackBarDuration})
 			}else if(this.updatedAttribute == UserAttribute.Email){
-				this.successMessage = this.locale.messages.emailUpdateMessage;
-				this.newEmail = this.email;
-				this.email = this.dataService.user.Email;
+				this.successMessage = this.locale.messages.emailUpdateMessage
+				this.newEmail = this.email
+				this.email = this.dataService.user.Email
 			}else if(this.updatedAttribute == UserAttribute.Password){
-				this.successMessage = this.locale.messages.passwordUpdateMessage;
-				this.password = "";
-				this.passwordConfirmation = "";
-				this.passwordConfirmationVisible = false;
+				this.successMessage = this.locale.messages.passwordUpdateMessage
+				this.password = ""
+				this.passwordConfirmation = ""
+				this.passwordConfirmationVisible = false
 			}
 		}else{
-			let errorCode = (message as ApiErrorResponse).errors[0].code;
+			let errorCode = (message as ApiErrorResponse).errors[0].code
 
-			if(this.updatedAttribute == UserAttribute.Avatar) this.errorMessage = this.GetAvatarErrorMessage(errorCode);
-			else if(this.updatedAttribute == UserAttribute.Username) this.usernameErrorMessage = this.GetUsernameErrorMessage(errorCode);
-			else if(this.updatedAttribute == UserAttribute.Email) this.emailErrorMessage = this.GetEmailErrorMessage(errorCode);
+			if(this.updatedAttribute == UserAttribute.Avatar) this.errorMessage = this.GetAvatarErrorMessage(errorCode)
+			else if(this.updatedAttribute == UserAttribute.FirstName) this.usernameErrorMessage = this.GetUsernameErrorMessage(errorCode)
+			else if(this.updatedAttribute == UserAttribute.Email) this.emailErrorMessage = this.GetEmailErrorMessage(errorCode)
 			else if(this.updatedAttribute == UserAttribute.Password){
-				this.passwordErrorMessage = this.GetPasswordErrorMessage(errorCode);
-				this.passwordConfirmation = "";
+				this.passwordErrorMessage = this.GetPasswordErrorMessage(errorCode)
+				this.passwordConfirmation = ""
 			}
 		}
 
 		// Hide the spinner
-		this.avatarLoading = false;
-		this.usernameLoading = false;
-		this.emailLoading = false;
-		this.passwordLoading = false;
+		this.avatarLoading = false
+		this.usernameLoading = false
+		this.emailLoading = false
+		this.passwordLoading = false
 	}
 
 	SendVerificationEmailResponse(message: ApiResponse<{}> | ApiErrorResponse){
@@ -746,7 +747,7 @@ enum Menu{
 
 enum UserAttribute{
 	Avatar = 0,
-	Username = 1,
+	FirstName = 1,
 	Email = 2,
 	Password = 3
 }
