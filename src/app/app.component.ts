@@ -1,12 +1,10 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
-import { Init, DavEnvironment, Log } from 'dav-npm'
+import { Dav, Environment, GetUser } from 'dav-npm'
 import { enUS } from 'src/locales/locales'
 import { DataService } from './services/data-service'
 import { environment } from 'src/environments/environment'
-
-const visitEventName = "visit"
 
 @Component({
 	selector: 'app-root',
@@ -22,63 +20,56 @@ export class AppComponent {
 	constructor(
 		public dataService: DataService,
 		public router: Router
-	){
+	) {
 		this.locale = this.dataService.GetLocale().appComponent
 	}
 
-	ngOnInit(){
+	async ngOnInit() {
 		this.setSize()
 		window.onscroll = () => this.offsetTop = window.scrollY
 		initializeIcons()
 
 		this.router.events.subscribe((navigation: any) => {
-			if(navigation instanceof NavigationEnd){
+			if (navigation instanceof NavigationEnd) {
 				// Clear the success and error messages if the user navigates to a page other than the start page
-				if(navigation.url != "/"){
-					this.dataService.startPageErrorMessage = "";
-					this.dataService.startPageSuccessMessage = "";
+				if (navigation.url != "/") {
+					this.dataService.startPageErrorMessage = ""
+					this.dataService.startPageSuccessMessage = ""
 				}
 			}
 		})
 
-		Init(
-			environment.production ? DavEnvironment.Production : DavEnvironment.Development,
-			environment.appId,
-			[],
-			[],
-			{icon: "", badge: ""},
-			{
-				UpdateAllOfTable: () => {},
-				UpdateTableObject: () => {},
-				DeleteTableObject: () => {},
-				UserDownloadFinished: () => this.dataService.userDownloadPromiseResolve(),
-				SyncFinished: () => {}
+		this.dataService.dav = new Dav({
+			environment: environment.production ? Environment.Production : Environment.Development,
+			appId: environment.appId,
+			tableIds: [],
+			parallelTableIds: [],
+			callbacks: {
+				UserDownloadFinished: () => this.dataService.userDownloadPromiseResolve()
 			}
-		)
+		})
 
-		// Log the visit
-		Log(environment.apiKey, visitEventName)
+		this.dataService.user = await GetUser()
+		this.dataService.userPromiseResolve(this.dataService.user)
 	}
 
 	@HostListener('window:resize')
-	onResize(){
+	onResize() {
 		this.setSize()
 	}
 
-	setSize(){
+	setSize() {
 		this.width = window.outerWidth
 	}
 
-	Logout(){
-		this.dataService.user.Logout().then(() => {
-			this.router.navigate(['/'])
-		});
-
+	async Logout() {
+		await Dav.Logout()
+		this.router.navigate(['/'])
 		return false
 	}
 
-	HideNavbar(){
+	HideNavbar() {
 		let navbar = document.getElementById('navbar-responsive')
-		if(navbar) navbar.classList.remove('show')
+		if (navbar) navbar.classList.remove('show')
 	}
 }

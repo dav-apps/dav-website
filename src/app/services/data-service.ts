@@ -1,22 +1,19 @@
-import { Injectable } from "@angular/core";
-import { DavUser } from 'dav-npm';
-import * as locales from 'src/locales/locales';
+import { Injectable } from '@angular/core'
+import { Dav, User } from 'dav-npm'
+import * as locales from 'src/locales/locales'
 
 @Injectable()
 export class DataService{
-	user: DavUser;
-	locale: string = navigator.language;
-	hideNavbarAndFooter: boolean = false;
-	userPromise: Promise<DavUser> = new Promise(resolve => this.userPromiseResolve = resolve);
-	userPromiseResolve: Function;
-	userDownloadPromise: Promise<any> = new Promise(resolve => this.userDownloadPromiseResolve = resolve);
-	userDownloadPromiseResolve: Function;
-	startPageErrorMessage: string = "";
-	startPageSuccessMessage: string = "";
-
-	constructor(){
-		this.user = new DavUser(() => this.userPromiseResolve(this.user))
-	}
+	dav: Dav
+	user: User
+	locale: string = navigator.language
+	hideNavbarAndFooter: boolean = false
+	userPromise: Promise<User> = new Promise(resolve => this.userPromiseResolve = resolve)
+	userPromiseResolve: Function
+	userDownloadPromise: Promise<any> = new Promise(resolve => this.userDownloadPromiseResolve = resolve)
+	userDownloadPromiseResolve: Function
+	startPageErrorMessage: string = ""
+	startPageSuccessMessage: string = ""
 
 	GetLocale(){
 		let l = this.locale.toLowerCase()
