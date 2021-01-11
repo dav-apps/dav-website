@@ -13,7 +13,6 @@ import { UserPageComponent } from './pages/user-page/user-page.component'
 import { PasswordResetPageComponent } from './pages/password-reset-page/password-reset-page.component'
 import { ResetPasswordPageComponent } from './pages/reset-password-page/reset-password-page.component'
 import { EmailLinkPageComponent } from './pages/email-link-page/email-link-page.component'
-import { LoginSessionPageComponent } from './pages/login-session-page/login-session-page.component'
 import { DevPageComponent } from './pages/dev-page/dev-page.component'
 import { AppPageComponent } from './pages/app-page/app-page.component'
 import { EventPageComponent } from './pages/event-page/event-page.component'
@@ -35,7 +34,6 @@ const routes: Routes = [
 	{ path: "password_reset", component: PasswordResetPageComponent },
 	{ path: "reset_password", component: ResetPasswordPageComponent },
 	{ path: "email_link", component: EmailLinkPageComponent },
-	{ path: "login_session", component: LoginSessionPageComponent },
 	{ path: "dev", component: DevPageComponent },
 	{ path: "dev/statistics", component: StatisticsPageComponent },
 	{ path: "dev/:id", component: AppPageComponent },
@@ -46,7 +44,7 @@ const routes: Routes = [
 ]
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
-export class AppRoutingModule{}
+export class AppRoutingModule { }
