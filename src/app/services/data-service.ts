@@ -61,3 +61,7 @@ export function SetTextFieldAutocomplete(textFieldId: string, autocomplete: stri
 		input.setAttribute("autocomplete", autocomplete);
 	}
 }
+
+export function Capitalize(s: string): string {
+	return s.charAt(0).toUpperCase() + s.slice(1)
+}

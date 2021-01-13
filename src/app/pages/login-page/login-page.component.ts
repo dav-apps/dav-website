@@ -5,9 +5,13 @@ import {
 	Dav,
 	ApiResponse,
 	ApiErrorResponse,
-	CreateSessionResponseData
+	SessionsController
 } from 'dav-npm'
-import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service'
+import {
+	DataService,
+	SetTextFieldAutocomplete,
+	Capitalize
+} from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
@@ -60,7 +64,7 @@ export class LoginPageComponent {
 		this.websiteLogin = this.appId == null && this.apiKey == null && this.redirectUrl == null
 
 		if (this.websiteLogin) {
-			// Set the appId, apiKey and redirectUrl
+			// Set the appId and apiKey
 			this.appId = environment.appId
 			this.apiKey = environment.apiKey
 		} else {
@@ -70,7 +74,8 @@ export class LoginPageComponent {
 				|| this.appId <= 0
 				|| this.apiKey == null
 				|| this.apiKey.length < 2
-				|| this.redirectUrl || this.redirectUrl.length < 2
+				|| this.redirectUrl == null
+				|| this.redirectUrl.length < 2
 			) {
 				this.RedirectToStartPageWithError()
 				return
@@ -124,7 +129,7 @@ export class LoginPageComponent {
 
 		if (deviceAPI) {
 			deviceName = deviceAPI.deviceName
-			deviceType = this.Capitalize(deviceAPI.deviceType as string)
+			deviceType = Capitalize(deviceAPI.deviceType as string)
 			deviceOs = deviceAPI.osName
 
 			if (deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown
@@ -154,7 +159,7 @@ export class LoginPageComponent {
 
 		if (deviceAPI) {
 			deviceName = deviceAPI.deviceName
-			deviceType = this.Capitalize(deviceAPI.deviceType as string)
+			deviceType = Capitalize(deviceAPI.deviceType as string)
 			deviceOs = deviceAPI.osName
 
 			if (deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown
@@ -180,10 +185,20 @@ export class LoginPageComponent {
 		window.location.href = this.redirectUrl
 	}
 
-	async CreateSessionResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) {
+	async CreateSessionResponse(response: (ApiResponse<SessionsController.CreateSessionResponseData> | ApiErrorResponse)) {
 		if (response.status == 201) {
-			// Redirect to the redirect url
-			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<CreateSessionResponseData>).data.jwt}`
+			let responseData = (response as ApiResponse<SessionsController.CreateSessionResponseData>).data
+
+			if (this.websiteLogin) {
+				// Log in the user
+				await Dav.Login(responseData.jwt)
+
+				// Redirect to the start page
+				this.router.navigate(['/'])
+			} else {
+				// Redirect to the redirect url
+				window.location.href = `${this.redirectUrl}?jwt=${responseData.jwt}`
+			}
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 			this.errorMessage = this.GetLoginErrorMessage(errorCode)
@@ -197,10 +212,10 @@ export class LoginPageComponent {
 		}
 	}
 
-	async CreateSessionWithJwtResponse(response: (ApiResponse<CreateSessionResponseData> | ApiErrorResponse)) {
+	async CreateSessionWithJwtResponse(response: (ApiResponse<SessionsController.CreateSessionResponseData> | ApiErrorResponse)) {
 		if (response.status == 201) {
 			// Redirect to the redirect url
-			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<CreateSessionResponseData>).data.jwt}`
+			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<SessionsController.CreateSessionResponseData>).data.jwt}`
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 			this.errorMessage = this.GetLoginErrorMessage(errorCode)
@@ -235,9 +250,5 @@ export class LoginPageComponent {
 		}
 
 		this.router.navigateByUrl(`/signup?api_key=${this.apiKey}&app_id=${this.appId}&redirect_url=${this.redirectUrl}`, extras)
-	}
-
-	Capitalize(s: string): string {
-		return s.charAt(0).toUpperCase() + s.slice(1)
 	}
 }
