@@ -1,7 +1,6 @@
 import { Dav, Auth, Environment } from 'dav-npm'
-import * as authorization from './websocket/auth'
-import * as session from './websocket/session'
 import * as user from './websocket/user'
+import * as session from './websocket/session'
 import * as purchase from './websocket/purchase'
 import * as app from './websocket/app'
 import * as stripe from './websocket/stripe'
@@ -11,9 +10,8 @@ export var auth: Auth
 
 export function init(s: any) {
 	socket = s
-	for (let name in authorization.sockets) socket.on(name, authorization.sockets[name])
-	for (let name in session.sockets) socket.on(name, session.sockets[name])
 	for (let name in user.sockets) socket.on(name, user.sockets[name])
+	for (let name in session.sockets) socket.on(name, session.sockets[name])
 	for (let name in purchase.sockets) socket.on(name, purchase.sockets[name])
 	for (let name in app.sockets) socket.on(name, app.sockets[name])
 	for (let name in stripe.sockets) socket.on(name, stripe.sockets[name])

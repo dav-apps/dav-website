@@ -1,4 +1,4 @@
-import { CreateSession, CreateSessionFromJwt } from 'dav-npm'
+import { SessionsController } from 'dav-npm'
 import * as websocket from '../websocket'
 
 export const sockets = {
@@ -15,7 +15,7 @@ export async function createSession(message: {
 	deviceType: string,
 	deviceOs: string
 }) {
-	let response = await CreateSession({
+	let response = await SessionsController.CreateSession({
 		auth: websocket.auth,
 		email: message.email,
 		password: message.password,
@@ -37,7 +37,7 @@ export async function createSessionFromJwt(message: {
 	deviceType: string,
 	deviceOs: string
 }) {
-	let response = await CreateSessionFromJwt({
+	let response = await SessionsController.CreateSessionFromJwt({
 		auth: websocket.auth,
 		jwt: message.jwt,
 		appId: message.appId,

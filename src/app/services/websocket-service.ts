@@ -45,14 +45,8 @@ interface WebsocketSubscription {
 }
 
 export enum WebsocketCallbackType {
-	// Auth
-	Signup,
-	SignupImplicit,
-	SignupSession,
-	// Session
-	CreateSession,
-	CreateSessionFromJwt,
 	// User
+	Signup,
 	GetUserByAuth,
 	DeleteUser,
 	RemoveApp,
@@ -62,6 +56,9 @@ export enum WebsocketCallbackType {
 	SaveNewPassword,
 	SaveNewEmail,
 	ResetNewEmail,
+	// Session
+	CreateSession,
+	CreateSessionFromJwt,
 	// Purchase
 	GetPurchase,
 	CompletePurchase,
@@ -79,11 +76,8 @@ export enum WebsocketCallbackType {
 }
 
 export const Callbacks = {
+	// User
 	signup: WebsocketCallbackType.Signup,
-	signupImplicit: WebsocketCallbackType.SignupImplicit,
-	signupSession: WebsocketCallbackType.SignupSession,
-	createSession: WebsocketCallbackType.CreateSession,
-	createSessionFromJwt: WebsocketCallbackType.CreateSessionFromJwt,
 	getUserByAuth: WebsocketCallbackType.GetUserByAuth,
 	deleteUser: WebsocketCallbackType.DeleteUser,
 	removeApp: WebsocketCallbackType.RemoveApp,
@@ -93,9 +87,15 @@ export const Callbacks = {
 	saveNewPassword: WebsocketCallbackType.SaveNewPassword,
 	saveNewEmail: WebsocketCallbackType.SaveNewEmail,
 	resetNewEmail: WebsocketCallbackType.ResetNewEmail,
+	// Session
+	createSession: WebsocketCallbackType.CreateSession,
+	createSessionFromJwt: WebsocketCallbackType.CreateSessionFromJwt,
+	// Purchase
 	getPurchase: WebsocketCallbackType.GetPurchase,
 	completePurchase: WebsocketCallbackType.CompletePurchase,
+	// App
 	getAllApps: WebsocketCallbackType.GetAllApps,
+	// Stripe
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,
 	getStripePaymentMethod: WebsocketCallbackType.GetStripePaymentMethod,
 	setStripeSubscription: WebsocketCallbackType.SetStripeSubscription,

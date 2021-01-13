@@ -1,17 +1,8 @@
-import {
-	GetUserByAuth,
-	DeleteUser,
-	RemoveApp,
-	ConfirmUser,
-	SendPasswordResetEmail,
-	SetPassword,
-	SaveNewPassword,
-	SaveNewEmail,
-	ResetNewEmail
-} from 'dav-npm';
-import * as websocket from '../websocket';
+import { UsersController } from 'dav-npm'
+import * as websocket from '../websocket'
 
 export const sockets = {
+	signup,
 	getUserByAuth,
 	deleteUser,
 	removeApp,
@@ -21,6 +12,30 @@ export const sockets = {
 	saveNewPassword,
 	saveNewEmail,
 	resetNewEmail
+}
+
+export async function signup(message: {
+	email: string,
+	firstName: string,
+	password: string,
+	appId: number,
+	apiKey: string,
+	deviceName: string,
+	deviceType: string,
+	deviceOs: string
+}) {
+	let response = await UsersController.Signup({
+		auth: websocket.auth,
+		email: message.email,
+		firstName: message.firstName,
+		password: message.password,
+		appId: message.appId,
+		apiKey: message.apiKey,
+		deviceName: message.deviceName,
+		deviceType: message.deviceType,
+		deviceOs: message.deviceOs
+	})
+	websocket.emit(signup.name, response)
 }
 
 export async function getUserByAuth(message: {id: number}){
