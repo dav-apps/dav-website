@@ -1,39 +1,10 @@
-import { Login, Signup, GetDevByApiKey, ApiResponse, DevResponseData, Auth } from 'dav-npm';
+import { Signup, GetDevByApiKey, ApiResponse, DevResponseData, Auth } from 'dav-npm';
 import * as websocket from '../websocket';
 
 export const sockets = {
-	login,
-	loginImplicit,
 	signup,
 	signupImplicit,
 	signupSession
-}
-
-export async function login(message: {email: string, password: string}){
-	let loginResponse = await Login(websocket.auth, message.email, message.password);
-	websocket.emit(login.name, loginResponse);
-}
-
-export async function loginImplicit(message: {
-	apiKey: string,
-	email: string,
-	password: string
-}){
-	// Get the dev
-	let getDevResponse = await GetDevByApiKey(websocket.auth, message.apiKey);
-
-	if(getDevResponse.status != 200){
-		websocket.emit(loginImplicit.name, getDevResponse);
-		return;
-	}
-
-	// Create the auth of the dev
-	let getDevResponseData = (getDevResponse as ApiResponse<DevResponseData>).data;
-	let devAuth = new Auth(getDevResponseData.apiKey, getDevResponseData.secretKey, getDevResponseData.uuid);
-
-	// Log the user in
-	let loginResponse = await Login(devAuth, message.email, message.password);
-	websocket.emit(loginImplicit.name, loginResponse);
 }
 
 export async function signup(message: {username: string, email: string, password: string}){

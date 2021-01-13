@@ -1,58 +1,57 @@
-import { Injectable } from "@angular/core";
-declare var io: any;
+import { Injectable } from "@angular/core"
+declare var io: any
 
 @Injectable()
-export class WebsocketService{
+export class WebsocketService {
 	private socket: any;
-	private subscriptions: WebsocketSubscription[] = [];
+	private subscriptions: WebsocketSubscription[] = []
 
-	constructor(){
-		this.socket = io();
+	constructor() {
+		this.socket = io()
 
-		for(let key of Object.keys(Callbacks)){
+		for (let key of Object.keys(Callbacks)) {
 			this.socket.on(key, (message: any) => {
-				let i = this.subscriptions.findIndex(s => s.type == Callbacks[key]);
-				if(i != -1){
-					this.subscriptions[i].resolve(message);
-					this.subscriptions.splice(i, 1);
+				let i = this.subscriptions.findIndex(s => s.type == Callbacks[key])
+				if (i != -1) {
+					this.subscriptions[i].resolve(message)
+					this.subscriptions.splice(i, 1)
 				}
-			});
+			})
 		}
 	}
 
-	async Emit(type: WebsocketCallbackType, message: any){
-		let key = getKeyByValue(Callbacks, type);
-		if(!key) return;
+	async Emit(type: WebsocketCallbackType, message: any) {
+		let key = getKeyByValue(Callbacks, type)
+		if (!key) return
 
-		let r: Function;
+		let r: Function
 		let socketPromise: Promise<any> = new Promise((resolve: Function) => {
-			r = resolve;
-		});
+			r = resolve
+		})
 
 		this.subscriptions.push({
 			type,
 			resolve: r
-		});
+		})
 
-		this.socket.emit(key, message);
-		return await socketPromise;
+		this.socket.emit(key, message)
+		return await socketPromise
 	}
 }
 
-interface WebsocketSubscription{
+interface WebsocketSubscription {
 	type: WebsocketCallbackType,
 	resolve: Function
 }
 
-export enum WebsocketCallbackType{
+export enum WebsocketCallbackType {
 	// Auth
-	Login,
-	LoginImplicit,
 	Signup,
 	SignupImplicit,
 	SignupSession,
 	// Session
 	CreateSession,
+	CreateSessionFromJwt,
 	// User
 	GetUserByAuth,
 	DeleteUser,
@@ -80,12 +79,11 @@ export enum WebsocketCallbackType{
 }
 
 export const Callbacks = {
-	login: WebsocketCallbackType.Login,
-	loginImplicit: WebsocketCallbackType.LoginImplicit,
 	signup: WebsocketCallbackType.Signup,
 	signupImplicit: WebsocketCallbackType.SignupImplicit,
 	signupSession: WebsocketCallbackType.SignupSession,
 	createSession: WebsocketCallbackType.CreateSession,
+	createSessionFromJwt: WebsocketCallbackType.CreateSessionFromJwt,
 	getUserByAuth: WebsocketCallbackType.GetUserByAuth,
 	deleteUser: WebsocketCallbackType.DeleteUser,
 	removeApp: WebsocketCallbackType.RemoveApp,
@@ -109,5 +107,5 @@ export const Callbacks = {
 }
 
 function getKeyByValue(object: any, value: any) {
-	return Object.keys(object).find(key => object[key] === value);
+	return Object.keys(object).find(key => object[key] === value)
 }
