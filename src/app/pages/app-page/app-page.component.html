@@ -31,13 +31,6 @@
 		</div>
 
 		<div class="mx-4">
-			<h3 class="font-weight-light mb-3 mt-4">{{ locale.events }}</h3>
-			<div class="list-group" style="display: inline-block">
-				<a [routerLink]="'event/' + event.Name" class="list-group-item list-group-item-action" *ngFor="let event of app.Events">{{ event.Name }}</a>
-			</div>
-		</div>
-
-		<div class="mx-4">
 			<h3 class="font-weight-light mb-3 mt-4">{{ locale.apis }}</h3>
 			<ul class="list-group">
 				<li class="list-group-item text-center cursor font-weight-light p-1" style="font-size: 26px" (click)="ShowAddApiDialog()">+</li>
@@ -73,33 +66,33 @@
 		</fab-text-field>
 	</div>
 
-	<!-- Link Web -->
+	<!-- WebLink -->
 	<div class="mb-3">
 		<fab-text-field
-			[(value)]="newLinkWeb"
-			[label]="locale.editAppDialog.linkWebTextfieldLabel"
-			[placeholder]="locale.editAppDialog.linkWebTextfieldPlaceholder"
-			[errorMessage]="editAppDialogLinkWebError">
+			[(value)]="newWebLink"
+			[label]="locale.editAppDialog.webLinkTextfieldLabel"
+			[placeholder]="locale.editAppDialog.webLinkTextfieldPlaceholder"
+			[errorMessage]="editAppDialogWebLinkError">
 		</fab-text-field>
 	</div>
 
-	<!-- Link Play -->
+	<!-- GooglePlayLink -->
 	<div class="mb-3">
 		<fab-text-field
-			[(value)]="newLinkPlay"
-			[label]="locale.editAppDialog.linkPlayTextfieldLabel"
-			[placeholder]="locale.editAppDialog.linkPlayTextfieldPlaceholder"
-			[errorMessage]="editAppDialogLinkPlayError">
+			[(value)]="newGooglePlayLink"
+			[label]="locale.editAppDialog.googlePlayLinkTextfieldLabel"
+			[placeholder]="locale.editAppDialog.googlePlayLinkTextfieldPlaceholder"
+			[errorMessage]="editAppDialogGooglePlayLinkError">
 		</fab-text-field>
 	</div>
 
-	<!-- Link Windows -->
+	<!-- MicrosoftStoreLink -->
 	<div class="mb-4">
 		<fab-text-field
-			[(value)]="newLinkWindows"
-			[label]="locale.editAppDialog.linkWindowsTextfieldLabel"
-			[placeholder]="locale.editAppDialog.linkWindowsTextifieldPlaceholder"
-			[errorMessage]="editAppDialogLinkWindowsError">
+			[(value)]="newMicrosoftStore"
+			[label]="locale.editAppDialog.microsoftStoreLinkTextfieldLabel"
+			[placeholder]="locale.editAppDialog.microsoftStoreLinkTextfieldPlaceholder"
+			[errorMessage]="editAppDialogMicrosoftStoreLinkError">
 		</fab-text-field>
 	</div>
 	
