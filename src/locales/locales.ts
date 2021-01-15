@@ -426,20 +426,6 @@ const enDefaults = {
 		loginRequiredMessage: "You need to log in to access this page",
 		accessNotAllowedMessage: "You can't access this page"
 	},
-	eventPage: {
-		loginRequiredMessage: "You need to log in to access this page",
-		accessNotAllowedMessage: "You can't access this page",
-		pieChartTitles: {
-			operatingSystems: "Operating systems",
-			operatingSystemsVersions: "Operating systems with versions",
-			windowsVersions: "Windows",
-			androidVersions: "Android",
-			browser: "Browser",
-			edgeVersions: "Microsoft Edge",
-			chromeVersions: "Google Chrome",
-			firefoxVersions: "Firefox"
-		}
-	},
 	statisticsPage: {
 		title: "General statistics",
 		loginRequiredMessage: "You need to log in to access this page",
@@ -971,20 +957,6 @@ const deDefaults = {
 		cancel: "Abbrechen",
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen"
-	},
-	eventPage: {
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
-		pieChartTitles: {
-			operatingSystems: "Betriebssysteme",
-			operatingSystemsVersions: "Betriebssysteme mit Versionen",
-			windowsVersions: "Windows",
-			androidVersions: "Android",
-			browser: "Browser",
-			edgeVersions: "Microsoft Edge",
-			chromeVersions: "Google Chrome",
-			firefoxVersions: "Firefox"
-		}
 	},
 	statisticsPage: {
 		title: "Allgemeine Statistiken",

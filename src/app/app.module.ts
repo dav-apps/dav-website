@@ -54,7 +54,6 @@ import { ResetPasswordPageComponent } from 'src/app/pages/reset-password-page/re
 import { EmailLinkPageComponent } from 'src/app/pages/email-link-page/email-link-page.component'
 import { DevPageComponent } from 'src/app/pages/dev-page/dev-page.component'
 import { AppPageComponent } from 'src/app/pages/app-page/app-page.component'
-import { EventPageComponent } from 'src/app/pages/event-page/event-page.component'
 import { StatisticsPageComponent } from 'src/app/pages/statistics-page/statistics-page.component'
 import { AppStatisticsPageComponent } from 'src/app/pages/app-statistics-page/app-statistics-page.component'
 import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component'
@@ -84,7 +83,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		EmailLinkPageComponent,
 		DevPageComponent,
 		AppPageComponent,
-		EventPageComponent,
 		StatisticsPageComponent,
 		AppStatisticsPageComponent,
 		ApiPageComponent,
