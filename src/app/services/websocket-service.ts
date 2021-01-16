@@ -62,8 +62,6 @@ export enum WebsocketCallbackType {
 	// Purchase
 	GetPurchase,
 	CompletePurchase,
-	// App
-	GetAllApps,
 	// Stripe
 	SaveStripePaymentMethod,
 	GetStripePaymentMethod,
@@ -93,8 +91,6 @@ export const Callbacks = {
 	// Purchase
 	getPurchase: WebsocketCallbackType.GetPurchase,
 	completePurchase: WebsocketCallbackType.CompletePurchase,
-	// App
-	getAllApps: WebsocketCallbackType.GetAllApps,
 	// Stripe
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,
 	getStripePaymentMethod: WebsocketCallbackType.GetStripePaymentMethod,
