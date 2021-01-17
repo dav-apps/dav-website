@@ -1,33 +1,38 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { MessageBarType, IDialogContentProps, IButtonStyles } from 'office-ui-fabric-react';
+import { Component } from '@angular/core'
+import { Router } from '@angular/router'
 import {
+	MessageBarType,
+	IDialogContentProps,
+	IButtonStyles
+} from 'office-ui-fabric-react'
+import {
+	Dav,
 	ApiResponse,
 	ApiErrorResponse,
-	GetDev,
-	DevResponseData,
-	CreateApp,
-	App
-} from 'dav-npm';
-import { DataService } from 'src/app/services/data-service';
-import { enUS } from 'src/locales/locales';
+	App,
+	DevsController,
+	AppsController,
+	GetDevResponseData
+} from 'dav-npm'
+import { DataService } from 'src/app/services/data-service'
+import { enUS } from 'src/locales/locales'
 
 @Component({
 	selector: 'dav-website-dev-page',
 	templateUrl: './dev-page.component.html'
 })
-export class DevPageComponent{
-	locale = enUS.devPage;
-	apps: App[] = [];
-	hoveredAppIndex: number = -1;
-	addAppHovered: boolean = false;
-	errorMessage: string = "";
-	addAppDialogVisible: boolean = false;
-	addAppDialogName: string = "";
-	addAppDialogDescription: string = "";
-	addAppDialogNameError: string = "";
-	addAppDialogDescriptionError: string = "";
-	messageBarType: MessageBarType = MessageBarType.error;
+export class DevPageComponent {
+	locale = enUS.devPage
+	apps: App[] = []
+	hoveredAppIndex: number = -1
+	addAppHovered: boolean = false
+	errorMessage: string = ""
+	addAppDialogVisible: boolean = false
+	addAppDialogName: string = ""
+	addAppDialogDescription: string = ""
+	addAppDialogNameError: string = ""
+	addAppDialogDescriptionError: string = ""
+	messageBarType: MessageBarType = MessageBarType.error
 	dialogPrimaryButtonStyles: IButtonStyles = {
 		root: {
 			marginLeft: 10
@@ -36,89 +41,89 @@ export class DevPageComponent{
 	addAppDialogContent: IDialogContentProps = {
 		title: this.locale.addAppDialog.title
 	}
-	
+
 	constructor(
 		public dataService: DataService,
 		private router: Router
-	){
-		this.locale = this.dataService.GetLocale().devPage;
+	) {
+		this.locale = this.dataService.GetLocale().devPage
 	}
 
-	async ngOnInit(){
-		await this.dataService.userPromise;
-		if(!this.dataService.user.IsLoggedIn){
-			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage;
-			this.router.navigate(['/']);
-			return;
-		}else if(!this.dataService.user.Dev){
-			this.dataService.startPageErrorMessage = this.locale.accessNotAllowedMessage;
-			this.router.navigate(['/']);
-			return;
+	async ngOnInit() {
+		await this.dataService.userPromise
+		if (this.dataService.user == null) {
+			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage
+			this.router.navigate(['/'])
+			return
+		} else if (!this.dataService.user.Dev) {
+			this.dataService.startPageErrorMessage = this.locale.accessNotAllowedMessage
+			this.router.navigate(['/'])
+			return
 		}
 
 		// Get the dev
-		let getDevResponse: ApiResponse<DevResponseData> | ApiErrorResponse = await GetDev(this.dataService.user.JWT);
-		
-		if(getDevResponse.status == 200){
-			this.apps = (getDevResponse as ApiResponse<DevResponseData>).data.apps;
-		}else{
+		let getDevResponse: ApiResponse<GetDevResponseData> | ApiErrorResponse = await DevsController.GetDev({ jwt: Dav.jwt })
+
+		if (getDevResponse.status == 200) {
+			this.apps = (getDevResponse as ApiResponse<GetDevResponseData>).data.apps
+		} else {
 			// Show error
-			this.errorMessage = this.locale.unexpectedErrorShort.replace('{0}', (getDevResponse as ApiErrorResponse).errors[0].code.toString());
+			this.errorMessage = this.locale.unexpectedErrorShort.replace('{0}', (getDevResponse as ApiErrorResponse).errors[0].code.toString())
 		}
 	}
 
-	ShowApp(appId: number){
+	ShowApp(appId: number) {
 		this.router.navigate(['dev', appId])
 	}
 
-	ShowStatistics(){
+	ShowStatistics() {
 		this.router.navigate(['dev', 'statistics'])
 	}
 
-	ShowAddAppDialog(){
-		this.addAppDialogName = "";
-		this.addAppDialogDescription = "";
-		this.addAppDialogNameError = "";
-		this.addAppDialogDescriptionError = "";
+	ShowAddAppDialog() {
+		this.addAppDialogName = ""
+		this.addAppDialogDescription = ""
+		this.addAppDialogNameError = ""
+		this.addAppDialogDescriptionError = ""
 
-		this.addAppDialogContent.title = this.locale.addAppDialog.title;
-		this.addAppDialogVisible = true;
+		this.addAppDialogContent.title = this.locale.addAppDialog.title
+		this.addAppDialogVisible = true
 	}
 
-	async AddApp(){
-		this.addAppDialogNameError = "";
-		this.addAppDialogDescriptionError = "";
+	async AddApp() {
+		this.addAppDialogNameError = ""
+		this.addAppDialogDescriptionError = ""
 
-		let response: ApiResponse<App> | ApiErrorResponse = await CreateApp(this.dataService.user.JWT, this.addAppDialogName, this.addAppDialogDescription);
+		let response: ApiResponse<App> | ApiErrorResponse = await AppsController.CreateApp({ jwt: Dav.jwt, name: this.addAppDialogName, description: this.addAppDialogDescription })
 
-		if(response.status == 201){
-			this.apps.push((response as ApiResponse<App>).data);
-			this.addAppDialogVisible = false;
-		}else{
-			let errors = (response as ApiErrorResponse).errors;
+		if (response.status == 201) {
+			this.apps.push((response as ApiResponse<App>).data)
+			this.addAppDialogVisible = false
+		} else {
+			let errors = (response as ApiErrorResponse).errors
 
-			for(let error of errors){
-				let errorCode = error.code;
+			for (let error of errors) {
+				let errorCode = error.code
 
-				switch(errorCode){
+				switch (errorCode) {
 					case 2111:
-						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort;
-						break;
+						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort
+						break
 					case 2112:
-						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort;
-						break;
+						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort
+						break
 					case 2203:
-						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort;
-						break;
+						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort
+						break
 					case 2204:
-						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort;
-						break;
+						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort
+						break
 					case 2303:
-						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooLong;
-						break;
+						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooLong
+						break
 					case 2304:
-						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooLong;
-						break;
+						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooLong
+						break
 				}
 			}
 		}
