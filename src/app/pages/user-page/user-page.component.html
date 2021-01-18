@@ -74,7 +74,7 @@
 								[(value)]="firstName"
 								[label]="locale.general.firstNameTextfieldLabel"
 								[placeholder]="locale.general.firstNameTextfieldPlaceholder"
-								[errorMessage]="usernameErrorMessage"
+								[errorMessage]="firstNameErrorMessage"
 								[styles]="textFieldStyles"
 								type="text"
 								autocomplete="given-name"
@@ -85,13 +85,13 @@
 								type="button"
 								class="btn btn-sm ml-2 icon-button"
 								style="margin-top: 32px"
-								[disabled]="usernameLoading"
-								(click)="SaveUsername()"
-								*ngIf="firstName != dataService.user.Username && firstName.length >= 2 && firstName.length <= 25">
+								[disabled]="firstNameLoading"
+								(click)="SaveFirstName()"
+								*ngIf="firstName != dataService.user.FirstName && firstName.length >= 2 && firstName.length <= 25">
 								<fab-icon iconName="Save"></fab-icon>
 							</button>
 	
-							<div style="margin-top: 39px; margin-left: 10px" *ngIf="usernameLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+							<div style="margin-top: 39px; margin-left: 10px" *ngIf="firstNameLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 						</div>
 					</form>
 
@@ -158,22 +158,6 @@
 							</div>
 						</div>
 					</form>
-
-					<div 
-						style="border: 0.5px solid #dadada; width: 200px; margin: 20px 0px"
-						*ngIf="!passwordConfirmationVisible">
-					</div>
-
-					<div class="d-flex" style="float: right; margin-right: 80px">
-						<div style="margin-top: 8px; margin-right: 14px" *ngIf="sendDeleteAccountEmailLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-						<fab-primary-button 
-							[styles]="deleteAccountButtonStyles"
-							[disabled]="sendDeleteAccountEmailLoading" 
-							*ngIf="!passwordConfirmationVisible"
-							(click)="deleteAccountDialogVisible = true">
-							{{ locale.general.deleteAccount }}
-						</fab-primary-button>
-					</div>
 				</div>
 			</div>
 		</div>
@@ -223,11 +207,6 @@
 						<div style="width: 60%; font-size: 16px" class="mx-auto mt-3">
 							<mat-progress-bar [value]="appsUsedStoragePercent[i]"></mat-progress-bar>
 							<p class="mt-2">{{ locale.apps.appStorageUsed.replace("{0}", BytesToGigabytes(app.UsedStorage).toString()) }}</p>
-						</div>
-	
-						<div class="d-flex" style="float: right; margin-right: 20%">
-							<div style="margin-top: 8px; margin-right: 14px" *ngIf="sendRemoveAppEmailLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-							<fab-primary-button [styles]="removeAppButtonStyles" [disabled]="sendRemoveAppEmailLoading" (click)="ShowRemoveAppDialog(app)">{{ locale.apps.removeApp }}</fab-primary-button>
 						</div>
 					</mat-expansion-panel>
 				</mat-accordion>
@@ -343,26 +322,6 @@
 		</div>
 	</mat-sidenav-content>
 </mat-sidenav-container>
-
-<fab-dialog 
-	[hidden]="!deleteAccountDialogVisible" 
-	[dialogContentProps]="deleteAccountDialogContent" 
-	(onDismiss)="deleteAccountDialogVisible = false">
-	<fab-dialog-footer>
-		<fab-default-button (click)="deleteAccountDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="deleteAccountDialogButtonStyles" (click)="DeleteAccount()">{{ locale.general.deleteAccount }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
-
-<fab-dialog
-	[hidden]="!removeAppDialogVisible"
-	[dialogContentProps]="removeAppDialogContent"
-	(onDismiss)="removeAppDialogVisible = false">
-	<fab-dialog-footer>
-		<fab-default-button (click)="removeAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="removeAppDialogButtonStyles" (click)="RemoveApp()">{{ locale.apps.removeApp }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
 
 <fab-dialog
 	[hidden]="!startStripeSetupDialogVisible"

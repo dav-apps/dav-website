@@ -224,8 +224,6 @@ const enDefaults = {
 		}
 	},
 	emailLinkPage: {
-		deleteUserMessage: "Your account has been successfully deleted",
-		removeAppMessage: "The app has been successfully removed from your account",
 		confirmUserMessage: "Your email address has been successfully confirmed",
 		saveNewPasswordMessage: "You new password has been saved",
 		saveNewEmailMessage: "Your new email address has been saved",
@@ -268,12 +266,7 @@ const enDefaults = {
 			passwordTextfieldLabel: "New Password",
 			passwordTextfieldPlaceholder: "Your new password",
 			passwordConfirmationTextfieldLabel: "Password confirmation",
-			passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
-			deleteAccount: "Delete Account",
-			deleteAccountDialog: {
-				title: "Deleting your Account",
-				subText: "Are your absolutely sure that you want to delete your account? All your data will be irreversibly deleted."
-			}
+			passwordConfirmationTextfieldPlaceholder: "Repeat your new password"
 		},
 		plans: {
 			title: "Plans",
@@ -283,12 +276,7 @@ const enDefaults = {
 		apps: {
 			title: "Your Apps",
 			totalStorageUsed: "{0} GB of {1} GB used",
-			appStorageUsed: "This app uses {0} GB",
-			removeApp: "Remove App",
-			removeAppDialog: {
-				title: "Removing {0}",
-				subText: "Are you sure you want to remove this app from your account? All app data will be irreversibly deleted."
-			}
+			appStorageUsed: "This app uses {0} GB"
 		},
 		provider: {
 			title: "Become a provider",
@@ -321,20 +309,18 @@ const enDefaults = {
 		},
 		messages: {
 			avatarUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
-			usernameUpdateMessage: "Your name has been updated successfully",
+			firstNameUpdateMessage: "Your name has been updated successfully",
 			emailUpdateMessage: "You will receive an email to confirm your new email address",
 			passwordUpdateMessage: "You will receive an email to confirm your new password",
 			sendVerificationEmailMessage: "A new confirmation email has been sent",
-			sendDeleteAccountEmailMessage: "You will receive an email to confirm the deletion of your account",
-			sendRemoveAppEmailMessage: "You will receive an email to confirm the removal of the app",
 			bankAccountUpdateMessage: "Your bank account has been updated successfully"
 		},
 		errors: {
 			unexpectedErrorShort: "Unexpected error ({0})",
 			unexpectedErrorLong: "An unexpected error occured. Please try it again later.",
 			avatarFileTooLarge: "The image file is too large",
-			usernameTooShort: "The name is too short",
-			usernameTooLong: "The name is too long",
+			firstNameTooShort: "The name is too short",
+			firstNameTooLong: "The name is too long",
 			emailInvalid: "Your new email is invalid",
 			emailTaken: "This email address is already in use",
 			passwordTooShort: "Your new password is too short",
@@ -756,8 +742,6 @@ const deDefaults = {
 		}
 	},
 	emailLinkPage: {
-		deleteUserMessage: "Dein Account wurde erfolgreich gelöscht",
-		removeAppMessage: "Die App wurde erfolgreich von deinem Account entfernt",
 		confirmUserMessage: "Deine Email-Adresse wurde erfolgreich verifiziert",
 		saveNewPasswordMessage: "Dein neues Passwort wurde gespeichert",
 		saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
@@ -800,12 +784,7 @@ const deDefaults = {
 			passwordTextfieldLabel: "Neues Passwort",
 			passwordTextfieldPlaceholder: "Dein neues Passwort",
 			passwordConfirmationTextfieldLabel: "Passwortbestätigung",
-			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort",
-			deleteAccount: "Account löschen",
-			deleteAccountDialog: {
-				title: "Löschen deines Accounts",
-				subText: "Bist du dir absolut sicher, dass du deinen Account löschen willst? All deine Daten werden unwiderruflich gelöscht."
-			}
+			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort"
 		},
 		plans: {
 			title: "Pläne",
@@ -815,12 +794,7 @@ const deDefaults = {
 		apps: {
 			title: "Deine Apps",
 			totalStorageUsed: "{0} GB von {1} GB verwendet",
-			appStorageUsed: "Diese App verwendet {0} GB",
-			removeApp: "App entfernen",
-			removeAppDialog: {
-				title: "{0} entfernen",
-				subText: "Bist du dir sicher, dass du diese App von deinem Account entfernen willst? Alle App-Daten werden unwiderruflich gelöscht."
-			}
+			appStorageUsed: "Diese App verwendet {0} GB"
 		},
 		provider: {
 			title: "Werde ein Anbieter",
@@ -853,20 +827,18 @@ const deDefaults = {
 		},
 		messages: {
 			avatarUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
-			usernameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
+			firstNameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
 			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
 			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts",
 			sendVerificationEmailMessage: "Eine neue Bestätigungsemail wurde gesendet",
-			sendDeleteAccountEmailMessage: "Du erhältst eine Email, um die Löschung deines Accounts zu bestätigen",
-			sendRemoveAppEmailMessage: "Du erhältst eine Email, um die Entfernung der App zu bestätigen",
 			bankAccountUpdateMessage: "Dein Bankkonto wurde erfolgreich aktualisiert"
 		},
 		errors: {
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
 			avatarFileTooLarge: "Die Bilddatei ist zu groß",
-			usernameTooShort: "Der Name ist zu kurz",
-			usernameTooLong: "Der Name ist zu lang",
+			firstNameTooShort: "Der Name ist zu kurz",
+			firstNameTooLong: "Der Name ist zu lang",
 			emailInvalid: "Deine neue Email-Adresse ist ungültig",
 			emailTaken: "Diese Email-Adresse wird bereits verwendet",
 			passwordTooShort: "Dein neues Passwort ist zu kurz",
