@@ -47,15 +47,10 @@ interface WebsocketSubscription {
 export enum WebsocketCallbackType {
 	// User
 	Signup,
-	GetUserByAuth,
-	DeleteUser,
-	RemoveApp,
 	ConfirmUser,
-	SendPasswordResetEmail,
-	SetPassword,
-	SaveNewPassword,
 	SaveNewEmail,
-	ResetNewEmail,
+	SaveNewPassword,
+	ResetEmail,
 	// Session
 	CreateSession,
 	CreateSessionFromJwt,
@@ -76,15 +71,10 @@ export enum WebsocketCallbackType {
 export const Callbacks = {
 	// User
 	signup: WebsocketCallbackType.Signup,
-	getUserByAuth: WebsocketCallbackType.GetUserByAuth,
-	deleteUser: WebsocketCallbackType.DeleteUser,
-	removeApp: WebsocketCallbackType.RemoveApp,
 	confirmUser: WebsocketCallbackType.ConfirmUser,
-	sendPasswordResetEmail: WebsocketCallbackType.SendPasswordResetEmail,
-	setPassword: WebsocketCallbackType.SetPassword,
-	saveNewPassword: WebsocketCallbackType.SaveNewPassword,
 	saveNewEmail: WebsocketCallbackType.SaveNewEmail,
-	resetNewEmail: WebsocketCallbackType.ResetNewEmail,
+	saveNewPassword: WebsocketCallbackType.SaveNewPassword,
+	resetEmail: WebsocketCallbackType.ResetEmail,
 	// Session
 	createSession: WebsocketCallbackType.CreateSession,
 	createSessionFromJwt: WebsocketCallbackType.CreateSessionFromJwt,
