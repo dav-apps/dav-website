@@ -312,7 +312,7 @@ const enDefaults = {
 			firstNameUpdateMessage: "Your name has been updated successfully",
 			emailUpdateMessage: "You will receive an email to confirm your new email address",
 			passwordUpdateMessage: "You will receive an email to confirm your new password",
-			sendVerificationEmailMessage: "A new confirmation email has been sent",
+			sendConfirmationEmailMessage: "A new confirmation email has been sent",
 			bankAccountUpdateMessage: "Your bank account has been updated successfully"
 		},
 		errors: {
@@ -830,7 +830,7 @@ const deDefaults = {
 			firstNameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
 			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
 			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts",
-			sendVerificationEmailMessage: "Eine neue Bestätigungsemail wurde gesendet",
+			sendConfirmationEmailMessage: "Eine neue Bestätigungsemail wurde gesendet",
 			bankAccountUpdateMessage: "Dein Bankkonto wurde erfolgreich aktualisiert"
 		},
 		errors: {

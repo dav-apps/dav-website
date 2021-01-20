@@ -15,7 +15,6 @@ import {
 	ApiResponse,
 	ApiErrorResponse,
 	User,
-	App,
 	UsersController
 } from 'dav-npm'
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service'
@@ -301,9 +300,12 @@ export class UserPageComponent {
 		)
 	}
 
-	SendVerificationEmail() {
-		SendVerificationEmail(Dav.jwt).then((response: ApiResponse<{}> | ApiErrorResponse) => {
-			this.SendVerificationEmailResponse(response)
+	SendConfirmationEmail() {
+		this.websocketService.Emit(
+			WebsocketCallbackType.SendConfirmationEmail,
+			{ userId: this.dataService.user.Id }
+		).then((response: ApiResponse<{}> | ApiErrorResponse) => {
+			this.SendConfirmationEmailResponse(response)
 		})
 
 		return false
@@ -485,12 +487,12 @@ export class UserPageComponent {
 		this.passwordLoading = false
 	}
 
-	SendVerificationEmailResponse(message: ApiResponse<{}> | ApiErrorResponse) {
+	SendConfirmationEmailResponse(message: ApiResponse<{}> | ApiErrorResponse) {
 		if (message.status == 200) {
-			this.successMessage = this.locale.messages.sendVerificationEmailMessage;
+			this.successMessage = this.locale.messages.sendConfirmationEmailMessage
 		} else {
-			let errorCode = (message as ApiErrorResponse).errors[0].code;
-			this.errorMessage = this.GetSendVerificationEmailErrorMessage(errorCode);
+			let errorCode = (message as ApiErrorResponse).errors[0].code
+			this.errorMessage = this.GetSendConfirmationEmailErrorMessage(errorCode)
 		}
 	}
 
@@ -545,7 +547,7 @@ export class UserPageComponent {
 		}
 	}
 
-	GetSendVerificationEmailErrorMessage(errorCode: number): string {
+	GetSendConfirmationEmailErrorMessage(errorCode: number): string {
 		switch (errorCode) {
 			case 1106:
 				return this.locale.errors.emailAlreadyConfirmed

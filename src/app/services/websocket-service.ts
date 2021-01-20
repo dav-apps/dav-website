@@ -47,6 +47,8 @@ interface WebsocketSubscription {
 export enum WebsocketCallbackType {
 	// User
 	Signup,
+	SendConfirmationEmail,
+	SendPasswordResetEmail,
 	ConfirmUser,
 	SaveNewEmail,
 	SaveNewPassword,
@@ -71,6 +73,8 @@ export enum WebsocketCallbackType {
 export const Callbacks = {
 	// User
 	signup: WebsocketCallbackType.Signup,
+	sendConfirmationEmail: WebsocketCallbackType.SendConfirmationEmail,
+	sendPasswordResetEmail: WebsocketCallbackType.SendPasswordResetEmail,
 	confirmUser: WebsocketCallbackType.ConfirmUser,
 	saveNewEmail: WebsocketCallbackType.SaveNewEmail,
 	saveNewPassword: WebsocketCallbackType.SaveNewPassword,
