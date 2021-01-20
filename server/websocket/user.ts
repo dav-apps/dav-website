@@ -100,3 +100,17 @@ export async function resetEmail(message: {
 	})
 	websocket.emit(resetEmail.name, response)
 }
+
+export async function setPassword(message: {
+	userId: number,
+	password: string,
+	passwordConfirmationToken: string
+}) {
+	let response = await UsersController.SetPassword({
+		auth: websocket.auth,
+		id: message.userId,
+		password: message.password,
+		passwordConfirmationToken: message.passwordConfirmationToken
+	})
+	websocket.emit(setPassword.name, response)
+}

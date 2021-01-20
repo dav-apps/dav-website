@@ -7,12 +7,12 @@ import { enUS } from 'src/locales/locales'
 	templateUrl: './privacy-page.component.html',
 	styleUrls: ["privacy-page.component.scss"]
 })
-export class PrivacyPageComponent{
+export class PrivacyPageComponent {
 	locale = enUS.privacyPage
 
 	constructor(
 		public dataService: DataService
-	){
+	) {
 		this.locale = this.dataService.GetLocale().privacyPage
 	}
 }

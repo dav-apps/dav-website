@@ -53,6 +53,7 @@ export enum WebsocketCallbackType {
 	SaveNewEmail,
 	SaveNewPassword,
 	ResetEmail,
+	SetPassword,
 	// Session
 	CreateSession,
 	CreateSessionFromJwt,
@@ -79,6 +80,7 @@ export const Callbacks = {
 	saveNewEmail: WebsocketCallbackType.SaveNewEmail,
 	saveNewPassword: WebsocketCallbackType.SaveNewPassword,
 	resetEmail: WebsocketCallbackType.ResetEmail,
+	setPassword: WebsocketCallbackType.SetPassword,
 	// Session
 	createSession: WebsocketCallbackType.CreateSession,
 	createSessionFromJwt: WebsocketCallbackType.CreateSessionFromJwt,
