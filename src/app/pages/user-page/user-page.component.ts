@@ -8,7 +8,7 @@ import {
 	SpinnerSize,
 	IDropdownOption
 } from 'office-ui-fabric-react'
-import { ReadFile } from 'ngx-file-helpers'
+import { ReadFile, ReadMode } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import {
 	Dav,
@@ -23,7 +23,7 @@ import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
 
-const maxAvatarFileSize = 5000000
+const maxProfileImageFileSize = 2000000
 const snackBarDuration = 3000
 const plansHash = "plans"
 const appsHash = "apps"
@@ -50,7 +50,7 @@ export class UserPageComponent {
 
 	//#region General page
 	updatedAttribute: UserAttribute = UserAttribute.FirstName
-	newAvatarContent: string = null
+	newProfileImageContent: string = null
 	firstName: string = ""
 	email: string = ""
 	newEmail: string = ""
@@ -64,7 +64,7 @@ export class UserPageComponent {
 	emailErrorMessage: string = ""
 	passwordErrorMessage: string = ""
 
-	avatarLoading: boolean = false
+	profileImageLoading: boolean = false
 	firstNameLoading: boolean = false
 	emailLoading: boolean = false
 	passwordLoading: boolean = false
@@ -195,9 +195,9 @@ export class UserPageComponent {
 		this.passwordConfirmation = ""
 		this.passwordConfirmationVisible = false
 
-		// Set the content of the avatar image if it was updated
+		// Set the content of the profile image if it was updated
 		setTimeout(() => {
-			this.UpdateAvatarImageContent()
+			this.UpdateProfileImageContent()
 		}, 1)
 
 		this.router.navigateByUrl('user')
@@ -243,21 +243,23 @@ export class UserPageComponent {
 		await this.GetStripeData()
 	}
 
-	async UpdateAvatar(file: ReadFile) {
-		if (file.size > maxAvatarFileSize) {
-			this.errorMessage = this.locale.errors.avatarFileTooLarge
+	async UpdateProfileImage(file: ReadFile) {
+		if (file.size > maxProfileImageFileSize) {
+			this.errorMessage = this.locale.errors.profileImageFileTooLarge
 			return
 		}
 		this.ClearMessages()
 
-		this.updatedAttribute = UserAttribute.Avatar
-		this.avatarLoading = true
-		this.newAvatarContent = file.content
-		let content = file.content.substring(file.content.indexOf(',') + 1)
+		file.readMode = ReadMode.binaryString
+		this.updatedAttribute = UserAttribute.ProfileImage
+		this.profileImageLoading = true
+		this.newProfileImageContent = file.content
 
 		// Send the file content to the server
 		this.UpdateUserResponse(
-			await UpdateUser(Dav.jwt, { avatar: content })
+			await UsersController.SetProfileImageOfUser({
+				file: new Blob([file.content], {type: file.type})
+			})
 		)
 	}
 
@@ -268,7 +270,6 @@ export class UserPageComponent {
 		this.firstNameLoading = true
 		this.UpdateUserResponse(
 			await UsersController.UpdateUser({
-				jwt: Dav.jwt,
 				firstName: this.firstName
 			})
 		)
@@ -281,7 +282,6 @@ export class UserPageComponent {
 		this.emailLoading = true
 		this.UpdateUserResponse(
 			await UsersController.UpdateUser({
-				jwt: Dav.jwt,
 				email: this.email
 			})
 		)
@@ -294,7 +294,6 @@ export class UserPageComponent {
 		this.passwordLoading = true
 		this.UpdateUserResponse(
 			await UsersController.UpdateUser({
-				jwt: Dav.jwt,
 				password: this.password
 			})
 		)
@@ -451,9 +450,9 @@ export class UserPageComponent {
 		if (message.status == 200) {
 			let userResponse = (message as ApiResponse<User>).data
 
-			if (this.updatedAttribute == UserAttribute.Avatar) {
-				this.UpdateAvatarImageContent()
-				this.snackBar.open(this.locale.messages.avatarUpdateMessage, null, { duration: 5000 })
+			if (this.updatedAttribute == UserAttribute.ProfileImage) {
+				this.UpdateProfileImageContent()
+				this.snackBar.open(this.locale.messages.profileImageUpdateMessage, null, { duration: 5000 })
 			}
 			else if (this.updatedAttribute == UserAttribute.FirstName) {
 				this.dataService.user.FirstName = userResponse.FirstName
@@ -471,7 +470,7 @@ export class UserPageComponent {
 		} else {
 			let errorCode = (message as ApiErrorResponse).errors[0].code
 
-			if (this.updatedAttribute == UserAttribute.Avatar) this.errorMessage = this.GetAvatarErrorMessage(errorCode)
+			if (this.updatedAttribute == UserAttribute.ProfileImage) this.errorMessage = this.GetProfileImageErrorMessage(errorCode)
 			else if (this.updatedAttribute == UserAttribute.FirstName) this.firstNameErrorMessage = this.GetFirstNameErrorMessage(errorCode)
 			else if (this.updatedAttribute == UserAttribute.Email) this.emailErrorMessage = this.GetEmailErrorMessage(errorCode)
 			else if (this.updatedAttribute == UserAttribute.Password) {
@@ -481,7 +480,7 @@ export class UserPageComponent {
 		}
 
 		// Hide the spinner
-		this.avatarLoading = false
+		this.profileImageLoading = false
 		this.firstNameLoading = false
 		this.emailLoading = false
 		this.passwordLoading = false
@@ -496,10 +495,10 @@ export class UserPageComponent {
 		}
 	}
 
-	UpdateAvatarImageContent() {
-		if (!this.newAvatarContent) return
-		let imageTag = document.getElementById('avatar-image')
-		if (imageTag) imageTag.setAttribute('src', this.newAvatarContent)
+	UpdateProfileImageContent() {
+		if (!this.newProfileImageContent) return
+		let imageTag = document.getElementById('profile-image')
+		if (imageTag) imageTag.setAttribute('src', this.newProfileImageContent)
 	}
 
 	ClearMessages() {
@@ -510,7 +509,7 @@ export class UserPageComponent {
 		this.passwordErrorMessage = ""
 	}
 
-	GetAvatarErrorMessage(errorCode: number): string {
+	GetProfileImageErrorMessage(errorCode: number): string {
 		return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
 	}
 
@@ -620,7 +619,7 @@ enum Menu {
 }
 
 enum UserAttribute {
-	Avatar = 0,
+	ProfileImage = 0,
 	FirstName = 1,
 	Email = 2,
 	Password = 3

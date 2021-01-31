@@ -257,8 +257,8 @@ const enDefaults = {
 		},
 		general: {
 			title: "General Settings",
-			avatarAlt: "Your Profile image",
-			uploadAvatar: "Upload profile image",
+			profileImageAlt: "Your Profile image",
+			uploadProfileImage: "Upload profile image",
 			firstNameTextfieldLabel: "Your first name",
 			firstNameTextfieldPlaceholder: "How should we call you?",
 			emailTextfieldLabel: "Email",
@@ -308,7 +308,7 @@ const enDefaults = {
 			}
 		},
 		messages: {
-			avatarUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
+			profileImageUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
 			firstNameUpdateMessage: "Your name has been updated successfully",
 			emailUpdateMessage: "You will receive an email to confirm your new email address",
 			passwordUpdateMessage: "You will receive an email to confirm your new password",
@@ -318,7 +318,7 @@ const enDefaults = {
 		errors: {
 			unexpectedErrorShort: "Unexpected error ({0})",
 			unexpectedErrorLong: "An unexpected error occured. Please try it again later.",
-			avatarFileTooLarge: "The image file is too large",
+			profileImageFileTooLarge: "The image file is too large",
 			firstNameTooShort: "The name is too short",
 			firstNameTooLong: "The name is too long",
 			emailInvalid: "Your new email is invalid",
@@ -775,8 +775,8 @@ const deDefaults = {
 		},
 		general: {
 			title: "Allgemeine Einstellungen",
-			avatarAlt: "Dein Profilbild",
-			uploadAvatar: "Profilbild hochladen",
+			profileImageAlt: "Dein Profilbild",
+			uploadProfileImage: "Profilbild hochladen",
 			firstNameTextfieldLabel: "Dein Vorname",
 			firstNameTextfieldPlaceholder: "Wie sollen wir dich nennen?",
 			emailTextfieldLabel: "Email",
@@ -826,7 +826,7 @@ const deDefaults = {
 			}
 		},
 		messages: {
-			avatarUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
+			profileImageUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
 			firstNameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
 			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
 			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts",
@@ -836,7 +836,7 @@ const deDefaults = {
 		errors: {
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
-			avatarFileTooLarge: "Die Bilddatei ist zu groß",
+			profileImageFileTooLarge: "Die Bilddatei ist zu groß",
 			firstNameTooShort: "Der Name ist zu kurz",
 			firstNameTooLong: "Der Name ist zu lang",
 			emailInvalid: "Deine neue Email-Adresse ist ungültig",
