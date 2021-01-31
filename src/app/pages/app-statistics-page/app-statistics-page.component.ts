@@ -5,7 +5,6 @@ import { ChartDataSets } from 'chart.js'
 import { Label } from 'ng2-charts'
 import * as moment from 'moment'
 import {
-	Dav,
 	ApiResponse,
 	ApiErrorResponse,
 	App,
@@ -82,7 +81,7 @@ export class AppStatisticsPageComponent {
 	}
 
 	async LoadApp(appId: number) {
-		let response: ApiResponse<App> | ApiErrorResponse = await AppsController.GetApp({ jwt: Dav.jwt, id: appId })
+		let response: ApiResponse<App> | ApiErrorResponse = await AppsController.GetApp({ id: appId })
 
 		if (response.status == 200) {
 			this.app = (response as ApiResponse<App>).data
@@ -93,7 +92,7 @@ export class AppStatisticsPageComponent {
 	}
 
 	async LoadAppUsers(appId: number) {
-		let response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse = await AppUsersController.GetAppUsers({ jwt: Dav.jwt, id: appId })
+		let response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse = await AppUsersController.GetAppUsers({ id: appId })
 
 		if (response.status == 200) {
 			this.ProcessUsers((response as ApiResponse<GetAppUsersResponseData>).data)
@@ -104,7 +103,7 @@ export class AppStatisticsPageComponent {
 	}
 
 	async LoadActiveAppUsers(appId: number) {
-		let response: ApiResponse<GetAppUserActivitiesResponseData> | ApiErrorResponse = await AppUserActivitiesController.GetAppUserActivities({ jwt: Dav.jwt, id: appId })
+		let response: ApiResponse<GetAppUserActivitiesResponseData> | ApiErrorResponse = await AppUserActivitiesController.GetAppUserActivities({ id: appId })
 
 		if (response.status == 200) {
 			this.ProcessActiveUsers((response as ApiResponse<GetAppUserActivitiesResponseData>).data)

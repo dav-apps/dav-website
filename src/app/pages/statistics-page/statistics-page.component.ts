@@ -77,12 +77,12 @@ export class StatisticsPageComponent {
 		}
 
 		this.GetUsersResponse(
-			await UsersController.GetUsers({ jwt: Dav.jwt })
+			await UsersController.GetUsers()
 		)
 
 		let start = moment().startOf('day').subtract(6, 'months').unix()
 		this.GetActiveUsersResponse(
-			await UserActivitiesController.GetUserActivities({ jwt: Dav.jwt, start })
+			await UserActivitiesController.GetUserActivities({ start })
 		)
 	}
 

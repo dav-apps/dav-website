@@ -56,7 +56,7 @@ export enum WebsocketCallbackType {
 	SetPassword,
 	// Session
 	CreateSession,
-	CreateSessionFromJwt,
+	CreateSessionFromAccessToken,
 	// Purchase
 	GetPurchase,
 	CompletePurchase,
@@ -83,7 +83,7 @@ export const Callbacks = {
 	setPassword: WebsocketCallbackType.SetPassword,
 	// Session
 	createSession: WebsocketCallbackType.CreateSession,
-	createSessionFromJwt: WebsocketCallbackType.CreateSessionFromJwt,
+	createSessionFromAccessToken: WebsocketCallbackType.CreateSessionFromAccessToken,
 	// Purchase
 	getPurchase: WebsocketCallbackType.GetPurchase,
 	completePurchase: WebsocketCallbackType.CompletePurchase,

@@ -3,7 +3,7 @@ import * as websocket from '../websocket'
 
 export const sockets = {
 	createSession,
-	createSessionFromJwt
+	createSessionFromAccessToken
 }
 
 export async function createSession(message: {
@@ -29,17 +29,17 @@ export async function createSession(message: {
 	websocket.emit(createSession.name, response)
 }
 
-export async function createSessionFromJwt(message: {
-	jwt: string,
+export async function createSessionFromAccessToken(message: {
+	accessToken: string,
 	appId: number,
 	apiKey: string,
 	deviceName: string,
 	deviceType: string,
 	deviceOs: string
 }) {
-	let response = await SessionsController.CreateSessionFromJwt({
+	let response = await SessionsController.CreateSessionFromAccessToken({
 		auth: websocket.auth,
-		jwt: message.jwt,
+		accessToken: message.accessToken,
 		appId: message.appId,
 		apiKey: message.apiKey,
 		deviceName: message.deviceName,
@@ -47,5 +47,5 @@ export async function createSessionFromJwt(message: {
 		deviceOs: message.deviceOs
 	})
 
-	websocket.emit(createSessionFromJwt.name, response)
+	websocket.emit(createSessionFromAccessToken.name, response)
 }

@@ -2,7 +2,6 @@ import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react'
 import {
-	Dav,
 	ApiResponse,
 	ApiErrorResponse,
 	App,
@@ -97,7 +96,7 @@ export class AppPageComponent {
 		// Get the app
 		let appId = +this.activatedRoute.snapshot.paramMap.get('id')
 
-		let getAppResponse: ApiResponse<App> | ApiErrorResponse = await AppsController.GetApp({jwt: Dav.jwt, id: appId})
+		let getAppResponse: ApiResponse<App> | ApiErrorResponse = await AppsController.GetApp({ id: appId })
 
 		if (getAppResponse.status == 200) {
 			this.app = (getAppResponse as ApiResponse<App>).data
@@ -140,7 +139,6 @@ export class AppPageComponent {
 
 		this.UpdateAppResponse(
 			await AppsController.UpdateApp({
-				jwt: Dav.jwt,
 				id: this.app.Id,
 				name: this.newName,
 				description: this.newDescription,
@@ -174,7 +172,6 @@ export class AppPageComponent {
 	async PublishApp() {
 		this.UpdateAppResponse(
 			await AppsController.UpdateApp({
-				jwt: Dav.jwt,
 				id: this.app.Id,
 				published: !this.app.Published
 			})
@@ -186,7 +183,6 @@ export class AppPageComponent {
 
 		this.CreateTableResponse(
 			await TablesController.CreateTable({
-				jwt: Dav.jwt,
 				appId: this.app.Id,
 				name: this.addTableDialogNewTableName
 			})
@@ -198,7 +194,6 @@ export class AppPageComponent {
 
 		this.CreateApiResponse(
 			await ApisController.CreateApi({
-				jwt: Dav.jwt,
 				appId: this.app.Id,
 				name: this.addApiDialogApiName
 			})

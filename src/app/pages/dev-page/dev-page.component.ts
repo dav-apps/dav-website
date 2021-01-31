@@ -6,7 +6,6 @@ import {
 	IButtonStyles
 } from 'office-ui-fabric-react'
 import {
-	Dav,
 	ApiResponse,
 	ApiErrorResponse,
 	App,
@@ -62,7 +61,7 @@ export class DevPageComponent {
 		}
 
 		// Get the dev
-		let getDevResponse: ApiResponse<GetDevResponseData> | ApiErrorResponse = await DevsController.GetDev({ jwt: Dav.jwt })
+		let getDevResponse: ApiResponse<GetDevResponseData> | ApiErrorResponse = await DevsController.GetDev()
 
 		if (getDevResponse.status == 200) {
 			this.apps = (getDevResponse as ApiResponse<GetDevResponseData>).data.apps
@@ -94,7 +93,7 @@ export class DevPageComponent {
 		this.addAppDialogNameError = ""
 		this.addAppDialogDescriptionError = ""
 
-		let response: ApiResponse<App> | ApiErrorResponse = await AppsController.CreateApp({ jwt: Dav.jwt, name: this.addAppDialogName, description: this.addAppDialogDescription })
+		let response: ApiResponse<App> | ApiErrorResponse = await AppsController.CreateApp({ name: this.addAppDialogName, description: this.addAppDialogDescription })
 
 		if (response.status == 201) {
 			this.apps.push((response as ApiResponse<App>).data)

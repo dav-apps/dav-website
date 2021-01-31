@@ -2,7 +2,6 @@ import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { IIconStyles } from 'office-ui-fabric-react'
 import {
-	Dav,
 	ApiResponse,
 	ApiErrorResponse,
 	Api,
@@ -50,7 +49,7 @@ export class ApiPageComponent {
 		let apiId = +this.activatedRoute.snapshot.paramMap.get('api_id')
 
 		// Get the api
-		let getApiResponse: ApiResponse<Api> | ApiErrorResponse = await ApisController.GetApi({ jwt: Dav.jwt, id: apiId })
+		let getApiResponse: ApiResponse<Api> | ApiErrorResponse = await ApisController.GetApi({ id: apiId })
 
 		if (getApiResponse.status == 200) {
 			this.api = (getApiResponse as ApiResponse<Api>).data
