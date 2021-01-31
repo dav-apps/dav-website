@@ -15,7 +15,9 @@ import {
 	ApiResponse,
 	ApiErrorResponse,
 	User,
-	UsersController
+	UsersController,
+	ProvidersController,
+	ProviderResponseData
 } from 'dav-npm'
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
@@ -258,7 +260,7 @@ export class UserPageComponent {
 		// Send the file content to the server
 		this.UpdateUserResponse(
 			await UsersController.SetProfileImageOfUser({
-				file: new Blob([file.content], {type: file.type})
+				file: new Blob([file.content], { type: file.type })
 			})
 		)
 	}
@@ -351,7 +353,7 @@ export class UserPageComponent {
 
 	async CreateUserProvider() {
 		// Create the provider
-		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await CreateProvider(Dav.jwt, this.startStripeSetupDialogDropdownSelectedKey)
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await ProvidersController.CreateProvider({ country: this.startStripeSetupDialogDropdownSelectedKey })
 
 		if (providerResponse.status != 201) {
 			// Show error
@@ -366,7 +368,7 @@ export class UserPageComponent {
 
 	async GetUserProvider() {
 		// Get the provider
-		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await GetProvider(Dav.jwt)
+		let providerResponse: ApiResponse<ProviderResponseData> | ApiErrorResponse = await ProvidersController.GetProvider()
 		if (providerResponse.status != 200) return;
 
 		let providerResponseData = (providerResponse as ApiResponse<ProviderResponseData>).data;
