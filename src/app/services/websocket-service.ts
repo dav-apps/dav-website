@@ -47,6 +47,7 @@ interface WebsocketSubscription {
 export enum WebsocketCallbackType {
 	// User
 	Signup,
+	GetUserById,
 	SendConfirmationEmail,
 	SendPasswordResetEmail,
 	ConfirmUser,
@@ -57,9 +58,6 @@ export enum WebsocketCallbackType {
 	// Session
 	CreateSession,
 	CreateSessionFromAccessToken,
-	// Purchase
-	GetPurchase,
-	CompletePurchase,
 	// Stripe
 	SaveStripePaymentMethod,
 	GetStripePaymentMethod,
@@ -74,6 +72,7 @@ export enum WebsocketCallbackType {
 export const Callbacks = {
 	// User
 	signup: WebsocketCallbackType.Signup,
+	getUserById: WebsocketCallbackType.GetUserById,
 	sendConfirmationEmail: WebsocketCallbackType.SendConfirmationEmail,
 	sendPasswordResetEmail: WebsocketCallbackType.SendPasswordResetEmail,
 	confirmUser: WebsocketCallbackType.ConfirmUser,
@@ -84,9 +83,6 @@ export const Callbacks = {
 	// Session
 	createSession: WebsocketCallbackType.CreateSession,
 	createSessionFromAccessToken: WebsocketCallbackType.CreateSessionFromAccessToken,
-	// Purchase
-	getPurchase: WebsocketCallbackType.GetPurchase,
-	completePurchase: WebsocketCallbackType.CompletePurchase,
 	// Stripe
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,
 	getStripePaymentMethod: WebsocketCallbackType.GetStripePaymentMethod,

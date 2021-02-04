@@ -33,6 +33,16 @@ export async function signup(message: {
 	websocket.emit(signup.name, response)
 }
 
+export async function getUserById(message: {
+	id: number
+}) {
+	let response = await UsersController.GetUserById({
+		auth: websocket.auth,
+		id: message.id
+	})
+	websocket.emit(getUserById.name, response)
+}
+
 export async function sendConfirmationEmail(message: {
 	userId: number
 }) {
