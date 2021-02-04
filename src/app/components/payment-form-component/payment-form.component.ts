@@ -1,15 +1,15 @@
-import { Component, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
+import { Component, Output, EventEmitter, Input, ChangeDetectorRef } from '@angular/core'
 import {
 	ApiResponse,
 	ApiErrorResponse,
-	CreateStripeCustomerForUser,
+	UsersController,
 	CreateStripeCustomerForUserResponseData
-} from 'dav-npm';
-import { DataService, StripeApiResponse } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
-import { environment } from 'src/environments/environment';
-import { enUS } from 'src/locales/locales';
-declare var Stripe: any;
+} from 'dav-npm'
+import { DataService, StripeApiResponse } from 'src/app/services/data-service'
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { environment } from 'src/environments/environment'
+import { enUS } from 'src/locales/locales'
+declare var Stripe: any
 
 @Component({
 	selector: 'dav-website-payment-form',
@@ -18,109 +18,109 @@ declare var Stripe: any;
 		'./payment-form.component.scss'
 	]
 })
-export class PaymentFormComponent{
-	locale = enUS.paymentFormComponent;
-	@Input() showSaveButton: boolean = true;
-	@Output() completed = new EventEmitter();
-	@Output() loadingStart = new EventEmitter();
-	@Output() loadingEnd = new EventEmitter();
-	stripe: any;
-	elements: any;
-	card: any;
-	cardHandler = this.onChange.bind(this);
-	errorMessage: string = "";
-	cardInputComplete: boolean = false;
-	loading: boolean = false;
+export class PaymentFormComponent {
+	locale = enUS.paymentFormComponent
+	@Input() showSaveButton: boolean = true
+	@Output() completed = new EventEmitter()
+	@Output() loadingStart = new EventEmitter()
+	@Output() loadingEnd = new EventEmitter()
+	stripe: any
+	elements: any
+	card: any
+	cardHandler = this.onChange.bind(this)
+	errorMessage: string = ""
+	cardInputComplete: boolean = false
+	loading: boolean = false
 
 	constructor(
 		public dataService: DataService,
 		public websocketService: WebsocketService,
 		private cd: ChangeDetectorRef
-	){
-		this.locale = this.dataService.GetLocale().paymentFormComponent;
+	) {
+		this.locale = this.dataService.GetLocale().paymentFormComponent
 	}
 
-	ngOnDestroy(){
-		if(this.card){
-			this.card.removeEventListener('change', this.cardHandler);
-			this.card.destroy();
+	ngOnDestroy() {
+		if (this.card) {
+			this.card.removeEventListener('change', this.cardHandler)
+			this.card.destroy()
 		}
 	}
 
-	Init(){
-		this.stripe = Stripe(environment.stripePublishableKey);
-		this.elements = this.stripe.elements();
+	Init() {
+		this.stripe = Stripe(environment.stripePublishableKey)
+		this.elements = this.stripe.elements()
 
-		this.card = this.elements.create('card');
-		this.card.mount("#card-element");
+		this.card = this.elements.create('card')
+		this.card.mount("#card-element")
 
-		this.card.addEventListener('change', this.cardHandler);
+		this.card.addEventListener('change', this.cardHandler)
 	}
 
-	onChange(event: any){
-		this.cardInputComplete = event.complete;
+	onChange(event: any) {
+		this.cardInputComplete = event.complete
 
-		if(event.error){
-			this.errorMessage = event.error.message;
-		}else{
-			this.errorMessage = "";
+		if (event.error) {
+			this.errorMessage = event.error.message
+		} else {
+			this.errorMessage = ""
 		}
 
-		this.cd.detectChanges();
+		this.cd.detectChanges()
 	}
 
-	async SaveCard(){
-		if(!this.cardInputComplete) return;
+	async SaveCard() {
+		if (!this.cardInputComplete) return
 
-		if(!this.loading){
-			this.loadingStart.emit();
-			this.loading = true;
+		if (!this.loading) {
+			this.loadingStart.emit()
+			this.loading = true
 		}
 
 		// Create a stripe customer if the user has no stripe customer
-		if(!this.dataService.user.StripeCustomerId){
-			let createStripeCustomerForUserResponse: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse = await CreateStripeCustomerForUser(this.dataService.user.JWT);
+		if (!this.dataService.user.StripeCustomerId) {
+			let createStripeCustomerForUserResponse: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse = await UsersController.CreateStripeCustomerForUser()
 
-			if(createStripeCustomerForUserResponse.status == 201){
-				this.dataService.user.StripeCustomerId = (createStripeCustomerForUserResponse as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripe_customer_id;
-				await this.CreatePaymentMethod();
-			}else{
+			if (createStripeCustomerForUserResponse.status == 201) {
+				this.dataService.user.StripeCustomerId = (createStripeCustomerForUserResponse as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripeCustomerId
+				await this.CreatePaymentMethod()
+			} else {
 				// Show error message
-				this.errorMessage = this.locale.unexpectedError.replace('{0}', (createStripeCustomerForUserResponse as ApiErrorResponse).errors[0].code.toString());
+				this.errorMessage = this.locale.unexpectedError.replace('{0}', (createStripeCustomerForUserResponse as ApiErrorResponse).errors[0].code.toString())
 			}
-		}else{
-			await this.CreatePaymentMethod();
+		} else {
+			await this.CreatePaymentMethod()
 		}
 	}
 
-	async CreatePaymentMethod(){
-		let result = await this.stripe.createPaymentMethod('card', this.card);
+	async CreatePaymentMethod() {
+		let result = await this.stripe.createPaymentMethod('card', this.card)
 
-		if(result.error){
+		if (result.error) {
 			// Show error
-			this.errorMessage = result.error.message;
-		}else{
-			if(!this.loading){
-				this.loadingStart.emit();
-				this.loading = true;
+			this.errorMessage = result.error.message
+		} else {
+			if (!this.loading) {
+				this.loadingStart.emit()
+				this.loading = true
 			}
-			
+
 			// Send the payment method to the server
 			let saveStripePaymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
 				paymentMethodId: result.paymentMethod.id,
 				customerId: this.dataService.user.StripeCustomerId
 			})
 
-			if(saveStripePaymentMethodResponse.success){
-				this.completed.emit();
-			}else{
+			if (saveStripePaymentMethodResponse.success) {
+				this.completed.emit()
+			} else {
 				// Show error
-				this.errorMessage = this.locale.unexpectedError.replace('{0}', saveStripePaymentMethodResponse.response.code);
+				this.errorMessage = this.locale.unexpectedError.replace('{0}', saveStripePaymentMethodResponse.response.code)
 			}
 
-			if(this.loading){
-				this.loadingEnd.emit();
-				this.loading = false;
+			if (this.loading) {
+				this.loadingEnd.emit()
+				this.loading = false
 			}
 		}
 	}
