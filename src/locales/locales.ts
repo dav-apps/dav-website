@@ -236,6 +236,7 @@ const enDefaults = {
 		passwordTextfieldPlaceholder: "Your password",
 		login: "Log in",
 		forgotPassword: "Forgot password?",
+		deviceInfoUnknown: "Unknown",
 		errors: {
 			loginFailed: "Login failed",
 			passwordMissing: "Please enter your password",
@@ -754,6 +755,7 @@ const deDefaults = {
 		passwordTextfieldPlaceholder: "Dein Passwort",
 		login: "Anmelden",
 		forgotPassword: "Passwort vergessen?",
+		deviceInfoUnknown: "Unbekannt",
 		errors: {
 			loginFailed: "Anmeldung fehlgeschlagen",
 			passwordMissing: "Bitte gib dein Passwort ein",

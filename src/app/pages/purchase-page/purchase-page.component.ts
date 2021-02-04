@@ -1,51 +1,47 @@
-import { Component, ViewChild, HostListener } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { IButtonStyles, IIconStyles, SpinnerSize } from 'office-ui-fabric-react';
-import { ApiResponse, ApiErrorResponse, LoginResponseData, PurchaseResponseData, Log } from 'dav-npm';
-import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component';
-import { DataService, StripeApiResponse } from 'src/app/services/data-service';
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service';
-import { enUS } from 'src/locales/locales';
-import { environment } from 'src/environments/environment';
+import { Component, ViewChild, HostListener } from '@angular/core'
+import { Router, ActivatedRoute } from '@angular/router'
+import { IButtonStyles, IIconStyles, SpinnerSize } from 'office-ui-fabric-react'
+import {
+	Dav,
+	ApiResponse,
+	ApiErrorResponse,
+	Purchase,
+	SessionResponseData,
+	PurchasesController
+} from 'dav-npm'
+import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component'
+import { DataService, StripeApiResponse, Capitalize } from 'src/app/services/data-service'
+import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { enUS } from 'src/locales/locales'
+declare var deviceAPI: any
 
-const loginEventName = "login";
+const deviceInfoNotAvailable = "Not available"
 
 @Component({
 	selector: 'dav-website-purchase-page',
 	templateUrl: './purchase-page.component.html'
 })
-export class PurchasePageComponent{
-	locale = enUS.purchasePage;
-	@ViewChild('paymentFormDialog', {static: true}) paymentFormDialog: PaymentFormDialogComponent;
-	purchase: {
-		id: number,
-		userId: number,
-		tableObjectId: number,
-		productImage: string,
-		productName: string,
-		providerImage: string,
-		providerName: string,
-		price: number,
-		currency: string,
-		completed: boolean
-	} = {id: 0, userId: 0, tableObjectId: 0, productImage: "", productName: "", providerImage: "", providerName: "", price: 0, currency: "eur", completed: false};
-	price: string = "";
-	redirectUrl: string;
-	loginUser: {id: number, username: string, email: string, avatar: string};
-	loginPromise: Promise<null> = new Promise(resolve => this.loginPromiseResolve = resolve);
-	loginPromiseResolve: Function;
-	password: string = "";
-	loginErrorMessage: string = "";
-	loginLoading: boolean = false;
-	spinnerSize: SpinnerSize = SpinnerSize.small;
-	addPaymentMethodHover: boolean = false;
-	hasPaymentMethod: boolean = false;
-	paymentMethodLast4: string;
-	paymentMethodExpirationMonth: string;
-	paymentMethodExpirationYear: string;
-	mobileView: boolean = false;
-	paymentLoading: boolean = false;
-	
+export class PurchasePageComponent {
+	locale = enUS.purchasePage
+	@ViewChild('paymentFormDialog', { static: true }) paymentFormDialog: PaymentFormDialogComponent
+	purchase: Purchase = new Purchase(0, 0, 0, "", "", "", "", "", 0, "eur", false)
+	price: string = ""
+	redirectUrl: string
+	loginUser: { id: number, username: string, email: string, avatar: string }
+	loginPromise: Promise<null> = new Promise(resolve => this.loginPromiseResolve = resolve)
+	loginPromiseResolve: Function
+	password: string = ""
+	loginErrorMessage: string = ""
+	loginLoading: boolean = false
+	spinnerSize: SpinnerSize = SpinnerSize.small
+	addPaymentMethodHover: boolean = false
+	hasPaymentMethod: boolean = false
+	paymentMethodLast4: string
+	paymentMethodExpirationMonth: string
+	paymentMethodExpirationYear: string
+	mobileView: boolean = false
+	paymentLoading: boolean = false
+
 	loginButtonStyles: IButtonStyles = {
 		root: {
 			marginTop: 24
@@ -53,7 +49,7 @@ export class PurchasePageComponent{
 	}
 	backButtonIconStyles: IIconStyles = {
 		root: {
-         fontSize: 13
+			fontSize: 13
 		}
 	}
 	editPaymentMethodButtonStyles: IButtonStyles = {
@@ -68,156 +64,185 @@ export class PurchasePageComponent{
 		private websocketService: WebsocketService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
-	){
-		this.locale = this.dataService.GetLocale().purchasePage;
-		this.dataService.hideNavbarAndFooter = true;
+	) {
+		this.locale = this.dataService.GetLocale().purchasePage
+		this.dataService.hideNavbarAndFooter = true
 
-		this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirect_url");
-		if(!this.redirectUrl) this.RedirectToStartPageWithError();
+		this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirect_url")
+		if (!this.redirectUrl) this.RedirectToStartPageWithError()
 	}
 
-	async ngOnInit(){
-		this.setSize();
-		await this.dataService.userDownloadPromise;
+	async ngOnInit() {
+		this.setSize()
+		await this.dataService.userDownloadPromise
 
 		// Get the id from the url
-		let purchaseId = this.activatedRoute.snapshot.paramMap.get('id');
+		let purchaseId = this.activatedRoute.snapshot.paramMap.get('id')
 
 		// Get the purchase from the server
-		let response: ApiResponse<PurchaseResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.GetPurchase, {id: +purchaseId});
+		let response: ApiResponse<Purchase> | ApiErrorResponse = await PurchasesController.GetPurchase({ id: +purchaseId })
 
-		if(response.status == 200){
-			this.purchase = (response as ApiResponse<PurchaseResponseData>).data;
-			this.price = (this.purchase.price / 100).toFixed(2) + " €";
+		if (response.status == 200) {
+			this.purchase = (response as ApiResponse<Purchase>).data
+			this.price = (this.purchase.Price / 100).toFixed(2) + " €"
 
-			if(this.dataService.locale.slice(0, 2) == "de"){
-				this.price = this.price.replace('.', ',');
+			if (this.dataService.locale.slice(0, 2) == "de") {
+				this.price = this.price.replace('.', ',')
 			}
-		}else{
+		} else {
 			// TODO: Redirect back with error
-			return;
+			return
 		}
 
 		// Show the Login form if the user is not logged in or if the logged in user is not the user of the purchase
-		if(
-			!this.dataService.user.IsLoggedIn || 
-			(this.dataService.user.IsLoggedIn && this.dataService.user.Id != this.purchase.userId)
-		){
+		if (
+			this.dataService.user == null
+			|| (this.dataService.user != null && this.dataService.user.Id != this.purchase.UserId)
+		) {
 			// Get the user of the purchase
-			let getUserByAuthResponse = await this.websocketService.Emit(WebsocketCallbackType.GetUserByAuth, {id: this.purchase.userId});
+			let getUserByAuthResponse = await this.websocketService.Emit(WebsocketCallbackType.GetUserById, { id: this.purchase.UserId })
 
-			if(getUserByAuthResponse.status == 200){
+			if (getUserByAuthResponse.status == 200) {
 				this.loginUser = {
 					id: getUserByAuthResponse.data.id,
 					username: getUserByAuthResponse.data.username,
 					email: getUserByAuthResponse.data.email,
 					avatar: getUserByAuthResponse.data.avatar
 				}
-			}else{
+			} else {
 				// TODO: Redirect back with error
-				return;
+				return
 			}
-		}else{
-			this.loginPromiseResolve();
+		} else {
+			this.loginPromiseResolve()
 		}
 
-		await this.loginPromise;
+		await this.loginPromise
 
 		// Get the payment method of the user
-		await this.GetPaymentMethod();
+		await this.GetPaymentMethod()
 	}
 
 	@HostListener('window:resize')
-	onResize(){
-		this.setSize();
+	onResize() {
+		this.setSize()
 	}
 
-	setSize(){
-		this.mobileView = window.outerWidth < 768;
+	setSize() {
+		this.mobileView = window.outerWidth < 768
 	}
 
-	async Login(){
-		this.loginErrorMessage = "";
-		this.loginLoading = true;
-		let response = await this.websocketService.Emit(WebsocketCallbackType.Login, {email: this.loginUser.email, password: this.password});
+	async Login() {
+		this.loginErrorMessage = ""
+		this.loginLoading = true
 
-		if(response.status == 200){
-			// Save the jwt
-			await this.dataService.user.Login((response as ApiResponse<LoginResponseData>).data.jwt);
+		// Get device info
+		let deviceBrand = this.locale.deviceInfoUnknown
+		let deviceName = this.locale.deviceInfoUnknown
+		let fullDeviceName = this.locale.deviceInfoUnknown
+		let deviceType = this.locale.deviceInfoUnknown
+		let deviceOs = this.locale.deviceInfoUnknown
 
-			// Log the event
-			await Log(environment.apiKey, loginEventName);
+		if (deviceAPI) {
+			deviceBrand = deviceAPI.deviceBrand
+			deviceName = deviceAPI.deviceName
+			deviceType = Capitalize(deviceAPI.deviceType as string)
+			deviceOs = deviceAPI.osName
 
-			this.loginUser = null;
-			this.loginPromiseResolve();
-		}else{
-			let errorCode = (response as ApiErrorResponse).errors[0].code;
-			
-			switch(errorCode){
-				case 1201:
-					this.loginErrorMessage = this.locale.errors.loginFailed;
-					break;
-				case 2107:
-					this.loginErrorMessage = this.locale.errors.passwordMissing;
-					break;
-				default:
-					this.loginErrorMessage = this.locale.errors.unexpectedError.replace('{0}', errorCode.toString())
-					break;
+			if (deviceBrand == deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
+				fullDeviceName = deviceName
+			} else if (deviceBrand != deviceInfoNotAvailable && deviceName == deviceInfoNotAvailable) {
+				fullDeviceName = deviceBrand
+			} else if (deviceBrand != deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
+				fullDeviceName = `${deviceBrand} ${deviceName}`
 			}
 
-			this.password = "";
+			if (deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown
+			if (deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown
 		}
 
-		this.loginLoading = false;
+		let response = await this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
+			email: this.loginUser.email,
+			password: this.password,
+			deviceName: fullDeviceName,
+			deviceType,
+			deviceOs
+		})
+
+		if (response.status == 201) {
+			// Log the user in
+			await Dav.Login((response as ApiResponse<SessionResponseData>).data.accessToken)
+
+			this.loginUser = null
+			this.loginPromiseResolve()
+		} else {
+			let errorCode = (response as ApiErrorResponse).errors[0].code
+
+			switch (errorCode) {
+				case 1201:
+					this.loginErrorMessage = this.locale.errors.loginFailed
+					break
+				case 2107:
+					this.loginErrorMessage = this.locale.errors.passwordMissing
+					break
+				default:
+					this.loginErrorMessage = this.locale.errors.unexpectedError.replace('{0}', errorCode.toString())
+					break
+			}
+
+			this.password = ""
+		}
+
+		this.loginLoading = false
 	}
 
-	async GetPaymentMethod(){
-		if(this.dataService.user.StripeCustomerId){
-			let paymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, {customerId: this.dataService.user.StripeCustomerId});
-			this.hasPaymentMethod = paymentMethodResponse.success && paymentMethodResponse.response;
+	async GetPaymentMethod() {
+		if (this.dataService.user.StripeCustomerId) {
+			let paymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, { customerId: this.dataService.user.StripeCustomerId })
+			this.hasPaymentMethod = paymentMethodResponse.success && paymentMethodResponse.response
 
-			if(this.hasPaymentMethod){
-				this.paymentMethodLast4 = paymentMethodResponse.response.card.last4;
-				this.paymentMethodExpirationMonth = paymentMethodResponse.response.card.exp_month.toString();
-				this.paymentMethodExpirationYear = paymentMethodResponse.response.card.exp_year.toString().substring(2);
+			if (this.hasPaymentMethod) {
+				this.paymentMethodLast4 = paymentMethodResponse.response.card.last4
+				this.paymentMethodExpirationMonth = paymentMethodResponse.response.card.exp_month.toString()
+				this.paymentMethodExpirationYear = paymentMethodResponse.response.card.exp_year.toString().substring(2)
 
-				if(this.paymentMethodExpirationMonth.length == 1){
-					this.paymentMethodExpirationMonth = "0" + this.paymentMethodExpirationMonth;
+				if (this.paymentMethodExpirationMonth.length == 1) {
+					this.paymentMethodExpirationMonth = "0" + this.paymentMethodExpirationMonth
 				}
 			}
 		}
 	}
 
-	ShowPaymentMethodDialog(){
-		this.paymentFormDialog.ShowDialog();
+	ShowPaymentMethodDialog() {
+		this.paymentFormDialog.ShowDialog()
 	}
 
-	async PaymentMethodChanged(){
-		await this.GetPaymentMethod();
+	async PaymentMethodChanged() {
+		await this.GetPaymentMethod()
 	}
 
-	async Pay(){
-		this.paymentLoading = true;
+	async Pay() {
+		this.paymentLoading = true
 
 		// Complete the purchase on the server
-		let completePurchaseResponse: ApiResponse<PurchaseResponseData> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.CompletePurchase, {id: this.purchase.id});
+		let completePurchaseResponse: ApiResponse<Purchase> | ApiErrorResponse = await PurchasesController.CompletePurchase({ id: this.purchase.Id })
 
-		if(completePurchaseResponse.status == 200){
+		if (completePurchaseResponse.status == 200) {
 			// Redirect to the redirect url
-			window.location.href = this.redirectUrl;
-		}else{
+			window.location.href = this.redirectUrl
+		} else {
 			// Redirect back to redirect url with error
 			// TODO
 		}
 	}
 
-	NavigateBack(){
+	NavigateBack() {
 		// Redirect back to the app
-		window.location.href = this.redirectUrl;
+		window.location.href = this.redirectUrl
 	}
 
-	RedirectToStartPageWithError(){
-		this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong;
-		this.router.navigate(['/']);
+	RedirectToStartPageWithError() {
+		this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong
+		this.router.navigate(['/'])
 	}
 }
