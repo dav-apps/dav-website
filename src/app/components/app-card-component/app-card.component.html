@@ -5,25 +5,25 @@
 			<p class="card-text">{{ app.Description }}</p>
 		</div>
 		<div class="card-footer">
-			<a class="btn btn-light text-dark mx-1" 
-				target="blank" 
-				[href]="app.LinkWeb" 
+			<a class="btn btn-light text-dark mx-1"
+				target="blank"
+				[href]="app.WebLink"
 				style="font-size: 23px; padding: 3px 10px"
-				*ngIf="app.LinkWeb">
+				*ngIf="app.WebLink">
 				<fa-icon [icon]="faGlobe"></fa-icon>
 			</a>
-			<a class="btn btn-light text-dark mx-1" 
-				target="blank" 
-				[href]="app.LinkPlay" 
+			<a class="btn btn-light text-dark mx-1"
+				target="blank"
+				[href]="app.GooglePlayLink"
 				style="font-size: 23px; padding: 3px 10px"
-				*ngIf="app.LinkPlay">
+				*ngIf="app.GooglePlayLink">
 				<fa-icon [icon]="faAndroid"></fa-icon>
 			</a>
-			<a class="btn btn-light text-dark mx-1" 
-				target="blank" 
-				[href]="app.LinkWindows" 
+			<a class="btn btn-light text-dark mx-1"
+				target="blank"
+				[href]="app.MicrosoftStoreLink"
 				style="font-size: 23px; padding: 3px 10px"
-				*ngIf="app.LinkWindows">
+				*ngIf="app.MicrosoftStoreLink">
 				<fa-icon [icon]="faWindows"></fa-icon>
 			</a>
 		</div>
