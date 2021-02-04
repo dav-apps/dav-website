@@ -5,7 +5,7 @@ import {
 	Dav,
 	ApiResponse,
 	ApiErrorResponse,
-	SessionsController
+	SessionResponseData
 } from 'dav-npm'
 import {
 	DataService,
@@ -123,16 +123,26 @@ export class LoginPageComponent {
 		this.loginLoading = true
 
 		// Get device info
+		let deviceBrand = this.locale.deviceInfoUnknown
 		let deviceName = this.locale.deviceInfoUnknown
+		let fullDeviceName = this.locale.deviceInfoUnknown
 		let deviceType = this.locale.deviceInfoUnknown
 		let deviceOs = this.locale.deviceInfoUnknown
 
 		if (deviceAPI) {
+			deviceBrand = deviceAPI.deviceBrand
 			deviceName = deviceAPI.deviceName
 			deviceType = Capitalize(deviceAPI.deviceType as string)
 			deviceOs = deviceAPI.osName
 
-			if (deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown
+			if (deviceBrand == deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
+				fullDeviceName = deviceName
+			} else if (deviceBrand != deviceInfoNotAvailable && deviceName == deviceInfoNotAvailable) {
+				fullDeviceName = deviceBrand
+			} else if (deviceBrand != deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
+				fullDeviceName = `${deviceBrand} ${deviceName}`
+			}
+
 			if (deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown
 			if (deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown
 		}
@@ -144,7 +154,7 @@ export class LoginPageComponent {
 				password: this.password,
 				appId: this.appId,
 				apiKey: this.apiKey,
-				deviceName,
+				deviceName: fullDeviceName,
 				deviceType,
 				deviceOs
 			})
@@ -168,9 +178,9 @@ export class LoginPageComponent {
 		}
 
 		// Create the session on the server
-		this.CreateSessionWithJwtResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.CreateSessionFromJwt, {
-				jwt: Dav.jwt,
+		this.CreateSessionWithAccessTokenResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.CreateSessionFromAccessToken, {
+				accessToken: Dav.accessToken,
 				appId: this.appId,
 				apiKey: this.apiKey,
 				deviceName,
@@ -185,19 +195,19 @@ export class LoginPageComponent {
 		window.location.href = this.redirectUrl
 	}
 
-	async CreateSessionResponse(response: (ApiResponse<SessionsController.CreateSessionResponseData> | ApiErrorResponse)) {
+	async CreateSessionResponse(response: (ApiResponse<SessionResponseData> | ApiErrorResponse)) {
 		if (response.status == 201) {
-			let responseData = (response as ApiResponse<SessionsController.CreateSessionResponseData>).data
+			let responseData = (response as ApiResponse<SessionResponseData>).data
 
 			if (this.websiteLogin) {
 				// Log in the user
-				await Dav.Login(responseData.jwt)
+				await Dav.Login(responseData.accessToken)
 
 				// Redirect to the start page
 				this.router.navigate(['/'])
 			} else {
 				// Redirect to the redirect url
-				window.location.href = `${this.redirectUrl}?jwt=${responseData.jwt}`
+				window.location.href = `${this.redirectUrl}?access_token=${responseData.accessToken}`
 			}
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
@@ -212,10 +222,10 @@ export class LoginPageComponent {
 		}
 	}
 
-	async CreateSessionWithJwtResponse(response: (ApiResponse<SessionsController.CreateSessionResponseData> | ApiErrorResponse)) {
+	async CreateSessionWithAccessTokenResponse(response: (ApiResponse<SessionResponseData> | ApiErrorResponse)) {
 		if (response.status == 201) {
 			// Redirect to the redirect url
-			window.location.href = `${this.redirectUrl}?jwt=${(response as ApiResponse<SessionsController.CreateSessionResponseData>).data.jwt}`
+			window.location.href = `${this.redirectUrl}?access_token=${(response as ApiResponse<SessionResponseData>).data.accessToken}`
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 			this.errorMessage = this.GetLoginErrorMessage(errorCode)

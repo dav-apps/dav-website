@@ -116,16 +116,26 @@ export class SignupPageComponent {
 		this.signupLoading = true
 
 		// Get device info
+		let deviceBrand = this.locale.deviceInfoUnknown
 		let deviceName = this.locale.deviceInfoUnknown
+		let fullDeviceName = this.locale.deviceInfoUnknown
 		let deviceType = this.locale.deviceInfoUnknown
 		let deviceOs = this.locale.deviceInfoUnknown
 
 		if (deviceAPI) {
+			deviceBrand = deviceAPI.deviceBrand
 			deviceName = deviceAPI.deviceName
 			deviceType = Capitalize(deviceAPI.deviceType as string)
 			deviceOs = deviceAPI.osName
 
-			if (deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown
+			if (deviceBrand == deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
+				fullDeviceName = deviceName
+			} else if (deviceBrand != deviceInfoNotAvailable && deviceName == deviceInfoNotAvailable) {
+				fullDeviceName = deviceBrand
+			} else if (deviceBrand != deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
+				fullDeviceName = `${deviceBrand} ${deviceName}`
+			}
+
 			if (deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown
 			if (deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown
 		}
@@ -138,7 +148,7 @@ export class SignupPageComponent {
 				password: this.password,
 				appId: this.appId,
 				apiKey: this.apiKey,
-				deviceName,
+				deviceName: fullDeviceName,
 				deviceType,
 				deviceOs
 			})
@@ -161,16 +171,16 @@ export class SignupPageComponent {
 
 			if (this.websiteSignup) {
 				// Log in the user locally
-				await Dav.Login(responseData.jwt)
+				await Dav.Login(responseData.accessToken)
 
 				// Redirect to the start page
 				this.router.navigate(['/'])
 			} else {
 				// Log in the user locally
-				await Dav.Login(responseData.websiteJwt)
+				await Dav.Login(responseData.websiteAccessToken)
 
 				// Redirect to the redirect url
-				window.location.href = `${this.redirectUrl}?jwt=${responseData.jwt}`
+				window.location.href = `${this.redirectUrl}?access_token=${responseData.accessToken}`
 			}
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
