@@ -27,8 +27,8 @@ export class ResetPasswordPageComponent {
 	) {
 		this.locale = this.dataService.GetLocale().resetPasswordPage
 
-		this.userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id')
-		this.passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('password_confirmation_token')
+		this.userId = +this.activatedRoute.snapshot.queryParamMap.get('userId')
+		this.passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('passwordConfirmationToken')
 
 		if (
 			isNaN(this.userId)

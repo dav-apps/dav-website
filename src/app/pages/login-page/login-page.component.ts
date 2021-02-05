@@ -53,9 +53,9 @@ export class LoginPageComponent {
 	) {
 		this.locale = this.dataService.GetLocale().loginPage
 
-		this.appId = +this.activatedRoute.snapshot.queryParamMap.get("app_id")
-		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get("api_key")
-		let redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirect_url")
+		this.appId = +this.activatedRoute.snapshot.queryParamMap.get("appId")
+		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get("apiKey")
+		let redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirectUrl")
 		if (redirectUrl) this.redirectUrl = decodeURIComponent(redirectUrl).trim()
 		let redirect = this.activatedRoute.snapshot.queryParamMap.get("redirect")
 		if (redirect) this.redirect = decodeURIComponent(redirect).trim()
@@ -207,7 +207,7 @@ export class LoginPageComponent {
 				this.router.navigate(['/'])
 			} else {
 				// Redirect to the redirect url
-				window.location.href = `${this.redirectUrl}?access_token=${responseData.accessToken}`
+				window.location.href = `${this.redirectUrl}?accessToken=${responseData.accessToken}`
 			}
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
@@ -225,7 +225,7 @@ export class LoginPageComponent {
 	async CreateSessionWithAccessTokenResponse(response: (ApiResponse<SessionResponseData> | ApiErrorResponse)) {
 		if (response.status == 201) {
 			// Redirect to the redirect url
-			window.location.href = `${this.redirectUrl}?access_token=${(response as ApiResponse<SessionResponseData>).data.accessToken}`
+			window.location.href = `${this.redirectUrl}?accessToken=${(response as ApiResponse<SessionResponseData>).data.accessToken}`
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 			this.errorMessage = this.GetLoginErrorMessage(errorCode)

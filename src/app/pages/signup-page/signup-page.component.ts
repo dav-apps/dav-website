@@ -53,9 +53,9 @@ export class SignupPageComponent {
 		let extras = this.router.getCurrentNavigation().extras;
 		if (extras.state && extras.state.redirectedFromLogin) this.redirectedFromLogin = true
 
-		this.appId = +this.activatedRoute.snapshot.queryParamMap.get('app_id')
-		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get('api_key')
-		this.redirectUrl = decodeURIComponent(this.activatedRoute.snapshot.queryParamMap.get('redirect_url'))
+		this.appId = +this.activatedRoute.snapshot.queryParamMap.get('appId')
+		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get('apiKey')
+		this.redirectUrl = decodeURIComponent(this.activatedRoute.snapshot.queryParamMap.get('redirectUrl'))
 
 		// If none of the params are present, this is a normal signup for the website
 		this.websiteSignup = this.appId == null && this.apiKey == null && this.redirectUrl == null
@@ -180,7 +180,7 @@ export class SignupPageComponent {
 				await Dav.Login(responseData.websiteAccessToken)
 
 				// Redirect to the redirect url
-				window.location.href = `${this.redirectUrl}?access_token=${responseData.accessToken}`
+				window.location.href = `${this.redirectUrl}?accessToken=${responseData.accessToken}`
 			}
 		} else {
 			let errorCode = (response as ApiErrorResponse).errors[0].code

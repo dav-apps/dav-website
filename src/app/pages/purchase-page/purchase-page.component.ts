@@ -68,7 +68,7 @@ export class PurchasePageComponent {
 		this.locale = this.dataService.GetLocale().purchasePage
 		this.dataService.hideNavbarAndFooter = true
 
-		this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirect_url")
+		this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirectUrl")
 		if (!this.redirectUrl) this.RedirectToStartPageWithError()
 	}
 

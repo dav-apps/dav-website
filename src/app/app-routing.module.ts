@@ -30,14 +30,14 @@ const routes: Routes = [
 	{ path: "signup", component: SignupPageComponent },
 	{ path: "apps", component: AppsPageComponent },
 	{ path: "user", component: UserPageComponent },
-	{ path: "password_reset", component: PasswordResetPageComponent },
-	{ path: "reset_password", component: ResetPasswordPageComponent },
-	{ path: "email_link", component: EmailLinkPageComponent },
+	{ path: "password-reset", component: PasswordResetPageComponent },
+	{ path: "reset-password", component: ResetPasswordPageComponent },
+	{ path: "email-link", component: EmailLinkPageComponent },
 	{ path: "dev", component: DevPageComponent },
 	{ path: "dev/statistics", component: StatisticsPageComponent },
 	{ path: "dev/:id", component: AppPageComponent },
 	{ path: "dev/:id/statistics", component: AppStatisticsPageComponent },
-	{ path: "dev/:id/api/:api_id", component: ApiPageComponent },
+	{ path: "dev/:id/api/:apiId", component: ApiPageComponent },
 	{ path: "purchase/:id", component: PurchasePageComponent }
 ]
 

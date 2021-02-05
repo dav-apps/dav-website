@@ -39,6 +39,7 @@ export class AppComponent {
 			}
 		})
 
+		// Initialize dav
 		this.dataService.dav = new Dav({
 			environment: environment.production ? Environment.Production : Environment.Development,
 			appId: environment.appId,
@@ -49,6 +50,7 @@ export class AppComponent {
 			}
 		})
 
+		// Get the user
 		this.dataService.user = await GetUser()
 		this.dataService.userPromiseResolve(this.dataService.user)
 	}

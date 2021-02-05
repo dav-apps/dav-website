@@ -46,7 +46,7 @@ export class ApiPageComponent {
 		}
 
 		this.appId = +this.activatedRoute.snapshot.paramMap.get('id')
-		let apiId = +this.activatedRoute.snapshot.paramMap.get('api_id')
+		let apiId = +this.activatedRoute.snapshot.paramMap.get('apiId')
 
 		// Get the api
 		let getApiResponse: ApiResponse<Api> | ApiErrorResponse = await ApisController.GetApi({ id: apiId })

@@ -35,12 +35,12 @@ export class EmailLinkPageComponent {
 		}
 
 		// Get all possible variables from the url params
-		let userId = +this.activatedRoute.snapshot.queryParamMap.get('user_id')
-		let passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('password_confirmation_token')
-		let emailConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('email_confirmation_token')
+		let userId = +this.activatedRoute.snapshot.queryParamMap.get('userId')
+		let passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('passwordConfirmationToken')
+		let emailConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('emailConfirmationToken')
 
 		switch (type) {
-			case "confirm_user":
+			case "confirmUser":
 				// Check if user id and email confirmation token are present
 				if (
 					isNaN(userId)
@@ -50,7 +50,7 @@ export class EmailLinkPageComponent {
 				) this.RedirectToStartPageWithError()
 				else this.HandleConfirmUser(userId, emailConfirmationToken)
 				break
-			case "change_email":
+			case "changeEmail":
 				// Check if user id and email confirmation token are present
 				if (
 					isNaN(userId)
@@ -60,7 +60,7 @@ export class EmailLinkPageComponent {
 				) this.RedirectToStartPageWithError()
 				else this.HandleChangeEmail(userId, emailConfirmationToken)
 				break
-			case "change_password":
+			case "changePassword":
 				// Check if user id and password confirmation token are present
 				if (
 					isNaN(userId)
@@ -70,7 +70,7 @@ export class EmailLinkPageComponent {
 				) this.RedirectToStartPageWithError()
 				else this.HandleChangePassword(userId, passwordConfirmationToken)
 				break
-			case "reset_email":
+			case "resetEmail":
 				// Check if user id and email confirmation token are present
 				if (
 					isNaN(userId)
