@@ -78,11 +78,11 @@ export class PaymentFormComponent {
 		}
 
 		// Create a stripe customer if the user has no stripe customer
-		if (!this.dataService.user.StripeCustomerId) {
+		if (!this.dataService.dav.user.StripeCustomerId) {
 			let createStripeCustomerForUserResponse: ApiResponse<CreateStripeCustomerForUserResponseData> | ApiErrorResponse = await UsersController.CreateStripeCustomerForUser()
 
 			if (createStripeCustomerForUserResponse.status == 201) {
-				this.dataService.user.StripeCustomerId = (createStripeCustomerForUserResponse as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripeCustomerId
+				this.dataService.dav.user.StripeCustomerId = (createStripeCustomerForUserResponse as ApiResponse<CreateStripeCustomerForUserResponseData>).data.stripeCustomerId
 				await this.CreatePaymentMethod()
 			} else {
 				// Show error message
@@ -108,7 +108,7 @@ export class PaymentFormComponent {
 			// Send the payment method to the server
 			let saveStripePaymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
 				paymentMethodId: result.paymentMethod.id,
-				customerId: this.dataService.user.StripeCustomerId
+				customerId: this.dataService.dav.user.StripeCustomerId
 			})
 
 			if (saveStripePaymentMethodResponse.success) {

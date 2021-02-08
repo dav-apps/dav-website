@@ -96,8 +96,8 @@ export class PurchasePageComponent {
 
 		// Show the Login form if the user is not logged in or if the logged in user is not the user of the purchase
 		if (
-			this.dataService.user == null
-			|| (this.dataService.user != null && this.dataService.user.Id != this.purchase.UserId)
+			!this.dataService.dav.isLoggedIn
+			|| (this.dataService.dav.isLoggedIn && this.dataService.dav.user.Id != this.purchase.UserId)
 		) {
 			// Get the user of the purchase
 			let getUserByAuthResponse = await this.websocketService.Emit(WebsocketCallbackType.GetUserById, { id: this.purchase.UserId })
@@ -197,8 +197,8 @@ export class PurchasePageComponent {
 	}
 
 	async GetPaymentMethod() {
-		if (this.dataService.user.StripeCustomerId) {
-			let paymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, { customerId: this.dataService.user.StripeCustomerId })
+		if (this.dataService.dav.user.StripeCustomerId) {
+			let paymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, { customerId: this.dataService.dav.user.StripeCustomerId })
 			this.hasPaymentMethod = paymentMethodResponse.success && paymentMethodResponse.response
 
 			if (this.hasPaymentMethod) {

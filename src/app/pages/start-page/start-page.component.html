@@ -1,4 +1,4 @@
-<div class="container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="dataService.user.IsLoggedIn">
+<div class="container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="dataService.dav.isLoggedIn">
 	<h1 class="text-center font-weight-light mb-3">{{ locale.loggedInTitle }}</h1>
 
 	<!-- Error message -->
@@ -12,18 +12,18 @@
 	</div>
 
 	<div class="card-group">
-		<dav-website-app-card *ngFor="let app of dataService.user.Apps" [app]="app"></dav-website-app-card>
+		<dav-website-app-card *ngFor="let app of dataService.dav.user.Apps" [app]="app"></dav-website-app-card>
 	</div>
 
-	<div class="jumbotron mt-4" style="padding: 35px 38px" *ngIf="dataService.user.Apps.length == 0">
-		<h1 class="font-weight-light">{{ locale.welcomeTitle.replace('{0}', dataService.user.Username) }}</h1>
+	<div class="jumbotron mt-4" style="padding: 35px 38px" *ngIf="dataService.dav.user.Apps.length == 0">
+		<h1 class="font-weight-light">{{ locale.welcomeTitle.replace('{0}', dataService.dav.user.FirstName) }}</h1>
 
 		<p class="lead">{{ locale.welcomeMessage }}</p>
 		<a class="btn btn-primary mt-2" routerLink="apps" role="button">{{ locale.welcomeButton }}</a>
 	</div>
 </div>
 
-<div class="container-fluid ms-motion-slideUpIn" style="padding: 0px" *ngIf="!dataService.user.IsLoggedIn">
+<div class="container-fluid ms-motion-slideUpIn" style="padding: 0px" *ngIf="!dataService.dav.isLoggedIn">
 	<!-- Header with image -->
 	<div id="start-header" class="d-flex parallax" [style.height.px]="height * 0.7">
 		<!-- Error message -->

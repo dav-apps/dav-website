@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core'
 import { IDialogContentProps, IButtonStyles, MessageBarType, SpinnerSize } from 'office-ui-fabric-react'
+import { SubscriptionStatus } from 'dav-npm'
 import { DataService, StripeApiResponse } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'
@@ -76,7 +77,7 @@ export class PricingComponent {
 			// Show the payment form
 			this.editPaymentMethod = false
 			this.paymentFormDialog.ShowDialog()
-		} else if (this.dataService.user.Plan == 0) {
+		} else if (this.dataService.dav.user.Plan == 0) {
 			// Update the values of the upgrade dialog
 			if (this.selectedPlan == 2) {
 				this.upgradeDialogContent.title = this.locale.upgradeProDialogTitle
@@ -104,8 +105,8 @@ export class PricingComponent {
 
 		this.SetStripeSubscriptionCancelledResponse(
 			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscriptionCancelled, {
-				customerId: this.dataService.user.StripeCustomerId,
-				cancel: this.dataService.user.SubscriptionStatus == 0
+				customerId: this.dataService.dav.user.StripeCustomerId,
+				cancel: this.dataService.dav.user.SubscriptionStatus == 0
 			})
 		)
 	}
@@ -148,7 +149,7 @@ export class PricingComponent {
 
 		this.SetStripeSubscriptionResponse(
 			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscription, {
-				customerId: this.dataService.user.StripeCustomerId,
+				customerId: this.dataService.dav.user.StripeCustomerId,
 				planId
 			})
 		)
@@ -158,18 +159,18 @@ export class PricingComponent {
 		await this.dataService.userPromise
 
 		// Get the payment method
-		if (this.dataService.user != null && this.dataService.user.StripeCustomerId != null) {
+		if (this.dataService.dav.isLoggedIn && this.dataService.dav.user.StripeCustomerId != null) {
 			this.GetStripePaymentMethodResponse(
-				await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, { customerId: this.dataService.user.StripeCustomerId })
+				await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, { customerId: this.dataService.dav.user.StripeCustomerId })
 			)
 		} else {
 			this.paymentMethodResolve()
 		}
 
-		if (this.dataService.user.Plan > 0 && this.dataService.user.PeriodEnd) {
+		if (this.dataService.dav.user.Plan > 0 && this.dataService.dav.user.PeriodEnd) {
 			// Show the date of the next payment or the subscription end
 			moment.locale(this.dataService.locale)
-			this.periodEndDate = moment(this.dataService.user.PeriodEnd).format('LL')
+			this.periodEndDate = moment(this.dataService.dav.user.PeriodEnd).format('LL')
 		}
 	}
 
@@ -179,12 +180,12 @@ export class PricingComponent {
 				// Set the subscription status of the user
 				this.errorMessage = ""
 				this.successMessage = this.locale.cancelSubscriptionSuccessMessage.replace('{0}', this.periodEndDate)
-				this.dataService.user.SubscriptionStatus = 1
+				this.dataService.dav.user.SubscriptionStatus = SubscriptionStatus.Ending
 			} else {
 				// Set the plan of the user
 				this.errorMessage = ""
 				this.successMessage = this.locale.changePlanSuccessMessage
-				this.dataService.user.Plan = this.selectedPlan
+				this.dataService.dav.user.Plan = this.selectedPlan
 			}
 		} else {
 			// Show error
@@ -220,8 +221,8 @@ export class PricingComponent {
 
 		if (message.success) {
 			this.errorMessage = ""
-			this.successMessage = (this.dataService.user.SubscriptionStatus == 0 ? this.locale.cancelSubscriptionSuccessMessage : this.locale.continueSubscriptionSuccessMessage).replace('{0}', this.periodEndDate)
-			this.dataService.user.SubscriptionStatus = this.dataService.user.SubscriptionStatus == 0 ? 1 : 0
+			this.successMessage = (this.dataService.dav.user.SubscriptionStatus == 0 ? this.locale.cancelSubscriptionSuccessMessage : this.locale.continueSubscriptionSuccessMessage).replace('{0}', this.periodEndDate)
+			this.dataService.dav.user.SubscriptionStatus = this.dataService.dav.user.SubscriptionStatus == 0 ? 1 : 0
 		} else {
 			this.successMessage = ""
 			this.errorMessage = this.locale.unexpectedError.replace('{0}', message.response.code)

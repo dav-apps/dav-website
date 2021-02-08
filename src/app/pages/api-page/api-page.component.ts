@@ -35,11 +35,11 @@ export class ApiPageComponent {
 
 	async ngOnInit() {
 		await this.dataService.userPromise
-		if (this.dataService.user == null) {
+		if (this.dataService.dav.user == null) {
 			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage
 			this.router.navigate(['/'])
 			return
-		} else if (!this.dataService.user.Dev) {
+		} else if (!this.dataService.dav.user.Dev) {
 			this.dataService.startPageErrorMessage = this.locale.accessNotAllowedMessage
 			this.router.navigate(['/'])
 			return

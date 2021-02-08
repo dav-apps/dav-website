@@ -11,7 +11,6 @@ import {
 import { ReadFile, ReadMode } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import {
-	Dav,
 	ApiResponse,
 	ApiErrorResponse,
 	User,
@@ -146,7 +145,7 @@ export class UserPageComponent {
 		this.setSize()
 
 		await this.dataService.userPromise
-		if (this.dataService.user == null) {
+		if (!this.dataService.dav.isLoggedIn) {
 			this.dataService.startPageErrorMessage = this.locale.loginRequiredMessage
 			this.router.navigate(['/'])
 			return
@@ -179,8 +178,8 @@ export class UserPageComponent {
 
 	UpdateValues() {
 		// Set the values for the text fields
-		this.firstName = this.dataService.user.FirstName
-		this.email = this.dataService.user.Email
+		this.firstName = this.dataService.dav.user.FirstName
+		this.email = this.dataService.dav.user.Email
 
 		this.UpdateUsedStoragePercent()
 	}
@@ -191,8 +190,8 @@ export class UserPageComponent {
 		if (this.sideNavHidden) this.sideNavOpened = false
 
 		this.ClearMessages()
-		this.firstName = this.dataService.user.FirstName
-		this.email = this.dataService.user.Email
+		this.firstName = this.dataService.dav.user.FirstName
+		this.email = this.dataService.dav.user.Email
 		this.password = ""
 		this.passwordConfirmation = ""
 		this.passwordConfirmationVisible = false
@@ -233,12 +232,12 @@ export class UserPageComponent {
 		this.router.navigateByUrl(`user#${providerHash}`)
 
 		await this.dataService.userPromise
-		if (!this.dataService.user.Provider) {
+		if (!this.dataService.dav.user.Provider) {
 			// Wait for the update of the user from the server
 			await this.dataService.userDownloadPromise
 
 			// Return if the user is still not a provider
-			if (!this.dataService.user.Provider) return
+			if (!this.dataService.dav.user.Provider) return
 		}
 
 		await this.GetUserProvider()
@@ -266,7 +265,7 @@ export class UserPageComponent {
 	}
 
 	async SaveFirstName() {
-		if (!(this.firstName != this.dataService.user.FirstName && this.firstName.length >= 2 && this.firstName.length <= 25)) return
+		if (!(this.firstName != this.dataService.dav.user.FirstName && this.firstName.length >= 2 && this.firstName.length <= 25)) return
 
 		this.updatedAttribute = UserAttribute.FirstName
 		this.firstNameLoading = true
@@ -278,7 +277,7 @@ export class UserPageComponent {
 	}
 
 	async SaveEmail() {
-		if (!(this.email != this.dataService.user.Email && this.email != this.newEmail && this.email.length > 3 && this.email.includes('@'))) return
+		if (!(this.email != this.dataService.dav.user.Email && this.email != this.newEmail && this.email.length > 3 && this.email.includes('@'))) return
 
 		this.updatedAttribute = UserAttribute.Email
 		this.emailLoading = true
@@ -304,7 +303,7 @@ export class UserPageComponent {
 	SendConfirmationEmail() {
 		this.websocketService.Emit(
 			WebsocketCallbackType.SendConfirmationEmail,
-			{ userId: this.dataService.user.Id }
+			{ userId: this.dataService.dav.user.Id }
 		).then((response: ApiResponse<{}> | ApiErrorResponse) => {
 			this.SendConfirmationEmailResponse(response)
 		})
@@ -457,12 +456,12 @@ export class UserPageComponent {
 				this.snackBar.open(this.locale.messages.profileImageUpdateMessage, null, { duration: 5000 })
 			}
 			else if (this.updatedAttribute == UserAttribute.FirstName) {
-				this.dataService.user.FirstName = userResponse.FirstName
+				this.dataService.dav.user.FirstName = userResponse.FirstName
 				this.snackBar.open(this.locale.messages.firstNameUpdateMessage, null, { duration: snackBarDuration })
 			} else if (this.updatedAttribute == UserAttribute.Email) {
 				this.successMessage = this.locale.messages.emailUpdateMessage
 				this.newEmail = this.email
-				this.email = this.dataService.user.Email
+				this.email = this.dataService.dav.user.Email
 			} else if (this.updatedAttribute == UserAttribute.Password) {
 				this.successMessage = this.locale.messages.passwordUpdateMessage
 				this.password = ""
@@ -592,11 +591,11 @@ export class UserPageComponent {
 	}
 
 	UpdateUsedStoragePercent() {
-		this.usedStoragePercent = (this.dataService.user.UsedStorage / this.dataService.user.TotalStorage) * 100
+		this.usedStoragePercent = (this.dataService.dav.user.UsedStorage / this.dataService.dav.user.TotalStorage) * 100
 
-		this.appsUsedStoragePercent = [];
-		for (let app of this.dataService.user.Apps) {
-			this.appsUsedStoragePercent.push((app.UsedStorage / this.dataService.user.TotalStorage) * 100)
+		this.appsUsedStoragePercent = []
+		for (let app of this.dataService.dav.user.Apps) {
+			this.appsUsedStoragePercent.push((app.UsedStorage / this.dataService.dav.user.TotalStorage) * 100)
 		}
 	}
 
