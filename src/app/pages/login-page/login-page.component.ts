@@ -29,7 +29,7 @@ export class LoginPageComponent {
 	email: string = ""
 	password: string = ""
 	errorMessage: string = ""
-	appId: number = -1
+	appId: number = 0
 	apiKey: string
 	redirectUrl: string
 	redirect: string
@@ -61,7 +61,7 @@ export class LoginPageComponent {
 		if (redirect) this.redirect = decodeURIComponent(redirect).trim()
 
 		// If none of the params are present, this is a normal login for the website
-		this.websiteLogin = this.appId == null && this.apiKey == null && this.redirectUrl == null
+		this.websiteLogin = this.appId == 0 && this.apiKey == null && this.redirectUrl == null
 
 		if (this.websiteLogin) {
 			// Set the appId and apiKey
@@ -89,7 +89,7 @@ export class LoginPageComponent {
 		this.setSize()
 		await this.dataService.userPromise
 
-		if (this.dataService.user != null && this.websiteLogin) {
+		if (this.dataService.dav.isLoggedIn && this.websiteLogin) {
 			if (this.redirect != null) {
 				// Redirect to the redirect url
 				this.router.navigateByUrl(this.redirect)

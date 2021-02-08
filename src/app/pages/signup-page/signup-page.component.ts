@@ -30,7 +30,7 @@ export class SignupPageComponent {
 	password: string = ""
 	passwordConfirmation: string = ""
 	websiteSignup: boolean = false
-	appId: number = -1
+	appId: number = 0
 	apiKey: string = null
 	redirectUrl: string = null
 	errorMessage: string = ""
@@ -55,10 +55,12 @@ export class SignupPageComponent {
 
 		this.appId = +this.activatedRoute.snapshot.queryParamMap.get('appId')
 		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get('apiKey')
-		this.redirectUrl = decodeURIComponent(this.activatedRoute.snapshot.queryParamMap.get('redirectUrl'))
+		
+		let encodedRedirectUrl = this.activatedRoute.snapshot.queryParamMap.get('redirectUrl')
+		this.redirectUrl = encodedRedirectUrl != null ? decodeURIComponent(encodedRedirectUrl) : null
 
 		// If none of the params are present, this is a normal signup for the website
-		this.websiteSignup = this.appId == null && this.apiKey == null && this.redirectUrl == null
+		this.websiteSignup = this.appId == 0 && this.apiKey == null && this.redirectUrl == null
 
 		if (this.websiteSignup) {
 			// Set the appId and apiKey

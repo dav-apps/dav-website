@@ -12,7 +12,7 @@ export function init(s: any) {
 	for (let name in session.sockets) socket.on(name, session.sockets[name])
 	for (let name in stripe.sockets) socket.on(name, stripe.sockets[name])
 
-	new Dav({ environment: process.env.ENV == "production" ? Environment.Production : Environment.Development })
+	new Dav({ environment: process.env.ENV == "production" ? Environment.Production : Environment.Development, server: true })
 	auth = new Auth({
 		apiKey: process.env.DAV_API_KEY,
 		secretKey: process.env.DAV_SECRET_KEY,
