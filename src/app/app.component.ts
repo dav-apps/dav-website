@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
-import { Dav, Environment, GetUser } from 'dav-npm'
+import { Dav, Environment } from 'dav-npm'
 import { enUS } from 'src/locales/locales'
 import { DataService } from './services/data-service'
 import { environment } from 'src/environments/environment'
@@ -40,19 +40,16 @@ export class AppComponent {
 		})
 
 		// Initialize dav
-		this.dataService.dav = new Dav({
+		new Dav({
 			environment: environment.production ? Environment.Production : Environment.Development,
 			appId: environment.appId,
 			tableIds: [],
 			parallelTableIds: [],
 			callbacks: {
-				UserDownloadFinished: () => this.dataService.userDownloadPromiseResolve()
+				UserLoaded: () => this.dataService.userPromiseResolve(this.dataService.dav.user),
+				UserDownloaded: () => this.dataService.userDownloadPromiseResolve()
 			}
 		})
-
-		// Get the user
-		this.dataService.user = await GetUser()
-		this.dataService.userPromiseResolve(this.dataService.user)
 	}
 
 	@HostListener('window:resize')

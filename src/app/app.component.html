@@ -30,7 +30,7 @@
 		<!-- List items -->
 		<div class="collapse navbar-collapse" id="navbar-responsive" style="margin-top: -4px; font-family: 'Segoe UI';">
 			<!-- Not logged in -->
-			<ul class="navbar-nav ml-auto" *ngIf="!dataService.user.IsLoggedIn">
+			<ul class="navbar-nav ml-auto" *ngIf="!dataService.dav.isLoggedIn">
 				<li class="nav-item">
 					<a routerLink="/pricing" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.pricing }}</a>
 				</li>
@@ -43,15 +43,15 @@
 			</ul>
 
 			<!-- Logged in -->
-			<ul class="navbar-nav ml-auto" *ngIf="dataService.user.IsLoggedIn">
-				<li class="nav-item" *ngIf="dataService.user.Dev">
+			<ul class="navbar-nav ml-auto" *ngIf="dataService.dav.isLoggedIn">
+				<li class="nav-item" *ngIf="dataService.dav.user.Dev">
 					<a routerLink="/dev" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.devDashboard }}</a>
 				</li>
 				<li class="nav-item">
 					<a routerLink="/apps" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.allApps }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/user" class="nav-link navbar-item" (click)="HideNavbar()">{{ dataService.user.Username }}</a>
+					<a routerLink="/user" class="nav-link navbar-item" (click)="HideNavbar()">{{ dataService.dav.user.FirstName }}</a>
 				</li>
 				<li class="nav-item">
 					<a href="#logout" class="nav-link navbar-item" (click)="HideNavbar(); Logout()">{{ locale.navbar.logout }}</a>
