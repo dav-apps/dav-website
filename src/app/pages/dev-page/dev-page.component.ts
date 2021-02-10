@@ -8,6 +8,7 @@ import {
 import {
 	ApiResponse,
 	ApiErrorResponse,
+	ErrorCodes,
 	App,
 	DevsController,
 	AppsController,
@@ -105,22 +106,22 @@ export class DevPageComponent {
 				let errorCode = error.code
 
 				switch (errorCode) {
-					case 2111:
+					case ErrorCodes.NameMissing:
 						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort
 						break
-					case 2112:
+					case ErrorCodes.DescriptionMissing:
 						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort
 						break
-					case 2203:
+					case ErrorCodes.NameTooShort:
 						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooShort
 						break
-					case 2204:
+					case ErrorCodes.DescriptionTooShort:
 						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooShort
 						break
-					case 2303:
+					case ErrorCodes.NameTooLong:
 						this.addAppDialogNameError = this.locale.addAppDialog.errors.nameTooLong
 						break
-					case 2304:
+					case ErrorCodes.DescriptionTooLong:
 						this.addAppDialogDescriptionError = this.locale.addAppDialog.errors.descriptionTooLong
 						break
 				}

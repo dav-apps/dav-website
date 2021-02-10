@@ -5,6 +5,7 @@ import {
 	Dav,
 	ApiResponse,
 	ApiErrorResponse,
+	ErrorCodes,
 	UsersController
 } from 'dav-npm'
 import {
@@ -188,7 +189,7 @@ export class SignupPageComponent {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 			this.errorMessage = this.GetSignupErrorMessage(errorCode)
 
-			if (errorCode == 2202 || errorCode == 2302) {
+			if (errorCode == ErrorCodes.PasswordTooShort || errorCode == ErrorCodes.PasswordTooLong) {
 				this.password = ""
 				this.passwordConfirmation = ""
 			}
@@ -200,23 +201,23 @@ export class SignupPageComponent {
 
 	GetSignupErrorMessage(errorCode: number): string {
 		switch (errorCode) {
-			case 2105:
-				return this.locale.errors.usernameMissing
-			case 2106:
+			case ErrorCodes.FirstNameMissing:
+				return this.locale.errors.firstNameMissing
+			case ErrorCodes.EmailMissing:
 				return this.locale.errors.emailMissing
-			case 2107:
+			case ErrorCodes.PasswordMissing:
 				return this.locale.errors.passwordMissing
-			case 2201:
-				return this.locale.errors.usernameTooShort
-			case 2202:
+			case ErrorCodes.FirstNameTooShort:
+				return this.locale.errors.firstNameTooShort
+			case ErrorCodes.PasswordTooShort:
 				return this.locale.errors.passwordTooShort
-			case 2301:
-				return this.locale.errors.usernameTooLong
-			case 2302:
+			case ErrorCodes.FirstNameTooLong:
+				return this.locale.errors.firstNameTooLong
+			case ErrorCodes.PasswordTooLong:
 				return this.locale.errors.passwordTooLong
-			case 2401:
+			case ErrorCodes.EmailInvalid:
 				return this.locale.errors.emailInvalid
-			case 2702:
+			case ErrorCodes.EmailAlreadyInUse:
 				return this.locale.errors.emailTaken
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString())

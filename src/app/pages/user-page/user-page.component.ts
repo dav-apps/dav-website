@@ -13,6 +13,7 @@ import Stripe from 'stripe'
 import {
 	ApiResponse,
 	ApiErrorResponse,
+	ErrorCodes,
 	User,
 	UsersController,
 	ProvidersController,
@@ -488,7 +489,7 @@ export class UserPageComponent {
 	}
 
 	SendConfirmationEmailResponse(message: ApiResponse<{}> | ApiErrorResponse) {
-		if (message.status == 200) {
+		if (message.status == 204) {
 			this.successMessage = this.locale.messages.sendConfirmationEmailMessage
 		} else {
 			let errorCode = (message as ApiErrorResponse).errors[0].code
@@ -516,9 +517,9 @@ export class UserPageComponent {
 
 	GetFirstNameErrorMessage(errorCode: number): string {
 		switch (errorCode) {
-			case 2201:
+			case ErrorCodes.FirstNameTooShort:
 				return this.locale.errors.firstNameTooShort
-			case 2301:
+			case ErrorCodes.FirstNameTooLong:
 				return this.locale.errors.firstNameTooLong
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
@@ -527,9 +528,9 @@ export class UserPageComponent {
 
 	GetEmailErrorMessage(errorCode: number): string {
 		switch (errorCode) {
-			case 2401:
+			case ErrorCodes.EmailInvalid:
 				return this.locale.errors.emailInvalid
-			case 2702:
+			case ErrorCodes.EmailAlreadyInUse:
 				return this.locale.errors.emailTaken
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
@@ -538,9 +539,9 @@ export class UserPageComponent {
 
 	GetPasswordErrorMessage(errorCode: number): string {
 		switch (errorCode) {
-			case 2202:
+			case ErrorCodes.PasswordTooShort:
 				return this.locale.errors.passwordTooShort
-			case 2302:
+			case ErrorCodes.PasswordTooLong:
 				return this.locale.errors.passwordTooLong
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
@@ -549,7 +550,7 @@ export class UserPageComponent {
 
 	GetSendConfirmationEmailErrorMessage(errorCode: number): string {
 		switch (errorCode) {
-			case 1106:
+			case ErrorCodes.UserIsAlreadyConfirmed:
 				return this.locale.errors.emailAlreadyConfirmed
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())

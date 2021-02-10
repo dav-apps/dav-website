@@ -64,7 +64,7 @@ export class ResetPasswordPageComponent {
 	}
 
 	async SetPasswordResponse(response: (ApiResponse<{}> | ApiErrorResponse)) {
-		if (response.status == 200) {
+		if (response.status == 204) {
 			this.dataService.startPageSuccessMessage = this.locale.successMessage
 		} else {
 			this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong

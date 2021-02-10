@@ -5,6 +5,7 @@ import {
 	Dav,
 	ApiResponse,
 	ApiErrorResponse,
+	ErrorCodes,
 	SessionResponseData
 } from 'dav-npm'
 import {
@@ -213,7 +214,7 @@ export class LoginPageComponent {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 			this.errorMessage = this.GetLoginErrorMessage(errorCode)
 
-			if (errorCode != 2106) {
+			if (errorCode != ErrorCodes.EmailMissing) {
 				this.password = ""
 			}
 
@@ -234,13 +235,13 @@ export class LoginPageComponent {
 
 	GetLoginErrorMessage(errorCode: number): string {
 		switch (errorCode) {
-			case 1201:
+			case ErrorCodes.IncorrectPassword:
 				return this.locale.errors.loginFailed
-			case 2106:
+			case ErrorCodes.EmailMissing:
 				return this.locale.errors.emailMissing
-			case 2107:
+			case ErrorCodes.PasswordMissing:
 				return this.locale.errors.passwordMissing
-			case 2801:
+			case ErrorCodes.UserDoesNotExist:
 				return this.locale.errors.loginFailed
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())

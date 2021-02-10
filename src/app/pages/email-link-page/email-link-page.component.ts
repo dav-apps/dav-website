@@ -131,7 +131,7 @@ export class EmailLinkPageComponent {
 	}
 
 	ConfirmUserResponse(response: ApiResponse<{}> | ApiErrorResponse) {
-		if (response.status == 200) {
+		if (response.status == 204) {
 			this.RedirectToStartPageWithSuccess(this.locale.confirmUserMessage)
 		} else {
 			this.RedirectToStartPageWithError()
@@ -139,7 +139,7 @@ export class EmailLinkPageComponent {
 	}
 
 	SaveNewPasswordResponse(response: ApiResponse<{}> | ApiErrorResponse) {
-		if (response.status == 200) {
+		if (response.status == 204) {
 			this.RedirectToStartPageWithSuccess(this.locale.saveNewPasswordMessage)
 		} else {
 			this.RedirectToStartPageWithError()
@@ -147,7 +147,7 @@ export class EmailLinkPageComponent {
 	}
 
 	SaveNewEmailResponse(response: ApiResponse<{}> | ApiErrorResponse) {
-		if (response.status == 200) {
+		if (response.status == 204) {
 			this.RedirectToStartPageWithSuccess(this.locale.saveNewEmailMessage)
 		} else {
 			this.RedirectToStartPageWithError()
@@ -155,7 +155,7 @@ export class EmailLinkPageComponent {
 	}
 
 	ResetEmailResponse(response: ApiResponse<{}> | ApiErrorResponse) {
-		if (response.status == 200) {
+		if (response.status == 204) {
 			this.RedirectToStartPageWithSuccess(this.locale.resetNewEmailMessage)
 		} else {
 			this.RedirectToStartPageWithError()

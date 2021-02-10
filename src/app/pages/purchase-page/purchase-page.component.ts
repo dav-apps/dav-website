@@ -5,6 +5,7 @@ import {
 	Dav,
 	ApiResponse,
 	ApiErrorResponse,
+	ErrorCodes,
 	Purchase,
 	SessionResponseData,
 	PurchasesController
@@ -179,10 +180,10 @@ export class PurchasePageComponent {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 
 			switch (errorCode) {
-				case 1201:
+				case ErrorCodes.IncorrectPassword:
 					this.loginErrorMessage = this.locale.errors.loginFailed
 					break
-				case 2107:
+				case ErrorCodes.PasswordMissing:
 					this.loginErrorMessage = this.locale.errors.passwordMissing
 					break
 				default:

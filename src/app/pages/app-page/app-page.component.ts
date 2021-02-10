@@ -4,6 +4,7 @@ import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabri
 import {
 	ApiResponse,
 	ApiErrorResponse,
+	ErrorCodes,
 	App,
 	Table,
 	Api,
@@ -225,25 +226,25 @@ export class AppPageComponent {
 					let errorCode = error.code
 
 					switch (errorCode) {
-						case 2203:
+						case ErrorCodes.NameTooShort:
 							this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooShort
 							break
-						case 2204:
+						case ErrorCodes.DescriptionTooShort:
 							this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooShort
 							break
-						case 2303:
+						case ErrorCodes.NameTooLong:
 							this.editAppDialogNameError = this.locale.editAppDialog.errors.nameTooLong
 							break
-						case 2304:
+						case ErrorCodes.DescriptionTooLong:
 							this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooLong
 							break
-						case 2402:
+						case ErrorCodes.WebLinkInvalid:
 							this.editAppDialogWebLinkError = this.locale.editAppDialog.errors.linkInvalid
 							break
-						case 2403:
+						case ErrorCodes.GooglePlayLinkInvalid:
 							this.editAppDialogGooglePlayLinkError = this.locale.editAppDialog.errors.linkInvalid
 							break
-						case 2404:
+						case ErrorCodes.MicrosoftStoreLinkInvalid:
 							this.editAppDialogMicrosoftStoreLinkError = this.locale.editAppDialog.errors.linkInvalid
 							break
 						default:
@@ -271,16 +272,16 @@ export class AppPageComponent {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 
 			switch (errorCode) {
-				case 2111:
+				case ErrorCodes.NameMissing:
 					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameTooShort
 					break
-				case 2203:
+				case ErrorCodes.NameTooShort:
 					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameTooShort
 					break
-				case 2303:
+				case ErrorCodes.NameTooLong:
 					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameTooLong
 					break
-				case 2502:
+				case ErrorCodes.NameInvalid:
 					this.addTableDialogNewTableError = this.locale.addTableDialog.errors.nameInvalid
 					break
 			}
@@ -295,13 +296,13 @@ export class AppPageComponent {
 			let errorCode = (response as ApiErrorResponse).errors[0].code
 
 			switch (errorCode) {
-				case 2111:
+				case ErrorCodes.NameMissing:
 					this.addApiDialogApiNameError = this.locale.addApiDialog.errors.nameTooShort
 					break
-				case 2203:
+				case ErrorCodes.NameTooShort:
 					this.addApiDialogApiNameError = this.locale.addApiDialog.errors.nameTooShort
 					break
-				case 2303:
+				case ErrorCodes.NameTooLong:
 					this.addApiDialogApiNameError = this.locale.addApiDialog.errors.nameTooLong
 					break
 			}

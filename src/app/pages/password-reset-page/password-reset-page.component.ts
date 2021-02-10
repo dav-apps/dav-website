@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 import { SpinnerSize } from 'office-ui-fabric-react'
-import { ApiResponse, ApiErrorResponse } from 'dav-npm'
+import { ApiResponse, ApiErrorResponse, ErrorCodes } from 'dav-npm'
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { enUS } from 'src/locales/locales'
@@ -43,7 +43,7 @@ export class PasswordResetPageComponent {
 	}
 
 	SendPasswordResetEmailResponse(response: ApiResponse<{}> | ApiErrorResponse) {
-		if (response.status == 200) {
+		if (response.status == 204) {
 			// Redirect to start page and show message
 			this.dataService.startPageSuccessMessage = this.locale.successMessage
 			this.router.navigate(['/'])
@@ -58,7 +58,7 @@ export class PasswordResetPageComponent {
 
 	GetSendPasswordResetEmailErrorMessage(errorCode: number): string {
 		switch (errorCode) {
-			case 2801:
+			case ErrorCodes.UserDoesNotExist:
 				return this.locale.errors.userNotFound
 			default:
 				return this.locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString())

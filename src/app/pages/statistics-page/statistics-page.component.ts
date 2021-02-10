@@ -5,7 +5,6 @@ import { ChartDataSets } from 'chart.js'
 import { Label } from 'ng2-charts'
 import * as moment from 'moment'
 import {
-	Dav,
 	ApiResponse,
 	ApiErrorResponse,
 	UsersController,
