@@ -61,9 +61,8 @@ export class AppComponent {
 		this.width = window.outerWidth
 	}
 
-	async Logout() {
-		await Dav.Logout()
-		this.router.navigate(['/'])
+	Logout() {
+		Dav.Logout().then(() => this.router.navigate(['/']))
 		return false
 	}
 

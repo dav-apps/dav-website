@@ -87,7 +87,7 @@
 								style="margin-top: 32px"
 								[disabled]="firstNameLoading"
 								(click)="SaveFirstName()"
-								*ngIf="firstName != dataService.dav.user.FirstName && firstName.length >= 2 && firstName.length <= 25">
+								*ngIf="firstName != dataService.dav.user.FirstName && firstName.length >= 2 && firstName.length <= 20">
 								<fab-icon iconName="Save"></fab-icon>
 							</button>
 	

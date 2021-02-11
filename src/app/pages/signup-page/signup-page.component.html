@@ -79,6 +79,6 @@
 	[style.height.px]="height"
 	[style.width.px]="backButtonWidth"
 	(click)="GoBack()"
-	*ngIf="signupType != 0">
+	*ngIf="!websiteSignup">
 	<i class="ms-Icon ms-Icon--ChevronLeft" aria-hidden="true"></i>
 </button>

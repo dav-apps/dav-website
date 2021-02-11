@@ -252,7 +252,6 @@ export class UserPageComponent {
 		}
 		this.ClearMessages()
 
-		file.readMode = ReadMode.binaryString
 		this.updatedAttribute = UserAttribute.ProfileImage
 		this.profileImageLoading = true
 		this.newProfileImageContent = file.content
@@ -260,7 +259,7 @@ export class UserPageComponent {
 		// Send the file content to the server
 		this.UpdateUserResponse(
 			await UsersController.SetProfileImageOfUser({
-				file: new Blob([file.content], { type: file.type })
+				file: new Blob([file.underlyingFile], { type: file.type })
 			})
 		)
 	}

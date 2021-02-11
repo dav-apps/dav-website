@@ -3,10 +3,14 @@ import * as websocket from '../websocket'
 
 export const sockets = {
 	signup,
+	getUserById,
+	sendConfirmationEmail,
+	sendPasswordResetEmail,
 	confirmUser,
 	saveNewEmail,
 	saveNewPassword,
-	resetEmail
+	resetEmail,
+	setPassword
 }
 
 export async function signup(message: {
