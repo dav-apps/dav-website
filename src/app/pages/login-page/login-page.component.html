@@ -55,13 +55,13 @@
 						</div>
 					</div>
 
-					<div class="mx-auto" style="width: 80%; border-top: 1px solid #eaeaea; margin-top: 56px; margin-bottom: 56px" *ngIf="dataService.dav.user != null && !websiteLogin"></div>
+					<div class="mx-auto" style="width: 80%; border-top: 1px solid #eaeaea; margin-top: 56px; margin-bottom: 56px" *ngIf="dataService.dav.isLoggedIn && !websiteLogin && !loginCompleted"></div>
 				</div>
 			</div>
 		</form>
 	</div>
 
-	<div class="mx-auto shadow-sm" *ngIf="dataService.dav.isLoggedIn && !websiteLogin">
+	<div class="mx-auto shadow-sm" *ngIf="dataService.dav.isLoggedIn && !websiteLogin && !loginCompleted">
 		<button class="list-group-item list-group-item-action" style="padding: 16px" (click)="LoginAsLoggedInUser()">
 			<div class="media">
 				<img class="mr-3 rounded" [src]="dataService.dav.user.ProfileImage" alt="Profile image of the user" height="70" width="70">

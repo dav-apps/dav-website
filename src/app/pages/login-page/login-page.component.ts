@@ -27,6 +27,7 @@ const deviceInfoNotAvailable = "Not available"
 export class LoginPageComponent {
 	locale = enUS.loginPage
 	websiteLogin: boolean = true
+	loginCompleted: boolean = false
 	email: string = ""
 	password: string = ""
 	errorMessage: string = ""
@@ -198,6 +199,7 @@ export class LoginPageComponent {
 
 	async CreateSessionResponse(response: (ApiResponse<SessionResponseData> | ApiErrorResponse)) {
 		if (response.status == 201) {
+			this.loginCompleted = true
 			let responseData = (response as ApiResponse<SessionResponseData>).data
 
 			if (this.websiteLogin) {
@@ -207,6 +209,9 @@ export class LoginPageComponent {
 				// Redirect to the start page
 				this.router.navigate(['/'])
 			} else {
+				// Log in the user
+				await Dav.Login(responseData.websiteAccessToken)
+
 				// Redirect to the redirect url
 				window.location.href = `${this.redirectUrl}?accessToken=${responseData.accessToken}`
 			}
