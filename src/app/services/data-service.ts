@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Dav, User } from 'dav-npm'
+import { Dav } from 'dav-npm'
 import * as locales from 'src/locales/locales'
 
 @Injectable()
@@ -7,9 +7,9 @@ export class DataService {
 	dav = Dav
 	locale: string = navigator.language
 	hideNavbarAndFooter: boolean = false
-	userPromise: Promise<User> = new Promise(resolve => this.userPromiseResolve = resolve)
+	userPromise = new Promise(resolve => this.userPromiseResolve = resolve)
 	userPromiseResolve: Function
-	userDownloadPromise: Promise<any> = new Promise(resolve => this.userDownloadPromiseResolve = resolve)
+	userDownloadPromise = new Promise(resolve => this.userDownloadPromiseResolve = resolve)
 	userDownloadPromiseResolve: Function
 	startPageErrorMessage: string = ""
 	startPageSuccessMessage: string = ""

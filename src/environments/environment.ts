@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  appId: 2,
+  appId: 1,
   apiKey: "eUzs3PQZYweXvumcWvagRHjdUroGe5Mo7kN1inHm",
   baseUrl: "http://localhost:3000",
   stripePublishableKey: "pk_test_2n7dkdRDf19haHugZ0AJ2E5Q",

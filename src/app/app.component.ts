@@ -46,7 +46,7 @@ export class AppComponent {
 			tableIds: [],
 			parallelTableIds: [],
 			callbacks: {
-				UserLoaded: () => this.dataService.userPromiseResolve(this.dataService.dav.user),
+				UserLoaded: () => this.dataService.userPromiseResolve(),
 				UserDownloaded: () => this.dataService.userDownloadPromiseResolve()
 			}
 		})
@@ -63,7 +63,6 @@ export class AppComponent {
 
 	Logout() {
 		Dav.Logout().then(() => this.router.navigate(['/']))
-		return false
 	}
 
 	HideNavbar() {
