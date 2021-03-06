@@ -9,7 +9,7 @@ import {
 	Purchase,
 	SessionResponseData,
 	PurchasesController
-} from 'dav-npm'
+} from 'dav-js'
 import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component'
 import { DataService, StripeApiResponse, Capitalize } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'

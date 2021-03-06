@@ -1,4 +1,4 @@
-import { Dav, Auth, Environment } from 'dav-npm'
+import { Dav, Auth, Environment } from 'dav-js'
 import * as user from './websocket/user'
 import * as session from './websocket/session'
 import * as stripe from './websocket/stripe'

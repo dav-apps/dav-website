@@ -1,4 +1,4 @@
-import { SessionsController } from 'dav-npm'
+import { SessionsController } from 'dav-js'
 import * as websocket from '../websocket'
 
 export const sockets = {

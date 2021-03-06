@@ -18,7 +18,7 @@ import {
 	UsersController,
 	ProvidersController,
 	ProviderResponseData
-} from 'dav-npm'
+} from 'dav-js'
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'

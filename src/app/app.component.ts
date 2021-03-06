@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
-import { Dav, Environment } from 'dav-npm'
+import { Dav, Environment } from 'dav-js'
 import { enUS } from 'src/locales/locales'
 import { DataService } from './services/data-service'
 import { environment } from 'src/environments/environment'

@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core'
 import { IDialogContentProps, IButtonStyles, MessageBarType, SpinnerSize } from 'office-ui-fabric-react'
-import { SubscriptionStatus } from 'dav-npm'
+import { SubscriptionStatus } from 'dav-js'
 import { DataService, StripeApiResponse } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'

@@ -11,7 +11,7 @@ import {
 	UserActivitiesController,
 	GetUsersResponseData,
 	GetUserActivitiesResponseData
-} from 'dav-npm'
+} from 'dav-js'
 import { enUS } from 'src/locales/locales'
 import { DataService } from 'src/app/services/data-service'
 

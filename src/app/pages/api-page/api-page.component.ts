@@ -7,7 +7,7 @@ import {
 	Api,
 	ApiError,
 	ApisController
-} from 'dav-npm'
+} from 'dav-js'
 import { DataService } from 'src/app/services/data-service'
 import { enUS } from 'src/locales/locales'
 

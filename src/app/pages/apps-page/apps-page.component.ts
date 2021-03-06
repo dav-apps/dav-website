@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { ApiResponse, App, AppsController } from 'dav-npm'
+import { ApiResponse, App, AppsController } from 'dav-js'
 import { DataService } from 'src/app/services/data-service'
 import { enUS } from 'src/locales/locales'
 

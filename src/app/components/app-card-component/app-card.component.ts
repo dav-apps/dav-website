@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core'
-import { App } from 'dav-npm'
+import { App } from 'dav-js'
 import { faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { faAndroid, faWindows } from '@fortawesome/free-brands-svg-icons'
 

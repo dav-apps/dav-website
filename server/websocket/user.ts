@@ -1,4 +1,4 @@
-import { UsersController } from 'dav-npm'
+import { UsersController } from 'dav-js'
 import * as websocket from '../websocket'
 
 export const sockets = {

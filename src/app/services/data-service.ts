@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Dav } from 'dav-npm'
+import { Dav } from 'dav-js'
 import * as locales from 'src/locales/locales'
 
 @Injectable()

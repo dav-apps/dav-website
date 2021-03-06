@@ -7,7 +7,7 @@ import {
 	ApiErrorResponse,
 	ErrorCodes,
 	UsersController
-} from 'dav-npm'
+} from 'dav-js'
 import {
 	DataService,
 	SetTextFieldAutocomplete,

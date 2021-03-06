@@ -6,9 +6,9 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "dav-npm": "git+https://github.com/dav-apps/dav-npm.git#v1.5",
+    "dav-js": "git+https://github.com/dav-apps/dav-js.git#dev",
     "express": "^4.17.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.1",
     "stripe": "^8.18.0",
     "typescript": "^3.7.5"
   },
