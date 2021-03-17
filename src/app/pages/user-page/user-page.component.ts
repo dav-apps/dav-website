@@ -403,8 +403,7 @@ export class UserPageComponent {
 			WebsocketCallbackType.CreateStripeAccountLink,
 			{
 				account: this.providerStripeAccountId,
-				successUrl: `${environment.baseUrl}/user#provider`,
-				failureUrl: `${environment.baseUrl}/user#provider`,
+				returnUrl: `${environment.baseUrl}/user#provider`,
 				type: update ? "custom_account_update" : "custom_account_verification"
 			}
 		)

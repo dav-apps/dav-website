@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import * as websocket from '../websocket'
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2019-12-03' })
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
 
 export const sockets = {
 	saveStripePaymentMethod,
@@ -158,12 +158,12 @@ export async function retrieveStripeAccount(message: { id: string }) {
 	}
 }
 
-export async function createStripeAccountLink(message: { account: string, successUrl: string, failureUrl: string, type: string }) {
+export async function createStripeAccountLink(message: { account: string, returnUrl: string, type: Stripe.AccountLinkCreateParams.Type }) {
 	try {
 		let accountLink = await stripe.accountLinks.create({
 			account: message.account,
-			success_url: message.successUrl,
-			failure_url: message.failureUrl,
+			return_url: message.returnUrl,
+			refresh_url: message.returnUrl,
 			type: message.type
 		})
 
