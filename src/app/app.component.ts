@@ -62,7 +62,9 @@ export class AppComponent {
 	}
 
 	Logout() {
+		this.HideNavbar()
 		Dav.Logout().then(() => this.router.navigate(['/']))
+		return false
 	}
 
 	HideNavbar() {
