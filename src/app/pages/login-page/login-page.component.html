@@ -7,7 +7,7 @@
 		<form>
 			<!-- Email -->
 			<div class="row">
-				<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 					<!-- Error messages -->
 					<div class="mb-3" *ngIf="errorMessage.length > 0">
 						<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
@@ -26,7 +26,7 @@
 
 			<!-- Password -->
 			<div class="row mt-3">
-				<div class="col-10 col-sm-6 col-md-5 mx-auto">
+				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 					<fab-text-field
 						id="password-text-field"
 						[(value)]="password"
@@ -45,7 +45,7 @@
 						
 						<div class="d-flex ml-auto text-right">
 							<a style="color: black; font-size: 15px; margin-top: 28px" 
-								routerLink="/password_reset" 
+								routerLink="/password-reset" 
 								tabindex="-1"
 								*ngIf="websiteLogin">
 								{{ locale.forgotPassword }}

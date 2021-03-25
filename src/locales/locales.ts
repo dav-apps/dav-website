@@ -188,7 +188,7 @@ const enDefaults = {
 			firstNameMissing: "Please enter your name",
 			emailMissing: "Please enter your email",
 			passwordMissing: "Please enter a password",
-			passwordConfirmationNotMatching: "Your password doesn't match your password confirmation",
+			passwordConfirmationNotMatching: "Your password doesn't match the password confirmation",
 			firstNameTooShort: "The name is too short",
 			passwordTooShort: "Your password is too short",
 			firstNameTooLong: "The name is too long",
