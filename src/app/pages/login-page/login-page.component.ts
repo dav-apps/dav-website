@@ -206,8 +206,13 @@ export class LoginPageComponent {
 				// Log in the user
 				await Dav.Login(responseData.accessToken)
 
-				// Redirect to the start page
-				this.router.navigate(['/'])
+				if (this.redirect) {
+					// Redirect to the given redirect url
+					this.router.navigateByUrl(this.redirect)
+				} else {
+					// Redirect to the start page
+					this.router.navigate(['/'])
+				}
 			} else {
 				// Log in the user
 				await Dav.Login(responseData.websiteAccessToken)
