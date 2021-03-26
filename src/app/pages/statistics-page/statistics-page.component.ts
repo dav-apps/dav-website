@@ -85,9 +85,9 @@ export class StatisticsPageComponent {
 		)
 	}
 
-	ProcessUsers(users: GetUsersResponseData) {
+	ProcessUsers(userResponseData: GetUsersResponseData) {
 		// Set the total users
-		this.totalUsersText = this.locale.totalUsers.replace('{0}', users.users.length.toString())
+		this.totalUsersText = this.locale.totalUsers.replace('{0}', userResponseData.users.length.toString())
 
 		let currentDate = moment().startOf('month').subtract(5, 'months')
 		let start = currentDate.clone()
@@ -101,9 +101,9 @@ export class StatisticsPageComponent {
 			currentDate.add(1, 'month')
 		}
 
-		for (let user of users.users) {
+		for (let user of userResponseData.users) {
 			// Add the cumulative user counts
-			let createdAt = moment(+user.createdAt / 1000).startOf('month')
+			let createdAt = moment(user.createdAt).startOf('month')
 			let createdMonth = createdAt.format('MMMM YYYY')
 			let createdBeforeStart: boolean = createdAt.isBefore(start)
 
@@ -137,7 +137,7 @@ export class StatisticsPageComponent {
 		// Save the days in a separate array with timestamps
 		let days: { timestamp: number, daily: number, monthly: number, yearly: number }[] = []
 		for (let day of userActivities.days) {
-			let timestamp = moment(+day.time / 1000).subtract(1, 'day').unix()
+			let timestamp = moment(day.time).subtract(1, 'day').unix()
 			days.push({
 				timestamp,
 				daily: day.countDaily,

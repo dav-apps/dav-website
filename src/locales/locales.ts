@@ -243,6 +243,7 @@ const enDefaults = {
 			unexpectedError: "Unexpected error ({0})",
 			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		},
+		profileImageAlt: "Your profile image",
 		paymentMethodCardHeader: "Your payment method",
 		cardExpires: "Expires",
 		addPaymentMethod: "Add payment method",
@@ -258,7 +259,7 @@ const enDefaults = {
 		},
 		general: {
 			title: "General Settings",
-			profileImageAlt: "Your Profile image",
+			profileImageAlt: "Your profile image",
 			uploadProfileImage: "Upload profile image",
 			firstNameTextfieldLabel: "Your first name",
 			firstNameTextfieldPlaceholder: "How should we call you?",
@@ -762,6 +763,7 @@ const deDefaults = {
 			unexpectedError: "Unerwarteter Fehler ({0})",
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		},
+		profileImageAlt: "Dein Profilbild",
 		paymentMethodCardHeader: "Deine Zahlungsmethode",
 		cardExpires: "Ablaufdatum:",
 		addPaymentMethod: "Zahlungsmethode hinzufügen",
