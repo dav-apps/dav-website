@@ -11,7 +11,7 @@
 		<!-- User info -->
 		<div class="mx-auto list-group-item" style="border: none">
 			<div class="media">
-				<img class="mr-3 rounded" [src]="loginUser.avatar" alt="User avatar" height="70" width="70">
+				<img class="mr-3 rounded" [src]="loginUser.avatar" [alt]="locale.profileImageAlt" height="70" width="70">
 				<h5 class="my-auto font-weight-light">{{ loginUser.username }}</h5>
 			</div>
 		</div>
@@ -46,9 +46,8 @@
 					</div>
 
 					<div class="d-flex ml-auto text-right">
-						<a
-							style="color: black; font-size: 15px; margin-top: 28px"
-							href="/password_reset"
+						<a style="color: black; font-size: 15px; margin-top: 28px"
+							routerLink="/password-reset"
 							target="blank"
 							tabindex="-1">
 							{{ locale.forgotPassword }}
@@ -102,24 +101,24 @@
 					<!-- Product image -->
 					<div style="width: 250px; height: 300px">
 						<img
-							[src]="purchase.productImage"
+							[src]="purchase.ProductImage"
 							class="shadow-sm"
 							style="max-width: 100%; max-height: 100%;" />
 					</div>
 
 					<!-- Description -->
-					<h5 class="mt-4 font-weight-light">{{ purchase.productName }}</h5>
+					<h5 class="mt-4 font-weight-light">{{ purchase.ProductName }}</h5>
 
 					<!-- Provider image and name -->
 					<div class="d-flex">
 						<img
-							[src]="purchase.providerImage"
+							[src]="purchase.ProviderImage"
 							class="rounded-circle shadow-sm"
 							style="width: 30px; height: 30px">
 						
 						<p class="font-weight-light my-auto"
 							style="font-size: 18px; margin-left: 13px">
-							{{ purchase.providerName }}
+							{{ purchase.ProviderName }}
 						</p>
 					</div>
 				</div>
@@ -143,24 +142,24 @@
 					</div>
 
 					<img
-						[src]="purchase.productImage"
+						[src]="purchase.ProductImage"
 						class="shadow-sm"
 						style="max-width: 100%; max-height: 100%;" />
 				</div>
 
 				<!-- Description -->
-				<h5 class="mt-4 mx-auto font-weight-light text-center" style="max-width: 300px">{{ purchase.productName }}</h5>
+				<h5 class="mt-4 mx-auto font-weight-light text-center" style="max-width: 300px">{{ purchase.ProductName }}</h5>
 
 				<!-- Provider image and name -->
 				<div class="d-flex mx-auto">
 					<img
-						[src]="purchase.providerImage"
+						[src]="purchase.ProviderImage"
 						class="rounded-circle shadow-sm"
 						style="width: 30px; height: 30px">
 					
 					<p class="font-weight-light my-auto"
 						style="font-size: 18px; margin-left: 13px">
-						{{ purchase.providerName }}
+						{{ purchase.ProviderName }}
 					</p>
 				</div>
 			</div>
@@ -171,8 +170,8 @@
 					<!-- User info -->
 					<div class="list-group-item mb-3 shadow-sm">
 						<div class="media">
-							<img class="mr-3 rounded" [src]="dataService.dav.user.Avatar" alt="User avatar" height="70" width="70">
-							<h5 class="my-auto font-weight-light">{{ dataService.dav.user.Username }}</h5>
+							<img class="mr-3 rounded" [src]="dataService.dav.user.ProfileImage" [alt]="locale.profileImageAlt" height="70" width="70">
+							<h5 class="my-auto font-weight-light">{{ dataService.dav.user.FirstName }}</h5>
 						</div>
 					</div>
 
