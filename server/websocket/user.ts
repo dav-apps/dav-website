@@ -58,11 +58,11 @@ export async function sendConfirmationEmail(message: {
 }
 
 export async function sendPasswordResetEmail(message: {
-	userId: number
+	email: string
 }) {
 	let response = await UsersController.SendPasswordResetEmail({
 		auth: websocket.auth,
-		id: message.userId
+		email: message.email
 	})
 	websocket.emit(sendPasswordResetEmail.name, response)
 }

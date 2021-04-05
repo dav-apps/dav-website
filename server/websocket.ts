@@ -1,6 +1,7 @@
 import { Dav, Auth, Environment } from 'dav-js'
 import * as user from './websocket/user'
 import * as session from './websocket/session'
+import * as purchase from './websocket/purchase'
 import * as stripe from './websocket/stripe'
 
 var socket = null
@@ -10,6 +11,7 @@ export function init(s: any) {
 	socket = s
 	for (let name in user.sockets) socket.on(name, user.sockets[name])
 	for (let name in session.sockets) socket.on(name, session.sockets[name])
+	for (let name in purchase.sockets) socket.on(name, purchase.sockets[name])
 	for (let name in stripe.sockets) socket.on(name, stripe.sockets[name])
 
 	new Dav({ environment: process.env.ENV == "production" ? Environment.Production : Environment.Development, server: true })

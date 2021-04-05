@@ -58,6 +58,8 @@ export enum WebsocketCallbackType {
 	// Session
 	CreateSession,
 	CreateSessionFromAccessToken,
+	// Purchase
+	GetPurchase,
 	// Stripe
 	SaveStripePaymentMethod,
 	GetStripePaymentMethod,
@@ -83,6 +85,8 @@ export const Callbacks = {
 	// Session
 	createSession: WebsocketCallbackType.CreateSession,
 	createSessionFromAccessToken: WebsocketCallbackType.CreateSessionFromAccessToken,
+	// Purchase
+	getPurchase: WebsocketCallbackType.GetPurchase,
 	// Stripe
 	saveStripePaymentMethod: WebsocketCallbackType.SaveStripePaymentMethod,
 	getStripePaymentMethod: WebsocketCallbackType.GetStripePaymentMethod,
