@@ -13,6 +13,7 @@ import {
 import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component'
 import { DataService, StripeApiResponse, Capitalize } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 declare var deviceAPI: any
 
@@ -28,7 +29,7 @@ export class PurchasePageComponent {
 	purchase: Purchase = new Purchase(0, 0, 0, "", "", "", "", "", 0, "eur", false)
 	price: string = ""
 	redirectUrl: string
-	loginUser: { id: number, username: string, email: string, avatar: string }
+	loginUser: { id: number, firstName: string, email: string, profileImage: string }
 	loginPromise: Promise<null> = new Promise(resolve => this.loginPromiseResolve = resolve)
 	loginPromiseResolve: Function
 	password: string = ""
@@ -81,7 +82,7 @@ export class PurchasePageComponent {
 		let purchaseId = this.activatedRoute.snapshot.paramMap.get('id')
 
 		// Get the purchase from the server
-		let response: ApiResponse<Purchase> | ApiErrorResponse = await PurchasesController.GetPurchase({ id: +purchaseId })
+		let response: ApiResponse<Purchase> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.GetPurchase, { id: +purchaseId })
 
 		if (response.status == 200) {
 			this.purchase = (response as ApiResponse<Purchase>).data
@@ -98,21 +99,20 @@ export class PurchasePageComponent {
 		// Show the Login form if the user is not logged in or if the logged in user is not the user of the purchase
 		if (
 			!this.dataService.dav.isLoggedIn
-			|| (this.dataService.dav.isLoggedIn && this.dataService.dav.user.Id != this.purchase.UserId)
+			|| this.dataService.dav.user.Id != this.purchase.UserId
 		) {
 			// Get the user of the purchase
-			let getUserByAuthResponse = await this.websocketService.Emit(WebsocketCallbackType.GetUserById, { id: this.purchase.UserId })
-
-			if (getUserByAuthResponse.status == 200) {
-				this.loginUser = {
-					id: getUserByAuthResponse.data.id,
-					username: getUserByAuthResponse.data.username,
-					email: getUserByAuthResponse.data.email,
-					avatar: getUserByAuthResponse.data.avatar
-				}
-			} else {
+			let getUserByIdResponse = await this.websocketService.Emit(WebsocketCallbackType.GetUserById, { id: this.purchase.UserId })
+			if (getUserByIdResponse.status != 200) {
 				// TODO: Redirect back with error
 				return
+			}
+
+			this.loginUser = {
+				id: getUserByIdResponse.data.Id,
+				firstName: getUserByIdResponse.data.FirstName,
+				email: getUserByIdResponse.data.Email,
+				profileImage: getUserByIdResponse.data.ProfileImage
 			}
 		} else {
 			this.loginPromiseResolve()
@@ -165,6 +165,8 @@ export class PurchasePageComponent {
 		let response = await this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
 			email: this.loginUser.email,
 			password: this.password,
+			appId: environment.appId,
+			apiKey: environment.apiKey,
 			deviceName: fullDeviceName,
 			deviceType,
 			deviceOs
