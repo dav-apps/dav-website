@@ -483,10 +483,16 @@ const enDefaults = {
 		cancelSubscription: "Cancel subscription",
 		continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
 		cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
-		upgradePlusDialogTitle: "Upgrade to Plus",
-		upgradeProDialogTitle: "Upgrade to Pro",
-		upgradePlusDialogSubtext: "Do you want to upgrade to dav Plus for 3 € per month?",
-		upgradeProDialogSubtext: "Do you want to upgrade to dav Pro for 10 € per month?",
+		changePlanDialog: {
+			upgradePlusTitle: "Upgrade to Plus",
+			upgradePlusDescription: "Do you want to upgrade to dav Plus for 3 € per month?",
+			upgradeProTitle: "Upgrade to Pro",
+			upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
+			downgradePlusTitle: "Downgrade to Plus",
+			downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
+			downgradeFreeTitle: "Downgrade to Free",
+			downgradeFreeDescription: "Do you want to downgrade to the free plan?"
+		},
 		continue: "Continue"
 	},
 	paymentFormComponent: {
@@ -1003,10 +1009,16 @@ const deDefaults = {
 		cancelSubscription: "Abo beenden",
 		continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
 		cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
-		upgradePlusDialogTitle: "Upgrade auf Plus",
-		upgradeProDialogTitle: "Upgrade auf Pro",
-		upgradePlusDialogSubtext: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
-		upgradeProDialogSubtext: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
+		changePlanDialog: {
+			upgradePlusTitle: "Wechsel auf Plus",
+			upgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
+			upgradeProTitle: "Wechsel auf Pro",
+			upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
+			downgradePlusTitle: "Wechsel auf Plus",
+			downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
+			downgradeFreeTitle: "Wechsel auf Free",
+			downgradeFreeDescription: "Möchtest du auf den kostenlosen Plan wechseln?"
+		},
 		continue: "Weiter"
 	},
 	paymentFormComponent: {

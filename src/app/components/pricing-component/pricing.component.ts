@@ -34,7 +34,7 @@ export class PricingComponent {
 	freePlanLoading: boolean = false
 	plusPlanLoading: boolean = false
 	proPlanLoading: boolean = false
-	upgradeDialogVisible: boolean = false
+	changePlanDialogVisible: boolean = false
 
 	dialogPrimaryButtonStyles: IButtonStyles = {
 		root: {
@@ -48,9 +48,9 @@ export class PricingComponent {
 			marginBottom: 16
 		}
 	}
-	upgradeDialogContent: IDialogContentProps = {
-		title: this.locale.upgradePlusDialogTitle,
-		subText: this.locale.upgradePlusDialogSubtext,
+	changePlanDialogContentProps: IDialogContentProps = {
+		title: this.locale.changePlanDialog.upgradePlusTitle,
+		subText: this.locale.changePlanDialog.upgradePlusDescription,
 		styles: {
 			subText: {
 				fontSize: 14
@@ -63,6 +63,7 @@ export class PricingComponent {
 		private websocketService: WebsocketService
 	) {
 		this.locale = this.dataService.GetLocale().pricingComponent
+		moment.locale(this.dataService.locale)
 	}
 
 	ngOnInit() {
@@ -70,28 +71,41 @@ export class PricingComponent {
 	}
 
 	async PlanButtonClick(plan: number) {
-		this.selectedPlan = plan;
+		this.selectedPlan = plan
 		let paymentMethod = await this.paymentMethod
 
 		if (!paymentMethod) {
 			// Show the payment form
 			this.editPaymentMethod = false
 			this.paymentFormDialog.ShowDialog()
-		} else if (this.dataService.dav.user.Plan == 0) {
-			// Update the values of the upgrade dialog
-			if (this.selectedPlan == 2) {
-				this.upgradeDialogContent.title = this.locale.upgradeProDialogTitle
-				this.upgradeDialogContent.subText = this.locale.upgradeProDialogSubtext
-			} else {
-				this.upgradeDialogContent.title = this.locale.upgradePlusDialogTitle
-				this.upgradeDialogContent.subText = this.locale.upgradePlusDialogSubtext
+		} else {
+			// Update the values of the change plan dialog
+			switch (this.selectedPlan) {
+				case 2:
+					// upgradePro
+					this.changePlanDialogContentProps.title = this.locale.changePlanDialog.upgradeProTitle
+					this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.upgradeProDescription
+					break
+				case 1:
+					if (this.dataService.dav.user.Plan == 2) {
+						// downgradePlus
+						this.changePlanDialogContentProps.title = this.locale.changePlanDialog.downgradePlusTitle
+						this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.downgradePlusDescription
+					} else {
+						// upgradePlus
+						this.changePlanDialogContentProps.title = this.locale.changePlanDialog.upgradePlusTitle
+						this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.upgradePlusDescription
+					}
+					break
+				default:
+					// downgradeFree
+					this.changePlanDialogContentProps.title = this.locale.changePlanDialog.downgradeFreeTitle
+					this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.downgradeFreeDescription
+					break
 			}
 
 			// Show the upgrade dialog
-			this.upgradeDialogVisible = true
-		} else {
-			// Update the subscription as the user has a payment method
-			this.SetStripeSubscription()
+			this.changePlanDialogVisible = true
 		}
 	}
 
@@ -124,7 +138,7 @@ export class PricingComponent {
 	}
 
 	async SetStripeSubscription() {
-		this.upgradeDialogVisible = false
+		this.changePlanDialogVisible = false
 		switch (this.selectedPlan) {
 			case 0:
 				this.freePlanLoading = true
@@ -169,7 +183,6 @@ export class PricingComponent {
 
 		if (this.dataService.dav.user.Plan > 0 && this.dataService.dav.user.PeriodEnd) {
 			// Show the date of the next payment or the subscription end
-			moment.locale(this.dataService.locale)
 			this.periodEndDate = moment(this.dataService.dav.user.PeriodEnd).format('LL')
 		}
 	}
@@ -187,6 +200,10 @@ export class PricingComponent {
 				this.successMessage = this.locale.changePlanSuccessMessage
 				this.dataService.dav.user.Plan = this.selectedPlan
 			}
+			
+			// Show the date of the next payment or the subscription end
+			this.dataService.dav.user.PeriodEnd = new Date(message.response.current_period_end * 1000)
+			this.periodEndDate = moment(this.dataService.dav.user.PeriodEnd).format('LL')
 		} else {
 			// Show error
 			this.successMessage = ""
@@ -201,6 +218,7 @@ export class PricingComponent {
 	GetStripePaymentMethodResponse(message: StripeApiResponse) {
 		if (message.success) {
 			this.paymentMethodResolve(message.response)
+			if (message.response == null) return
 
 			// Get last 4 and expiration date to show at the top of the page
 			this.paymentMethodLast4 = message.response.card.last4

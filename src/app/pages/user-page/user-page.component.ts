@@ -8,7 +8,7 @@ import {
 	SpinnerSize,
 	IDropdownOption
 } from 'office-ui-fabric-react'
-import { ReadFile, ReadMode } from 'ngx-file-helpers'
+import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import {
 	ApiResponse,

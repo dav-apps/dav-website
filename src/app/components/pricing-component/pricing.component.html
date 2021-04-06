@@ -115,12 +115,12 @@
 </dav-website-payment-form-dialog>
 
 <fab-dialog
-	[hidden]="!upgradeDialogVisible"
-	[dialogContentProps]="upgradeDialogContent"
-	(onDismiss)="upgradeDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">
+	[hidden]="!changePlanDialogVisible"
+	[dialogContentProps]="changePlanDialogContentProps"
+	(onDismiss)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">
 
 	<fab-dialog-footer>
-		<fab-default-button (click)="upgradeDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">{{ locale.cancel }}</fab-default-button>
+		<fab-default-button (click)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">{{ locale.cancel }}</fab-default-button>
 		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="SetStripeSubscription()">{{ locale.continue }}</fab-primary-button>
 	</fab-dialog-footer>
 </fab-dialog>
