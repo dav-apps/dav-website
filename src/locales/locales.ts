@@ -15,7 +15,7 @@ const enDefaults = {
 		}
 	},
 	startPage: {
-		title: "dav is a new platform of connected apps and services",
+		title: "dav is a modern platform of connected apps and services",
 		calendoDescription: `
 			Calendo is a simple app for managing your schedule.
 			You can organize your appointments, manage your todos and group todos by topic.
@@ -43,37 +43,53 @@ const enDefaults = {
 		title: "Privacy Policy",
 		intro: "The protection of your privacy is very important for us. This is the reason why we collect as less data as possible. This page is intended to inform you what information we collect and how we use that information.",
 		section1: {
-			header: "Data collection",
-			text1: "We save the following information when you visit one of our websites or web apps:",
-			listItemTime: "The time",
-			listItemCountry: "The country of your IP address",
-			listItemBrowser: "The name and version of your browser",
-			listItemOs: "The name and version of your operating system",
-			text2: "However, we do not save the IP address, so the saved data cannot be associated with certain users."
-		},
-		section2: {
 			header: "Information you provide",
-			text1: "When you use our services you will be asked to provide specific information about you, like your email address. We only ask you for the information that is really necessary to provide our services.",
-			text2: "All information you provide us within our apps is securely stored and can be accessed from the appropriate apps."
-		},
-		section3: {
-			header: "Data shared with third parties",
-			text1: "In order to be able to offer our services, it is necessary that we use certain services from third parties. The services with which data is shared are listed below.",
-			text2: "However, these services are only used when it is necessary for our services to work. Your data will not be sold or otherwise disclosed to third parties.",
-			text3: "You can delete all of your data in the settings of your account. If you delete your account, all your data shared with third parties will also be deleted."
-		},
-		section3a: {
-			header: "Payments",
 			text1: `
-				We use <a href="https://stripe.com" target="blank">Stripe</a> for processing payments. 
-				If you upgrade to Plus or Pro, we share your email with Stripe in order to connect your payment information with your account.
-				Your payment information will be stored directly by Stripe, which means we do not have access to your payment information.
-				For more information, we reference to the <a href="https://stripe.com/privacy" target="blank">Privacy Policy of Stripe</a>.
+				In our apps you are able to add specific data and files.
+				When you log in to our apps, the data and files you've added are automatically uploaded to our servers.
+				Your app data is stored securely on our servers and not shared with third parties.
+			`,
+			text2: `
+				When you use our services you will be asked to provide specific information about you, like your email address.
+				We only ask you for the information that is necessary to provide our services.
+				Metadata like this is the only information that may be shared with third parties to enable certain features.
+				The services that have access to such metadata are listed below.
 			`
 		},
-		endText1: `These rules apply to all our apps and websites, including web apps and our blog. If specific cases apply to certain apps or services, they will be listed below. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
+		section2: {
+			header: "Third party services",
+			text: "In order to provide our services, we use certain third party services. The services with which we share data are listed below."
+		},
+		section2a: {
+			header: "Simple Analytics",
+			text: `
+				On our websites and web apps, we use <a href="https://simpleanalytics.com" target="blank">Simple Analytics</a>.
+				When you visit one of our sites, the country you are in, the pages you visit, your device, and your browser, as well as other information, is stored by Simple Analytics.
+				We use this data to better understand how and by whom our apps are used.
+				<br>For more information, please refer to the <a href="https://simpleanalytics.com/privacy-policy" target="blank">Privacy Policy of Simple Analytics</a>.
+			`
+		},
+		section2b: {
+			header: "AppCenter",
+			text: `
+				In UniversalSoundboard we use <a href="https://appcenter.ms" target="blank">AppCenter</a>, a service provided by Microsoft for usage statistics and error diagnostics.
+				When you use UniversalSoundboard, the app version, your version of Windows 10, your device, your language, and your app settings, as well as other information, is stored by AppCenter.
+				With this data we are able to find and fix errors and crashes.
+				<br>For more information, please refer to the <a href="https://privacy.microsoft.com/en-us/privacystatement" target="blank">Privacy Policy of Microsoft</a>.
+			`
+		},
+		section2c: {
+			header: "Stripe",
+			text: `
+				We use <a href="https://stripe.com" target="blank">Stripe</a> for processing payments.
+				If you upgrade to Plus or Pro or when you make purchases in our apps, we share your email with Stripe in order to connect your payment information with your account.
+				Your payment information will be stored directly by Stripe, which means we do not have access to it.
+				For more information, please refer to the <a href="https://stripe.com/privacy" target="blank">Privacy Policy of Stripe</a>.
+			`
+		},
+		endText1: `These rules apply to all our apps and websites, including web apps and our blog. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
 		endText2: "We reserve the right to update this privacy policy in the future.",
-		endText3: "Last update: 3.12.2020"
+		endText3: "Last update: April 7, 2021"
 	},
 	pocketlibTermsPage: {
 		title: "Terms of Service for authors",
@@ -148,7 +164,7 @@ const enDefaults = {
 			text7: "Your information as a provider is accessible in the settings of your account on dav. There you can also specify a bank account for the monthly payout."
 		},
 		endText1: `We reserve the right to update these terms in the future. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
-		endText2: "Last update: 3.12.2020"
+		endText2: "Last update: December 3, 2020"
 	},
 	pricingPage: {
 		title: "Pricing"
@@ -534,7 +550,7 @@ const deDefaults = {
 		}
 	},
 	startPage: {
-		title: "dav ist eine neue Plattform für vernetzte Apps und Dienste",
+		title: "dav ist eine moderne Plattform für vernetzte Apps und Dienste",
 		calendoDescription: `
 			Calendo ist eine einfache App, um deinen Zeitplan zu verwalten.
 			Organisiere deine Termine, verwalte deine Todos und gruppiere Todos nach Themen.
@@ -562,37 +578,53 @@ const deDefaults = {
 		title: "Datenschutzerklärung",
 		intro: "Der Schutz deiner Privatsphäre ist uns sehr wichtig. Aus diesem Grund erheben wir so wenig Daten wie möglich. Diese Seite dient dazu, dich darüber zu informieren, welche Informationen wir sammeln und wie wir diese Informationen verwenden.",
 		section1: {
-			header: "Datenerhebung",
-			text1: "Wir speichern die folgenden Daten, wenn du eine unserer Webseiten oder Web-Apps besuchst:",
-			listItemTime: "Die Zeit",
-			listItemCountry: "Das Land deiner IP-Adresse",
-			listItemBrowser: "Den Namen und die Version deines Browsers",
-			listItemOs: "Den Namen und die Version deines Betriebssystems",
-			text2: "Allerdings speichern wir nicht die IP-Adresse, so dass die gespeicherten Daten nicht mit bestimmten Nutzern in Verbindung gebracht werden können."
-		},
-		section2: {
 			header: "Von dir angegebene Informationen",
-			text1: "Wenn du unsere Dienste nutzt, wird du aufgefordert, bestimmte Informationen über dich anzugeben, wie z.B. deine Email-Adresse. Wir fragen nur nach den Informationen, die notwendig sind, um unsere Dienst anbieten zu können.",
-			text2: "Alle Informationen, die du in unseren Apps angibst, werden sicher gespeichert und können von den entsprechenden Apps aus zugegriffen werden."
-		},
-		section3: {
-			header: "An Dritte weitergegebene Daten",
-			text1: "Um unsere Dienste anbieten zu können, ist es notwendig, dass wir bestimmte Dienste von Dritten nutzen. Die Dienste, mit denen wir Daten teilen, sind unten aufgelistet.",
-			text2: "Allerdings werden diese Dienste nur in Anspruch genommen, wenn es notwendig ist. Deine Daten werden nicht verkauft oder anderweitig and Dritte weitergegeben.",
-			text3: "Du kannst all deine Daten in den Einstellungen deines Account löschen. Wenn du dein Account löscht, werden auch alle Daten gelöscht, die mit Dritten geteilt wurden."
-		},
-		section3a: {
-			header: "Zahlungen",
 			text1: `
-				Wir nutzen <a href="https://stripe.com" target="blank">Stripe</a> zum Bearbeiten von Zahlungen. 
-				Wenn du dein Abo auf Plus oder Pro hochstufst, teilen wir deine Email-Adresse mit Stripe, um deine Zahlungsinformationen mit deinem Account zu verknüpfen.
-				Deine Zahlungsinformationen werden direkt durch Stripe gespeichert, was bedeutet, dass wir keinen Zugriff auf deine Zahlungsinformationen haben. 
-				Für mehr Informationen verweisen wir auf die <a href="https://stripe.com/privacy" target="blank">Datenschutzerklärung von Stripe</a>.
+				In unseren Apps bist du in der Lage, bestimmte Daten und Dateien einzufügen.
+				Wenn du dich in unseren Apps anmeldest, werden die Daten und Dateien, die du hinzugefügt hast, automatisch auf unsere Server hochgeladen.
+				Deine App-Daten werden sicher auf unseren Servern gespeichert und nicht an Dritte weitergegeben.
+			`,
+			text2: `
+				Wenn du dich registrierst, wird du aufgefordert, bestimmte Informationen über dich anzugeben, wie z.B. deine Email-Adresse.
+				Wir fragen nur nach den Daten, die notwendig sind, um unsere Dienste zur Verfügung zu stellen.
+				Metadaten wie diese sind die einzigen Informationen, die eventuell mit Dritten geteilt werden, um bestimmte Funktionen zu ermöglichen.
+				Die Dienste, die auf solche Metadaten Zugriff haben, sind unten aufgeführt.
 			`
 		},
-		endText1: `Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Falls spezielle Fälle auf bestimmte Apps oder Dienste zutreffen, werden sie im Folgenden aufgeführt. Bei Fragen kannst Du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
+		section2: {
+			header: "Dienste von Dritten",
+			text: "Um unsere Dienste anbieten zu können, nutzen wir bestimmte Dienste von Dritten. Die Dienste, mit denen wir Daten teilen, sind im Folgenden aufgelistet.",
+		},
+		section2a: {
+			header: "Simple Analytics",
+			text: `
+				Auf unseren Webseiten und Web-Apps nutzen wir <a href="https://simpleanalytics.com" target="blank">Simple Analytics</a>.
+				Wenn du eine unserer Seiten besuchst, werden u.a. das Land, in dem du dich befindest, die besuchten Seiten, dein Gerät und dein Browser durch Simple Analytics gespeichert.
+				Wir nutzen diese Daten, um besser zu verstehen, wie und von wem unsere Apps genutzt werden.
+				<br>Für weitere Informationen verweisen wir auf die <a href="https://simpleanalytics.com/privacy-policy" target="blank">Datenschutzerklärung von Simple Analytics</a>.
+			`
+		},
+		section2b: {
+			header: "AppCenter",
+			text: `
+				In UniversalSoundboard verwenden wir <a href="https://appcenter.ms" target="blank">AppCenter</a>, ein Dienst von Microsoft für Nutzungsstatistiken und zur Fehlerdiagnose.
+				Wenn du UniversalSoundboard nutzt, werden u.a. die App-Version, deine Version von Windows 10, dein Gerät, deine Sprache und deine App-Einstellungen durch AppCenter gespeichert.
+				Mit diesen Daten sind wir in der Lage, Fehler und Abstürze zu finden und zu beheben.
+				<br>Für weitere Informationen verweisen wir auf die <a href="https://privacy.microsoft.com/en-us/privacystatement" target="blank">Datenschutzerklärung von Microsoft</a>.
+			`
+		},
+		section2c: {
+			header: "Stripe",
+			text: `
+				Wir nutzen <a href="https://stripe.com" target="blank">Stripe</a> zum Bearbeiten von Zahlungen. 
+				Wenn du dein Abo auf Plus oder Pro hochstufst oder Käufe innerhalb unserer Apps tätigst, teilen wir deine Email-Adresse mit Stripe, um deine Zahlungsinformationen mit deinem Account zu verknüpfen.
+				Deine Zahlungsinformationen werden direkt durch Stripe gespeichert, was bedeutet, dass wir keinen Zugriff darauf haben.
+				<br>Für weitere Informationen verweisen wir auf die <a href="https://stripe.com/privacy" target="blank">Datenschutzerklärung von Stripe</a>.
+			`
+		},
+		endText1: `Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Bei Fragen kannst du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
 		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu aktualisieren.",
-		endText3: "Letzte Aktualisierung: 3.12.2020"
+		endText3: "Letzte Aktualisierung: 7. April 2021"
 	},
 	pocketlibTermsPage: {
 		title: "Allgemeine Geschäftsbedingungen für Autoren",
@@ -674,7 +706,7 @@ const deDefaults = {
 			text7: "Deine Informationen als Anbieter sind in den Einstellungen deines Kontos auf dav einsehbar. Dort kannst Du auch ein Bankkonto für die monatliche Auszahlung angeben."
 		},
 		endText1: `Wir behalten uns das Recht vor, diese Bestimmungen in Zukunft zu aktualisieren. Bei Fragen kannst Du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
-		endText2: "Letzte Aktualisierung: 3.12.2020",
+		endText2: "Letzte Aktualisierung: 3. Dezember 2020",
 	},
 	pricingPage: {
 		title: "Pläne"

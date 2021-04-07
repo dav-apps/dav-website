@@ -6,31 +6,24 @@
 		<br>
 
 		<h3 class="font-weight-light mb-2">{{ locale.section1.header }}</h3>
-		<p>{{ locale.section1.text1 }}</p>
-
-		<ul>
-			<li>{{ locale.section1.listItemTime }}</li>
-			<li>{{ locale.section1.listItemCountry }}</li>
-			<li>{{ locale.section1.listItemBrowser }}</li>
-			<li>{{ locale.section1.listItemOs }}</li>
-		</ul>
-		<p>{{ locale.section1.text2 }}</p>
+		<p [innerHtml]="locale.section1.text1"></p>
+		<p [innerHtml]="locale.section1.text2"></p>
 		<br>
 
 		<h3 class="font-weight-light mb-2">{{ locale.section2.header }}</h3>
-		<p>{{ locale.section2.text1 }}</p>
-		<p>{{ locale.section2.text2 }}</p>
+		<p>{{ locale.section2.text }}</p>
 		<br>
 
-		<h3 class="font-weight-light mb-2">{{ locale.section3.header }}</h3>
-		<p>{{ locale.section3.text1 }}</p>
-		<p>{{ locale.section3.text2 }}</p>
-		<p>{{ locale.section3.text3 }}</p>
-		<br>
+		<h4 class="font-weight-light mb-2">{{ locale.section2a.header }}</h4>
+		<p [innerHtml]="locale.section2a.text"></p><br>
 
-		<h4 class="font-weight-light mb-2">{{ locale.section3a.header }}</h4>
-		<p [innerHtml]="locale.section3a.text1"></p>
-		<br><br>
+		<h4 class="font-weight-light mb-2">{{ locale.section2b.header }}</h4>
+		<p [innerHtml]="locale.section2b.text"></p><br>
+
+		<h4 class="font-weight-light mb-2">{{ locale.section2c.header }}</h4>
+		<p class="mb-0" [innerHtml]="locale.section2c.text"></p><br>
+
+		<div class="border-top mx-4 my-3"></div><br>
 
 		<p [innerHtml]="locale.endText1"></p>
 		<p>{{ locale.endText2 }}</p>
