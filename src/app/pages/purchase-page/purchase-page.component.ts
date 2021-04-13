@@ -26,7 +26,7 @@ const deviceInfoNotAvailable = "Not available"
 export class PurchasePageComponent {
 	locale = enUS.purchasePage
 	@ViewChild('paymentFormDialog', { static: true }) paymentFormDialog: PaymentFormDialogComponent
-	purchase: Purchase = new Purchase(0, 0, 0, "", "", "", "", "", 0, "eur", false)
+	purchase: Purchase = new Purchase(0, 0, 0, "", "", "", "", "", "", 0, "eur", false)
 	price: string = ""
 	redirectUrl: string
 	loginUser: { id: number, firstName: string, email: string, profileImage: string }
@@ -79,10 +79,10 @@ export class PurchasePageComponent {
 		await this.dataService.userDownloadPromise
 
 		// Get the id from the url
-		let purchaseId = this.activatedRoute.snapshot.paramMap.get('id')
+		let purchaseUuid = this.activatedRoute.snapshot.paramMap.get('uuid')
 
 		// Get the purchase from the server
-		let response: ApiResponse<Purchase> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.GetPurchase, { id: +purchaseId })
+		let response: ApiResponse<Purchase> | ApiErrorResponse = await this.websocketService.Emit(WebsocketCallbackType.GetPurchase, { uuid: purchaseUuid })
 
 		if (response.status == 200) {
 			this.purchase = (response as ApiResponse<Purchase>).data
@@ -228,7 +228,7 @@ export class PurchasePageComponent {
 		this.paymentLoading = true
 
 		// Complete the purchase on the server
-		let completePurchaseResponse: ApiResponse<Purchase> | ApiErrorResponse = await PurchasesController.CompletePurchase({ id: this.purchase.Id })
+		let completePurchaseResponse: ApiResponse<Purchase> | ApiErrorResponse = await PurchasesController.CompletePurchase({ uuid: this.purchase.Uuid })
 
 		if (completePurchaseResponse.status == 200) {
 			// Redirect to the redirect url

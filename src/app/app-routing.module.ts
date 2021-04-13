@@ -38,7 +38,7 @@ const routes: Routes = [
 	{ path: "dev/:id", component: AppPageComponent },
 	{ path: "dev/:id/statistics", component: AppStatisticsPageComponent },
 	{ path: "dev/:id/api/:apiId", component: ApiPageComponent },
-	{ path: "purchase/:id", component: PurchasePageComponent }
+	{ path: "purchase/:uuid", component: PurchasePageComponent }
 ]
 
 @NgModule({

@@ -6,11 +6,11 @@ export const sockets = {
 }
 
 export async function getPurchase(message: {
-	id: number
+	uuid: string
 }) {
 	let response = await PurchasesController.GetPurchase({
 		auth: websocket.auth,
-		id: message.id
+		uuid: message.uuid
 	})
 
 	websocket.emit(getPurchase.name, response)
