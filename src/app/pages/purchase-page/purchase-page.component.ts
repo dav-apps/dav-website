@@ -26,7 +26,7 @@ const deviceInfoNotAvailable = "Not available"
 export class PurchasePageComponent {
 	locale = enUS.purchasePage
 	@ViewChild('paymentFormDialog', { static: true }) paymentFormDialog: PaymentFormDialogComponent
-	purchase: Purchase = new Purchase(0, 0, 0, "", "", "", "", "", "", 0, "eur", false)
+	purchase: Purchase = new Purchase(0, 0, "", "", "", "", "", "", 0, "eur", false)
 	price: string = ""
 	redirectUrl: string
 	loginUser: { id: number, firstName: string, email: string, profileImage: string }
