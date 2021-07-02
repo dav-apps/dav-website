@@ -59,12 +59,33 @@
 					<div class="mb-4" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
 
 					<!-- Profile image -->
-					<img id="profile-image" class="img mb-3 rounded" height="150" width="150" [alt]="locale.general.profileImageAlt" [src]="dataService.dav.user.ProfileImage"><br>
+					<div
+						class="mb-3"
+						style="position: relative; display: inline-block">
 
-					<div class="d-flex">
-						<fab-primary-button ngxFilePicker accept="image/png,image/jpeg" (filePick)="UpdateProfileImage($event)" [disabled]="profileImageLoading">{{ locale.general.uploadProfileImage }}</fab-primary-button>
-						<div style="margin-top: 8px; margin-left: 14px" *ngIf="profileImageLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+						<div
+							style="position: absolute; margin-top: 65px; margin-left: 65px"
+							*ngIf="profileImageLoading">
+							<fab-spinner></fab-spinner>
+						</div>
+
+						<img
+							id="profile-image"
+							[style.opacity]="profileImageLoading ? 0.4 : 1"
+							class="img rounded"
+							height="150"
+							width="150"
+							[alt]="locale.general.profileImageAlt"
+							[src]="profileImageContent">
 					</div>
+
+					<fab-primary-button
+						ngxFilePicker
+						accept="image/png,image/jpeg"
+						(filePick)="UpdateProfileImage($event)"
+						[disabled]="profileImageLoading">
+						{{ locale.general.uploadProfileImage }}
+					</fab-primary-button>
 
 					<!-- First name -->
 					<form>

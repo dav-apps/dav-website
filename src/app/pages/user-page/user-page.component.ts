@@ -32,11 +32,8 @@ const appsHash = "apps"
 const providerHash = "provider"
 
 @Component({
-	selector: 'dav-website-user-page',
 	templateUrl: './user-page.component.html',
-	styleUrls: [
-		'./user-page.component.scss'
-	]
+	styleUrls: ['./user-page.component.scss']
 })
 export class UserPageComponent {
 	locale = enUS.userPage
@@ -52,7 +49,7 @@ export class UserPageComponent {
 
 	//#region General page
 	updatedAttribute: UserAttribute = UserAttribute.FirstName
-	newProfileImageContent: string = null
+	profileImageContent: string = this.dataService.dav.user.ProfileImage
 	firstName: string = ""
 	email: string = ""
 	newEmail: string = ""
@@ -152,6 +149,7 @@ export class UserPageComponent {
 			return
 		}
 
+		this.profileImageContent = this.dataService.dav.user.ProfileImage
 		this.UpdateValues()
 		this.dataService.userDownloadPromise.then(() => this.UpdateValues())
 	}
@@ -196,11 +194,6 @@ export class UserPageComponent {
 		this.password = ""
 		this.passwordConfirmation = ""
 		this.passwordConfirmationVisible = false
-
-		// Set the content of the profile image if it was updated
-		setTimeout(() => {
-			this.UpdateProfileImageContent()
-		}, 1)
 
 		this.router.navigateByUrl('user')
 	}
@@ -254,7 +247,7 @@ export class UserPageComponent {
 
 		this.updatedAttribute = UserAttribute.ProfileImage
 		this.profileImageLoading = true
-		this.newProfileImageContent = file.content
+		this.profileImageContent = file.content
 
 		// Send the file content to the server
 		this.UpdateUserResponse(
@@ -451,7 +444,6 @@ export class UserPageComponent {
 			let userResponse = (message as ApiResponse<User>).data
 
 			if (this.updatedAttribute == UserAttribute.ProfileImage) {
-				this.UpdateProfileImageContent()
 				this.snackBar.open(this.locale.messages.profileImageUpdateMessage, null, { duration: 5000 })
 			}
 			else if (this.updatedAttribute == UserAttribute.FirstName) {
@@ -470,7 +462,10 @@ export class UserPageComponent {
 		} else {
 			let errorCode = (message as ApiErrorResponse).errors[0].code
 
-			if (this.updatedAttribute == UserAttribute.ProfileImage) this.errorMessage = this.GetProfileImageErrorMessage(errorCode)
+			if (this.updatedAttribute == UserAttribute.ProfileImage) {
+				this.profileImageContent = this.dataService.dav.user.ProfileImage
+				this.errorMessage = this.GetProfileImageErrorMessage(errorCode)
+			}
 			else if (this.updatedAttribute == UserAttribute.FirstName) this.firstNameErrorMessage = this.GetFirstNameErrorMessage(errorCode)
 			else if (this.updatedAttribute == UserAttribute.Email) this.emailErrorMessage = this.GetEmailErrorMessage(errorCode)
 			else if (this.updatedAttribute == UserAttribute.Password) {
@@ -493,12 +488,6 @@ export class UserPageComponent {
 			let errorCode = (message as ApiErrorResponse).errors[0].code
 			this.errorMessage = this.GetSendConfirmationEmailErrorMessage(errorCode)
 		}
-	}
-
-	UpdateProfileImageContent() {
-		if (!this.newProfileImageContent) return
-		let imageTag = document.getElementById('profile-image')
-		if (imageTag) imageTag.setAttribute('src', this.newProfileImageContent)
 	}
 
 	ClearMessages() {
