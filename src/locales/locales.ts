@@ -16,16 +16,28 @@ const enDefaults = {
 	},
 	startPage: {
 		title: "dav is a modern platform of connected apps and services",
-		calendoDescription: `
-			Calendo is a simple app for managing your schedule.
-			You can organize your appointments, manage your todos and group todos by topic.
-			<br>With Calendo you have always an overview of upcoming events and todos.
-			<br><br>You can log in with your dav Account to use the same calendar on all your devices.
+		pocketlibDescription: `
+			PocketLib is a simple and modern ebook reader.<br><br>
+
+			📖 Read any epub file<br>
+			Add any local epub file to your library. PocketLib automatically saves your reading progress, so you can go directly to the last page you read when you open the app.<br><br>
+
+			📚 Discover a wide range of literature<br>
+			The PocketLib Store contains a large collection of literature in the public domain, carefully selected and produced for the true book lover. Just log in to get free access to all these books.<br><br>
+
+			☁ Save your data and read on any device<br>
+			Log in with your dav Account to save your library and reading progress in the cloud. Read on any device, wherever and whenever you want.<br><br>
 		`,
 		universalSoundboardDescription: `
 			Create your own soundboard with UniversalSoundboard!
 			<br>Add and play your sounds or your music collection. Sort your sounds in categories and set your preferred sounds as favourites to keep track of your collection.
 			<br><br>You can log in with your dav Account to use the same soundboard on all your devices.
+		`,
+		calendoDescription: `
+			Calendo is a simple app for managing your schedule.
+			You can organize your appointments, manage your todos and group todos by topic.
+			<br>With Calendo you have always an overview of upcoming events and todos.
+			<br><br>You can log in with your dav Account to use the same calendar on all your devices.
 		`,
 		loggedInTitle: "Your Apps",
 		welcomeTitle: "Hi, {0}",
@@ -551,16 +563,28 @@ const deDefaults = {
 	},
 	startPage: {
 		title: "dav ist eine moderne Plattform für vernetzte Apps und Dienste",
-		calendoDescription: `
-			Calendo ist eine einfache App, um deinen Zeitplan zu verwalten.
-			Organisiere deine Termine, verwalte deine Todos und gruppiere Todos nach Themen.
-			<br>Mit Calendo hast du immer den Überblick über bevorstehende Ereignisse und Aufgaben.
-			<br><br>Melde dich mit deinem dav-Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
+		pocketlibDescription: `
+			PocketLib ist ein einfacher und moderner Ebook-Reader.<br><br>
+
+			📖 Lesen jede epub-Datei<br>
+			Füge jede lokale epub-Datei zu deiner Bibliothek hinzu. PocketLib speichert automatisch deinen Fortschritt beim Lesen, so dass du direkt auf die zuletzt gelesene Seite kommst, wenn du die App öffnest.<br><br>
+
+			📚 Entdecke eine große Auswahl an Literatur<br>
+			Der PocketLib Store enthält eine umfangreiche Sammlung an freier Literatur, sorgfältig ausgewählt und produziert für wahre Buchliebhaber. Melde dich an, um kostenlosen Zugriff auf all diese Bücher zu bekommen.<br><br>
+
+			☁ Sichere deine Daten und lese auf jedem Gerät<br>
+			Melde dich mit deinem dav Account an, um deine Bibliothek und deinen Lese-Fortschritt in der Cloud zu speichern. Lese auf jedem Gerät, wann und wo auch immer du willst.<br><br>
 		`,
 		universalSoundboardDescription: `
 			Erstelle dein eigenes Soundboard mit UniversalSoundboard!
 			<br>Füge deine Sounds oder deine Musiksammlung hinzu. Sortiere deine Sounds in Kategorien und speichere deine Lieblingssounds als Favoriten, um den Überblick über deine Sammlung zu behalten.
 			<br><br>Melde dich mit deinem dav-Account an, um dein Soundboard auf mehreren Geräten zu nutzen.
+		`,
+		calendoDescription: `
+			Calendo ist eine einfache App, um deinen Zeitplan zu verwalten.
+			Organisiere deine Termine, verwalte deine Todos und gruppiere Todos nach Themen.
+			<br>Mit Calendo hast du immer den Überblick über bevorstehende Ereignisse und Aufgaben.
+			<br><br>Melde dich mit deinem dav-Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
 		`,
 		loggedInTitle: "Deine Apps",
 		welcomeTitle: "Hi, {0}",

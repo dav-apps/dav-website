@@ -4,11 +4,8 @@ import { DataService } from 'src/app/services/data-service'
 import { enUS } from 'src/locales/locales'
 
 @Component({
-	selector: 'dav-website-start-page',
 	templateUrl: './start-page.component.html',
-	styleUrls: [
-		'./start-page.component.scss'
-	]
+	styleUrls: ['./start-page.component.scss']
 })
 export class StartPageComponent {
 	locale = enUS.startPage
@@ -35,7 +32,7 @@ export class StartPageComponent {
 
 	setSize() {
 		this.height = window.innerHeight
-		this.width = window.outerWidth
+		this.width = window.innerWidth
 	}
 
 	parallax() {
