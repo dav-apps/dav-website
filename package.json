@@ -1,6 +1,6 @@
 {
   "name": "dav-website",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -41,7 +41,7 @@
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "chartkick": "^3.2.0",
-    "dav-js": "git+https://github.com/dav-apps/dav-js.git#v2.0.6",
+    "dav-js": "git+https://github.com/dav-apps/dav-js.git#v2.0.8",
     "jquery": "^3.5.1",
     "moment": "2.24.0",
     "ng2-charts": "^2.3.0",
