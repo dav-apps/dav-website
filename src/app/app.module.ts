@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core'
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { environment } from '../environments/environment'
 
 // Modules
@@ -116,6 +116,7 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		DataService,
 		WebsocketService
 	],
-  	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+	schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
