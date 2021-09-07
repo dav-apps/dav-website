@@ -8,9 +8,10 @@
 			<!-- First name -->
 			<div class="row">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<div class="mb-3" *ngIf="errorMessage.length > 0">
-						<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
-					</div>
+					<dav-website-message-bar
+						class="mb-3"
+						[message]="errorMessage">
+					</dav-website-message-bar>
 
 					<fluent-text-field
 						id="first-name-textfield"
@@ -77,7 +78,11 @@
 							{{ locale.signup }}
 						</fluent-button>
 
-						<div style="margin-top: 8px; margin-left: 14px" *ngIf="signupLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+						<fluent-progress-ring
+							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"
+							indeterminate="true"
+							*ngIf="signupLoading">
+						</fluent-progress-ring>
 					</div>
 				</div>
 			</div>

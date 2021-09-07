@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
-import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react'
 import {
 	Dav,
 	ApiResponse,
@@ -38,8 +37,6 @@ export class LoginPageComponent {
 	loginLoading: boolean = false
 	height: number = 400
 	backButtonWidth: number = 40
-	spinnerSize: SpinnerSize = SpinnerSize.small
-	messageBarType: MessageBarType = MessageBarType.error
 
 	constructor(
 		public dataService: DataService,

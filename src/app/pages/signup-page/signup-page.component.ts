@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react'
 import {
 	Dav,
 	ApiResponse,
@@ -37,8 +36,6 @@ export class SignupPageComponent {
 	errorMessage: string = ""
 	height: number = 400
 	backButtonWidth: number = 40
-	messageBarType: MessageBarType = MessageBarType.error
-	spinnerSize: SpinnerSize = SpinnerSize.small
 	signupLoading: boolean = false
 	redirectedFromLogin: boolean = false
 
