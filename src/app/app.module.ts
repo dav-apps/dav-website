@@ -35,6 +35,7 @@ import { WebsocketService } from './services/websocket-service'
 import { AppComponent } from './app.component'
 import { PricingComponent } from 'src/app/components/pricing-component/pricing.component'
 import { AppCardComponent } from 'src/app/components/app-card-component/app-card.component'
+import { MessageBarComponent } from 'src/app/components/message-bar-component/message-bar.component'
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
 import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component'
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
@@ -65,6 +66,7 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		AppComponent,
 		PricingComponent,
 		AppCardComponent,
+		MessageBarComponent,
 		PaymentFormComponent,
 		PaymentFormDialogComponent,
 		BankAccountFormComponent,
