@@ -92,7 +92,7 @@ export class SignupPageComponent {
 	ngAfterViewInit() {
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
-			SetTextFieldAutocomplete('first-name-textfield', 'given-name', true)
+			SetTextFieldAutocomplete('first-name-textfield', 'given-name')
 			SetTextFieldAutocomplete('email-textfield', 'email')
 			SetTextFieldAutocomplete('password-textfield', 'new-password')
 			SetTextFieldAutocomplete('password-confirmation-textfield', 'new-password')

@@ -28,7 +28,7 @@ export class PasswordResetPageComponent {
 	ngAfterViewInit() {
 		// Set the autocomplete attribute of the input element
 		setTimeout(() => {
-			SetTextFieldAutocomplete('email-text-field', 'email', true)
+			SetTextFieldAutocomplete('email-text-field', 'email')
 		}, 1)
 	}
 

@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router'
-import { MessageBarType, IButtonStyles, SpinnerSize } from 'office-ui-fabric-react'
+import { MessageBarType, SpinnerSize } from 'office-ui-fabric-react'
 import {
 	Dav,
 	ApiResponse,
@@ -40,12 +40,6 @@ export class LoginPageComponent {
 	backButtonWidth: number = 40
 	spinnerSize: SpinnerSize = SpinnerSize.small
 	messageBarType: MessageBarType = MessageBarType.error
-
-	loginButtonStyles: IButtonStyles = {
-		root: {
-			marginTop: 24
-		}
-	}
 
 	constructor(
 		public dataService: DataService,
@@ -105,7 +99,7 @@ export class LoginPageComponent {
 	ngAfterViewInit() {
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
-			SetTextFieldAutocomplete('email-text-field', 'email', true)
+			SetTextFieldAutocomplete('email-text-field', 'email')
 			SetTextFieldAutocomplete('password-text-field', 'current-password')
 		}, 1)
 	}

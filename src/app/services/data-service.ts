@@ -48,7 +48,7 @@ export function FindElement(currentElement: Element, tagName: string): Element {
 	return null
 }
 
-export function SetTextFieldAutocomplete(textFieldId: string, autocomplete: string, setFocus: boolean = false) {
+export function SetTextFieldAutocomplete(textFieldId: string, autocomplete: string) {
 	// Find the input element
 	let textField = document.getElementById(textFieldId)
 	if (textField == null) return
@@ -56,8 +56,6 @@ export function SetTextFieldAutocomplete(textFieldId: string, autocomplete: stri
 	let input = FindElement(textField, "input") as HTMLInputElement
 
 	if (input) {
-		if (setFocus) input.focus()
-
 		// Set the autocomplete attribute
 		input.setAttribute("autocomplete", autocomplete)
 	}

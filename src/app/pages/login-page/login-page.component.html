@@ -12,46 +12,56 @@
 					<div class="mb-3" *ngIf="errorMessage.length > 0">
 						<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
 					</div>
-					
-					<fab-text-field
+
+					<fluent-text-field
 						id="email-text-field"
-						[(value)]="email"
-						[label]="locale.emailTextfieldLabel"
+						style="width: 100%"
 						[placeholder]="locale.emailTextfieldPlaceholder"
 						type="email"
-						autocomplete="email">
-					</fab-text-field>
+						autocomplete="email"
+						autofocus
+						(input)="email = $event.target.value">
+						{{ locale.emailTextfieldLabel }}
+					</fluent-text-field>
 				</div>
 			</div>
 
 			<!-- Password -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fab-text-field
+					<fluent-text-field
 						id="password-text-field"
-						[(value)]="password"
-						[label]="locale.passwordTextfieldLabel"
+						style="width: 100%"
 						[placeholder]="locale.passwordTextfieldPlaceholder"
 						type="password"
 						autocomplete="current-password"
+						(input)="password = $event.target.value"
 						(keydown.enter)="Login()">
-					</fab-text-field>
-					
+						{{ locale.passwordTextfieldLabel }}
+					</fluent-text-field>
+
 					<div class="d-flex flex-row">
 						<div class="d-flex">
-							<fab-primary-button (click)="Login()" [styles]="loginButtonStyles" [disabled]="loginLoading">{{ locale.login }}</fab-primary-button>
-							<div style="margin-top: 32px; margin-left: 14px" *ngIf="loginLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+							<fluent-button
+								style="margin-top: 16px"
+								appearance="accent"
+								[disabled]="loginLoading"
+								(click)="Login()">
+								{{ locale.login }}
+							</fluent-button>
+
+							<div style="margin-top: 22px; margin-left: 14px" *ngIf="loginLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 						</div>
-						
+
 						<div class="d-flex ml-auto text-right">
-							<a style="color: black; font-size: 15px; margin-top: 28px"
+							<a style="color: black; font-size: 15px; margin-top: 20px"
 								routerLink="/password-reset"
 								tabindex="-1"
 								*ngIf="websiteLogin">
 								{{ locale.forgotPassword }}
 							</a>
 
-							<div style="margin-top: 24px" *ngIf="!websiteLogin"><fab-default-button (click)="NavigateToSignup()">{{ locale.signup }}</fab-default-button></div>
+							<div style="margin-top: 16px" *ngIf="!websiteLogin"><fab-default-button (click)="NavigateToSignup()">{{ locale.signup }}</fab-default-button></div>
 						</div>
 					</div>
 

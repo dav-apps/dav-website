@@ -12,60 +12,71 @@
 						<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
 					</div>
 
-					<fab-text-field
+					<fluent-text-field
 						id="first-name-textfield"
-						[(value)]="firstName"
-						[label]="locale.firstNameTextfieldLabel"
+						style="width: 100%"
 						[placeholder]="locale.firstNameTextfieldPlaceholder"
 						type="text"
-						autocomplete="given-name">
-					</fab-text-field>
+						autofocus
+						autocomplete="given-name"
+						(input)="firstName = $event.target.value">
+						{{ locale.firstNameTextfieldLabel }}
+					</fluent-text-field>
 				</div>
 			</div>
-		
+
 			<!-- Email -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fab-text-field
+					<fluent-text-field
 						id="email-textfield"
-						[(value)]="email"
-						[label]="locale.emailTextfieldLabel"
+						style="width: 100%"
 						[placeholder]="locale.emailTextfieldPlaceholder"
-						type="email"
-						autocomplete="email">
-					</fab-text-field>
+						type="text"
+						autocomplete="email"
+						(input)="email = $event.target.value">
+						{{ locale.emailTextfieldLabel }}
+					</fluent-text-field>
 				</div>
 			</div>
-		
+
 			<!-- Password -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fab-text-field
+					<fluent-text-field
 						id="password-textfield"
-						[(value)]="password"
-						[label]="locale.passwordTextfieldLabel"
+						style="width: 100%"
 						[placeholder]="locale.passwordTextfieldPlaceholder"
 						type="password"
-						autocomplete="new-password">
-					</fab-text-field>
+						autocomplete="new-password"
+						(input)="password = $event.target.value">
+						{{ locale.passwordTextfieldLabel }}
+					</fluent-text-field>
 				</div>
 			</div>
-		
+
 			<!-- Password confirmation -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fab-text-field
+					<fluent-text-field
 						id="password-confirmation-textfield"
-						[(value)]="passwordConfirmation"
-						[label]="locale.passwordConfirmationTextfieldLabel"
+						style="width: 100%"
 						[placeholder]="locale.passwordConfirmationTextFieldPlaceholder"
 						type="password"
 						autocomplete="new-password"
+						(input)="passwordConfirmation = $event.target.value"
 						(keydown.enter)="Signup()">
-					</fab-text-field>
-					
-					<div class="d-flex mt-4">
-						<fab-primary-button (click)="Signup()" [disabled]="signupLoading">{{ locale.signup }}</fab-primary-button>
+						{{ locale.passwordConfirmationTextfieldLabel }}
+					</fluent-text-field>
+
+					<div class="d-flex mt-3">
+						<fluent-button
+							appearance="accent"
+							[disabled]="signupLoading"
+							(click)="Signup()">
+							{{ locale.signup }}
+						</fluent-button>
+
 						<div style="margin-top: 8px; margin-left: 14px" *ngIf="signupLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
 					</div>
 				</div>

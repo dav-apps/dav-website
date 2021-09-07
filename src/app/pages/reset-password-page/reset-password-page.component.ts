@@ -44,7 +44,7 @@ export class ResetPasswordPageComponent {
 	ngAfterViewInit() {
 		// Set the autocomplete attribute of the input elements
 		setTimeout(() => {
-			SetTextFieldAutocomplete('password-text-field', 'new-password', true)
+			SetTextFieldAutocomplete('password-text-field', 'new-password')
 			SetTextFieldAutocomplete('password-confirmation-text-field', 'new-password')
 		}, 1)
 	}
