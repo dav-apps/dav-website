@@ -46,7 +46,7 @@
 			style="margin-top: 84px; height: 40px; width: 40px; font-size: 18px; position: absolute; z-index: 1"
 			(click)="sideNavOpened = !sideNavOpened"
 			*ngIf="sideNavHidden">
-			<fab-icon iconName="More"></fab-icon>
+			<i class="ms-Icon ms-Icon--More" aria-hidden="true" style="font-size: 18px"></i>
 		</button>
 
 		<!-- General settings -->
@@ -63,11 +63,10 @@
 						class="mb-3"
 						style="position: relative; display: inline-block">
 
-						<div
-							style="position: absolute; margin-top: 65px; margin-left: 65px"
+						<fluent-progress-ring
+							style="position: absolute; width: 20px; height: 20px; margin-top: 65px; margin-left: 65px;"
 							*ngIf="profileImageLoading">
-							<fab-spinner></fab-spinner>
-						</div>
+						</fluent-progress-ring>
 
 						<img
 							id="profile-image"
@@ -79,103 +78,142 @@
 							[src]="profileImageContent">
 					</div>
 
-					<fab-primary-button
+					<fluent-button
 						ngxFilePicker
 						accept="image/png,image/jpeg"
-						(filePick)="UpdateProfileImage($event)"
-						[disabled]="profileImageLoading">
+						appearance="accent"
+						[disabled]="profileImageLoading"
+						(filePick)="UpdateProfileImage($event)">
 						{{ locale.general.uploadProfileImage }}
-					</fab-primary-button>
+					</fluent-button>
 
 					<!-- First name -->
 					<form>
 						<div class="mt-4 d-flex" style="font-size: 18px">
-							<fab-text-field 
-								id="first-name-textfield"
-								[(value)]="firstName"
-								[label]="locale.general.firstNameTextfieldLabel"
-								[placeholder]="locale.general.firstNameTextfieldPlaceholder"
-								[errorMessage]="firstNameErrorMessage"
-								[styles]="textFieldStyles"
-								type="text"
-								autocomplete="given-name"
-								(keydown)="FirstNameTextFieldChanged($event)">
-							</fab-text-field>
+							<div>
+								<fluent-text-field
+									id="first-name-textfield"
+									style="width: 200px"
+									[value]="firstName"
+									type="text"
+									autocomplete="given-name"
+									[placeholder]="locale.general.firstNameTextfieldPlaceholder"
+									[disabled]="firstNameLoading"
+									(input)="firstName = $event.target.value"
+									(keydown)="FirstNameTextFieldChanged($event)">
+									{{ locale.general.firstNameTextfieldLabel }}
+								</fluent-text-field>
+
+								<p class="text-field-error" *ngIf="firstNameErrorMessage.length > 0">
+									{{ firstNameErrorMessage }}
+								</p>
+							</div>
 	
 							<button
 								type="button"
 								class="btn btn-sm ml-2 icon-button"
-								style="margin-top: 32px"
+								style="margin-top: 26px"
 								[disabled]="firstNameLoading"
 								(click)="SaveFirstName()"
 								*ngIf="firstName != dataService.dav.user.FirstName && firstName.length >= 2 && firstName.length <= 20">
-								<fab-icon iconName="Save"></fab-icon>
+								<i class="ms-Icon ms-Icon--Save" aria-hidden="true" style="font-size: 16px"></i>
 							</button>
-	
-							<div style="margin-top: 39px; margin-left: 10px" *ngIf="firstNameLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+
+							<fluent-progress-ring
+								style="margin: 33px 0px 0px 14px; width: 16px; height: 16px"
+								*ngIf="firstNameLoading">
+							</fluent-progress-ring>
 						</div>
 					</form>
 
 					<!-- Email -->
 					<form>
 						<div class="mt-4 d-flex" style="font-size: 18px">
-							<fab-text-field
-								id="email-textfield"
-								[(value)]="email"
-								[label]="locale.general.emailTextfieldLabel"
-								[placeholder]="locale.general.emailTextfieldPlaceholder"
-								[errorMessage]="emailErrorMessage"
-								[styles]="textFieldStyles"
-								type="email"
-								autocomplete="email"
-								(keydown)="EmailTextFieldChanged($event)">
-							</fab-text-field>
-	
+							<div>
+								<fluent-text-field
+									id="email-textfield"
+									style="width: 200px"
+									[value]="email"
+									type="email"
+									autocomplete="email"
+									[placeholder]="locale.general.emailTextfieldPlaceholder"
+									[disabled]="emailLoading"
+									(input)="email = $event.target.value"
+									(keydown)="EmailTextFieldChanged($event)">
+									{{ locale.general.emailTextfieldLabel }}
+								</fluent-text-field>
+
+								<p class="text-field-error" *ngIf="emailErrorMessage.length > 0">
+									{{ emailErrorMessage }}
+								</p>
+							</div>
+
 							<button
 								type="button"
 								class="btn btn-sm ml-2 icon-button"
-								style="margin-top: 32px"
+								style="margin-top: 26px"
 								[disabled]="emailLoading"
 								(click)="SaveEmail()"
 								*ngIf="email != dataService.dav.user.Email && email != newEmail && email.length > 3 && email.includes('@')">
-								<fab-icon iconName="Save"></fab-icon>
+								<i class="ms-Icon ms-Icon--Save" aria-hidden="true" style="font-size: 16px"></i>
 							</button>
-	
-							<div style="margin-top: 39px; margin-left: 10px" *ngIf="emailLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+
+							<fluent-progress-ring
+								style="margin: 33px 0px 0px 14px; width: 16px; height: 16px"
+								*ngIf="emailLoading">
+							</fluent-progress-ring>
 						</div>
 					</form>
-					
+
 					<!-- Password -->
 					<form>
 						<div class="mt-4 d-flex flex-column" style="font-size: 18px">
-							<fab-text-field
-								id="password-textfield"
-								[(value)]="password"
-								[label]="locale.general.passwordTextfieldLabel"
-								[placeholder]="locale.general.passwordTextfieldPlaceholder"
-								[errorMessage]="passwordErrorMessage"
-								[styles]="textFieldStyles"
-								type="password"
-								autocomplete="new-password"
-								(keydown)="PasswordTextFieldChanged($event)">
-							</fab-text-field>
-	
-							<fab-text-field
+							<div>
+								<fluent-text-field
+									id="password-textfield"
+									style="width: 200px"
+									type="password"
+									autocomplete="new-password"
+									[placeholder]="locale.general.passwordTextfieldPlaceholder"
+									[disabled]="passwordLoading"
+									(input)="password = $event.target.value"
+									(keydown)="PasswordTextFieldChanged($event)">
+									{{ locale.general.passwordTextfieldLabel }}
+								</fluent-text-field>
+
+								<p class="text-field-error" *ngIf="passwordErrorMessage.length > 0">
+									{{ passwordErrorMessage }}
+								</p>
+							</div>
+
+							<fluent-text-field
 								id="password-confirmation-textfield"
-								[(value)]="passwordConfirmation"
-								[label]="locale.general.passwordConfirmationTextfieldLabel"
-								[placeholder]="locale.general.passwordConfirmationTextfieldPlaceholder"
-								className="mt-3"
-								[styles]="textFieldStyles"
+								class="mt-3"
+								style="width: 200px"
 								type="password"
 								autocomplete="new-password"
+								[placeholder]="locale.general.passwordConfirmationTextfieldPlaceholder"
+								[disabled]="passwordLoading"
+								(input)="passwordConfirmation = $event.target.value"
 								(keydown)="PasswordTextFieldChanged($event)"
 								*ngIf="password.length >= 7 && password.length <= 25">
-							</fab-text-field>
-	
+								{{ locale.general.passwordConfirmationTextfieldLabel }}
+							</fluent-text-field>
+
 							<div class="d-flex">
-								<fab-primary-button (click)="SavePassword()" *ngIf="password.length >= 7 && password.length <= 25" [disabled]="password != passwordConfirmation || passwordLoading" className="mt-3">{{ locale.save }}</fab-primary-button>
-								<div style="margin-top: 24px; margin-left: 14px" *ngIf="passwordLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+								<fluent-button
+									class="mt-3"
+									appearance="accent"
+									[disabled]="password != passwordConfirmation || passwordLoading"
+									(click)="SavePassword()"
+									*ngIf="password.length >= 7 && password.length <= 25">
+									{{ locale.save }}
+								</fluent-button>
+
+								<fluent-progress-ring
+									style="margin: 24px 0px 0px 14px; width: 16px; height: 16px"
+									*ngIf="passwordLoading">
+								</fluent-progress-ring>
 							</div>
 						</div>
 					</form>

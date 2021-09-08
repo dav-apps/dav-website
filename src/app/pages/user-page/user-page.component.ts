@@ -67,12 +67,6 @@ export class UserPageComponent {
 	firstNameLoading: boolean = false
 	emailLoading: boolean = false
 	passwordLoading: boolean = false
-
-	textFieldStyles = {
-		root: {
-			width: 200
-		}
-	}
 	//#endregion
 
 	//#region Apps page
