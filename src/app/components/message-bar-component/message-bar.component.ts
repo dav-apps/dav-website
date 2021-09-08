@@ -6,4 +6,5 @@ import { Component, Input } from '@angular/core'
 })
 export class MessageBarComponent {
 	@Input() message: string = ""
+	@Input() type: string = "danger"
 }
