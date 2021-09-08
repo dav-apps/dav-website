@@ -3,8 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import {
 	IDialogContentProps,
-	IButtonStyles,
-	SpinnerSize,
 	IDropdownOption
 } from 'office-ui-fabric-react'
 import { ReadFile } from 'ngx-file-helpers'
@@ -40,8 +38,6 @@ export class UserPageComponent {
 	selectedMenu: Menu = Menu.General
 	sideNavHidden: boolean = false
 	sideNavOpened: boolean = false
-
-	spinnerSize: SpinnerSize = SpinnerSize.small
 
 	//#region General page
 	updatedAttribute: UserAttribute = UserAttribute.FirstName
@@ -83,22 +79,11 @@ export class UserPageComponent {
 	bankAccountDialogVisible: boolean = false
 	bankAccountDialogLoading: boolean = false
 
-	cardActionButtonStyles: IButtonStyles = {
-		root: {
-			float: 'right',
-			marginBottom: 16
-		}
-	}
 	startStripeSetupDialogContent: IDialogContentProps = {
 		title: this.locale.provider.startStripeSetupDialog.title
 	}
 	bankAccountDialogContent: IDialogContentProps = {
 		title: this.locale.provider.bankAccountDialog.title
-	}
-	dialogPrimaryButtonStyles: IButtonStyles = {
-		root: {
-			marginLeft: 10
-		}
 	}
 	//#endregion
 

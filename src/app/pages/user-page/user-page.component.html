@@ -328,7 +328,12 @@
 
 				<div class="mt-5 d-flex flex-column align-items-center">
 					<p class="text-center font-weight-light">{{ locale.provider.setupExplanation }}</p>
-					<fab-primary-button (click)="ShowStartStripeSetupDialog()">{{ locale.provider.startSetup }}</fab-primary-button>
+
+					<fluent-button
+						appearance="accent"
+						(click)="ShowStartStripeSetupDialog()">
+						{{ locale.provider.startSetup }}
+					</fluent-button>
 				</div>
 			</div>
 
@@ -375,7 +380,11 @@
 							<h5 class="font-weight-light mb-3">{{ locale.provider.aboutYou }}</h5>
 							<p>{{ providerStripeAccount.individual.first_name }} {{ providerStripeAccount.individual.last_name }}</p>
 
-							<fab-default-button [styles]="cardActionButtonStyles" (click)="OpenStripeOnboardingPage(true)">{{ locale.provider.editDetails }}</fab-default-button>
+							<fluent-button
+								style="float: right; margin-bottom: 16px"
+								(click)="OpenStripeOnboardingPage(true)">
+								{{ locale.provider.editDetails }}
+							</fluent-button>
 						</div>
 					</div>
 
@@ -398,7 +407,11 @@
 								<p class="font-weight-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
 							</div>
 
-							<fab-default-button [styles]="cardActionButtonStyles" (click)="ShowBankAccountDialog()">{{ locale.edit }}</fab-default-button>
+							<fluent-button
+								style="float: right; margin-bottom: 16px"
+								(click)="ShowBankAccountDialog()">
+								{{ locale.edit }}
+							</fluent-button>
 						</div>
 					</div>
 
@@ -436,11 +449,26 @@
 	</div>
 
 	<p class="mt-3" [innerHTML]="locale.provider.startStripeSetupDialog.text2"></p>
-	
+
 	<fab-dialog-footer>
-		<div [style.display]="startStripeSetupDialogLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-		<fab-default-button [disabled]="startStripeSetupDialogLoading" (onClick)="startStripeSetupDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" [disabled]="startStripeSetupDialogLoading" (onClick)="StartStripeProviderSetup()">{{ locale.provider.startSetup }}</fab-primary-button>
+		<fluent-progress-ring
+			style="width: 16px; height: 16px; margin: 8px 14px 0px 0px; display: inline-block"
+			*ngIf="startStripeSetupDialogLoading">
+		</fluent-progress-ring>
+
+		<fluent-button
+			[disabled]="startStripeSetupDialogLoading"
+			(click)="startStripeSetupDialogVisible = false">
+			{{ locale.cancel }}
+		</fluent-button>
+
+		<fluent-button
+			style="margin-left: 10px"
+			appearance="accent"
+			[disabled]="startStripeSetupDialogLoading"
+			(click)="StartStripeProviderSetup()">
+			{{ locale.provider.startSetup }}
+		</fluent-button>
 	</fab-dialog-footer>
 </fab-dialog>
 
@@ -459,8 +487,23 @@
 	</dav-website-bank-account-form>
 
 	<fab-dialog-footer>
-		<div [style.display]="bankAccountDialogLoading ? 'inline-block' : 'none'" style="margin-top: 8px; margin-right: 14px"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-		<fab-default-button [disabled]="bankAccountDialogLoading" (onClick)="bankAccountDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" [disabled]="bankAccountDialogLoading" (onClick)="BankAccountDialogSave()">{{ locale.save }}</fab-primary-button>
+		<fluent-progress-ring
+			style="width: 16px; height: 16px; margin: 8px 14px 0px 0px; display: inline-block"
+			*ngIf="bankAccountDialogLoading">
+		</fluent-progress-ring>
+
+		<fluent-button
+			[disabled]="bankAccountDialogLoading"
+			(click)="bankAccountDialogVisible = false">
+			{{ locale.cancel }}
+		</fluent-button>
+
+		<fluent-button
+			style="margin-left: 10px"
+			appearance="accent"
+			[disabled]="bankAccountDialogLoading"
+			(click)="BankAccountDialogSave()">
+			{{ locale.save }}
+		</fluent-button>
 	</fab-dialog-footer>
 </fab-dialog>
