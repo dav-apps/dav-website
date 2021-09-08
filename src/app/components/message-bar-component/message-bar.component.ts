@@ -5,6 +5,5 @@ import { Component, Input } from '@angular/core'
 	templateUrl: "./message-bar.component.html"
 })
 export class MessageBarComponent {
-	@Input() message: string = ""
 	@Input() type: string = "danger"
 }

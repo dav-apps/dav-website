@@ -2,11 +2,11 @@
 	class="alert d-flex align-items-center"
 	[ngClass]="'alert-' + type"
 	style="font-size: 13px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"
-	role="alert"
-	*ngIf="message.length > 0">
+	role="alert">
 
 	<i class="ms-Icon ms-Icon--ErrorBadge" aria-hidden="true" style="font-size: 16px" *ngIf="type == 'danger'"></i>
 	<i class="ms-Icon ms-Icon--Completed" aria-hidden="true" style="font-size: 16px" *ngIf="type == 'success'"></i>
+	<i class="ms-Icon ms-Icon--Info" aria-hidden="true" style="font-size: 16px" *ngIf="type == 'warning'"></i>
 
-	<span class="ml-2">{{ message }}</span>
+	<span class="ml-2"><ng-content></ng-content></span>
 </div>

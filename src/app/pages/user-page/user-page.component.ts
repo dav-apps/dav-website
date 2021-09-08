@@ -2,7 +2,6 @@ import { Component, HostListener, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import {
-	MessageBarType,
 	IDialogContentProps,
 	IButtonStyles,
 	SpinnerSize,
@@ -42,9 +41,6 @@ export class UserPageComponent {
 	sideNavHidden: boolean = false
 	sideNavOpened: boolean = false
 
-	successMessageBarType: MessageBarType = MessageBarType.success
-	warningMessageBarType: MessageBarType = MessageBarType.warning
-	errorMessageBarType: MessageBarType = MessageBarType.error
 	spinnerSize: SpinnerSize = SpinnerSize.small
 
 	//#region General page

@@ -10,7 +10,8 @@
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 					<dav-website-message-bar
 						class="mb-3"
-						[message]="errorMessage">
+						*ngIf="errorMessage.length > 0">
+						{{ errorMessage }}
 					</dav-website-message-bar>
 
 					<fluent-text-field
