@@ -8,6 +8,7 @@ import {
 	provideFluentDesignSystem,
 	fluentButton,
 	fluentTextField,
+	fluentTextArea,
 	fluentProgressRing
 } from '@fluentui/web-components'
 
@@ -15,6 +16,7 @@ provideFluentDesignSystem()
 	.register(
 		fluentButton(),
 		fluentTextField(),
+		fluentTextArea(),
 		fluentProgressRing()
 	)
 

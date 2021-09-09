@@ -14,8 +14,18 @@
 
 	<div>
 		<p class="mb-3 font-weight-light" style="font-size: 18px">{{ app.Description }}</p>
-		<fab-primary-button (click)="ShowAppStatistics()">{{ locale.statistics }}</fab-primary-button>
-		<fab-default-button [styles]="editButtonStyles" (click)="ShowEditAppDialog()">{{ locale.edit }}</fab-default-button>
+
+		<fluent-button
+			appearance="accent"
+			(click)="ShowAppStatistics()">
+			{{ locale.statistics }}
+		</fluent-button>
+
+		<fluent-button
+			style="margin-left: 10px"
+			(click)="ShowEditAppDialog()">
+			{{ locale.edit }}
+		</fluent-button>
 
 		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
 		<fab-toggle [checked]="app.Published" (onChange)="ShowPublishAppDialog()"></fab-toggle>
@@ -40,67 +50,97 @@
 	</div>
 </div>
 
-<fab-dialog
-	[hidden]="!editAppDialogVisible"
-	[dialogContentProps]="editAppDialogContent"
-	(onDismiss)="editAppDialogVisible = false">
+<dav-website-dialog
+	[title]="locale.editAppDialog.title"
+	[primaryButtonText]="locale.save"
+	[defaultButtonText]="locale.cancel"
+	[isLoading]="editAppDialogLoading"
+	(dismiss)="editAppDialogVisible = false"
+	(defaultButtonClick)="editAppDialogVisible = false"
+	(primaryButtonClick)="UpdateApp()"
+	*ngIf="editAppDialogVisible">
 
 	<!-- Name -->
 	<div class="mb-3">
-		<fab-text-field
-			[(value)]="newName"
-			[label]="locale.editAppDialog.nameTextfieldLabel"
+		<fluent-text-field
+			style="width: 100%"
+			[value]="newName"
+			type="text"
 			[placeholder]="locale.editAppDialog.nameTextfieldPlaceholder"
-			[errorMessage]="editAppDialogNameError">
-		</fab-text-field>
-	</div>
-	
-	<!-- Description -->
-	<div class="mb-3">
-		<fab-text-field
-			[(value)]="newDescription"
-			[label]="locale.editAppDialog.descriptionTextfieldLabel"
-			[placeholder]="locale.editAppDialog.descriptionTextfieldPlaceholder"
-			[errorMessage]="editAppDialogDescriptionError"
-			multiline="true">
-		</fab-text-field>
+			(input)="newName = $event.target.value">
+			{{ locale.editAppDialog.nameTextfieldLabel }}
+		</fluent-text-field>
+
+		<p class="text-field-error" *ngIf="editAppDialogNameError.length > 0">
+			{{ editAppDialogNameError }}
+		</p>
 	</div>
 
-	<!-- WebLink -->
+	<!-- Description -->
 	<div class="mb-3">
-		<fab-text-field
-			[(value)]="newWebLink"
-			[label]="locale.editAppDialog.webLinkTextfieldLabel"
+		<fluent-text-area
+			style="width: 100%"
+			[value]="newDescription"
+			type="text"
+			multiline="true"
+			[placeholder]="locale.editAppDialog.descriptionTextfieldPlaceholder"
+			(input)="newDescription = $event.target.value">
+			{{ locale.editAppDialog.descriptionTextfieldLabel }}
+		</fluent-text-area>
+
+		<p class="text-field-error" *ngIf="editAppDialogDescriptionError.length > 0">
+			{{ editAppDialogDescriptionError }}
+		</p>
+	</div>
+
+	<!-- Weblink -->
+	<div class="mb-3">
+		<fluent-text-field
+			style="width: 100%"
+			[value]="newWebLink"
+			type="text"
 			[placeholder]="locale.editAppDialog.webLinkTextfieldPlaceholder"
-			[errorMessage]="editAppDialogWebLinkError">
-		</fab-text-field>
+			(input)="newWebLink = $event.target.value">
+			{{ locale.editAppDialog.webLinkTextfieldLabel }}
+		</fluent-text-field>
+
+		<p class="text-field-error" *ngIf="editAppDialogWebLinkError.length > 0">
+			{{ editAppDialogWebLinkError }}
+		</p>
 	</div>
 
 	<!-- GooglePlayLink -->
 	<div class="mb-3">
-		<fab-text-field
-			[(value)]="newGooglePlayLink"
-			[label]="locale.editAppDialog.googlePlayLinkTextfieldLabel"
+		<fluent-text-field
+			style="width: 100%"
+			[value]="newGooglePlayLink"
+			type="text"
 			[placeholder]="locale.editAppDialog.googlePlayLinkTextfieldPlaceholder"
-			[errorMessage]="editAppDialogGooglePlayLinkError">
-		</fab-text-field>
+			(input)="newGooglePlayLink = $event.target.value">
+			{{ locale.editAppDialog.googlePlayLinkTextfieldLabel }}
+		</fluent-text-field>
+
+		<p class="text-field-error" *ngIf="editAppDialogGooglePlayLinkError.length > 0">
+			{{ editAppDialogGooglePlayLinkError }}
+		</p>
 	</div>
 
 	<!-- MicrosoftStoreLink -->
-	<div class="mb-4">
-		<fab-text-field
-			[(value)]="newMicrosoftStoreLink"
-			[label]="locale.editAppDialog.microsoftStoreLinkTextfieldLabel"
+	<div class="mb-3">
+		<fluent-text-field
+			style="width: 100%"
+			[value]="newMicrosoftStoreLink"
+			type="text"
 			[placeholder]="locale.editAppDialog.microsoftStoreLinkTextfieldPlaceholder"
-			[errorMessage]="editAppDialogMicrosoftStoreLinkError">
-		</fab-text-field>
+			(input)="newMicrosoftStoreLink = $event.target.value">
+			{{ locale.editAppDialog.microsoftStoreLinkTextfieldLabel }}
+		</fluent-text-field>
+
+		<p class="text-field-error" *ngIf="editAppDialogMicrosoftStoreLinkError.length > 0">
+			{{ editAppDialogMicrosoftStoreLinkError }}
+		</p>
 	</div>
-	
-	<fab-dialog-footer>
-		<fab-default-button (click)="editAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="UpdateApp()">{{ locale.save }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
+</dav-website-dialog>
 
 <fab-dialog
 	[hidden]="!publishAppDialogVisible"

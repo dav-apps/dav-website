@@ -27,14 +27,16 @@
 			</fluent-progress-ring>
 
 			<fluent-button
-				[disabled]="isLoading">
+				[disabled]="isLoading"
+				(click)="DefaultButtonClick()">
 				{{ defaultButtonText }}
 			</fluent-button>
 
 			<fluent-button
 				style="margin-left: 10px"
 				appearance="accent"
-				[disabled]="isLoading">
+				[disabled]="isLoading"
+				(click)="PrimaryButtonClick()">
 				{{ primaryButtonText }}
 			</fluent-button>
 		</div>

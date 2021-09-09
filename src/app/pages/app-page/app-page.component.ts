@@ -23,6 +23,7 @@ export class AppPageComponent {
 	locale = enUS.appPage
 	app: App = new App(0, "", "", false, null, null, null)
 	editAppDialogVisible: boolean = false
+	editAppDialogLoading: boolean = false
 	publishAppDialogVisible: boolean = false
 	addTableDialogVisible: boolean = false
 	addApiDialogVisible: boolean = false
@@ -45,18 +46,10 @@ export class AppPageComponent {
 			fontSize: 19
 		}
 	}
-	editButtonStyles: IButtonStyles = {
-		root: {
-			marginLeft: 10
-		}
-	}
 	dialogPrimaryButtonStyles: IButtonStyles = {
 		root: {
 			marginLeft: 10
 		}
-	}
-	editAppDialogContent: IDialogContentProps = {
-		title: this.locale.editAppDialog.title
 	}
 	publishAppDialogContent: IDialogContentProps = {
 		title: this.locale.publishAppDialog.publishTitle,
@@ -116,8 +109,6 @@ export class AppPageComponent {
 	}
 
 	ShowEditAppDialog() {
-		this.editAppDialogContent.title = this.locale.editAppDialog.title
-
 		this.ClearEditAppDialogErrors()
 		this.newName = this.app.Name
 		this.newDescription = this.app.Description
@@ -137,6 +128,8 @@ export class AppPageComponent {
 			this.editAppDialogDescriptionError = this.locale.editAppDialog.errors.descriptionTooShort
 			return
 		}
+
+		this.editAppDialogLoading = true
 
 		this.UpdateAppResponse(
 			await AppsController.UpdateApp({
@@ -202,6 +195,8 @@ export class AppPageComponent {
 	}
 
 	UpdateAppResponse(response: ApiResponse<App> | ApiErrorResponse) {
+		this.editAppDialogLoading = false
+
 		if (this.editAppDialogVisible) {
 			if (response.status == 200) {
 				// Update the values of the app object
