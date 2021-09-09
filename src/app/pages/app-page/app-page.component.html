@@ -28,7 +28,7 @@
 		</fluent-button>
 
 		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
-		<fab-toggle [checked]="app.Published" (onChange)="ShowPublishAppDialog()"></fab-toggle>
+		<fab-toggle [checked]="app.Published" (onChange)="publishAppDialogVisible = true"></fab-toggle>
 	</div>
 
 	<div class="row">
@@ -56,8 +56,8 @@
 	[defaultButtonText]="locale.cancel"
 	[isLoading]="editAppDialogLoading"
 	(dismiss)="editAppDialogVisible = false"
-	(defaultButtonClick)="editAppDialogVisible = false"
 	(primaryButtonClick)="UpdateApp()"
+	(defaultButtonClick)="editAppDialogVisible = false"
 	*ngIf="editAppDialogVisible">
 
 	<!-- Name -->
@@ -142,54 +142,70 @@
 	</div>
 </dav-website-dialog>
 
-<fab-dialog
-	[hidden]="!publishAppDialogVisible"
-	[dialogContentProps]="publishAppDialogContent"
-	(onDismiss)="publishAppDialogVisible = false">
-	<fab-dialog-footer>
-		<fab-default-button (click)="publishAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="PublishApp()">{{ locale.publishAppDialog.confirm }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
+<dav-website-dialog
+	[title]="app.Published ? locale.publishAppDialog.unpublishTitle : locale.publishAppDialog.publishTitle"
+	[primaryButtonText]="locale.publishAppDialog.confirm"
+	[defaultButtonText]="locale.cancel"
+	[isLoading]="publishAppDialogLoading"
+	(dismiss)="publishAppDialogVisible = false"
+	(primaryButtonClick)="PublishApp()"
+	(defaultButtonClick)="publishAppDialogVisible = false"
+	*ngIf="publishAppDialogVisible">
 
-<fab-dialog
-	[hidden]="!addTableDialogVisible"
-	[dialogContentProps]="addTableDialogContent"
-	(onDismiss)="addTableDialogVisible = false">
-	
-	<div class="mb-4">
-		<fab-text-field
-			[(value)]="addTableDialogNewTableName"
-			[label]="locale.addTableDialog.nameTextfieldLabel"
+	<p class="font-weight-light"
+		style="max-width: 300px; font-size: 14px">
+		{{ app.Published ? locale.publishAppDialog.unpublishSubtext : locale.publishAppDialog.publishSubtext }}
+	</p>
+</dav-website-dialog>
+
+<dav-website-dialog
+	[title]="locale.addTableDialog.title"
+	[primaryButtonText]="locale.save"
+	[defaultButtonText]="locale.cancel"
+	[isLoading]="addTableDialogLoading"
+	(dismiss)="addTableDialogVisible = false"
+	(primaryButtonClick)="AddTable()"
+	(defaultButtonClick)="addTableDialogVisible = false"
+	*ngIf="addTableDialogVisible">
+
+	<div class="mb-3">
+		<fluent-text-field
+			style="width: 100%"
+			type="text"
 			[placeholder]="locale.addTableDialog.nameTextfieldPlaceholder"
-			[errorMessage]="addTableDialogNewTableError"
+			(input)="addTableDialogNewTableName = $event.target.value"
 			(keydown.enter)="AddTable()">
-		</fab-text-field>
+			{{ locale.addTableDialog.nameTextfieldLabel }}
+		</fluent-text-field>
+
+		<p class="text-field-error" *ngIf="addTableDialogNewTableError.length > 0">
+			{{ addTableDialogNewTableError }}
+		</p>
 	</div>
+</dav-website-dialog>
 
-	<fab-dialog-footer>
-		<fab-default-button (click)="addTableDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="AddTable()">{{ locale.save }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
+<dav-website-dialog
+	[title]="locale.addApiDialog.title"
+	[primaryButtonText]="locale.save"
+	[defaultButtonText]="locale.cancel"
+	[isLoading]="addApiDialogLoading"
+	(dismiss)="addApiDialogVisible = false"
+	(primaryButtonClick)="AddApi()"
+	(defaultButtonClick)="addApiDialogVisible = false"
+	*ngIf="addApiDialogVisible">
 
-<fab-dialog
-	[hidden]="!addApiDialogVisible"
-	[dialogContentProps]="addApiDialogContent"
-	(onDismiss)="addApiDialogVisible = false">
-
-	<div class="mb-4">
-		<fab-text-field
-			[(value)]="addApiDialogApiName"
-			[label]="locale.addApiDialog.nameTextfieldLabel"
+	<div class="mb-3">
+		<fluent-text-field
+			style="width: 100%"
+			type="text"
 			[placeholder]="locale.addApiDialog.nameTextfieldPlaceholder"
-			[errorMessage]="addApiDialogApiNameError"
+			(input)="addApiDialogApiName = $event.target.value"
 			(keydown.enter)="AddApi()">
-		</fab-text-field>
-	</div>
+			{{ locale.addApiDialog.nameTextfieldLabel }}
+		</fluent-text-field>
 
-	<fab-dialog-footer>
-		<fab-default-button (click)="addApiDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="AddApi()">{{ locale.save }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
+		<p class="text-field-error" *ngIf="addApiDialogApiNameError.length > 0">
+			{{ addApiDialogApiNameError }}
+		</p>
+	</div>
+</dav-website-dialog>

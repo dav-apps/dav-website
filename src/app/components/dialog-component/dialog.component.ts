@@ -10,8 +10,8 @@ export class DialogComponent {
 	@Input() defaultButtonText: string = ""
 	@Input() isLoading: boolean = false
 	@Output() dismiss = new EventEmitter()
-	@Output() defaultButtonClick = new EventEmitter()
 	@Output() primaryButtonClick = new EventEmitter()
+	@Output() defaultButtonClick = new EventEmitter()
 
 	OverlayClick() {
 		if (!this.isLoading) {
@@ -19,11 +19,11 @@ export class DialogComponent {
 		}
 	}
 
-	DefaultButtonClick() {
-		this.defaultButtonClick.emit()
-	}
-
 	PrimaryButtonClick() {
 		this.primaryButtonClick.emit()
+	}
+
+	DefaultButtonClick() {
+		this.defaultButtonClick.emit()
 	}
 }

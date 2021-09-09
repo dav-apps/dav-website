@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { IIconStyles, IButtonStyles, IDialogContentProps } from 'office-ui-fabric-react'
+import { IIconStyles } from 'office-ui-fabric-react'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -25,8 +25,11 @@ export class AppPageComponent {
 	editAppDialogVisible: boolean = false
 	editAppDialogLoading: boolean = false
 	publishAppDialogVisible: boolean = false
+	publishAppDialogLoading: boolean = false
 	addTableDialogVisible: boolean = false
+	addTableDialogLoading: boolean = false
 	addApiDialogVisible: boolean = false
+	addApiDialogLoading: boolean = false
 	newName: string = ""
 	newDescription: string = ""
 	newWebLink: string = ""
@@ -45,26 +48,6 @@ export class AppPageComponent {
 		root: {
 			fontSize: 19
 		}
-	}
-	dialogPrimaryButtonStyles: IButtonStyles = {
-		root: {
-			marginLeft: 10
-		}
-	}
-	publishAppDialogContent: IDialogContentProps = {
-		title: this.locale.publishAppDialog.publishTitle,
-		subText: this.locale.publishAppDialog.publishSubtext,
-		styles: {
-			subText: {
-				fontSize: 14
-			}
-		}
-	}
-	addTableDialogContent: IDialogContentProps = {
-		title: this.locale.addTableDialog.title
-	}
-	addApiDialogContent: IDialogContentProps = {
-		title: this.locale.addApiDialog.title
 	}
 
 	constructor(
@@ -143,27 +126,21 @@ export class AppPageComponent {
 		)
 	}
 
-	ShowPublishAppDialog() {
-		this.publishAppDialogContent.title = this.app.Published ? this.locale.publishAppDialog.unpublishTitle : this.locale.publishAppDialog.publishTitle
-		this.publishAppDialogContent.subText = this.app.Published ? this.locale.publishAppDialog.unpublishSubtext : this.locale.publishAppDialog.publishSubtext
-		this.publishAppDialogVisible = true
-	}
-
 	ShowAddTableDialog() {
 		this.addTableDialogNewTableName = ""
 		this.addTableDialogNewTableError = ""
-		this.addTableDialogContent.title = this.locale.addTableDialog.title
 		this.addTableDialogVisible = true
 	}
 
 	ShowAddApiDialog() {
 		this.addApiDialogApiName = ""
 		this.addApiDialogApiNameError = ""
-		this.addApiDialogContent.title = this.locale.addApiDialog.title
 		this.addApiDialogVisible = true
 	}
 
 	async PublishApp() {
+		this.publishAppDialogLoading = true
+
 		this.UpdateAppResponse(
 			await AppsController.UpdateApp({
 				id: this.app.Id,
@@ -174,6 +151,7 @@ export class AppPageComponent {
 
 	async AddTable() {
 		this.addTableDialogNewTableError = ""
+		this.addTableDialogLoading = true
 
 		this.CreateTableResponse(
 			await TablesController.CreateTable({
@@ -185,6 +163,7 @@ export class AppPageComponent {
 
 	async AddApi() {
 		this.addApiDialogApiNameError = ""
+		this.addApiDialogLoading = true
 
 		this.CreateApiResponse(
 			await ApisController.CreateApi({
@@ -196,6 +175,7 @@ export class AppPageComponent {
 
 	UpdateAppResponse(response: ApiResponse<App> | ApiErrorResponse) {
 		this.editAppDialogLoading = false
+		this.publishAppDialogLoading = false
 
 		if (this.editAppDialogVisible) {
 			if (response.status == 200) {
@@ -260,6 +240,8 @@ export class AppPageComponent {
 	}
 
 	CreateTableResponse(response: (ApiResponse<Table> | ApiErrorResponse)) {
+		this.addTableDialogLoading = false
+
 		if (response.status == 201) {
 			this.app.Tables.push((response as ApiResponse<Table>).data)
 			this.addTableDialogVisible = false
@@ -284,6 +266,8 @@ export class AppPageComponent {
 	}
 
 	CreateApiResponse(response: (ApiResponse<Api> | ApiErrorResponse)) {
+		this.addApiDialogLoading = false
+
 		if (response.status == 201) {
 			this.app.Apis.push((response as ApiResponse<Api>).data)
 			this.addApiDialogVisible = false
