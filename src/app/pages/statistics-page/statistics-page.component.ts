@@ -1,6 +1,5 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
-import { IIconStyles } from 'office-ui-fabric-react'
 import { ChartDataSets } from 'chart.js'
 import { Label } from 'ng2-charts'
 import * as moment from 'moment'
@@ -36,12 +35,6 @@ export class StatisticsPageComponent {
 	currentlyActiveUsersDataSets: ChartDataSets[] = [{ data: [], label: this.locale.currentlyActiveUsers }]
 	currentlyActiveUsersChartLabels: Label[] = [this.locale.daily, this.locale.monthly, this.locale.yearly]
 	totalUsersText: string = this.locale.totalUsers.replace('{0}', '0')
-
-	backButtonIconStyles: IIconStyles = {
-		root: {
-			fontSize: 19
-		}
-	}
 
 	constructor(
 		public dataService: DataService,

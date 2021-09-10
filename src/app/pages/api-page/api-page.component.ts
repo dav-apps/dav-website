@@ -1,6 +1,5 @@
 import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { IIconStyles } from 'office-ui-fabric-react'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -19,11 +18,6 @@ export class ApiPageComponent {
 	locale = enUS.apiPage
 	api: Api = new Api(0, "", [], [], [])
 	appId: number = 0
-	backButtonIconStyles: IIconStyles = {
-		root: {
-			fontSize: 19
-		}
-	}
 
 	constructor(
 		public dataService: DataService,
