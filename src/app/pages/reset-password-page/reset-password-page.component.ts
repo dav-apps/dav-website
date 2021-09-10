@@ -1,6 +1,5 @@
 import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { SpinnerSize } from 'office-ui-fabric-react'
 import { ApiResponse, ApiErrorResponse } from 'dav-js'
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
@@ -17,7 +16,6 @@ export class ResetPasswordPageComponent {
 	password: string = ""
 	passwordConfirmation: string = ""
 	loading: boolean = false
-	spinnerSize: SpinnerSize = SpinnerSize.small
 
 	constructor(
 		public dataService: DataService,
