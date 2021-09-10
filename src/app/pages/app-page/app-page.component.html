@@ -28,7 +28,11 @@
 		</fluent-button>
 
 		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
-		<fab-toggle [checked]="app.Published" (onChange)="publishAppDialogVisible = true"></fab-toggle>
+
+		<dav-website-toggle
+			[checked]="app.Published"
+			(change)="publishAppDialogVisible = true">
+		</dav-website-toggle>
 	</div>
 
 	<div class="row">

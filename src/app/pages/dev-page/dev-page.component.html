@@ -2,7 +2,11 @@
 	<h1 class="text-center font-weight-light mb-3">{{ locale.title }}</h1>
 
 	<div class="mb-3 mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0">
-		<fab-message-bar [messageBarType]="messageBarType">{{ errorMessage }}</fab-message-bar>
+		<dav-website-message-bar
+			type="danger"
+			*ngIf="errorMessage.length > 0">
+			{{ errorMessage }}
+		</dav-website-message-bar>
 	</div>
 
 	<div class="row">
@@ -33,38 +37,49 @@
 	</div>
 
 	<div class="mt-3 ml-1">
-		<fab-primary-button (click)="ShowStatistics()">{{ locale.statistics }}</fab-primary-button>
+		<fluent-button
+			appearance="accent"
+			(click)="ShowStatistics()">
+			{{ locale.statistics }}
+		</fluent-button>
 	</div>
 </div>
 
-<fab-dialog
-	[hidden]="!addAppDialogVisible"
-	[dialogContentProps]="addAppDialogContent"
-	(onDismiss)="addAppDialogVisible = false">
+<dav-website-dialog
+	[title]="locale.addAppDialog.title"
+	[primaryButtonText]="locale.save"
+	[defaultButtonText]="locale.cancel"
+	[isLoading]="addAppDialogLoading"
+	(dismiss)="addAppDialogVisible = false"
+	(primaryButtonClick)="AddApp()"
+	(defaultButtonClick)="addAppDialogVisible = false"
+	*ngIf="addAppDialogVisible">
 
-	<!-- Name -->
-	<div class="mb-4">
-		<fab-text-field
-			[(value)]="addAppDialogName"
-			[label]="locale.addAppDialog.nameTextfieldLabel"
+	<div class="mb-3">
+		<fluent-text-field
+			style="width: 100%"
+			type="text"
 			[placeholder]="locale.addAppDialog.nameTextfieldPlaceholder"
-			[errorMessage]="addAppDialogNameError">
-		</fab-text-field>
+			(input)="addAppDialogName = $event.target.value">
+			{{ locale.addAppDialog.nameTextfieldLabel }}
+		</fluent-text-field>
+
+		<p class="text-field-error" *ngIf="addAppDialogNameError.length > 0">
+			{{ addAppDialogNameError }}
+		</p>
 	</div>
 
-	<!-- Description -->
-	<div class="mb-4">
-		<fab-text-field
-			[(value)]="addAppDialogDescription"
-			[label]="locale.addAppDialog.descriptionTextfieldLabel"
+	<div class="mb-3">
+		<fluent-text-area
+			style="width: 100%"
+			type="text"
 			[placeholder]="locale.addAppDialog.descriptionTextfieldPlaceholder"
-			[errorMessage]="addAppDialogDescriptionError"
-			multiline="true">
-		</fab-text-field>
-	</div>
+			(input)="addAppDialogDescription = $event.target.value">
+			{{ locale.addAppDialog.descriptionTextfieldLabel }}
+		</fluent-text-area>
 
-	<fab-dialog-footer>
-		<fab-default-button (click)="addAppDialogVisible = false">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="AddApp()">{{ locale.save }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
+		<p class="text-field-error" *ngIf="addAppDialogDescriptionError.length > 0">
+			{{ addAppDialogDescriptionError }}
+		</p>
+	</div>
+</dav-website-dialog>

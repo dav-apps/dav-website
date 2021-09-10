@@ -1,11 +1,6 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 import {
-	MessageBarType,
-	IDialogContentProps,
-	IButtonStyles
-} from 'office-ui-fabric-react'
-import {
 	ApiResponse,
 	ApiErrorResponse,
 	ErrorCodes,
@@ -28,19 +23,11 @@ export class DevPageComponent {
 	addAppHovered: boolean = false
 	errorMessage: string = ""
 	addAppDialogVisible: boolean = false
+	addAppDialogLoading: boolean = false
 	addAppDialogName: string = ""
 	addAppDialogDescription: string = ""
 	addAppDialogNameError: string = ""
 	addAppDialogDescriptionError: string = ""
-	messageBarType: MessageBarType = MessageBarType.error
-	dialogPrimaryButtonStyles: IButtonStyles = {
-		root: {
-			marginLeft: 10
-		}
-	}
-	addAppDialogContent: IDialogContentProps = {
-		title: this.locale.addAppDialog.title
-	}
 
 	constructor(
 		public dataService: DataService,
@@ -85,16 +72,16 @@ export class DevPageComponent {
 		this.addAppDialogDescription = ""
 		this.addAppDialogNameError = ""
 		this.addAppDialogDescriptionError = ""
-
-		this.addAppDialogContent.title = this.locale.addAppDialog.title
 		this.addAppDialogVisible = true
 	}
 
 	async AddApp() {
 		this.addAppDialogNameError = ""
 		this.addAppDialogDescriptionError = ""
+		this.addAppDialogLoading = true
 
 		let response: ApiResponse<App> | ApiErrorResponse = await AppsController.CreateApp({ name: this.addAppDialogName, description: this.addAppDialogDescription })
+		this.addAppDialogLoading = false
 
 		if (response.status == 201) {
 			this.apps.push((response as ApiResponse<App>).data)
