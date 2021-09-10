@@ -1,5 +1,4 @@
 import { Component, HostListener } from '@angular/core'
-import { MessageBarType } from 'office-ui-fabric-react'
 import { DataService } from 'src/app/services/data-service'
 import { enUS } from 'src/locales/locales'
 
@@ -9,8 +8,6 @@ import { enUS } from 'src/locales/locales'
 })
 export class StartPageComponent {
 	locale = enUS.startPage
-	errorMessageBarType: MessageBarType = MessageBarType.error
-	successMessageBarType: MessageBarType = MessageBarType.success
 	height: number = 500
 	width: number = 500
 

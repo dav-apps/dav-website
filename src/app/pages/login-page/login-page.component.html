@@ -67,7 +67,11 @@
 								{{ locale.forgotPassword }}
 							</a>
 
-							<div style="margin-top: 16px" *ngIf="!websiteLogin"><fab-default-button (click)="NavigateToSignup()">{{ locale.signup }}</fab-default-button></div>
+							<div style="margin-top: 16px" *ngIf="!websiteLogin">
+								<fluent-button (click)="NavigateToSignup()">
+									{{ locale.signup }}
+								</fluent-button>
+							</div>
 						</div>
 					</div>
 

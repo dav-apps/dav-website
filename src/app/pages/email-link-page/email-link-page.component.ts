@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { SpinnerSize } from 'office-ui-fabric-react'
 import { ApiResponse, ApiErrorResponse } from 'dav-js'
 import { DataService } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
@@ -12,7 +11,6 @@ import { enUS } from 'src/locales/locales'
 })
 export class EmailLinkPageComponent {
 	locale = enUS.emailLinkPage
-	spinnerSize: SpinnerSize = SpinnerSize.large
 	height: number = 500
 
 	constructor(
