@@ -1,6 +1,5 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
-import { SpinnerSize } from 'office-ui-fabric-react'
 import { ApiResponse, ApiErrorResponse, ErrorCodes } from 'dav-js'
 import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
@@ -15,7 +14,6 @@ export class PasswordResetPageComponent {
 	email: string = ""
 	errorMessage: string = ""
 	loading: boolean = false
-	spinnerSize: SpinnerSize = SpinnerSize.small
 
 	constructor(
 		public dataService: DataService,
@@ -33,7 +31,10 @@ export class PasswordResetPageComponent {
 	}
 
 	async SendPasswordResetEmail() {
-		if (this.email.length < 3 || !this.email.includes('@')) return
+		if (this.email.length < 3 || !this.email.includes('@')) {
+			this.errorMessage = this.locale.errors.emailInvalid
+			return
+		}
 
 		this.errorMessage = ""
 		this.loading = true
