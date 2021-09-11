@@ -8,10 +8,12 @@ import { DataService } from 'src/app/services/data-service'
 })
 export class PricingPageComponent {
 	locale = enUS.pricingPage
+	pricingLocale = enUS.misc.pricing
 
 	constructor(
 		public dataService: DataService
 	) {
 		this.locale = this.dataService.GetLocale().pricingPage
+		this.pricingLocale = this.dataService.GetLocale().misc.pricing
 	}
 }

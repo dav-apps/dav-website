@@ -544,6 +544,52 @@ const enDefaults = {
 			title: "Enter payment information",
 			save: "Save",
 			cancel: "Cancel"
+		},
+		pricing: {
+			free: {
+				storage: "2 GB of storage"
+			},
+			plus: {
+				price: "3 € per month",
+				storage: "15 GB of storage",
+				features: "Use all Plus features in our apps"
+			},
+			pro: {
+				price: "10 € per month",
+				storage: "50 GB of storage",
+				features: "Use all Pro features in our apps"
+			},
+			useAllApps: "Use all our apps",
+			accessData: "Access your data on any device",
+			noAds: "No ads",
+			signup: "Sign up",
+			currentPlan: "Current plan",
+			upgrade: "Upgrade",
+			downgrade: "Downgrade",
+			cancel: "Cancel",
+			unexpectedError: "Unexpected error ({0})",
+			changePlanSuccessMessage: "Your plan has been successfully changed",
+			paymentMethodCardHeader: "Your payment method",
+			cardExpires: "Expires",
+			edit: "Edit",
+			changePaymentMethodSuccessMessage: "Your payment method has been successfully updated",
+			nextPayment: "Next payment",
+			subscriptionEnd: "Subscription end",
+			continueSubscription: "Continue subscription",
+			cancelSubscription: "Cancel subscription",
+			continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
+			cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
+			changePlanDialog: {
+				upgradePlusTitle: "Upgrade to Plus",
+				upgradePlusDescription: "Do you want to upgrade to dav Plus for 3 € per month?",
+				upgradeProTitle: "Upgrade to Pro",
+				upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
+				downgradePlusTitle: "Downgrade to Plus",
+				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
+				downgradeFreeTitle: "Downgrade to Free",
+				downgradeFreeDescription: "Do you want to downgrade to the free plan?"
+			},
+			continue: "Continue"
 		}
 	}
 }
@@ -1106,6 +1152,52 @@ const deDefaults = {
 			title: "Zahlungsinformationen eingeben",
 			save: "Speichern",
 			cancel: "Abbrechen"
+		},
+		pricing: {
+			free: {
+				storage: "2 GB Speicherplatz"
+			},
+			plus: {
+				storage: "15 GB Speicherplatz",
+				price: "3 € pro Monat",
+				features: "Zugriff auf alle Plus-Funktionen"
+			},
+			pro: {
+				storage: "50 GB Speicherplatz",
+				price: "10 € pro Monat",
+				features: "Zugriff auf alle Pro-Funktionen"
+			},
+			useAllApps: "Benutze all unsere Apps",
+			accessData: "Zugriff auf deine Daten von jedem Gerät",
+			noAds: "Keine Werbung",
+			signup: "Registrieren",
+			currentPlan: "Aktueller Plan",
+			upgrade: "Upgrade",
+			downgrade: "Downgrade",
+			cancel: "Abbrechen",
+			unexpectedError: "Unerwarteter Fehler ({0})",
+			changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert",
+			paymentMethodCardHeader: "Deine Zahlungsmethode",
+			cardExpires: "Ablaufdatum:",
+			edit: "Bearbeiten",
+			changePaymentMethodSuccessMessage: "Deine Zahlungsmethode wurde erfolgreich aktualisiert",
+			nextPayment: "Nächste Zahlung",
+			subscriptionEnd: "Ende deines Abos",
+			continueSubscription: "Abo fortführen",
+			cancelSubscription: "Abo beenden",
+			continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
+			cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
+			changePlanDialog: {
+				upgradePlusTitle: "Wechsel auf Plus",
+				upgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
+				upgradeProTitle: "Wechsel auf Pro",
+				upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
+				downgradePlusTitle: "Wechsel auf Plus",
+				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
+				downgradeFreeTitle: "Wechsel auf Free",
+				downgradeFreeDescription: "Möchtest du auf den kostenlosen Plan wechseln?"
+			},
+			continue: "Weiter"
 		}
 	}
 }

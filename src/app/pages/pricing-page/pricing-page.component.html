@@ -1,5 +1,154 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn">
-	<h1 class="text-center font-weight-light" [ngClass]="dataService.dav.user.Plan == 0 ? 'mb-3' : 'mb-0'">{{ locale.title }}</h1>
+	<h1
+		class="text-center font-weight-light mb-3">
+		{{ locale.title }}
+	</h1>
 
-	<dav-website-pricing></dav-website-pricing>
+	<div class="row">
+		<div class="col-md-4 mt-3 mb-4">
+			<div class="card text-center shadow">
+				<div class="card-body">
+					<h4 class="card-title font-weight-light" style="margin-bottom: 40px">Free</h4>
+					<ul class="list-group">
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.free.storage }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
+					</ul>
+					<br>
+
+					<div style="display: inline-block">
+						<div class="d-flex">
+							<button
+								class="btn btn-primary"	
+								type="button"
+								routerLink="/signup"
+								*ngIf="!dataService.dav.isLoggedIn">
+								{{ pricingLocale.signup }}
+							</button>
+
+							<button
+								class="btn btn-outline-primary"
+								type="button"
+								disabled
+								*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 0">
+								{{ pricingLocale.currentPlan }}
+							</button>
+
+							<button
+								class="btn btn-outline-danger"
+								type="button"
+								routerLink="/user"
+								fragment="plans"
+								*ngIf="dataService.dav.isLoggedIn && (dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2)">
+								{{ pricingLocale.downgrade }}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 mt-3 mb-4">
+			<div class="card text-center shadow">
+				<div class="card-body">
+					<h4 class="card-title font-weight-light">Plus</h4>
+					<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem">{{ pricingLocale.plus.price }}</h6>
+					<ul class="list-group">
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.storage }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.features }}</li>
+					</ul>
+					<br>
+
+					<div style="display: inline-block">
+						<div class="d-flex">
+							<button
+								class="btn btn-primary"
+								type="button"
+								routerLink="/signup"
+								*ngIf="!dataService.dav.isLoggedIn">
+								{{ pricingLocale.signup }}
+							</button>
+
+							<button
+								class="btn btn-primary"
+								type="button"
+								routerLink="/user"
+								fragment="plans"
+								*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 0">
+								{{ pricingLocale.upgrade }}
+							</button>
+
+							<button
+								class="btn btn-outline-primary"
+								type="button"
+								disabled
+								*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 1">
+								{{ pricingLocale.currentPlan }}
+							</button>
+
+							<button
+								class="btn btn-outline-danger"
+								type="button"
+								routerLink="/user"
+								fragment="plans"
+								*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 2">
+								{{ pricingLocale.downgrade }}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 mt-3">
+			<div class="card text-center shadow">
+				<div class="card-body">
+					<h4 class="card-title font-weight-light">Pro</h4>
+					<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem;">{{ pricingLocale.pro.price }}</h6>
+					<ul class="list-group">
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.pro.storage }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.features }}</li>
+						<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.pro.features }}</li>
+					</ul>
+					<br>
+
+					<div style="display: inline-block">
+						<div class="d-flex">
+							<button
+								class="btn btn-primary"
+								type="button"
+								routerLink="/signup"
+								*ngIf="!dataService.dav.isLoggedIn">
+								{{ pricingLocale.signup }}
+							</button>
+
+							<button
+								class="btn btn-primary"
+								type="button"
+								routerLink="/user"
+								fragment="plans"
+								*ngIf="dataService.dav.isLoggedIn && (dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1)">
+								{{ pricingLocale.upgrade }}
+							</button>
+
+							<button
+								class="btn btn-outline-primary"
+								type="button"
+								disabled
+								*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 2">
+								{{ pricingLocale.currentPlan }}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
