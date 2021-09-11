@@ -15,6 +15,7 @@ export class StartPageComponent {
 		public dataService: DataService
 	) {
 		this.locale = this.dataService.GetLocale().startPage
+		this.dataService.hideNavbarAndFooter = false
 	}
 
 	ngOnInit() {

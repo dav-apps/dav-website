@@ -538,6 +538,13 @@ const enDefaults = {
 		name: "Name",
 		unexpectedError: "An unexpected error occured. Please try it again later.",
 		unexpectedErrorWithCode: "Unexpected error ({0})"
+	},
+	misc: {
+		paymentFormDialog: {
+			title: "Enter payment information",
+			save: "Save",
+			cancel: "Cancel"
+		}
 	}
 }
 
@@ -1093,6 +1100,13 @@ const deDefaults = {
 		name: "Name",
 		unexpectedError: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
 		unexpectedErrorWithCode: "Unerwarteter Fehler ({0})"
+	},
+	misc: {
+		paymentFormDialog: {
+			title: "Zahlungsinformationen eingeben",
+			save: "Speichern",
+			cancel: "Abbrechen"
+		}
 	}
 }
 

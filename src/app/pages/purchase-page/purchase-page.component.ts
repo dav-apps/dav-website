@@ -1,6 +1,5 @@
 import { Component, ViewChild, HostListener } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { IButtonStyles, IIconStyles, SpinnerSize } from 'office-ui-fabric-react'
 import {
 	Dav,
 	ApiResponse,
@@ -10,7 +9,7 @@ import {
 	SessionResponseData,
 	PurchasesController
 } from 'dav-js'
-import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component'
+import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
 import { DataService, StripeApiResponse, Capitalize } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'
@@ -25,7 +24,8 @@ const deviceInfoNotAvailable = "Not available"
 })
 export class PurchasePageComponent {
 	locale = enUS.purchasePage
-	@ViewChild('paymentFormDialog', { static: true }) paymentFormDialog: PaymentFormDialogComponent
+	paymentFormDialogLocale = enUS.misc.paymentFormDialog
+	@ViewChild('paymentForm', { static: false }) paymentForm: PaymentFormComponent
 	purchase: Purchase = new Purchase(0, 0, "", "", "", "", "", "", 0, "eur", false)
 	price: string = ""
 	redirectUrl: string
@@ -35,31 +35,15 @@ export class PurchasePageComponent {
 	password: string = ""
 	loginErrorMessage: string = ""
 	loginLoading: boolean = false
-	spinnerSize: SpinnerSize = SpinnerSize.small
+	mobileView: boolean = false
 	addPaymentMethodHover: boolean = false
 	hasPaymentMethod: boolean = false
 	paymentMethodLast4: string
 	paymentMethodExpirationMonth: string
 	paymentMethodExpirationYear: string
-	mobileView: boolean = false
+	paymentFormDialogVisible: boolean = false
+	paymentFormDialogLoading: boolean = false
 	paymentLoading: boolean = false
-
-	loginButtonStyles: IButtonStyles = {
-		root: {
-			marginTop: 24
-		}
-	}
-	backButtonIconStyles: IIconStyles = {
-		root: {
-			fontSize: 13
-		}
-	}
-	editPaymentMethodButtonStyles: IButtonStyles = {
-		root: {
-			float: 'right',
-			marginBottom: 16
-		}
-	}
 
 	constructor(
 		public dataService: DataService,
@@ -68,6 +52,7 @@ export class PurchasePageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().purchasePage
+		this.paymentFormDialogLocale = this.dataService.GetLocale().misc.paymentFormDialog
 		this.dataService.hideNavbarAndFooter = true
 
 		this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirectUrl")
@@ -217,10 +202,16 @@ export class PurchasePageComponent {
 	}
 
 	ShowPaymentMethodDialog() {
-		this.paymentFormDialog.ShowDialog()
+		this.paymentFormDialogVisible = true
+		setTimeout(() => this.paymentForm.Init(), 1)
+	}
+
+	SavePaymentMethod() {
+		this.paymentForm.SaveCard()
 	}
 
 	async PaymentMethodChanged() {
+		this.paymentFormDialogVisible = false
 		await this.GetPaymentMethod()
 	}
 

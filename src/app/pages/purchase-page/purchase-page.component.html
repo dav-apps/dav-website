@@ -19,34 +19,40 @@
 		<!-- Password -->
 		<div class="row mt-3">
 			<div class="col-10 col-sm-6 col-md-5 mx-auto">
-				<fab-text-field
-					id="password-text-field"
-					[(value)]="password"
-					[label]="locale.passwordTextfieldLabel"
-					[placeholder]="locale.passwordTextfieldPlaceholder"
-					[errorMessage]="loginErrorMessage"
-					type="password"
-					autocomplete="current-password"
-					(keydown.enter)="Login()">
-				</fab-text-field>
+				<div class="mb-3">
+					<fluent-text-field
+						id="password-text-field"
+						style="width: 100%"
+						[placeholder]="locale.passwordTextfieldPlaceholder"
+						type="password"
+						autocomplete="current-password"
+						(input)="password = $event.target.value"
+						(keydown.enter)="Login()">
+						{{ locale.passwordTextfieldLabel }}
+					</fluent-text-field>
+
+					<p class="text-field-error" *ngIf="loginErrorMessage.length > 0">
+						{{ loginErrorMessage }}
+					</p>
+				</div>
 
 				<div class="d-flex flex-row">
 					<div class="d-flex">
-						<fab-primary-button
-							(click)="Login()"
-							[styles]="loginButtonStyles"
-							[disabled]="loginLoading">
+						<fluent-button
+							appearance="accent"
+							[disabled]="loginLoading"
+							(click)="Login()">
 							{{ locale.login }}
-						</fab-primary-button>
-						<div
-							style="margin-top: 32px; margin-left: 14px"
+						</fluent-button>
+
+						<fluent-progress-ring
+							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"
 							*ngIf="loginLoading">
-							<fab-spinner [size]="spinnerSize"></fab-spinner>
-						</div>
+						</fluent-progress-ring>
 					</div>
 
-					<div class="d-flex ml-auto text-right">
-						<a style="color: black; font-size: 15px; margin-top: 28px"
+					<div class="d-flex ml-auto text-right" style="margin-top: 6px">
+						<a style="color: black; font-size: 15px"
 							routerLink="/password-reset"
 							target="blank"
 							tabindex="-1">
@@ -80,7 +86,7 @@
 							class="btn"
 							style="height: 24px; width: 28px; padding: 0px"
 							(click)="NavigateBack()">
-							<fab-icon iconName="Back" [styles]="backButtonIconStyles"></fab-icon>
+							<i class="ms-Icon ms-Icon--Back" aria-hidden="true" style="font-size: 13px"></i>
 						</button>
 
 						<img
@@ -134,7 +140,7 @@
 							type="button"
 							class="btn"
 							style="height: 24px; width: 28px; padding: 0px">
-							<fab-icon iconName="Back" [styles]="backButtonIconStyles"></fab-icon>
+							<i class="ms-Icon ms-Icon--Back" aria-hidden="true" style="font-size: 13px"></i>
 						</button>
 
 						<img src="/assets/images/pocketlib-logo.png" height="22" class="pl-2 cursor" style="margin-top: 1px" />
@@ -186,12 +192,12 @@
 							</div>
 							<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
 
-							<fab-default-button
-								[styles]="editPaymentMethodButtonStyles"
+							<fluent-button
+								style="float: right; margin-bottom: 16px"
 								[disabled]="paymentLoading"
-								(onClick)="ShowPaymentMethodDialog()">
+								(click)="ShowPaymentMethodDialog()">
 								{{ locale.edit }}
-							</fab-default-button>
+							</fluent-button>
 						</div>
 					</div>
 
@@ -211,18 +217,18 @@
 
 					<!-- Pay button -->
 					<div class="mx-auto mt-4 mb-5 d-flex">
-						<button
-							type="button"
-							class="btn btn-primary btn"
+						<fluent-button
 							[style.marginLeft.px]="paymentLoading ? 32 : 0"
+							appearance="accent"
 							[disabled]="paymentLoading || !hasPaymentMethod"
 							(click)="Pay()">
 							{{ locale.pay.replace('{0}', price) }}
-						</button>
+						</fluent-button>
 
-						<div style="margin-top: 11px; margin-left: 16px" *ngIf="paymentLoading">
-							<fab-spinner [size]="spinnerSize"></fab-spinner>
-						</div>
+						<fluent-progress-ring
+							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"
+							*ngIf="paymentLoading">
+						</fluent-progress-ring>
 					</div>
 				</div>
 			</div>
@@ -230,7 +236,23 @@
 	</div>
 </div>
 
-<dav-website-payment-form-dialog
-	#paymentFormDialog
-	(complete)="PaymentMethodChanged()">
-</dav-website-payment-form-dialog>
+<dav-website-dialog
+	[title]="paymentFormDialogLocale.title"
+	[primaryButtonText]="paymentFormDialogLocale.save"
+	[defaultButtonText]="paymentFormDialogLocale.cancel"
+	[isLoading]="paymentFormDialogLoading"
+	(dismiss)="paymentFormDialogVisible = false"
+	(primaryButtonClick)="SavePaymentMethod()"
+	(defaultButtonClick)="paymentFormDialogVisible = false"
+	*ngIf="paymentFormDialogVisible">
+
+	<div class="mb-3" style="min-width: 340px">
+		<dav-website-payment-form
+			#paymentForm
+			[showSaveButton]="false"
+			(completed)="PaymentMethodChanged()"
+			(loadingStart)="paymentFormDialogLoading = true"
+			(loadingEnd)="paymentFormDialogLoading = false">
+		</dav-website-payment-form>
+	</div>
+</dav-website-dialog>
