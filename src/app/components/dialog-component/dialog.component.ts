@@ -9,6 +9,7 @@ export class DialogComponent {
 	@Input() primaryButtonText: string = ""
 	@Input() defaultButtonText: string = ""
 	@Input() isLoading: boolean = false
+	@Input() maxWidth: number = 600
 	@Output() dismiss = new EventEmitter()
 	@Output() primaryButtonClick = new EventEmitter()
 	@Output() defaultButtonClick = new EventEmitter()

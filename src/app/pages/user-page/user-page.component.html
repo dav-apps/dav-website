@@ -331,7 +331,7 @@
 
 					<fluent-button
 						appearance="accent"
-						(click)="ShowStartStripeSetupDialog()">
+						(click)="startStripeSetupDialogVisible = true">
 						{{ locale.provider.startSetup }}
 					</fluent-button>
 				</div>
@@ -432,11 +432,16 @@
 	</mat-sidenav-content>
 </mat-sidenav-container>
 
-<fab-dialog
-	[hidden]="!startStripeSetupDialogVisible"
-	minWidth="370px"
-	[dialogContentProps]="startStripeSetupDialogContent"
-	(onDismiss)="startStripeSetupDialogVisible = false">
+<dav-website-dialog
+	[title]="locale.provider.startStripeSetupDialog.title"
+	[primaryButtonText]="locale.provider.startSetup"
+	[defaultButtonText]="locale.cancel"
+	[isLoading]="startStripeSetupDialogLoading"
+	[maxWidth]="370"
+	(dismiss)="startStripeSetupDialogVisible = false"
+	(primaryButtonClick)="StartStripeProviderSetup()"
+	(defaultButtonClick)="startStripeSetupDialogVisible = false"
+	*ngIf="startStripeSetupDialogVisible">
 
 	<p [innerHTML]="locale.provider.startStripeSetupDialog.text1"></p>
 
@@ -449,61 +454,25 @@
 	</div>
 
 	<p class="mt-3" [innerHTML]="locale.provider.startStripeSetupDialog.text2"></p>
+</dav-website-dialog>
 
-	<fab-dialog-footer>
-		<fluent-progress-ring
-			style="width: 16px; height: 16px; margin: 8px 14px 0px 0px; display: inline-block"
-			*ngIf="startStripeSetupDialogLoading">
-		</fluent-progress-ring>
-
-		<fluent-button
-			[disabled]="startStripeSetupDialogLoading"
-			(click)="startStripeSetupDialogVisible = false">
-			{{ locale.cancel }}
-		</fluent-button>
-
-		<fluent-button
-			style="margin-left: 10px"
-			appearance="accent"
-			[disabled]="startStripeSetupDialogLoading"
-			(click)="StartStripeProviderSetup()">
-			{{ locale.provider.startSetup }}
-		</fluent-button>
-	</fab-dialog-footer>
-</fab-dialog>
-
-<fab-dialog
-	[hidden]="!bankAccountDialogVisible"
-	minWidth="340px"
-	[dialogContentProps]="bankAccountDialogContent"
-	(onDismiss)="bankAccountDialogVisible = bankAccountDialogLoading">
+<dav-website-dialog
+	[title]="locale.provider.bankAccountDialog.title"
+	[primaryButtonText]="locale.save"
+	[defaultButtonText]="locale.cancel"
+	[isLoading]="bankAccountDialogLoading"
+	[maxWidth]="340"
+	(dismiss)="bankAccountDialogVisible = false"
+	(primaryButtonClick)="BankAccountDialogSave()"
+	(defaultButtonClick)="bankAccountDialogVisible = false"
+	*ngIf="bankAccountDialogVisible">
 
 	<dav-website-bank-account-form
+		class="mb-3"
 		#bankAccountForm
 		[stripeCustomAccountId]="providerStripeAccountId"
 		(completed)="BankAccountDialogCompleted($event)"
 		(loadingStart)="bankAccountDialogLoading = true"
 		(loadingEnd)="bankAccountDialogLoading = false">
 	</dav-website-bank-account-form>
-
-	<fab-dialog-footer>
-		<fluent-progress-ring
-			style="width: 16px; height: 16px; margin: 8px 14px 0px 0px; display: inline-block"
-			*ngIf="bankAccountDialogLoading">
-		</fluent-progress-ring>
-
-		<fluent-button
-			[disabled]="bankAccountDialogLoading"
-			(click)="bankAccountDialogVisible = false">
-			{{ locale.cancel }}
-		</fluent-button>
-
-		<fluent-button
-			style="margin-left: 10px"
-			appearance="accent"
-			[disabled]="bankAccountDialogLoading"
-			(click)="BankAccountDialogSave()">
-			{{ locale.save }}
-		</fluent-button>
-	</fab-dialog-footer>
-</fab-dialog>
+</dav-website-dialog>

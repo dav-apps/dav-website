@@ -2,7 +2,6 @@ import { Component, HostListener, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import {
-	IDialogContentProps,
 	IDropdownOption
 } from 'office-ui-fabric-react'
 import { ReadFile } from 'ngx-file-helpers'
@@ -67,7 +66,7 @@ export class UserPageComponent {
 	//#endregion
 
 	//#region Provider page
-	@ViewChild('bankAccountForm', { static: true }) bankAccountForm: BankAccountFormComponent
+	@ViewChild('bankAccountForm', { static: false }) bankAccountForm: BankAccountFormComponent
 	providerStripeAccountId: string = null
 	providerStripeAccount: Stripe.Account = null
 	providerStripeBalance: string
@@ -78,13 +77,6 @@ export class UserPageComponent {
 	startStripeSetupDialogDropdownSelectedKey: string = "us"
 	bankAccountDialogVisible: boolean = false
 	bankAccountDialogLoading: boolean = false
-
-	startStripeSetupDialogContent: IDialogContentProps = {
-		title: this.locale.provider.startStripeSetupDialog.title
-	}
-	bankAccountDialogContent: IDialogContentProps = {
-		title: this.locale.provider.bankAccountDialog.title
-	}
 	//#endregion
 
 	constructor(
@@ -302,11 +294,6 @@ export class UserPageComponent {
 		this.startStripeSetupDialogDropdownSelectedKey = e.option.key as string
 	}
 
-	ShowStartStripeSetupDialog() {
-		this.startStripeSetupDialogContent.title = this.locale.provider.startStripeSetupDialog.title
-		this.startStripeSetupDialogVisible = true
-	}
-
 	async StartStripeProviderSetup() {
 		this.startStripeSetupDialogLoading = true
 		await this.CreateUserProvider()
@@ -398,7 +385,6 @@ export class UserPageComponent {
 	}
 
 	ShowBankAccountDialog() {
-		this.bankAccountDialogContent.title = this.locale.provider.bankAccountDialog.title
 		this.bankAccountDialogVisible = true
 		setTimeout(() => this.bankAccountForm.Init(), 1)
 	}
