@@ -1,29 +1,57 @@
-<div class="my-2 mx-auto" style="max-width: 300px" *ngIf="errorMessage.length > 0"><fab-message-bar [messageBarType]="errorMessageBarType">{{ errorMessage }}</fab-message-bar></div>
-<div class="my-2 mx-auto" style="max-width: 300px" *ngIf="successMessage.length > 0"><fab-message-bar [messageBarType]="successMessageBarType">{{ successMessage }}</fab-message-bar></div>
+<div
+	class="my-2 mx-auto"
+	style="max-width: 300px"
+	*ngIf="errorMessage.length > 0">
+	<dav-website-message-bar type="danger">
+		{{ errorMessage }}
+	</dav-website-message-bar>
+</div>
+
+<div
+	class="my-2 mx-auto"
+	style="max-width: 300px"
+	*ngIf="successMessage.length > 0">
+	<dav-website-message-bar type="success">
+		{{ successMessage }}
+	</dav-website-message-bar>
+</div>
 
 <div class="row">
 	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
 		<div class="card-body">
 			<h5 class="font-weight-light mb-3">{{ locale.paymentMethodCardHeader }}</h5>
-	
+
 			<div class="d-flex">
 				<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
 				<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
 			</div>
+
 			<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
 	
-			<fab-default-button [styles]="editPaymentMethodButtonStyles" (click)="EditPaymentMethodClick()">{{ locale.edit }}</fab-default-button>
+			<fluent-button
+				style="float: right; margin-bottom: 16px"
+				(click)="EditPaymentMethodClick()">
+				{{ locale.edit }}
+			</fluent-button>
 		</div>
 	</div>
-	
+
 	<div class="card shadow mt-3" style="display: inline-block; margin: 0px 15px" *ngIf="dataService.dav.user.Plan > 0 && periodEndDate">
 		<div class="card-body">
 			<h5 class="font-weight-light">{{ dataService.dav.user.SubscriptionStatus == 0 ? locale.nextPayment : locale.subscriptionEnd }}</h5>
 			<p>{{ periodEndDate }}</p>
 
 			<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
-				<div style="margin-top: 8px; margin-right: 14px" *ngIf="continueOrCancelSubscriptionLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
-				<fab-default-button (click)="ContinueOrCancelButtonClick()" [disabled]="continueOrCancelSubscriptionLoading">{{ dataService.dav.user.SubscriptionStatus == 0 ? locale.cancelSubscription : locale.continueSubscription }}</fab-default-button>
+				<fluent-progress-ring
+					style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+					*ngIf="continueOrCancelSubscriptionLoading">
+				</fluent-progress-ring>
+
+				<fluent-button
+					[disabled]="continueOrCancelSubscriptionLoading"
+					(click)="ContinueOrCancelButtonClick()">
+					{{ dataService.dav.user.SubscriptionStatus == 0 ? locale.cancelSubscription : locale.continueSubscription }}
+				</fluent-button>
 			</div>
 		</div>
 	</div>
@@ -44,10 +72,36 @@
 
 				<div style="display: inline-block">
 					<div class="d-flex">
-						<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.dav.isLoggedIn">{{ locale.signup }}</button>
-						<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 0">{{ locale.currentPlan }}</button>
-						<button type="button" class="btn btn-outline-danger" [style.marginLeft]="freePlanLoading ? '32px' : '0px'" *ngIf="dataService.dav.isLoggedIn && (dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2)" (click)="PlanButtonClick(0)" [disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading">{{ locale.downgrade }}</button>
-						<div style="margin-top: 11px; margin-left: 16px" *ngIf="freePlanLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+						<button
+							class="btn btn-primary"	
+							type="button"
+							routerLink="/signup"
+							*ngIf="!dataService.dav.isLoggedIn">
+							{{ locale.signup }}
+						</button>
+
+						<button
+							class="btn btn-outline-primary"
+							type="button"
+							disabled
+							*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 0">
+							{{ locale.currentPlan }}
+						</button>
+
+						<button
+							class="btn btn-outline-danger"
+							[style.marginLeft]="freePlanLoading ? '32px' : '0px'"
+							type="button"
+							[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+							(click)="PlanButtonClick(0)"
+							*ngIf="dataService.dav.isLoggedIn && (dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2)">
+							{{ locale.downgrade }}
+						</button>
+
+						<fluent-progress-ring
+							style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+							*ngIf="freePlanLoading">
+						</fluent-progress-ring>
 					</div>
 				</div>
 			</div>
@@ -70,11 +124,46 @@
 
 				<div style="display: inline-block">
 					<div class="d-flex">
-						<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.dav.isLoggedIn">{{ locale.signup }}</button>
-						<button type="button" class="btn btn-primary" [style.marginLeft]="plusPlanLoading ? '32px' : '0px'" [disabled]="!dataService.dav.user.Confirmed || freePlanLoading || plusPlanLoading || proPlanLoading" *ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 0" (click)="PlanButtonClick(1)">{{ locale.upgrade }}</button>
-						<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 1">{{ locale.currentPlan }}</button>
-						<button type="button" class="btn btn-outline-danger" [style.marginLeft]="plusPlanLoading ? '32px' : '0px'" *ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 2" (click)="PlanButtonClick(1)" [disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading">{{ locale.downgrade }}</button>
-						<div style="margin-top: 11px; margin-left: 16px" *ngIf="plusPlanLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+						<button
+							class="btn btn-primary"
+							type="button"
+							routerLink="/signup"
+							*ngIf="!dataService.dav.isLoggedIn">
+							{{ locale.signup }}
+						</button>
+
+						<button
+							class="btn btn-primary"
+							[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+							type="button"
+							[disabled]="!dataService.dav.user.Confirmed || freePlanLoading || plusPlanLoading || proPlanLoading"
+							(click)="PlanButtonClick(1)"
+							*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 0">
+							{{ locale.upgrade }}
+						</button>
+
+						<button
+							class="btn btn-outline-primary"
+							type="button"
+							disabled
+							*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 1">
+							{{ locale.currentPlan }}
+						</button>
+
+						<button
+							class="btn btn-outline-danger"
+							[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+							type="button"
+							[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+							(click)="PlanButtonClick(1)"
+							*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 2">
+							{{ locale.downgrade }}
+						</button>
+
+						<fluent-progress-ring
+							style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+							*ngIf="plusPlanLoading">
+						</fluent-progress-ring>
 					</div>
 				</div>
 			</div>
@@ -98,10 +187,36 @@
 
 				<div style="display: inline-block">
 					<div class="d-flex">
-						<button type="button" class="btn btn-primary" routerLink="/signup" *ngIf="!dataService.dav.isLoggedIn">{{ locale.signup }}</button>
-						<button type="button" class="btn btn-primary" [style.marginLeft]="proPlanLoading ? '32px' : '0px'" [disabled]="!dataService.dav.user.Confirmed || dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading" *ngIf="dataService.dav.isLoggedIn && (dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1)" (click)="PlanButtonClick(2)">{{ locale.upgrade }}</button>
-						<button type="button" class="btn btn-outline-primary" disabled *ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 2">{{ locale.currentPlan }}</button>
-						<div style="margin-top: 11px; margin-left: 16px" *ngIf="proPlanLoading"><fab-spinner [size]="spinnerSize"></fab-spinner></div>
+						<button
+							class="btn btn-primary"
+							type="button"
+							routerLink="/signup"
+							*ngIf="!dataService.dav.isLoggedIn">
+							{{ locale.signup }}
+						</button>
+
+						<button
+							class="btn btn-primary"
+							[style.marginLeft]="proPlanLoading ? '32px' : '0px'"
+							type="button"
+							[disabled]="!dataService.dav.user.Confirmed || dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+							(click)="PlanButtonClick(2)"
+							*ngIf="dataService.dav.isLoggedIn && (dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1)">
+							{{ locale.upgrade }}
+						</button>
+
+						<button
+							class="btn btn-outline-primary"
+							type="button"
+							disabled
+							*ngIf="dataService.dav.isLoggedIn && dataService.dav.user.Plan == 2">
+							{{ locale.currentPlan }}
+						</button>
+
+						<fluent-progress-ring
+							style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+							*ngIf="proPlanLoading">
+						</fluent-progress-ring>
 					</div>
 				</div>
 			</div>
@@ -114,13 +229,17 @@
 	(complete)="PaymentMethodInputCompleted()">
 </dav-website-payment-form-dialog>
 
-<fab-dialog
-	[hidden]="!changePlanDialogVisible"
-	[dialogContentProps]="changePlanDialogContentProps"
-	(onDismiss)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">
+<dav-website-dialog
+	[title]="changePlanDialogTitle"
+	[primaryButtonText]="locale.continue"
+	[defaultButtonText]="locale.cancel"
+	(dismiss)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;"
+	(primaryButtonClick)="SetStripeSubscription()"
+	(defaultButtonClick)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;"
+	*ngIf="changePlanDialogVisible">
 
-	<fab-dialog-footer>
-		<fab-default-button (click)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">{{ locale.cancel }}</fab-default-button>
-		<fab-primary-button [styles]="dialogPrimaryButtonStyles" (click)="SetStripeSubscription()">{{ locale.continue }}</fab-primary-button>
-	</fab-dialog-footer>
-</fab-dialog>
+	<p class="font-weight-light"
+		style="max-width: 300px; font-size: 14px">
+		{{ changePlanDialogDescription }}
+	</p>
+</dav-website-dialog>

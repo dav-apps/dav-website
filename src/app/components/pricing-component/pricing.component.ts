@@ -1,5 +1,4 @@
 import { Component, ViewChild } from '@angular/core'
-import { IDialogContentProps, IButtonStyles, MessageBarType, SpinnerSize } from 'office-ui-fabric-react'
 import { SubscriptionStatus } from 'dav-js'
 import { DataService, StripeApiResponse } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
@@ -7,8 +6,6 @@ import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 import { PaymentFormDialogComponent } from '../payment-form-dialog-component/payment-form-dialog.component'
 import * as moment from 'moment'
-
-const buttonTransition = "all 0.15s"
 
 @Component({
 	selector: 'dav-website-pricing',
@@ -20,9 +17,6 @@ export class PricingComponent {
 	selectedPlan: number = -1
 	errorMessage: string = ""
 	successMessage: string = ""
-	errorMessageBarType: MessageBarType = MessageBarType.error
-	successMessageBarType: MessageBarType = MessageBarType.success
-	spinnerSize: SpinnerSize = SpinnerSize.small
 	paymentMethod: Promise<any> = new Promise((resolve) => this.paymentMethodResolve = resolve)
 	paymentMethodResolve: Function
 	paymentMethodLast4: string
@@ -35,28 +29,8 @@ export class PricingComponent {
 	plusPlanLoading: boolean = false
 	proPlanLoading: boolean = false
 	changePlanDialogVisible: boolean = false
-
-	dialogPrimaryButtonStyles: IButtonStyles = {
-		root: {
-			transition: buttonTransition,
-			marginLeft: 10
-		}
-	}
-	editPaymentMethodButtonStyles: IButtonStyles = {
-		root: {
-			float: 'right',
-			marginBottom: 16
-		}
-	}
-	changePlanDialogContentProps: IDialogContentProps = {
-		title: this.locale.changePlanDialog.upgradePlusTitle,
-		subText: this.locale.changePlanDialog.upgradePlusDescription,
-		styles: {
-			subText: {
-				fontSize: 14
-			}
-		}
-	}
+	changePlanDialogTitle: string = this.locale.changePlanDialog.upgradePlusTitle
+	changePlanDialogDescription: string = this.locale.changePlanDialog.upgradePlusDescription
 
 	constructor(
 		public dataService: DataService,
@@ -83,24 +57,24 @@ export class PricingComponent {
 			switch (this.selectedPlan) {
 				case 2:
 					// upgradePro
-					this.changePlanDialogContentProps.title = this.locale.changePlanDialog.upgradeProTitle
-					this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.upgradeProDescription
+					this.changePlanDialogTitle = this.locale.changePlanDialog.upgradeProTitle
+					this.changePlanDialogDescription = this.locale.changePlanDialog.upgradeProDescription
 					break
 				case 1:
 					if (this.dataService.dav.user.Plan == 2) {
 						// downgradePlus
-						this.changePlanDialogContentProps.title = this.locale.changePlanDialog.downgradePlusTitle
-						this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.downgradePlusDescription
+						this.changePlanDialogTitle = this.locale.changePlanDialog.downgradePlusTitle
+						this.changePlanDialogDescription = this.locale.changePlanDialog.downgradePlusDescription
 					} else {
 						// upgradePlus
-						this.changePlanDialogContentProps.title = this.locale.changePlanDialog.upgradePlusTitle
-						this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.upgradePlusDescription
+						this.changePlanDialogTitle = this.locale.changePlanDialog.upgradePlusTitle
+						this.changePlanDialogDescription = this.locale.changePlanDialog.upgradePlusDescription
 					}
 					break
 				default:
 					// downgradeFree
-					this.changePlanDialogContentProps.title = this.locale.changePlanDialog.downgradeFreeTitle
-					this.changePlanDialogContentProps.subText = this.locale.changePlanDialog.downgradeFreeDescription
+					this.changePlanDialogTitle = this.locale.changePlanDialog.downgradeFreeTitle
+					this.changePlanDialogDescription = this.locale.changePlanDialog.downgradeFreeDescription
 					break
 			}
 
