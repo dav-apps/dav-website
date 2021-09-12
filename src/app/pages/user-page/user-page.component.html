@@ -260,7 +260,201 @@
 			</p>
 
 			<div class="d-flex flex-column align-items-center pb-4">
-				<div style="width: 80%"><dav-website-pricing></dav-website-pricing></div>
+				<div style="width: 80%">
+					<!-- Cards for payment method and subscription status -->
+					<div class="row">
+						<div
+							class="card shadow mt-3"
+							style="display: inline-block; margin: 0px 15px"
+							*ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
+
+							<div class="card-body">
+								<h5 class="font-weight-light mb-3">{{ pricingLocale.paymentMethodCardHeader }}</h5>
+
+								<div class="d-flex">
+									<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+									<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
+								</div>
+
+								<p style="margin-bottom: 8px">{{ pricingLocale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
+
+								<fluent-button
+									style="float: right; margin-bottom: 16px"
+									(click)="ShowPaymentMethodDialog()">
+									{{ pricingLocale.edit }}
+								</fluent-button>
+							</div>
+						</div>
+
+						<div
+							class="card shadow mt-3"
+							style="display: inline-block; margin: 0px 15px"
+							*ngIf="dataService.dav.user.Plan > 0 && periodEndDate">
+
+							<div class="card-body">
+								<h5 class="font-weight-light">{{ dataService.dav.user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd }}</h5>
+								<p>{{ periodEndDate }}</p>
+
+								<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
+									<fluent-progress-ring
+										style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+										*ngIf="continueOrCancelSubscriptionLoading">
+									</fluent-progress-ring>
+
+									<fluent-button
+										[disabled]="continueOrCancelSubscriptionLoading"
+										(click)="ContinueOrCancelButtonClick()">
+										{{ dataService.dav.user.SubscriptionStatus == 0 ? pricingLocale.cancelSubscription : pricingLocale.continueSubscription }}
+									</fluent-button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Plans overview -->
+					<div class="row">
+						<div class="col-md-4 mt-3 mb-4">
+							<div class="card text-center shadow">
+								<div class="card-body">
+									<h4 class="card-title font-weight-light" style="margin-bottom: 40px">Free</h4>
+									<ul class="list-group">
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.free.storage }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
+									</ul>
+									<br>
+
+									<div style="display: inline-block">
+										<div class="d-flex">
+											<button
+												class="btn btn-outline-primary"
+												type="button"
+												disabled
+												*ngIf="dataService.dav.user.Plan == 0">
+												{{ pricingLocale.currentPlan }}
+											</button>
+
+											<button
+												class="btn btn-outline-danger"
+												[style.marginLeft]="freePlanLoading ? '32px' : '0px'"
+												type="button"
+												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(0)"
+												*ngIf="dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2">
+												{{ pricingLocale.downgrade }}
+											</button>
+
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+												*ngIf="freePlanLoading">
+											</fluent-progress-ring>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-4 mt-3 mb-4">
+							<div class="card text-center shadow">
+								<div class="card-body">
+									<h4 class="card-title font-weight-light">Plus</h4>
+									<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem">{{ pricingLocale.plus.price }}</h6>
+									<ul class="list-group">
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.storage }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.features }}</li>
+									</ul>
+									<br>
+
+									<div style="display: inline-block">
+										<div class="d-flex">
+											<button
+												class="btn btn-primary"
+												[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+												type="button"
+												[disabled]="freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(1)"
+												*ngIf="dataService.dav.user.Plan == 0">
+												{{ pricingLocale.upgrade }}
+											</button>
+
+											<button
+												class="btn btn-outline-primary"
+												type="button"
+												disabled
+												*ngIf="dataService.dav.user.Plan == 1">
+												{{ pricingLocale.currentPlan }}
+											</button>
+
+											<button
+												class="btn btn-outline-danger"
+												[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+												type="button"
+												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(1)"
+												*ngIf="dataService.dav.user.Plan == 2">
+												{{ pricingLocale.downgrade }}
+											</button>
+
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+												*ngIf="plusPlanLoading">
+											</fluent-progress-ring>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-4 mt-3">
+							<div class="card text-center shadow">
+								<div class="card-body">
+									<h4 class="card-title font-weight-light">Pro</h4>
+									<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem;">{{ pricingLocale.pro.price }}</h6>
+									<ul class="list-group">
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.pro.storage }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.features }}</li>
+										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.pro.features }}</li>
+									</ul>
+									<br>
+
+									<div style="display: inline-block">
+										<div class="d-flex">
+											<button
+												class="btn btn-primary"
+												[style.marginLeft]="proPlanLoading ? '32px' : '0px'"
+												type="button"
+												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(2)"
+												*ngIf="dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1">
+												{{ pricingLocale.upgrade }}
+											</button>
+
+											<button
+												class="btn btn-outline-primary"
+												type="button"
+												disabled
+												*ngIf="dataService.dav.user.Plan == 2">
+												{{ pricingLocale.currentPlan }}
+											</button>
+
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+												*ngIf="proPlanLoading">
+											</fluent-progress-ring>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -431,6 +625,42 @@
 		</div>
 	</mat-sidenav-content>
 </mat-sidenav-container>
+
+<dav-website-dialog
+	[title]="paymentFormDialogLocale.title"
+	[primaryButtonText]="paymentFormDialogLocale.save"
+	[defaultButtonText]="paymentFormDialogLocale.cancel"
+	[isLoading]="paymentFormDialogLoading"
+	(dismiss)="paymentFormDialogVisible = false"
+	(primaryButtonClick)="SavePaymentMethod()"
+	(defaultButtonClick)="paymentFormDialogVisible = false"
+	*ngIf="paymentFormDialogVisible">
+
+	<div class="mb-3" style="min-width: 340px">
+		<dav-website-payment-form
+			#paymentForm
+			[showSaveButton]="false"
+			(completed)="PaymentMethodChanged()"
+			(loadingStart)="paymentFormDialogLoading = true"
+			(loadingEnd)="paymentFormDialogLoading = false">
+		</dav-website-payment-form>
+	</div>
+</dav-website-dialog>
+
+<dav-website-dialog
+	[title]="changePlanDialogTitle"
+	[primaryButtonText]="pricingLocale.continue"
+	[defaultButtonText]="pricingLocale.cancel"
+	(dismiss)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;"
+	(primaryButtonClick)="SetStripeSubscription()"
+	(defaultButtonClick)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;"
+	*ngIf="changePlanDialogVisible">
+
+	<p class="font-weight-light"
+		style="max-width: 300px; font-size: 14px">
+		{{ changePlanDialogDescription }}
+	</p>
+</dav-website-dialog>
 
 <dav-website-dialog
 	[title]="locale.provider.startStripeSetupDialog.title"

@@ -6,6 +6,7 @@ import {
 } from 'office-ui-fabric-react'
 import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
+import * as moment from 'moment'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -13,13 +14,15 @@ import {
 	User,
 	UsersController,
 	ProvidersController,
-	ProviderResponseData
+	ProviderResponseData,
+	SubscriptionStatus
 } from 'dav-js'
+import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
+import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
-import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
 
 const maxProfileImageFileSize = 2000000
 const snackBarDuration = 3000
@@ -33,6 +36,8 @@ const providerHash = "provider"
 })
 export class UserPageComponent {
 	locale = enUS.userPage
+	paymentFormDialogLocale = enUS.misc.paymentFormDialog
+	pricingLocale = enUS.misc.pricing
 
 	selectedMenu: Menu = Menu.General
 	sideNavHidden: boolean = false
@@ -58,6 +63,31 @@ export class UserPageComponent {
 	firstNameLoading: boolean = false
 	emailLoading: boolean = false
 	passwordLoading: boolean = false
+	//#endregion
+
+	//#region Plans page
+	paymentMethod: Promise<any> = new Promise((resolve) => this.paymentMethodResolve = resolve)
+	paymentMethodResolve: Function
+	hasPaymentMethod: boolean = false
+	paymentMethodLast4: string
+	paymentMethodExpirationMonth: string
+	paymentMethodExpirationYear: string
+	periodEndDate: string
+	continueOrCancelSubscriptionLoading: boolean = false
+
+	selectedPlan: number = -1
+	freePlanLoading: boolean = false
+	plusPlanLoading: boolean = false
+	proPlanLoading: boolean = false
+
+	@ViewChild('paymentForm', { static: false }) paymentForm: PaymentFormComponent
+	paymentFormDialogVisible: boolean = false
+	paymentFormDialogLoading: boolean = false
+	changePlanAfterPaymentMethodUpdated: boolean = false
+
+	changePlanDialogVisible: boolean = false
+	changePlanDialogTitle: string = this.pricingLocale.changePlanDialog.upgradePlusTitle
+	changePlanDialogDescription: string = this.pricingLocale.changePlanDialog.upgradePlusDescription
 	//#endregion
 
 	//#region Apps page
@@ -87,6 +117,9 @@ export class UserPageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().userPage
+		this.paymentFormDialogLocale = this.dataService.GetLocale().misc.paymentFormDialog
+		this.pricingLocale = this.dataService.GetLocale().misc.pricing
+		moment.locale(this.dataService.locale)
 
 		this.activatedRoute.fragment.subscribe((value) => {
 			switch (value) {
@@ -172,6 +205,8 @@ export class UserPageComponent {
 		this.ClearMessages()
 
 		this.router.navigateByUrl(`user#${plansHash}`)
+
+		this.LoadSubscriptionData()
 	}
 
 	ShowAppsMenu() {
@@ -258,6 +293,195 @@ export class UserPageComponent {
 				password: this.password
 			})
 		)
+	}
+
+	async LoadSubscriptionData() {
+		await this.dataService.userPromise
+
+		// Get the payment method
+		if (
+			this.dataService.dav.isLoggedIn
+			&& this.dataService.dav.user.StripeCustomerId != null
+		) {
+			this.GetStripePaymentMethodResponse(
+				await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, { customerId: this.dataService.dav.user.StripeCustomerId })
+			)
+		} else {
+			this.paymentMethodResolve()
+		}
+
+		if (this.dataService.dav.user.Plan > 0 && this.dataService.dav.user.PeriodEnd) {
+			// Show the date of the next payment or the subscription end
+			this.periodEndDate = moment(this.dataService.dav.user.PeriodEnd).format('LL')
+		}
+	}
+
+	SetStripeSubscriptionResponse(message: StripeApiResponse) {
+		if (message.success) {
+			if (this.selectedPlan == 0) {
+				// Set the subscription status of the user
+				this.errorMessage = ""
+				this.successMessage = this.pricingLocale.cancelSubscriptionSuccessMessage.replace('{0}', this.periodEndDate)
+				this.dataService.dav.user.SubscriptionStatus = SubscriptionStatus.Ending
+			} else {
+				// Set the plan of the user
+				this.errorMessage = ""
+				this.successMessage = this.pricingLocale.changePlanSuccessMessage
+				this.dataService.dav.user.Plan = this.selectedPlan
+			}
+
+			// Show the date of the next payment or the subscription end
+			this.dataService.dav.user.PeriodEnd = new Date(message.response.current_period_end * 1000)
+			this.periodEndDate = moment(this.dataService.dav.user.PeriodEnd).format('LL')
+		} else {
+			// Show error
+			this.successMessage = ""
+			this.errorMessage = this.pricingLocale.unexpectedError.replace('{0}', message.response.code)
+		}
+
+		this.freePlanLoading = false
+		this.plusPlanLoading = false
+		this.proPlanLoading = false
+	}
+
+	SetStripeSubscriptionCancelledResponse(message: StripeApiResponse) {
+		this.continueOrCancelSubscriptionLoading = false
+
+		if (message.success) {
+			this.errorMessage = ""
+			this.successMessage = (this.dataService.dav.user.SubscriptionStatus == 0 ? this.pricingLocale.cancelSubscriptionSuccessMessage : this.pricingLocale.continueSubscriptionSuccessMessage).replace('{0}', this.periodEndDate)
+			this.dataService.dav.user.SubscriptionStatus = this.dataService.dav.user.SubscriptionStatus == 0 ? 1 : 0
+		} else {
+			this.successMessage = ""
+			this.errorMessage = this.pricingLocale.unexpectedError.replace('{0}', message.response.code)
+		}
+	}
+
+	GetStripePaymentMethodResponse(message: StripeApiResponse) {
+		if (message.success) {
+			this.paymentMethodResolve(message.response)
+			if (message.response == null) return
+			this.hasPaymentMethod = true
+
+			// Get last 4 and expiration date to show at the top of the page
+			this.paymentMethodLast4 = message.response.card.last4
+			this.paymentMethodExpirationMonth = message.response.card.exp_month.toString()
+			this.paymentMethodExpirationYear = message.response.card.exp_year.toString().substring(2)
+
+			if (this.paymentMethodExpirationMonth.length == 1) {
+				this.paymentMethodExpirationMonth = "0" + this.paymentMethodExpirationMonth
+			}
+		} else {
+			this.successMessage = ""
+			this.errorMessage = this.pricingLocale.unexpectedError.replace('{0}', message.response.code)
+		}
+	}
+
+	async ContinueOrCancelButtonClick() {
+		this.continueOrCancelSubscriptionLoading = true
+
+		this.SetStripeSubscriptionCancelledResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscriptionCancelled, {
+				customerId: this.dataService.dav.user.StripeCustomerId,
+				cancel: this.dataService.dav.user.SubscriptionStatus == 0
+			})
+		)
+	}
+
+	async PlanButtonClick(plan: number) {
+		this.selectedPlan = plan
+		await this.paymentMethod
+
+		if (!this.hasPaymentMethod) {
+			// Show the payment form
+			this.changePlanAfterPaymentMethodUpdated = true
+			this.ShowPaymentMethodDialog()
+		} else {
+			this.changePlanAfterPaymentMethodUpdated = false
+
+			// Update the values of the change plan dialog
+			switch (this.selectedPlan) {
+				case 2:
+					// upgradePro
+					this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.upgradeProTitle
+					this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.upgradeProDescription
+					break
+				case 1:
+					if (this.dataService.dav.user.Plan == 2) {
+						// downgradePlus
+						this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.downgradePlusTitle
+						this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.downgradePlusDescription
+					} else {
+						// upgradePlus
+						this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.upgradePlusTitle
+						this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.upgradePlusDescription
+					}
+					break
+				default:
+					// downgradeFree
+					this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.downgradeFreeTitle
+					this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.downgradeFreeDescription
+					break
+			}
+
+			// Show the upgrade dialog
+			this.changePlanDialogVisible = true
+		}
+	}
+
+	async SetStripeSubscription() {
+		this.changePlanDialogVisible = false
+		switch (this.selectedPlan) {
+			case 0:
+				this.freePlanLoading = true
+				this.plusPlanLoading = false
+				this.proPlanLoading = false
+				break
+			case 1:
+				this.freePlanLoading = false
+				this.plusPlanLoading = true
+				this.proPlanLoading = false
+				break
+			case 2:
+				this.freePlanLoading = false
+				this.plusPlanLoading = false
+				this.proPlanLoading = true
+				break
+		}
+
+		let planId = null
+		if (this.selectedPlan == 1) planId = environment.stripeDavPlusEurPlanId
+		else if (this.selectedPlan == 2) planId = environment.stripeDavProEurPlanId
+
+		this.SetStripeSubscriptionResponse(
+			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscription, {
+				customerId: this.dataService.dav.user.StripeCustomerId,
+				planId
+			})
+		)
+	}
+
+	ShowPaymentMethodDialog() {
+		this.paymentFormDialogVisible = true
+		setTimeout(() => this.paymentForm.Init(), 1)
+	}
+
+	SavePaymentMethod() {
+		this.paymentForm.SaveCard()
+	}
+
+	async PaymentMethodChanged() {
+		this.paymentFormDialogVisible = false
+
+		if (this.changePlanAfterPaymentMethodUpdated) {
+			// Upgrade or downgrade the plan of the user
+			await this.SetStripeSubscription()
+		} else {
+			this.errorMessage = ""
+			this.successMessage = this.pricingLocale.changePaymentMethodSuccessMessage
+		}
+
+		await this.LoadSubscriptionData()
 	}
 
 	SendConfirmationEmail() {
