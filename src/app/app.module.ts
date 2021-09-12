@@ -33,7 +33,6 @@ import { WebsocketService } from './services/websocket-service'
 
 // Components
 import { AppComponent } from './app.component'
-import { PricingComponent } from 'src/app/components/pricing-component/pricing.component'
 import { AppCardComponent } from 'src/app/components/app-card-component/app-card.component'
 import { DialogComponent } from 'src/app/components/dialog-component/dialog.component'
 import { MessageBarComponent } from 'src/app/components/message-bar-component/message-bar.component'
@@ -66,7 +65,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
   	declarations: [
 		// Components
 		AppComponent,
-		PricingComponent,
 		AppCardComponent,
 		DialogComponent,
 		MessageBarComponent,
