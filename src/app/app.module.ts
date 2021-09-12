@@ -38,7 +38,6 @@ import { DialogComponent } from 'src/app/components/dialog-component/dialog.comp
 import { MessageBarComponent } from 'src/app/components/message-bar-component/message-bar.component'
 import { ToggleComponent } from 'src/app/components/toggle-component/toggle.component'
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
-import { PaymentFormDialogComponent } from 'src/app/components/payment-form-dialog-component/payment-form-dialog.component'
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
 
 // Pages
@@ -70,7 +69,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		MessageBarComponent,
 		ToggleComponent,
 		PaymentFormComponent,
-		PaymentFormDialogComponent,
 		BankAccountFormComponent,
 		// Pages
 		StartPageComponent,

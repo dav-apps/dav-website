@@ -483,11 +483,6 @@ const enDefaults = {
 		save: "Save",
 		unexpectedError: "Unexpected error ({0})"
 	},
-	paymentFormDialogComponent: {
-		title: "Enter payment information",
-		save: "Save",
-		cancel: "Cancel"
-	},
 	bankAccountFormComponent: {
 		name: "Name",
 		unexpectedError: "An unexpected error occured. Please try it again later.",
@@ -1044,11 +1039,6 @@ const deDefaults = {
 		header: "Kredit- oder Debitkarte",
 		save: "Speichern",
 		unexpectedError: "Unerwarteter Fehler ({0})"
-	},
-	paymentFormDialogComponent: {
-		title: "Zahlungsinformationen eingeben",
-		save: "Speichern",
-		cancel: "Abbrechen"
 	},
 	bankAccountFormComponent: {
 		name: "Name",
