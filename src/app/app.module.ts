@@ -1,23 +1,13 @@
+import { BrowserModule } from '@angular/platform-browser'
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
 import { environment } from '../environments/environment'
 
 // Modules
-import { AngularReactBrowserModule } from '@angular-react/core'
 import { AppRoutingModule } from './app-routing.module'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
-import { 
-	FabTextFieldModule,
-	FabButtonModule,
-	FabMessageBarModule,
-	FabIconModule,
-	FabDialogModule,
-	FabSpinnerModule,
-	FabToggleModule,
-	FabDropdownModule
-} from '@angular-react/fabric'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatListModule } from '@angular/material/list'
 import { MatProgressBarModule } from '@angular/material/progress-bar'
@@ -93,20 +83,12 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		PurchasePageComponent
   	],
   	imports: [
-		AngularReactBrowserModule,
+		BrowserModule,
 		AppRoutingModule,
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 		BrowserAnimationsModule,
 		NgbModule,
 		FontAwesomeModule,
-		FabTextFieldModule,
-		FabButtonModule,
-		FabMessageBarModule,
-		FabIconModule,
-		FabDialogModule,
-		FabSpinnerModule,
-		FabToggleModule,
-		FabDropdownModule,
 		MatSidenavModule,
 		MatListModule,
 		MatProgressBarModule,

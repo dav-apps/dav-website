@@ -1,6 +1,5 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
-import { initializeIcons } from 'office-ui-fabric-react/lib/Icons'
 import { Dav, Environment } from 'dav-js'
 import { enUS } from 'src/locales/locales'
 import { DataService } from './services/data-service'
@@ -27,7 +26,6 @@ export class AppComponent {
 	async ngOnInit() {
 		this.setSize()
 		window.onscroll = () => this.offsetTop = window.scrollY
-		initializeIcons()
 
 		this.router.events.subscribe((navigation: any) => {
 			if (navigation instanceof NavigationEnd) {
