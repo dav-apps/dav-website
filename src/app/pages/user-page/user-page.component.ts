@@ -1,9 +1,6 @@
 import { Component, HostListener, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
-import {
-	IDropdownOption
-} from 'office-ui-fabric-react'
 import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import * as moment from 'moment'
@@ -103,7 +100,7 @@ export class UserPageComponent {
 	providerBankAccount: Stripe.BankAccount = null
 	startStripeSetupDialogVisible: boolean = false
 	startStripeSetupDialogLoading: boolean = false
-	startStripeSetupDialogDropdownOptions: IDropdownOption[] = []
+	startStripeSetupDialogDropdownOptions: { key: string, value: string }[] = []
 	startStripeSetupDialogDropdownSelectedKey: string = "us"
 	bankAccountDialogVisible: boolean = false
 	bankAccountDialogLoading: boolean = false
@@ -501,7 +498,7 @@ export class UserPageComponent {
 
 		for (let key of Object.keys(this.locale.provider.countries)) {
 			let value = this.locale.provider.countries[key]
-			this.startStripeSetupDialogDropdownOptions.push({ key, text: value })
+			this.startStripeSetupDialogDropdownOptions.push({ key, value })
 		}
 
 		// Select the appropriate country
@@ -514,8 +511,8 @@ export class UserPageComponent {
 		}
 	}
 
-	StartStripeSetupDialogDropdownChange(e: { event: MouseEvent, option: IDropdownOption, index: number }) {
-		this.startStripeSetupDialogDropdownSelectedKey = e.option.key as string
+	StartStripeSetupDialogDropdownChange(key: string) {
+		this.startStripeSetupDialogDropdownSelectedKey = key
 	}
 
 	async StartStripeProviderSetup() {
