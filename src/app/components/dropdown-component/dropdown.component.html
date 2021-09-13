@@ -1,0 +1,24 @@
+<div class="dropdown">
+	<button
+		class="dropdown-button"
+		[style.width.px]="width"
+		(click)="showItems = !showItems">
+
+		<span>{{ buttonText }}</span>
+
+		<i class="ms-Icon ms-Icon--ChevronDown ml-auto" aria-hidden="true"></i>
+	</button>
+
+	<div
+		class="dropdown-content ms-motion-slideDownIn"
+		[style.display]="showItems ? 'block' : 'none'"
+		[style.width.px]="width">
+
+		<button
+			class="dropdown-option"
+			(click)="OptionClick(option.key)"
+			*ngFor="let option of options">
+			{{ option.value }}
+		</button>
+	</div>
+</div>

@@ -326,7 +326,7 @@ const enDefaults = {
 			missingBankAccountWarningText: "Don't forget to provide a bank account so that we can transfer your payouts.",
 			startStripeSetupDialog: {
 				title: "Provider setup",
-				text1: "Please specify the country you live in.<br>(Contact us if your country is not listed so we can add support for it).",
+				text1: "Please specify the country you live in.<br>(Please contact us if your country is not listed.)",
 				text2: "For the setup you will be redirected to a page of <a href='https://stripe.com' target='blank'>Stripe</a>."
 			},
 			bankAccountDialog: {
@@ -477,6 +477,9 @@ const enDefaults = {
 		endpoints: "Endpoints",
 		functions: "Functions",
 		errors: "Errors"
+	},
+	dropdownComponent: {
+		defaultDropdownButtonText: "Select an option"
 	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
@@ -883,7 +886,7 @@ const deDefaults = {
 			missingBankAccountWarningText: "Denk daran, ein Bankkonto anzugeben, damit wir deine Auszahlungen überweisen können.",
 			startStripeSetupDialog: {
 				title: "Anbieter-Einrichtung",
-				text1: "Bitte gebe das Land an, in dem du lebst.<br>(Kontaktiere uns, wenn dein Land nicht aufgeführt ist, damit wir Unterstützung dafür hinzufügen können.)",
+				text1: "Bitte gebe das Land an, in dem du lebst.<br>(Bitte kontaktiere uns, wenn dein Land nicht aufgeführt ist.)",
 				text2: "Du wirst zur Einrichtung auf eine Seite von <a href='https://stripe.com' target='blank'>Stripe</a> weitergeleitet."
 			},
 			bankAccountDialog: {
@@ -1034,6 +1037,9 @@ const deDefaults = {
 		endpoints: "Endpunkte",
 		functions: "Funktionen",
 		errors: "Fehler"
+	},
+	dropdownComponent: {
+		defaultDropdownButtonText: "Wähle eine Option"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",
