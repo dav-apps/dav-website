@@ -46,6 +46,7 @@
     "ng2-charts": "^2.3.0",
     "ngx-file-helpers": "^4.0.0",
     "office-ui-fabric-core": "^11.0.0",
+    "rxjs": "^6.6.7",
     "socket.io": "^2.4.1",
     "stripe": "^8.22.0",
     "tslib": "^1.11.0",
