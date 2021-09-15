@@ -61,6 +61,32 @@ export function SetTextFieldAutocomplete(textFieldId: string, autocomplete: stri
 	}
 }
 
-export function Capitalize(s: string): string {
-	return s.charAt(0).toUpperCase() + s.slice(1)
+export async function GetUserAgentModel(): Promise<string> {
+	if (navigator["userAgentData"]) {
+		let userAgentData = navigator["userAgentData"]
+		let uaValues = await userAgentData.getHighEntropyValues(["model"])
+		let model = uaValues["model"]
+
+		if (model && model.length > 0) return model
+		return null
+	}
+}
+
+export async function GetUserAgentPlatform(): Promise<string> {
+	if (navigator["userAgentData"]) {
+		let userAgentData = navigator["userAgentData"]
+		let uaValues = await userAgentData.getHighEntropyValues(["platform", "platformVersion"])
+		let platform = uaValues["platform"]
+		let platformVersion = uaValues["platformVersion"]
+
+		if (platform && platform.length > 0) {
+			if (platformVersion && platformVersion.length > 0) {
+				platform += ` ${platformVersion}`
+			}
+
+			return platform
+		}
+
+		return null
+	}
 }

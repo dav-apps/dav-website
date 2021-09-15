@@ -10,13 +10,15 @@ import {
 	PurchasesController
 } from 'dav-js'
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
-import { DataService, StripeApiResponse, Capitalize } from 'src/app/services/data-service'
+import {
+	DataService,
+	StripeApiResponse,
+	GetUserAgentModel,
+	GetUserAgentPlatform
+} from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
-declare var deviceAPI: any
-
-const deviceInfoNotAvailable = "Not available"
 
 @Component({
 	selector: 'dav-website-purchase-page',
@@ -122,39 +124,13 @@ export class PurchasePageComponent {
 		this.loginErrorMessage = ""
 		this.loginLoading = true
 
-		// Get device info
-		let deviceBrand = this.locale.deviceInfoUnknown
-		let deviceName = this.locale.deviceInfoUnknown
-		let fullDeviceName = this.locale.deviceInfoUnknown
-		let deviceType = this.locale.deviceInfoUnknown
-		let deviceOs = this.locale.deviceInfoUnknown
-
-		if (deviceAPI) {
-			deviceBrand = deviceAPI.deviceBrand
-			deviceName = deviceAPI.deviceName
-			deviceType = Capitalize(deviceAPI.deviceType as string)
-			deviceOs = deviceAPI.osName
-
-			if (deviceBrand == deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
-				fullDeviceName = deviceName
-			} else if (deviceBrand != deviceInfoNotAvailable && deviceName == deviceInfoNotAvailable) {
-				fullDeviceName = deviceBrand
-			} else if (deviceBrand != deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
-				fullDeviceName = `${deviceBrand} ${deviceName}`
-			}
-
-			if (deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown
-			if (deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown
-		}
-
 		let response = await this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
 			email: this.loginUser.email,
 			password: this.password,
 			appId: environment.appId,
 			apiKey: environment.apiKey,
-			deviceName: fullDeviceName,
-			deviceType,
-			deviceOs
+			deviceName: await GetUserAgentModel(),
+			deviceOs: await GetUserAgentPlatform()
 		})
 
 		if (response.status == 201) {

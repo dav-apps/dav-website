@@ -10,14 +10,12 @@ import {
 import {
 	DataService,
 	SetTextFieldAutocomplete,
-	Capitalize
+	GetUserAgentModel,
+	GetUserAgentPlatform
 } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
-declare var deviceAPI: any
-
-const deviceInfoNotAvailable = "Not available"
 
 @Component({
 	selector: 'dav-website-login-page',
@@ -115,31 +113,6 @@ export class LoginPageComponent {
 		this.errorMessage = ""
 		this.loginLoading = true
 
-		// Get device info
-		let deviceBrand = this.locale.deviceInfoUnknown
-		let deviceName = this.locale.deviceInfoUnknown
-		let fullDeviceName = this.locale.deviceInfoUnknown
-		let deviceType = this.locale.deviceInfoUnknown
-		let deviceOs = this.locale.deviceInfoUnknown
-
-		if (deviceAPI) {
-			deviceBrand = deviceAPI.deviceBrand
-			deviceName = deviceAPI.deviceName
-			deviceType = Capitalize(deviceAPI.deviceType as string)
-			deviceOs = deviceAPI.osName
-
-			if (deviceBrand == deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
-				fullDeviceName = deviceName
-			} else if (deviceBrand != deviceInfoNotAvailable && deviceName == deviceInfoNotAvailable) {
-				fullDeviceName = deviceBrand
-			} else if (deviceBrand != deviceInfoNotAvailable && deviceName != deviceInfoNotAvailable) {
-				fullDeviceName = `${deviceBrand} ${deviceName}`
-			}
-
-			if (deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown
-			if (deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown
-		}
-
 		// Create the session on the server
 		this.CreateSessionResponse(
 			await this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
@@ -147,38 +120,21 @@ export class LoginPageComponent {
 				password: this.password,
 				appId: this.appId,
 				apiKey: this.apiKey,
-				deviceName: fullDeviceName,
-				deviceType,
-				deviceOs
+				deviceName: await GetUserAgentModel(),
+				deviceOs: await GetUserAgentPlatform()
 			})
 		)
 	}
 
 	async LoginAsLoggedInUser() {
-		// Get device info
-		let deviceName = this.locale.deviceInfoUnknown
-		let deviceType = this.locale.deviceInfoUnknown
-		let deviceOs = this.locale.deviceInfoUnknown
-
-		if (deviceAPI) {
-			deviceName = deviceAPI.deviceName
-			deviceType = Capitalize(deviceAPI.deviceType as string)
-			deviceOs = deviceAPI.osName
-
-			if (deviceName == deviceInfoNotAvailable) deviceName = this.locale.deviceInfoUnknown
-			if (deviceType == deviceInfoNotAvailable) deviceType = this.locale.deviceInfoUnknown
-			if (deviceOs == deviceInfoNotAvailable) deviceOs = this.locale.deviceInfoUnknown
-		}
-
 		// Create the session on the server
 		this.CreateSessionWithAccessTokenResponse(
 			await this.websocketService.Emit(WebsocketCallbackType.CreateSessionFromAccessToken, {
 				accessToken: Dav.accessToken,
 				appId: this.appId,
 				apiKey: this.apiKey,
-				deviceName,
-				deviceType,
-				deviceOs
+				deviceName: await GetUserAgentModel(),
+				deviceOs: await GetUserAgentPlatform()
 			})
 		)
 	}

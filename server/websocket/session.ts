@@ -12,7 +12,6 @@ export async function createSession(message: {
 	appId: number,
 	apiKey: string,
 	deviceName: string,
-	deviceType: string,
 	deviceOs: string
 }) {
 	let response = await SessionsController.CreateSession({
@@ -22,7 +21,6 @@ export async function createSession(message: {
 		appId: message.appId,
 		apiKey: message.apiKey,
 		deviceName: message.deviceName,
-		deviceType: message.deviceType,
 		deviceOs: message.deviceOs
 	})
 
@@ -34,7 +32,6 @@ export async function createSessionFromAccessToken(message: {
 	appId: number,
 	apiKey: string,
 	deviceName: string,
-	deviceType: string,
 	deviceOs: string
 }) {
 	let response = await SessionsController.CreateSessionFromAccessToken({
@@ -43,7 +40,6 @@ export async function createSessionFromAccessToken(message: {
 		appId: message.appId,
 		apiKey: message.apiKey,
 		deviceName: message.deviceName,
-		deviceType: message.deviceType,
 		deviceOs: message.deviceOs
 	})
 

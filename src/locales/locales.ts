@@ -191,7 +191,6 @@ const enDefaults = {
 		signup: "Sign up",
 		loginAs: "Log in as {0}",
 		forgotPassword: "Forgot password?",
-		deviceInfoUnknown: "Unknown",
 		errors: {
 			loginFailed: "Login failed",
 			emailMissing: "Please enter your email",
@@ -211,7 +210,6 @@ const enDefaults = {
 		passwordConfirmationTextfieldLabel: "Password confirmation",
 		passwordConfirmationTextFieldPlaceholder: "Repeat your password",
 		signup: "Sign up",
-		deviceInfoUnknown: "Unknown",
 		errors: {
 			firstNameMissing: "Please enter your name",
 			emailMissing: "Please enter your email",
@@ -265,7 +263,6 @@ const enDefaults = {
 		passwordTextfieldPlaceholder: "Your password",
 		login: "Log in",
 		forgotPassword: "Forgot password?",
-		deviceInfoUnknown: "Unknown",
 		errors: {
 			loginFailed: "Login failed",
 			passwordMissing: "Please enter your password",
@@ -751,7 +748,6 @@ const deDefaults = {
 		signup: "Registrieren",
 		loginAs: "Als {0} anmelden",
 		forgotPassword: "Passwort vergessen?",
-		deviceInfoUnknown: "Unbekannt",
 		errors: {
 			loginFailed: "Anmeldung fehlgeschlagen",
 			emailMissing: "Bitte gib deine Email-Adresse ein",
@@ -771,7 +767,6 @@ const deDefaults = {
 		passwordConfirmationTextfieldLabel: "Passwortbestätigung",
 		passwordConfirmationTextFieldPlaceholder: "Wiederhole dein Passwort",
 		signup: "Registrieren",
-		deviceInfoUnknown: "Unbekannt",
 		errors: {
 			firstNameMissing: "Bitte gib deinen Namen ein",
 			emailMissing: "Bitte gib deine Email-Adresse ein",
@@ -825,7 +820,6 @@ const deDefaults = {
 		passwordTextfieldPlaceholder: "Dein Passwort",
 		login: "Anmelden",
 		forgotPassword: "Passwort vergessen?",
-		deviceInfoUnknown: "Unbekannt",
 		errors: {
 			loginFailed: "Anmeldung fehlgeschlagen",
 			passwordMissing: "Bitte gib dein Passwort ein",
