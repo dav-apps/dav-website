@@ -3,11 +3,15 @@ declare var io: any
 
 @Injectable()
 export class WebsocketService {
-	private socket: any;
+	private socket: any
 	private subscriptions: WebsocketSubscription[] = []
 
 	constructor() {
 		this.socket = io()
+
+		this.socket.on("disconnect", () => {
+			this.socket.connect()
+		})
 
 		for (let key of Object.keys(Callbacks)) {
 			this.socket.on(key, (message: any) => {
@@ -33,6 +37,10 @@ export class WebsocketService {
 			type,
 			resolve: r
 		})
+
+		if (!this.socket.connected) {
+			this.socket.connect()
+		}
 
 		this.socket.emit(key, message)
 		return await socketPromise
