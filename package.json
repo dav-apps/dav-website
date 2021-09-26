@@ -1,6 +1,6 @@
 {
   "name": "dav-website",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -47,7 +47,7 @@
     "ngx-file-helpers": "^6.0.0",
     "office-ui-fabric-core": "^11.0.0",
     "rxjs": "^6.6.7",
-    "socket.io": "^2.4.1",
+    "socket.io": "^4.2.0",
     "stripe": "^8.22.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"
