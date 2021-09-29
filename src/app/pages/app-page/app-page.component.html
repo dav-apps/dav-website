@@ -54,7 +54,7 @@
 	</div>
 </div>
 
-<dav-website-dialog
+<dav-dialog
 	[title]="locale.editAppDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
@@ -144,9 +144,9 @@
 			{{ editAppDialogMicrosoftStoreLinkError }}
 		</p>
 	</div>
-</dav-website-dialog>
+</dav-dialog>
 
-<dav-website-dialog
+<dav-dialog
 	[title]="app.Published ? locale.publishAppDialog.unpublishTitle : locale.publishAppDialog.publishTitle"
 	[primaryButtonText]="locale.publishAppDialog.confirm"
 	[defaultButtonText]="locale.cancel"
@@ -160,9 +160,9 @@
 		style="max-width: 300px; font-size: 14px">
 		{{ app.Published ? locale.publishAppDialog.unpublishSubtext : locale.publishAppDialog.publishSubtext }}
 	</p>
-</dav-website-dialog>
+</dav-dialog>
 
-<dav-website-dialog
+<dav-dialog
 	[title]="locale.addTableDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
@@ -186,9 +186,9 @@
 			{{ addTableDialogNewTableError }}
 		</p>
 	</div>
-</dav-website-dialog>
+</dav-dialog>
 
-<dav-website-dialog
+<dav-dialog
 	[title]="locale.addApiDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
@@ -212,4 +212,4 @@
 			{{ addApiDialogApiNameError }}
 		</p>
 	</div>
-</dav-website-dialog>
+</dav-dialog>
