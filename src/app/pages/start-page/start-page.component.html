@@ -3,16 +3,16 @@
 
 	<!-- Error message -->
 	<div class="mx-auto mb-2" style="width: 300px" *ngIf="dataService.startPageErrorMessage.length > 0">
-		<dav-website-message-bar type="danger">
+		<dav-message-bar type="danger">
 			{{ dataService.startPageErrorMessage }}
-		</dav-website-message-bar>
+		</dav-message-bar>
 	</div>
 
 	<!-- Success message -->
 	<div class="mx-auto mb-2" style="width: 300px" *ngIf="dataService.startPageSuccessMessage.length > 0">
-		<dav-website-message-bar type="success">
+		<dav-message-bar type="success">
 			{{ dataService.startPageSuccessMessage }}
-		</dav-website-message-bar>
+		</dav-message-bar>
 	</div>
 
 	<div class="card-group">
@@ -34,18 +34,18 @@
 		<div
 			style="width: 300px; position: absolute; right: 0; left: 0; margin-right: auto; margin-left: auto; top: 100px"
 			*ngIf="dataService.startPageErrorMessage.length > 0">
-			<dav-website-message-bar type="danger">
+			<dav-message-bar type="danger">
 				{{ dataService.startPageErrorMessage }}
-			</dav-website-message-bar>
+			</dav-message-bar>
 		</div>
 
 		<!-- Success message -->
 		<div 
 			style="width: 300px; position: absolute; right: 0; left: 0; margin-right: auto; margin-left: auto; top: 100px" 
 			*ngIf="dataService.startPageSuccessMessage.length > 0">
-			<dav-website-message-bar type="success">
+			<dav-message-bar type="success">
 				{{ dataService.startPageSuccessMessage }}
-			</dav-website-message-bar>
+			</dav-message-bar>
 		</div>
 
 		<div

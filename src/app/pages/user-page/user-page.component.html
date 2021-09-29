@@ -55,19 +55,19 @@
 
 			<div class="d-flex flex-column align-items-center">
 				<div style="width: 280px; margin-right: -70px">
-					<dav-website-message-bar
+					<dav-message-bar
 						type="danger"
 						class="mb-4"
 						*ngIf="errorMessage.length > 0">
 						{{ errorMessage }}
-					</dav-website-message-bar>
+					</dav-message-bar>
 
-					<dav-website-message-bar
+					<dav-message-bar
 						type="success"
 						class="mb-4"
 						*ngIf="successMessage.length > 0">
 						{{ successMessage}}
-					</dav-website-message-bar>
+					</dav-message-bar>
 
 					<!-- Profile image -->
 					<div
@@ -241,17 +241,17 @@
 			</h1>
 
 			<div class="mx-auto my-2" style="width: 250px" *ngIf="errorMessage.length > 0 || successMessage.length > 0">
-				<dav-website-message-bar
+				<dav-message-bar
 					type="danger"
 					*ngIf="errorMessage.length > 0">
 					{{ errorMessage }}
-				</dav-website-message-bar>
+				</dav-message-bar>
 
-				<dav-website-message-bar
+				<dav-message-bar
 					type="success"
 					*ngIf="successMessage.length > 0">
 					{{ successMessage }}
-				</dav-website-message-bar>
+				</dav-message-bar>
 			</div>
 
 			<p class="mt-3" style="margin-left: 10%; margin-right: 10%" *ngIf="!dataService.dav.user.Confirmed">
@@ -463,17 +463,17 @@
 			<h1 class="text-center font-weight-light mb-4">{{ locale.apps.title }}</h1>
 
 			<div class="mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0 || successMessage.length > 0">
-				<dav-website-message-bar
+				<dav-message-bar
 					type="danger"
 					*ngIf="errorMessage.length > 0">
 					{{ errorMessage }}
-				</dav-website-message-bar>
+				</dav-message-bar>
 
-				<dav-website-message-bar
+				<dav-message-bar
 					type="success"
 					*ngIf="successMessage.length > 0">
 					{{ successMessage }}
-				</dav-website-message-bar>
+				</dav-message-bar>
 			</div>
 
 			<div class="d-flex flex-column align-items-center mb-4 mt-4">
@@ -506,11 +506,11 @@
 
 				<!-- Message bar for errors -->
 				<div class="mx-auto mb-3" style="width: 250px" *ngIf="errorMessage.length > 0">
-					<dav-website-message-bar
+					<dav-message-bar
 						type="danger"
 						*ngIf="errorMessage.length > 0">
 						{{ errorMessage }}
-					</dav-website-message-bar>
+					</dav-message-bar>
 				</div>
 
 				<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
@@ -536,33 +536,33 @@
 
 				<div class="mx-auto my-2" style="width: 300px">
 					<!-- Message bar for currently due requirements -->
-					<dav-website-message-bar
+					<dav-message-bar
 						type="warning"
 						*ngIf="providerStripeAccount.requirements.currently_due.length > 0 && !(providerStripeAccount.requirements.currently_due.length == 1 && providerStripeAccount.requirements.currently_due[0] == 'external_account')">
 						{{ locale.provider.missingInformationWarningText }}
 						<br><a href="#" (click)="StartStripeProviderUpdate()">{{ locale.provider.missingInformationWarningLink }}</a>
-					</dav-website-message-bar>
+					</dav-message-bar>
 
 					<!-- Message bar for missing bank account -->
-					<dav-website-message-bar
+					<dav-message-bar
 						type="warning"
 						*ngIf="providerStripeAccount.requirements.currently_due.length == 1 && providerStripeAccount.requirements.currently_due[0] == 'external_account'">
 						{{ locale.provider.missingBankAccountWarningText }}
-					</dav-website-message-bar>
+					</dav-message-bar>
 
 					<!-- Message bar for errors -->
-					<dav-website-message-bar
+					<dav-message-bar
 						type="danger"
 						*ngIf="errorMessage.length > 0">
 						{{ errorMessage }}
-					</dav-website-message-bar>
+					</dav-message-bar>
 
 					<!-- Message bar for success -->
-					<dav-website-message-bar
+					<dav-message-bar
 						type="success"
 						*ngIf="successMessage.length > 0">
 						{{ successMessage }}
-					</dav-website-message-bar>
+					</dav-message-bar>
 				</div>
 
 				<div class="row ml-2">

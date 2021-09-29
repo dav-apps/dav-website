@@ -24,7 +24,6 @@ import { WebsocketService } from './services/websocket-service'
 // Components
 import { AppComponent } from './app.component'
 import { AppCardComponent } from 'src/app/components/app-card-component/app-card.component'
-import { MessageBarComponent } from 'src/app/components/message-bar-component/message-bar.component'
 import { DropdownComponent } from 'src/app/components/dropdown-component/dropdown.component'
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
@@ -54,7 +53,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		// Components
 		AppComponent,
 		AppCardComponent,
-		MessageBarComponent,
 		DropdownComponent,
 		PaymentFormComponent,
 		BankAccountFormComponent,

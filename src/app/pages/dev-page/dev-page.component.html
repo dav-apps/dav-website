@@ -2,11 +2,11 @@
 	<h1 class="text-center font-weight-light mb-3">{{ locale.title }}</h1>
 
 	<div class="mb-3 mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0">
-		<dav-website-message-bar
+		<dav-message-bar
 			type="danger"
 			*ngIf="errorMessage.length > 0">
 			{{ errorMessage }}
-		</dav-website-message-bar>
+		</dav-message-bar>
 	</div>
 
 	<div class="row">
