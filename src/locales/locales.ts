@@ -475,9 +475,6 @@ const enDefaults = {
 		functions: "Functions",
 		errors: "Errors"
 	},
-	dropdownComponent: {
-		defaultDropdownButtonText: "Select an option"
-	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
 		save: "Save",
@@ -1031,9 +1028,6 @@ const deDefaults = {
 		endpoints: "Endpunkte",
 		functions: "Funktionen",
 		errors: "Fehler"
-	},
-	dropdownComponent: {
-		defaultDropdownButtonText: "Wähle eine Option"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

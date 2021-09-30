@@ -676,11 +676,11 @@
 	<p [innerHTML]="locale.provider.startStripeSetupDialog.text1"></p>
 
 	<div style="width: 175px">
-		<dav-website-dropdown
+		<dav-dropdown
 			[options]="startStripeSetupDialogDropdownOptions"
 			[selectedKey]="startStripeSetupDialogDropdownSelectedKey"
-			(change)="StartStripeSetupDialogDropdownChange($event)">
-		</dav-website-dropdown>
+			(change)="StartStripeSetupDialogDropdownChange($event.detail.key)">
+		</dav-dropdown>
 	</div>
 
 	<p class="mt-3" [innerHTML]="locale.provider.startStripeSetupDialog.text2"></p>
