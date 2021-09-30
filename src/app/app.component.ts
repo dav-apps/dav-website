@@ -1,6 +1,7 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { Dav, Environment } from 'dav-js'
+import * as DavUIComponents from 'dav-ui-components'
 import { enUS } from 'src/locales/locales'
 import { DataService } from './services/data-service'
 import { environment } from 'src/environments/environment'
@@ -21,6 +22,7 @@ export class AppComponent {
 		public router: Router
 	) {
 		this.locale = this.dataService.GetLocale().appComponent
+		DavUIComponents.setLocale(this.dataService.locale)
 	}
 
 	async ngOnInit() {
