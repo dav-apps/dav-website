@@ -15,17 +15,17 @@
 	<div>
 		<p class="mb-3 font-weight-light" style="font-size: 18px">{{ app.Description }}</p>
 
-		<fluent-button
-			appearance="accent"
+		<dav-button
+			type="accent"
 			(click)="ShowAppStatistics()">
 			{{ locale.statistics }}
-		</fluent-button>
+		</dav-button>
 
-		<fluent-button
+		<dav-button
 			style="margin-left: 10px"
 			(click)="ShowEditAppDialog()">
 			{{ locale.edit }}
-		</fluent-button>
+		</dav-button>
 
 		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
 

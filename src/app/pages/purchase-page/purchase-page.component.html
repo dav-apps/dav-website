@@ -38,12 +38,12 @@
 
 				<div class="d-flex flex-row">
 					<div class="d-flex">
-						<fluent-button
-							appearance="accent"
+						<dav-button
+							type="accent"
 							[disabled]="loginLoading"
 							(click)="Login()">
 							{{ locale.login }}
-						</fluent-button>
+						</dav-button>
 
 						<fluent-progress-ring
 							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"
@@ -192,12 +192,12 @@
 							</div>
 							<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
 
-							<fluent-button
+							<dav-button
 								style="float: right; margin-bottom: 16px"
 								[disabled]="paymentLoading"
 								(click)="ShowPaymentMethodDialog()">
 								{{ locale.edit }}
-							</fluent-button>
+							</dav-button>
 						</div>
 					</div>
 
@@ -217,13 +217,13 @@
 
 					<!-- Pay button -->
 					<div class="mx-auto mt-4 mb-5 d-flex">
-						<fluent-button
+						<dav-button
 							[style.marginLeft.px]="paymentLoading ? 32 : 0"
-							appearance="accent"
+							type="accent"
 							[disabled]="paymentLoading || !hasPaymentMethod"
 							(click)="Pay()">
 							{{ locale.pay.replace('{0}', price) }}
-						</fluent-button>
+						</dav-button>
 
 						<fluent-progress-ring
 							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"

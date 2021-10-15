@@ -8,11 +8,11 @@
 			<!-- First name -->
 			<div class="row">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<dav-message-bar
-						class="mb-3"
-						*ngIf="errorMessage.length > 0">
-						{{ errorMessage }}
-					</dav-message-bar>
+					<div class="mb-3" *ngIf="errorMessage.length > 0">
+						<dav-message-bar>
+							{{ errorMessage }}
+						</dav-message-bar>
+					</div>
 
 					<fluent-text-field
 						id="first-name-textfield"
@@ -72,12 +72,12 @@
 					</fluent-text-field>
 
 					<div class="d-flex mt-3">
-						<fluent-button
-							appearance="accent"
+						<dav-button
+							type="accent"
 							[disabled]="signupLoading"
 							(click)="Signup()">
 							{{ locale.signup }}
-						</fluent-button>
+						</dav-button>
 
 						<fluent-progress-ring
 							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"

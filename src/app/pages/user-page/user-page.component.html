@@ -55,19 +55,17 @@
 
 			<div class="d-flex flex-column align-items-center">
 				<div style="width: 280px; margin-right: -70px">
-					<dav-message-bar
-						type="danger"
-						class="mb-4"
-						*ngIf="errorMessage.length > 0">
-						{{ errorMessage }}
-					</dav-message-bar>
+					<div class="mb-4" *ngIf="errorMessage.length > 0">
+						<dav-message-bar type="danger">
+							{{ errorMessage }}
+						</dav-message-bar>
+					</div>
 
-					<dav-message-bar
-						type="success"
-						class="mb-4"
-						*ngIf="successMessage.length > 0">
-						{{ successMessage}}
-					</dav-message-bar>
+					<div class="mb-4" *ngIf="successMessage.length > 0">
+						<dav-message-bar type="success">
+							{{ successMessage}}
+						</dav-message-bar>
+					</div>
 
 					<!-- Profile image -->
 					<div
@@ -89,14 +87,14 @@
 							[src]="profileImageContent">
 					</div>
 
-					<fluent-button
+					<dav-button
 						ngxFilePicker
 						accept="image/png,image/jpeg"
-						appearance="accent"
+						type="accent"
 						[disabled]="profileImageLoading"
 						(filePick)="UpdateProfileImage($event)">
 						{{ locale.general.uploadProfileImage }}
-					</fluent-button>
+					</dav-button>
 
 					<!-- First name -->
 					<form>
@@ -212,14 +210,14 @@
 							</fluent-text-field>
 
 							<div class="d-flex">
-								<fluent-button
+								<dav-button
 									class="mt-3"
-									appearance="accent"
+									type="accent"
 									[disabled]="password != passwordConfirmation || passwordLoading"
 									(click)="SavePassword()"
 									*ngIf="password.length >= 7 && password.length <= 25">
 									{{ locale.save }}
-								</fluent-button>
+								</dav-button>
 
 								<fluent-progress-ring
 									style="margin: 24px 0px 0px 14px; width: 16px; height: 16px"
@@ -278,11 +276,11 @@
 
 								<p style="margin-bottom: 8px">{{ pricingLocale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>
 
-								<fluent-button
+								<dav-button
 									style="float: right; margin-bottom: 16px"
 									(click)="ShowPaymentMethodDialog()">
 									{{ pricingLocale.edit }}
-								</fluent-button>
+								</dav-button>
 							</div>
 						</div>
 
@@ -301,11 +299,11 @@
 										*ngIf="continueOrCancelSubscriptionLoading">
 									</fluent-progress-ring>
 
-									<fluent-button
+									<dav-button
 										[disabled]="continueOrCancelSubscriptionLoading"
 										(click)="ContinueOrCancelButtonClick()">
 										{{ dataService.dav.user.SubscriptionStatus == 0 ? pricingLocale.cancelSubscription : pricingLocale.continueSubscription }}
-									</fluent-button>
+									</dav-button>
 								</div>
 							</div>
 						</div>
@@ -523,11 +521,11 @@
 				<div class="mt-5 d-flex flex-column align-items-center">
 					<p class="text-center font-weight-light">{{ locale.provider.setupExplanation }}</p>
 
-					<fluent-button
-						appearance="accent"
+					<dav-button
+						type="accent"
 						(click)="startStripeSetupDialogVisible = true">
 						{{ locale.provider.startSetup }}
-					</fluent-button>
+					</dav-button>
 				</div>
 			</div>
 
@@ -574,11 +572,11 @@
 							<h5 class="font-weight-light mb-3">{{ locale.provider.aboutYou }}</h5>
 							<p>{{ providerStripeAccount.individual.first_name }} {{ providerStripeAccount.individual.last_name }}</p>
 
-							<fluent-button
+							<dav-button
 								style="float: right; margin-bottom: 16px"
 								(click)="OpenStripeOnboardingPage(true)">
 								{{ locale.provider.editDetails }}
-							</fluent-button>
+							</dav-button>
 						</div>
 					</div>
 
@@ -601,11 +599,11 @@
 								<p class="font-weight-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
 							</div>
 
-							<fluent-button
+							<dav-button
 								style="float: right; margin-bottom: 16px"
 								(click)="ShowBankAccountDialog()">
 								{{ locale.edit }}
-							</fluent-button>
+							</dav-button>
 						</div>
 					</div>
 
