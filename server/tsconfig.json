@@ -1,9 +1,9 @@
 {
 	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es2015",
+		"module": "es2020",
+		"target": "es2020",
 		"outDir": "dist",
-		"moduleResolution": "node"
+		"moduleResolution": "Node"
 	},
 	"include": [
 		"websocket.ts",
