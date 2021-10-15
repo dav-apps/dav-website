@@ -84,7 +84,7 @@ export class UserPageComponent {
 	changePlanAfterPaymentMethodUpdated: boolean = false
 
 	changePlanDialogVisible: boolean = false
-	changePlanDialogTitle: string = this.pricingLocale.changePlanDialog.upgradePlusTitle
+	changePlanDialogHeader: string = this.pricingLocale.changePlanDialog.upgradePlusHeader
 	changePlanDialogDescription: string = this.pricingLocale.changePlanDialog.upgradePlusDescription
 	//#endregion
 
@@ -401,23 +401,23 @@ export class UserPageComponent {
 			switch (this.selectedPlan) {
 				case 2:
 					// upgradePro
-					this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.upgradeProTitle
+					this.changePlanDialogHeader = this.pricingLocale.changePlanDialog.upgradeProHeader
 					this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.upgradeProDescription
 					break
 				case 1:
 					if (this.dataService.dav.user.Plan == 2) {
 						// downgradePlus
-						this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.downgradePlusTitle
+						this.changePlanDialogHeader = this.pricingLocale.changePlanDialog.downgradePlusHeader
 						this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.downgradePlusDescription
 					} else {
 						// upgradePlus
-						this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.upgradePlusTitle
+						this.changePlanDialogHeader = this.pricingLocale.changePlanDialog.upgradePlusHeader
 						this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.upgradePlusDescription
 					}
 					break
 				default:
 					// downgradeFree
-					this.changePlanDialogTitle = this.pricingLocale.changePlanDialog.downgradeFreeTitle
+					this.changePlanDialogHeader = this.pricingLocale.changePlanDialog.downgradeFreeHeader
 					this.changePlanDialogDescription = this.pricingLocale.changePlanDialog.downgradeFreeDescription
 					break
 			}

@@ -322,12 +322,12 @@ const enDefaults = {
 			missingInformationWarningLink: "Edit details",
 			missingBankAccountWarningText: "Don't forget to provide a bank account so that we can transfer your payouts.",
 			startStripeSetupDialog: {
-				title: "Provider setup",
+				header: "Provider setup",
 				text1: "Please specify the country you live in.<br>(Please contact us if your country is not listed.)",
 				text2: "For the setup you will be redirected to a page of <a href='https://stripe.com' target='blank'>Stripe</a>."
 			},
 			bankAccountDialog: {
-				title: "Set bank account"
+				header: "Set bank account"
 			},
 			countries: {
 				de: "Germany",
@@ -369,7 +369,7 @@ const enDefaults = {
 		save: "Save",
 		cancel: "Cancel",
 		addAppDialog: {
-			title: "Add app",
+			header: "Add app",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "The name of the app",
 			descriptionTextfieldLabel: "Description",
@@ -389,7 +389,7 @@ const enDefaults = {
 		tables: "Tables",
 		apis: "APIs",
 		editAppDialog: {
-			title: "Edit app",
+			header: "Edit app",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "The name of your app",
 			descriptionTextfieldLabel: "Description",
@@ -410,14 +410,14 @@ const enDefaults = {
 			}
 		},
 		publishAppDialog: {
-			publishTitle: "Publish app",
-			unpublishTitle: "Unpublish app",
+			publishHeader: "Publish app",
+			unpublishHeader: "Unpublish app",
 			publishSubtext: "Are you sure you want to publish this app?",
 			unpublishSubtext: "Are you sure you want to unpublish this app?",
 			confirm: "Confirm"
 		},
 		addTableDialog: {
-			title: "Add table",
+			header: "Add table",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "The name of the table",
 			errors: {
@@ -427,7 +427,7 @@ const enDefaults = {
 			}
 		},
 		addApiDialog: {
-			title: "Add API",
+			header: "Add API",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "The name of the api",
 			errors: {
@@ -487,7 +487,7 @@ const enDefaults = {
 	},
 	misc: {
 		paymentFormDialog: {
-			title: "Enter payment information",
+			header: "Enter payment information",
 			save: "Save",
 			cancel: "Cancel"
 		},
@@ -526,13 +526,13 @@ const enDefaults = {
 			continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
 			cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
 			changePlanDialog: {
-				upgradePlusTitle: "Upgrade to Plus",
+				upgradePlusHeader: "Upgrade to Plus",
 				upgradePlusDescription: "Do you want to upgrade to dav Plus for 3 € per month?",
-				upgradeProTitle: "Upgrade to Pro",
+				upgradeProHeader: "Upgrade to Pro",
 				upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
-				downgradePlusTitle: "Downgrade to Plus",
+				downgradePlusHeader: "Downgrade to Plus",
 				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
-				downgradeFreeTitle: "Downgrade to Free",
+				downgradeFreeHeader: "Downgrade to Free",
 				downgradeFreeDescription: "Do you want to downgrade to the free plan?"
 			},
 			continue: "Continue"
@@ -876,12 +876,12 @@ const deDefaults = {
 			missingInformationWarningLink: "Informationen bearbeiten",
 			missingBankAccountWarningText: "Denk daran, ein Bankkonto anzugeben, damit wir deine Auszahlungen überweisen können.",
 			startStripeSetupDialog: {
-				title: "Anbieter-Einrichtung",
+				header: "Anbieter-Einrichtung",
 				text1: "Bitte gebe das Land an, in dem du lebst.<br>(Bitte kontaktiere uns, wenn dein Land nicht aufgeführt ist.)",
 				text2: "Du wirst zur Einrichtung auf eine Seite von <a href='https://stripe.com' target='blank'>Stripe</a> weitergeleitet."
 			},
 			bankAccountDialog: {
-				title: "Bankkonto festlegen"
+				header: "Bankkonto festlegen"
 			},
 			countries: {
 				de: "Deutschland",
@@ -923,7 +923,7 @@ const deDefaults = {
 		save: "Speichern",
 		cancel: "Abbrechen",
 		addAppDialog: {
-			title: "App hinzufügen",
+			header: "App hinzufügen",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "Der Name der App",
 			descriptionTextfieldLabel: "Beschreibung",
@@ -943,7 +943,7 @@ const deDefaults = {
 		tables: "Tabellen",
 		apis: "APIs",
 		editAppDialog: {
-			title: "App bearbeiten",
+			header: "App bearbeiten",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "Der Name deiner App",
 			descriptionTextfieldLabel: "Beschreibung",
@@ -964,14 +964,14 @@ const deDefaults = {
 			}
 		},
 		publishAppDialog: {
-			publishTitle: "App veröffentlichen",
-			unpublishTitle: "Veröffentlichung aufheben",
+			publishHeader: "App veröffentlichen",
+			unpublishHeader: "Veröffentlichung aufheben",
 			publishSubtext: "Bist du dir sicher, dass du diese App veröffentlichen willst?",
 			unpublishSubtext: "Bist du dir sicher, dass du die Veröffentlichung dieser App aufheben willst?",
 			confirm: "Bestätigen"
 		},
 		addTableDialog: {
-			title: "Tabelle hinzufügen",
+			header: "Tabelle hinzufügen",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "Der Name der Tabelle",
 			errors: {
@@ -981,7 +981,7 @@ const deDefaults = {
 			}
 		},
 		addApiDialog: {
-			title: "API hinzufügen",
+			header: "API hinzufügen",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "Der Name der API",
 			errors: {
@@ -1041,7 +1041,7 @@ const deDefaults = {
 	},
 	misc: {
 		paymentFormDialog: {
-			title: "Zahlungsinformationen eingeben",
+			header: "Zahlungsinformationen eingeben",
 			save: "Speichern",
 			cancel: "Abbrechen"
 		},
@@ -1080,13 +1080,13 @@ const deDefaults = {
 			continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
 			cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
 			changePlanDialog: {
-				upgradePlusTitle: "Wechsel auf Plus",
+				upgradePlusHeader: "Wechsel auf Plus",
 				upgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
-				upgradeProTitle: "Wechsel auf Pro",
+				upgradeProHeader: "Wechsel auf Pro",
 				upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
-				downgradePlusTitle: "Wechsel auf Plus",
+				downgradePlusHeader: "Wechsel auf Plus",
 				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
-				downgradeFreeTitle: "Wechsel auf Free",
+				downgradeFreeHeader: "Wechsel auf Free",
 				downgradeFreeDescription: "Möchtest du auf den kostenlosen Plan wechseln?"
 			},
 			continue: "Weiter"
