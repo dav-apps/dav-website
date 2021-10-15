@@ -1,5 +1,5 @@
 import Stripe from 'stripe'
-import * as websocket from '../websocket'
+import * as websocket from '../websocket.js'
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
 
 export const sockets = {

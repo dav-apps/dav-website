@@ -1,5 +1,5 @@
 import { SessionsController } from 'dav-js'
-import * as websocket from '../websocket'
+import * as websocket from '../websocket.js'
 
 export const sockets = {
 	createSession,

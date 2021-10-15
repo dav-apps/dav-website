@@ -1,8 +1,8 @@
 import { Dav, Auth, Environment } from 'dav-js'
-import * as user from './websocket/user'
-import * as session from './websocket/session'
-import * as purchase from './websocket/purchase'
-import * as stripe from './websocket/stripe'
+import * as user from './websocket/user.js'
+import * as session from './websocket/session.js'
+import * as purchase from './websocket/purchase.js'
+import * as stripe from './websocket/stripe.js'
 
 var socket = null
 export var auth: Auth

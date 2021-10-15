@@ -1,5 +1,5 @@
 import { UsersController } from 'dav-js'
-import * as websocket from '../websocket'
+import * as websocket from '../websocket.js'
 
 export const sockets = {
 	signup,
