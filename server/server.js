@@ -24,11 +24,20 @@ app.use(express.static('./dav-website'))
 app.get('/', getRoot)
 app.get('/*', getUndefined)
 
+// Get the base urls from the environment variables
+const baseUrl = process.env.BASE_URL
+var baseUrls = []
+
+if (baseUrl != null) {
+	baseUrls = baseUrl.split(',')
+}
+
 io.on('connection', (socket) => {
 	// Check if the request has the referer header
 	let refererHeader = socket.handshake.headers.referer
 
-	if (!refererHeader || !refererHeader.startsWith(process.env.BASE_URL)) {
+	// Check if the base urls contain the referer
+	if (!refererHeader || baseUrls.findIndex(baseUrl => refererHeader.startsWith(baseUrl)) == -1) {
 		// Close the connection
 		socket.disconnect()
 	} else {
