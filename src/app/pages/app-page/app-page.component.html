@@ -55,14 +55,14 @@
 </div>
 
 <dav-dialog
-	[title]="locale.editAppDialog.title"
+	[header]="locale.editAppDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
+	[isVisible]="editAppDialogVisible"
 	[isLoading]="editAppDialogLoading"
 	(dismiss)="editAppDialogVisible = false"
 	(primaryButtonClick)="UpdateApp()"
-	(defaultButtonClick)="editAppDialogVisible = false"
-	*ngIf="editAppDialogVisible">
+	(defaultButtonClick)="editAppDialogVisible = false">
 
 	<!-- Name -->
 	<div class="mb-3">
@@ -147,14 +147,14 @@
 </dav-dialog>
 
 <dav-dialog
-	[title]="app.Published ? locale.publishAppDialog.unpublishTitle : locale.publishAppDialog.publishTitle"
+	[header]="app.Published ? locale.publishAppDialog.unpublishTitle : locale.publishAppDialog.publishTitle"
 	[primaryButtonText]="locale.publishAppDialog.confirm"
 	[defaultButtonText]="locale.cancel"
+	[isVisible]="publishAppDialogVisible"
 	[isLoading]="publishAppDialogLoading"
 	(dismiss)="publishAppDialogVisible = false"
 	(primaryButtonClick)="PublishApp()"
-	(defaultButtonClick)="publishAppDialogVisible = false"
-	*ngIf="publishAppDialogVisible">
+	(defaultButtonClick)="publishAppDialogVisible = false">
 
 	<p class="font-weight-light"
 		style="max-width: 300px; font-size: 14px">
@@ -163,14 +163,14 @@
 </dav-dialog>
 
 <dav-dialog
-	[title]="locale.addTableDialog.title"
+	[header]="locale.addTableDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
+	[isVisible]="addTableDialogVisible"
 	[isLoading]="addTableDialogLoading"
 	(dismiss)="addTableDialogVisible = false"
 	(primaryButtonClick)="AddTable()"
-	(defaultButtonClick)="addTableDialogVisible = false"
-	*ngIf="addTableDialogVisible">
+	(defaultButtonClick)="addTableDialogVisible = false">
 
 	<div class="mb-3">
 		<fluent-text-field
@@ -189,14 +189,14 @@
 </dav-dialog>
 
 <dav-dialog
-	[title]="locale.addApiDialog.title"
+	[header]="locale.addApiDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
+	[isVisible]="addApiDialogVisible"
 	[isLoading]="addApiDialogLoading"
 	(dismiss)="addApiDialogVisible = false"
 	(primaryButtonClick)="AddApi()"
-	(defaultButtonClick)="addApiDialogVisible = false"
-	*ngIf="addApiDialogVisible">
+	(defaultButtonClick)="addApiDialogVisible = false">
 
 	<div class="mb-3">
 		<fluent-text-field

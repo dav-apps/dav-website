@@ -46,14 +46,14 @@
 </div>
 
 <dav-dialog
-	[title]="locale.addAppDialog.title"
+	[header]="locale.addAppDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
+	[isVisible]="addAppDialogVisible"
 	[isLoading]="addAppDialogLoading"
 	(dismiss)="addAppDialogVisible = false"
 	(primaryButtonClick)="AddApp()"
-	(defaultButtonClick)="addAppDialogVisible = false"
-	*ngIf="addAppDialogVisible">
+	(defaultButtonClick)="addAppDialogVisible = false">
 
 	<div class="mb-3">
 		<fluent-text-field

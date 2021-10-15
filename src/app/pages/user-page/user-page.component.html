@@ -627,14 +627,14 @@
 </mat-sidenav-container>
 
 <dav-dialog
-	[title]="paymentFormDialogLocale.title"
+	[header]="paymentFormDialogLocale.title"
 	[primaryButtonText]="paymentFormDialogLocale.save"
 	[defaultButtonText]="paymentFormDialogLocale.cancel"
+	[isVisible]="paymentFormDialogVisible"
 	[isLoading]="paymentFormDialogLoading"
 	(dismiss)="paymentFormDialogVisible = false"
 	(primaryButtonClick)="SavePaymentMethod()"
-	(defaultButtonClick)="paymentFormDialogVisible = false"
-	*ngIf="paymentFormDialogVisible">
+	(defaultButtonClick)="paymentFormDialogVisible = false">
 
 	<div class="mb-3" style="min-width: 340px">
 		<dav-website-payment-form
@@ -648,13 +648,13 @@
 </dav-dialog>
 
 <dav-dialog
-	[title]="changePlanDialogTitle"
+	[header]="changePlanDialogTitle"
 	[primaryButtonText]="pricingLocale.continue"
 	[defaultButtonText]="pricingLocale.cancel"
+	[isVisible]="changePlanDialogVisible"
 	(dismiss)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;"
 	(primaryButtonClick)="SetStripeSubscription()"
-	(defaultButtonClick)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;"
-	*ngIf="changePlanDialogVisible">
+	(defaultButtonClick)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">
 
 	<p class="font-weight-light"
 		style="max-width: 300px; font-size: 14px">
@@ -663,15 +663,15 @@
 </dav-dialog>
 
 <dav-dialog
-	[title]="locale.provider.startStripeSetupDialog.title"
+	[header]="locale.provider.startStripeSetupDialog.title"
 	[primaryButtonText]="locale.provider.startSetup"
 	[defaultButtonText]="locale.cancel"
+	[isVisible]="startStripeSetupDialogVisible"
 	[isLoading]="startStripeSetupDialogLoading"
 	[maxWidth]="370"
 	(dismiss)="startStripeSetupDialogVisible = false"
 	(primaryButtonClick)="StartStripeProviderSetup()"
-	(defaultButtonClick)="startStripeSetupDialogVisible = false"
-	*ngIf="startStripeSetupDialogVisible">
+	(defaultButtonClick)="startStripeSetupDialogVisible = false">
 
 	<p [innerHTML]="locale.provider.startStripeSetupDialog.text1"></p>
 
@@ -687,15 +687,15 @@
 </dav-dialog>
 
 <dav-dialog
-	[title]="locale.provider.bankAccountDialog.title"
+	[header]="locale.provider.bankAccountDialog.title"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
+	[isVisible]="bankAccountDialogVisible"
 	[isLoading]="bankAccountDialogLoading"
 	[maxWidth]="340"
 	(dismiss)="bankAccountDialogVisible = false"
 	(primaryButtonClick)="BankAccountDialogSave()"
-	(defaultButtonClick)="bankAccountDialogVisible = false"
-	*ngIf="bankAccountDialogVisible">
+	(defaultButtonClick)="bankAccountDialogVisible = false">
 
 	<dav-website-bank-account-form
 		class="mb-3"

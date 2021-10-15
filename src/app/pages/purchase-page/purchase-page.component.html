@@ -237,14 +237,14 @@
 </div>
 
 <dav-dialog
-	[title]="paymentFormDialogLocale.title"
+	[header]="paymentFormDialogLocale.title"
 	[primaryButtonText]="paymentFormDialogLocale.save"
 	[defaultButtonText]="paymentFormDialogLocale.cancel"
+	[isVisible]="paymentFormDialogVisible"
 	[isLoading]="paymentFormDialogLoading"
 	(dismiss)="paymentFormDialogVisible = false"
 	(primaryButtonClick)="SavePaymentMethod()"
-	(defaultButtonClick)="paymentFormDialogVisible = false"
-	*ngIf="paymentFormDialogVisible">
+	(defaultButtonClick)="paymentFormDialogVisible = false">
 
 	<div class="mb-3" style="min-width: 340px">
 		<dav-website-payment-form

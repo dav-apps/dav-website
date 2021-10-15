@@ -14,7 +14,7 @@ import {
 	ProviderResponseData,
 	SubscriptionStatus
 } from 'dav-js'
-import { DropdownOption } from 'dav-ui-components'
+import { DropdownOption, DropdownOptionType } from 'dav-ui-components'
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
 import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service'
@@ -499,7 +499,11 @@ export class UserPageComponent {
 
 		for (let key of Object.keys(this.locale.provider.countries)) {
 			let value = this.locale.provider.countries[key]
-			this.startStripeSetupDialogDropdownOptions.push({ key, value })
+			this.startStripeSetupDialogDropdownOptions.push({
+				key,
+				value,
+				type: DropdownOptionType.option
+			})
 		}
 
 		// Select the appropriate country
