@@ -48,19 +48,6 @@ export function FindElement(currentElement: Element, tagName: string): Element {
 	return null
 }
 
-export function SetTextFieldAutocomplete(textFieldId: string, autocomplete: string) {
-	// Find the input element
-	let textField = document.getElementById(textFieldId)
-	if (textField == null) return
-
-	let input = FindElement(textField, "input") as HTMLInputElement
-
-	if (input) {
-		// Set the autocomplete attribute
-		input.setAttribute("autocomplete", autocomplete)
-	}
-}
-
 export async function GetUserAgentModel(): Promise<string> {
 	if (navigator["userAgentData"]) {
 		let userAgentData = navigator["userAgentData"]

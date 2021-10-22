@@ -17,7 +17,7 @@ import {
 import { DropdownOption, DropdownOptionType } from 'dav-ui-components'
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
-import { DataService, SetTextFieldAutocomplete, StripeApiResponse } from 'src/app/services/data-service'
+import { DataService, StripeApiResponse } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
@@ -150,15 +150,6 @@ export class UserPageComponent {
 		this.profileImageContent = this.dataService.dav.user.ProfileImage
 		this.UpdateValues()
 		this.dataService.userDownloadPromise.then(() => this.UpdateValues())
-	}
-
-	ngAfterViewInit() {
-		// Set the autocomplete attribute of the input elements
-		setTimeout(() => {
-			SetTextFieldAutocomplete('first-name-textfield', 'given-name')
-			SetTextFieldAutocomplete('email-textfield', 'email')
-			SetTextFieldAutocomplete('password-textfield', 'new-password')
-		}, 1)
 	}
 
 	@HostListener('window:resize')
@@ -758,11 +749,6 @@ export class UserPageComponent {
 		}
 
 		this.passwordConfirmationVisible = this.password.length >= 7 && this.password.length <= 25
-
-		if (this.passwordConfirmationVisible) {
-			// Set the autocomplete attribute of the password confirmation text field
-			SetTextFieldAutocomplete('password-confirmation-textfield', 'new-password')
-		}
 	}
 
 	UpdateUsedStoragePercent() {

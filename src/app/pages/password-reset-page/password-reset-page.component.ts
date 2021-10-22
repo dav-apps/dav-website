@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 import { ApiResponse, ApiErrorResponse, ErrorCodes } from 'dav-js'
-import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service'
+import { DataService } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { enUS } from 'src/locales/locales'
 
@@ -21,13 +21,6 @@ export class PasswordResetPageComponent {
 		private router: Router
 	) {
 		this.locale = this.dataService.GetLocale().passwordResetPage
-	}
-
-	ngAfterViewInit() {
-		// Set the autocomplete attribute of the input element
-		setTimeout(() => {
-			SetTextFieldAutocomplete('email-text-field', 'email')
-		}, 1)
 	}
 
 	async SendPasswordResetEmail() {

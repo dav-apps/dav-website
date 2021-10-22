@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { ApiResponse, ApiErrorResponse } from 'dav-js'
-import { DataService, SetTextFieldAutocomplete } from 'src/app/services/data-service'
+import { DataService } from 'src/app/services/data-service'
 import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
 import { enUS } from 'src/locales/locales'
 
@@ -37,14 +37,6 @@ export class ResetPasswordPageComponent {
 			this.dataService.startPageErrorMessage = this.locale.errors.unexpectedErrorLong
 			this.router.navigate(['/'])
 		}
-	}
-
-	ngAfterViewInit() {
-		// Set the autocomplete attribute of the input elements
-		setTimeout(() => {
-			SetTextFieldAutocomplete('password-text-field', 'new-password')
-			SetTextFieldAutocomplete('password-confirmation-text-field', 'new-password')
-		}, 1)
 	}
 
 	async SavePassword() {

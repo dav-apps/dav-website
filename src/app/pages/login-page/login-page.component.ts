@@ -9,7 +9,6 @@ import {
 } from 'dav-js'
 import {
 	DataService,
-	SetTextFieldAutocomplete,
 	GetUserAgentModel,
 	GetUserAgentPlatform
 } from 'src/app/services/data-service'
@@ -89,14 +88,6 @@ export class LoginPageComponent {
 				this.router.navigate(['/'])
 			}
 		}
-	}
-
-	ngAfterViewInit() {
-		// Set the autocomplete attribute of the input elements
-		setTimeout(() => {
-			SetTextFieldAutocomplete('email-text-field', 'email')
-			SetTextFieldAutocomplete('password-text-field', 'current-password')
-		}, 1)
 	}
 
 	@HostListener('window:resize')

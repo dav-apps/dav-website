@@ -9,7 +9,6 @@ import {
 } from 'dav-js'
 import {
 	DataService,
-	SetTextFieldAutocomplete,
 	GetUserAgentModel,
 	GetUserAgentPlatform
 } from 'src/app/services/data-service'
@@ -82,16 +81,6 @@ export class SignupPageComponent {
 
 	ngOnInit() {
 		this.setSize()
-	}
-
-	ngAfterViewInit() {
-		// Set the autocomplete attribute of the input elements
-		setTimeout(() => {
-			SetTextFieldAutocomplete('first-name-textfield', 'given-name')
-			SetTextFieldAutocomplete('email-textfield', 'email')
-			SetTextFieldAutocomplete('password-textfield', 'new-password')
-			SetTextFieldAutocomplete('password-confirmation-textfield', 'new-password')
-		}, 1)
 	}
 
 	@HostListener('window:resize')
