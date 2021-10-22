@@ -99,29 +99,22 @@
 					<!-- First name -->
 					<form>
 						<div class="mt-4 d-flex" style="font-size: 18px">
-							<div>
-								<fluent-text-field
-									id="first-name-textfield"
-									style="width: 200px"
-									[value]="firstName"
-									type="text"
-									autocomplete="given-name"
-									[placeholder]="locale.general.firstNameTextfieldPlaceholder"
-									[disabled]="firstNameLoading"
-									(input)="firstName = $event.target.value"
-									(keydown)="FirstNameTextFieldChanged($event)">
-									{{ locale.general.firstNameTextfieldLabel }}
-								</fluent-text-field>
+							<dav-textfield
+								style="width: 200px"
+								[label]="locale.general.firstNameTextfieldLabel"
+								[value]="firstName"
+								[placeholder]="locale.general.firstNameTextfieldPlaceholder"
+								[disabled]="firstNameLoading"
+								autocomplete="given-name"
+								[errorMessage]="firstNameErrorMessage"
+								(change)="FirstNameTextFieldChanged($event.detail.value)"
+								(enter)="SaveFirstName()">
+							</dav-textfield>
 
-								<p class="text-field-error" *ngIf="firstNameErrorMessage.length > 0">
-									{{ firstNameErrorMessage }}
-								</p>
-							</div>
-	
 							<button
 								type="button"
 								class="btn btn-sm ml-2 icon-button"
-								style="margin-top: 26px"
+								style="margin-top: 28px"
 								[disabled]="firstNameLoading"
 								(click)="SaveFirstName()"
 								*ngIf="firstName != dataService.dav.user.FirstName && firstName.length >= 2 && firstName.length <= 20">
@@ -138,29 +131,23 @@
 					<!-- Email -->
 					<form>
 						<div class="mt-4 d-flex" style="font-size: 18px">
-							<div>
-								<fluent-text-field
-									id="email-textfield"
-									style="width: 200px"
-									[value]="email"
-									type="email"
-									autocomplete="email"
-									[placeholder]="locale.general.emailTextfieldPlaceholder"
-									[disabled]="emailLoading"
-									(input)="email = $event.target.value"
-									(keydown)="EmailTextFieldChanged($event)">
-									{{ locale.general.emailTextfieldLabel }}
-								</fluent-text-field>
-
-								<p class="text-field-error" *ngIf="emailErrorMessage.length > 0">
-									{{ emailErrorMessage }}
-								</p>
-							</div>
+							<dav-textfield
+								style="width: 200px"
+								[label]="locale.general.emailTextfieldLabel"
+								[value]="email"
+								[placeholder]="locale.general.emailTextfieldPlaceholder"
+								[disabled]="emailLoading"
+								type="email"
+								autocomplete="email"
+								[errorMessage]="emailErrorMessage"
+								(change)="email = $event.detail.value; ClearMessages()"
+								(enter)="SaveEmail()">
+							</dav-textfield>
 
 							<button
 								type="button"
 								class="btn btn-sm ml-2 icon-button"
-								style="margin-top: 26px"
+								style="margin-top: 28px"
 								[disabled]="emailLoading"
 								(click)="SaveEmail()"
 								*ngIf="email != dataService.dav.user.Email && email != newEmail && email.length > 3 && email.includes('@')">
@@ -177,37 +164,31 @@
 					<!-- Password -->
 					<form>
 						<div class="mt-4 d-flex flex-column" style="font-size: 18px">
-							<div>
-								<fluent-text-field
-									id="password-textfield"
-									style="width: 200px"
-									type="password"
-									autocomplete="new-password"
-									[placeholder]="locale.general.passwordTextfieldPlaceholder"
-									[disabled]="passwordLoading"
-									(input)="password = $event.target.value"
-									(keydown)="PasswordTextFieldChanged($event)">
-									{{ locale.general.passwordTextfieldLabel }}
-								</fluent-text-field>
-
-								<p class="text-field-error" *ngIf="passwordErrorMessage.length > 0">
-									{{ passwordErrorMessage }}
-								</p>
-							</div>
-
-							<fluent-text-field
-								id="password-confirmation-textfield"
-								class="mt-3"
+							<dav-textfield
 								style="width: 200px"
+								[label]="locale.general.passwordTextfieldLabel"
+								[value]="password"
+								[placeholder]="locale.general.passwordTextfieldPlaceholder"
+								[disabled]="passwordLoading"
 								type="password"
 								autocomplete="new-password"
-								[placeholder]="locale.general.passwordConfirmationTextfieldPlaceholder"
-								[disabled]="passwordLoading"
-								(input)="passwordConfirmation = $event.target.value"
-								(keydown)="PasswordTextFieldChanged($event)"
-								*ngIf="password.length >= 7 && password.length <= 25">
-								{{ locale.general.passwordConfirmationTextfieldLabel }}
-							</fluent-text-field>
+								[errorMessage]="passwordErrorMessage"
+								(change)="PasswordTextFieldChanged($event.detail.value)">
+							</dav-textfield>
+
+							<div class="mt-3" style="width: 200px">
+								<dav-textfield
+									[label]="locale.general.passwordConfirmationTextfieldLabel"
+									[value]="passwordConfirmation"
+									[placeholder]="locale.general.passwordConfirmationTextfieldPlaceholder"
+									[disabled]="passwordLoading"
+									type="password"
+									autocomplete="new-password"
+									(change)="PasswordConfirmationTextFieldChanged($event.detail.value)"
+									(enter)="SavePassword()"
+									*ngIf="passwordConfirmationVisible">
+								</dav-textfield>
+							</div>
 
 							<div class="d-flex">
 								<dav-button

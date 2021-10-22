@@ -722,33 +722,25 @@ export class UserPageComponent {
 		}
 	}
 
-	async FirstNameTextFieldChanged(event: KeyboardEvent) {
-		if (event.key == "Enter") {
-			event.preventDefault()
-			await this.SaveFirstName()
-		} else {
-			this.ClearMessages()
-		}
+	FirstNameTextFieldChanged(value: string) {
+		this.ClearMessages()
+		this.firstName = value
 	}
 
-	async EmailTextFieldChanged(event: KeyboardEvent) {
-		if (event.key == "Enter") {
-			event.preventDefault()
-			await this.SaveEmail()
-		} else {
-			this.ClearMessages()
-		}
+	EmailTextFieldChanged(value: string) {
+		this.ClearMessages()
+		this.email = value
 	}
 
-	async PasswordTextFieldChanged(event: KeyboardEvent) {
-		if (event.key == "Enter") {
-			event.preventDefault()
-			await this.SavePassword()
-		} else {
-			this.ClearMessages()
-		}
-
+	PasswordTextFieldChanged(value: string) {
+		this.ClearMessages()
+		this.password = value
 		this.passwordConfirmationVisible = this.password.length >= 7 && this.password.length <= 25
+	}
+
+	PasswordConfirmationTextFieldChanged(value: string) {
+		this.ClearMessages()
+		this.passwordConfirmation = value
 	}
 
 	UpdateUsedStoragePercent() {
