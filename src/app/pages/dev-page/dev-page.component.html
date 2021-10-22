@@ -55,31 +55,24 @@
 	(primaryButtonClick)="AddApp()"
 	(defaultButtonClick)="addAppDialogVisible = false">
 
-	<div class="mb-3">
-		<fluent-text-field
-			style="width: 100%"
-			type="text"
-			[placeholder]="locale.addAppDialog.nameTextfieldPlaceholder"
-			(input)="addAppDialogName = $event.target.value">
-			{{ locale.addAppDialog.nameTextfieldLabel }}
-		</fluent-text-field>
+	<form>
+		<div class="mb-3">
+			<dav-textfield
+				[label]="locale.addAppDialog.nameTextfieldLabel"
+				[placeholder]="locale.addAppDialog.nameTextfieldPlaceholder"
+				[errorMessage]="addAppDialogNameError"
+				(change)="addAppDialogName = $event.detail.value">
+			</dav-textfield>
+		</div>
 
-		<p class="text-field-error" *ngIf="addAppDialogNameError.length > 0">
-			{{ addAppDialogNameError }}
-		</p>
-	</div>
-
-	<div class="mb-3">
-		<fluent-text-area
-			style="width: 100%"
-			type="text"
-			[placeholder]="locale.addAppDialog.descriptionTextfieldPlaceholder"
-			(input)="addAppDialogDescription = $event.target.value">
-			{{ locale.addAppDialog.descriptionTextfieldLabel }}
-		</fluent-text-area>
-
-		<p class="text-field-error" *ngIf="addAppDialogDescriptionError.length > 0">
-			{{ addAppDialogDescriptionError }}
-		</p>
-	</div>
+		<div class="mb-3">
+			<dav-textfield
+				[label]="locale.addAppDialog.descriptionTextfieldLabel"
+				[placeholder]="locale.addAppDialog.descriptionTextfieldPlaceholder"
+				[errorMessage]="addAppDialogDescriptionError"
+				(change)="addAppDialogDescription = $event.detail.value"
+				(enter)="AddApp()">
+			</dav-textfield>
+		</div>
+	</form>
 </dav-dialog>

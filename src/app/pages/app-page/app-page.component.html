@@ -64,86 +64,69 @@
 	(primaryButtonClick)="UpdateApp()"
 	(defaultButtonClick)="editAppDialogVisible = false">
 
-	<!-- Name -->
-	<div class="mb-3">
-		<fluent-text-field
-			style="width: 100%"
-			[value]="newName"
-			type="text"
-			[placeholder]="locale.editAppDialog.nameTextfieldPlaceholder"
-			(input)="newName = $event.target.value">
-			{{ locale.editAppDialog.nameTextfieldLabel }}
-		</fluent-text-field>
+	<form>
+		<!-- Name -->
+		<div class="mb-3">
+			<dav-textfield
+				[value]="newName"
+				[label]="locale.editAppDialog.nameTextfieldLabel"
+				[placeholder]="locale.editAppDialog.nameTextfieldPlaceholder"
+				[errorMessage]="editAppDialogNameError"
+				(change)="newName = $event.detail.value">
+			</dav-textfield>
+		</div>
 
-		<p class="text-field-error" *ngIf="editAppDialogNameError.length > 0">
-			{{ editAppDialogNameError }}
-		</p>
-	</div>
+		<!-- Description -->
+		<div class="mb-3">
+			<dav-textarea
+				[value]="newDescription"
+				[label]="locale.editAppDialog.descriptionTextfieldLabel"
+				[placeholder]="locale.editAppDialog.descriptionTextfieldPlaceholder"
+				resize="vertical"
+				[errorMessage]="editAppDialogDescriptionError"
+				(change)="newDescription = $event.detail.value">
+			</dav-textarea>
+		</div>
 
-	<!-- Description -->
-	<div class="mb-3">
-		<fluent-text-area
-			style="width: 100%"
-			[value]="newDescription"
-			type="text"
-			multiline="true"
-			[placeholder]="locale.editAppDialog.descriptionTextfieldPlaceholder"
-			(input)="newDescription = $event.target.value">
-			{{ locale.editAppDialog.descriptionTextfieldLabel }}
-		</fluent-text-area>
+		<!-- Weblink -->
+		<div class="mb-3">
+			<dav-textfield
+				[value]="newWebLink"
+				[label]="locale.editAppDialog.webLinkTextfieldLabel"
+				[placeholder]="locale.editAppDialog.webLinkTextfieldPlaceholder"
+				type="url"
+				autocomplete="url"
+				[errorMessage]="editAppDialogWebLinkError"
+				(change)="newWebLink = $event.detail.value">
+			</dav-textfield>
+		</div>
 
-		<p class="text-field-error" *ngIf="editAppDialogDescriptionError.length > 0">
-			{{ editAppDialogDescriptionError }}
-		</p>
-	</div>
+		<!-- GooglePlayLink -->
+		<div class="mb-3">
+			<dav-textfield
+				[value]="newGooglePlayLink"
+				[label]="locale.editAppDialog.googlePlayLinkTextfieldLabel"
+				[placeholder]="locale.editAppDialog.googlePlayLinkTextfieldPlaceholder"
+				type="url"
+				autocomplete="url"
+				[errorMessage]="editAppDialogGooglePlayLinkError"
+				(change)="newGooglePlayLink = $event.detail.value">
+			</dav-textfield>
+		</div>
 
-	<!-- Weblink -->
-	<div class="mb-3">
-		<fluent-text-field
-			style="width: 100%"
-			[value]="newWebLink"
-			type="text"
-			[placeholder]="locale.editAppDialog.webLinkTextfieldPlaceholder"
-			(input)="newWebLink = $event.target.value">
-			{{ locale.editAppDialog.webLinkTextfieldLabel }}
-		</fluent-text-field>
-
-		<p class="text-field-error" *ngIf="editAppDialogWebLinkError.length > 0">
-			{{ editAppDialogWebLinkError }}
-		</p>
-	</div>
-
-	<!-- GooglePlayLink -->
-	<div class="mb-3">
-		<fluent-text-field
-			style="width: 100%"
-			[value]="newGooglePlayLink"
-			type="text"
-			[placeholder]="locale.editAppDialog.googlePlayLinkTextfieldPlaceholder"
-			(input)="newGooglePlayLink = $event.target.value">
-			{{ locale.editAppDialog.googlePlayLinkTextfieldLabel }}
-		</fluent-text-field>
-
-		<p class="text-field-error" *ngIf="editAppDialogGooglePlayLinkError.length > 0">
-			{{ editAppDialogGooglePlayLinkError }}
-		</p>
-	</div>
-
-	<!-- MicrosoftStoreLink -->
-	<div class="mb-3">
-		<fluent-text-field
-			style="width: 100%"
-			[value]="newMicrosoftStoreLink"
-			type="text"
-			[placeholder]="locale.editAppDialog.microsoftStoreLinkTextfieldPlaceholder"
-			(input)="newMicrosoftStoreLink = $event.target.value">
-			{{ locale.editAppDialog.microsoftStoreLinkTextfieldLabel }}
-		</fluent-text-field>
-
-		<p class="text-field-error" *ngIf="editAppDialogMicrosoftStoreLinkError.length > 0">
-			{{ editAppDialogMicrosoftStoreLinkError }}
-		</p>
-	</div>
+		<!-- MicrosoftStoreLink -->
+		<div class="mb-3">
+			<dav-textfield
+				[value]="newMicrosoftStoreLink"
+				[label]="locale.editAppDialog.microsoftStoreLinkTextfieldLabel"
+				[placeholder]="locale.editAppDialog.microsoftStoreLinkTextfieldPlaceholder"
+				type="url"
+				autocomplete="url"
+				[errorMessage]="editAppDialogMicrosoftStoreLinkError"
+				(change)="newMicrosoftStoreLink = $event.detail.value">
+			</dav-textfield>
+		</div>
+	</form>
 </dav-dialog>
 
 <dav-dialog
@@ -172,20 +155,15 @@
 	(primaryButtonClick)="AddTable()"
 	(defaultButtonClick)="addTableDialogVisible = false">
 
-	<div class="mb-3">
-		<fluent-text-field
-			style="width: 100%"
-			type="text"
+	<form class="mb-3">
+		<dav-textfield
+			[label]="locale.addTableDialog.nameTextfieldLabel"
 			[placeholder]="locale.addTableDialog.nameTextfieldPlaceholder"
-			(input)="addTableDialogNewTableName = $event.target.value"
-			(keydown.enter)="AddTable()">
-			{{ locale.addTableDialog.nameTextfieldLabel }}
-		</fluent-text-field>
-
-		<p class="text-field-error" *ngIf="addTableDialogNewTableError.length > 0">
-			{{ addTableDialogNewTableError }}
-		</p>
-	</div>
+			[errorMessage]="addTableDialogNewTableError"
+			(change)="addTableDialogNewTableName = $event.detail.value"
+			(enter)="AddTable()">
+		</dav-textfield>
+	</form>
 </dav-dialog>
 
 <dav-dialog
@@ -198,18 +176,13 @@
 	(primaryButtonClick)="AddApi()"
 	(defaultButtonClick)="addApiDialogVisible = false">
 
-	<div class="mb-3">
-		<fluent-text-field
-			style="width: 100%"
-			type="text"
+	<form class="mb-3">
+		<dav-textfield
+			[label]="locale.addApiDialog.nameTextfieldLabel"
 			[placeholder]="locale.addApiDialog.nameTextfieldPlaceholder"
-			(input)="addApiDialogApiName = $event.target.value"
-			(keydown.enter)="AddApi()">
-			{{ locale.addApiDialog.nameTextfieldLabel }}
-		</fluent-text-field>
-
-		<p class="text-field-error" *ngIf="addApiDialogApiNameError.length > 0">
-			{{ addApiDialogApiNameError }}
-		</p>
-	</div>
+			[errorMessage]="addApiDialogApiNameError"
+			(change)="addApiDialogApiName = $event.detail.value"
+			(enter)="AddApi()">
+		</dav-textfield>
+	</form>
 </dav-dialog>
