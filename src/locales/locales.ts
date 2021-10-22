@@ -298,8 +298,8 @@ const enDefaults = {
 		},
 		plans: {
 			title: "Plans",
-			confirmEmailText: "Confirm your email address to change your plan and get more storage.",
-			confirmEmailLink: "Resend confirmation email"
+			confirmEmailText: "Confirm your email address to get more free storage.",
+			confirmEmailLink: "Send confirmation email"
 		},
 		apps: {
 			title: "Your Apps",
@@ -852,7 +852,7 @@ const deDefaults = {
 		},
 		plans: {
 			title: "Pläne",
-			confirmEmailText: "Bestätige deine Email-Adresse, um deinen Plan zu ändern und mehr Speicherplatz zu bekommen.",
+			confirmEmailText: "Bestätige deine Email-Adresse, um mehr kostenlosen Speicherplatz zu bekommen.",
 			confirmEmailLink: "Bestätigungsemail senden"
 		},
 		apps: {
