@@ -14,62 +14,53 @@
 						</dav-message-bar>
 					</div>
 
-					<fluent-text-field
-						id="first-name-textfield"
-						style="width: 100%"
+					<dav-textfield
+						[label]="locale.firstNameTextfieldLabel"
 						[placeholder]="locale.firstNameTextfieldPlaceholder"
-						type="text"
-						autofocus
 						autocomplete="given-name"
-						(input)="firstName = $event.target.value">
-						{{ locale.firstNameTextfieldLabel }}
-					</fluent-text-field>
+						autofocus
+						(change)="firstName = $event.detail.value">
+					</dav-textfield>
 				</div>
 			</div>
 
 			<!-- Email -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fluent-text-field
-						id="email-textfield"
-						style="width: 100%"
+					<dav-textfield
+						[label]="locale.emailTextfieldLabel"
 						[placeholder]="locale.emailTextfieldPlaceholder"
-						type="text"
+						type="email"
 						autocomplete="email"
-						(input)="email = $event.target.value">
-						{{ locale.emailTextfieldLabel }}
-					</fluent-text-field>
+						(change)="email = $event.detail.value">
+					</dav-textfield>
 				</div>
 			</div>
 
 			<!-- Password -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fluent-text-field
-						id="password-textfield"
-						style="width: 100%"
+					<dav-textfield
+						[label]="locale.passwordTextfieldLabel"
 						[placeholder]="locale.passwordTextfieldPlaceholder"
 						type="password"
 						autocomplete="new-password"
-						(input)="password = $event.target.value">
-						{{ locale.passwordTextfieldLabel }}
-					</fluent-text-field>
+						(change)="password = $event.detail.value">
+					</dav-textfield>
 				</div>
 			</div>
 
 			<!-- Password confirmation -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fluent-text-field
-						id="password-confirmation-textfield"
-						style="width: 100%"
+					<dav-textfield
+						[label]="locale.passwordConfirmationTextfieldLabel"
 						[placeholder]="locale.passwordConfirmationTextFieldPlaceholder"
 						type="password"
 						autocomplete="new-password"
-						(input)="passwordConfirmation = $event.target.value"
-						(keydown.enter)="Signup()">
-						{{ locale.passwordConfirmationTextfieldLabel }}
-					</fluent-text-field>
+						(change)="passwordConfirmation = $event.detail.value"
+						(enter)="Signup()">
+					</dav-textfield>
 
 					<div class="d-flex mt-3">
 						<dav-button

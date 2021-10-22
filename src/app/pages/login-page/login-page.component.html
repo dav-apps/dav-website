@@ -15,32 +15,28 @@
 						</dav-message-bar>
 					</div>
 
-					<fluent-text-field
-						id="email-text-field"
-						style="width: 100%"
+					<dav-textfield
+						[label]="locale.emailTextfieldLabel"
 						[placeholder]="locale.emailTextfieldPlaceholder"
 						type="email"
 						autocomplete="email"
 						autofocus
-						(input)="email = $event.target.value">
-						{{ locale.emailTextfieldLabel }}
-					</fluent-text-field>
+						(change)="email = $event.detail.value">
+					</dav-textfield>
 				</div>
 			</div>
 
 			<!-- Password -->
 			<div class="row mt-3">
 				<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
-					<fluent-text-field
-						id="password-text-field"
-						style="width: 100%"
+					<dav-textfield
+						[label]="locale.passwordTextfieldLabel"
 						[placeholder]="locale.passwordTextfieldPlaceholder"
 						type="password"
 						autocomplete="current-password"
-						(input)="password = $event.target.value"
-						(keydown.enter)="Login()">
-						{{ locale.passwordTextfieldLabel }}
-					</fluent-text-field>
+						(change)="password = $event.detail.value"
+						(enter)="Login()">
+					</dav-textfield>
 
 					<div class="d-flex flex-row">
 						<div class="d-flex">
