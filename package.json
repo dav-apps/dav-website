@@ -1,6 +1,6 @@
 {
 	"name": "dav-website",
-	"version": "1.7.3",
+	"version": "1.7.4",
 	"scripts": {
 		"ng": "ng",
 		"start": "cd dist && node server.js",
@@ -40,7 +40,7 @@
 		"bootstrap": "^4.5.3",
 		"chart.js": "^2.9.3",
 		"chartkick": "^3.2.0",
-		"dav-js": "git+https://github.com/dav-apps/dav-js.git#v2.0.10",
+		"dav-js": "git+https://github.com/dav-apps/dav-js.git#v2.0.11",
 		"dav-ui-components": "git+https://github.com/dav-apps/dav-ui-components.git#v0.4",
 		"jquery": "^3.5.1",
 		"moment": "2.24.0",
