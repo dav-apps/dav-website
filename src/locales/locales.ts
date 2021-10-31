@@ -468,13 +468,6 @@ const enDefaults = {
 		yearly: "Yearly",
 		totalUsers: "Total users: {0}"
 	},
-	apiPage: {
-		loginRequiredMessage: "You need to log in to access this page",
-		accessNotAllowedMessage: "You can't access this page",
-		endpoints: "Endpoints",
-		functions: "Functions",
-		errors: "Errors"
-	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
 		save: "Save",
@@ -1021,13 +1014,6 @@ const deDefaults = {
 		monthly: "Monatlich",
 		yearly: "Jährlich",
 		totalUsers: "Nutzer insgesamt: {0}"
-	},
-	apiPage: {
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
-		endpoints: "Endpunkte",
-		functions: "Funktionen",
-		errors: "Fehler"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

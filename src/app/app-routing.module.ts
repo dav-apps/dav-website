@@ -17,7 +17,6 @@ import { DevPageComponent } from './pages/dev-page/dev-page.component'
 import { AppPageComponent } from './pages/app-page/app-page.component'
 import { StatisticsPageComponent } from './pages/statistics-page/statistics-page.component'
 import { AppStatisticsPageComponent } from './pages/app-statistics-page/app-statistics-page.component'
-import { ApiPageComponent } from './pages/api-page/api-page.component'
 import { PurchasePageComponent } from './pages/purchase-page/purchase-page.component'
 
 const routes: Routes = [
@@ -37,7 +36,6 @@ const routes: Routes = [
 	{ path: "dev/statistics", component: StatisticsPageComponent },
 	{ path: "dev/:id", component: AppPageComponent },
 	{ path: "dev/:id/statistics", component: AppStatisticsPageComponent },
-	{ path: "dev/:id/api/:apiId", component: ApiPageComponent },
 	{ path: "purchase/:uuid", component: PurchasePageComponent }
 ]
 

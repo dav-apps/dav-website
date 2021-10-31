@@ -44,7 +44,6 @@ import { DevPageComponent } from 'src/app/pages/dev-page/dev-page.component'
 import { AppPageComponent } from 'src/app/pages/app-page/app-page.component'
 import { StatisticsPageComponent } from 'src/app/pages/statistics-page/statistics-page.component'
 import { AppStatisticsPageComponent } from 'src/app/pages/app-statistics-page/app-statistics-page.component'
-import { ApiPageComponent } from 'src/app/pages/api-page/api-page.component'
 import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page.component'
 
 @NgModule({
@@ -71,7 +70,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		AppPageComponent,
 		StatisticsPageComponent,
 		AppStatisticsPageComponent,
-		ApiPageComponent,
 		PurchasePageComponent
   	],
   	imports: [
