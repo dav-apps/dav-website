@@ -6,7 +6,6 @@ import { environment } from '../environments/environment'
 import { AppRoutingModule } from './app-routing.module'
 import { ServiceWorkerModule } from '@angular/service-worker'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { MatSidenavModule } from '@angular/material/sidenav'
 import { MatListModule } from '@angular/material/list'
@@ -77,7 +76,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		AppRoutingModule,
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 		BrowserAnimationsModule,
-		NgbModule,
 		FontAwesomeModule,
 		MatSidenavModule,
 		MatListModule,
