@@ -58,8 +58,8 @@
 	[header]="locale.editAppDialog.header"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="editAppDialogVisible"
-	[isLoading]="editAppDialogLoading"
+	[visible]="editAppDialogVisible"
+	[loading]="editAppDialogLoading"
 	(dismiss)="editAppDialogVisible = false"
 	(primaryButtonClick)="UpdateApp()"
 	(defaultButtonClick)="editAppDialogVisible = false">
@@ -133,8 +133,8 @@
 	[header]="app.Published ? locale.publishAppDialog.unpublishHeader : locale.publishAppDialog.publishHeader"
 	[primaryButtonText]="locale.publishAppDialog.confirm"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="publishAppDialogVisible"
-	[isLoading]="publishAppDialogLoading"
+	[visible]="publishAppDialogVisible"
+	[loading]="publishAppDialogLoading"
 	(dismiss)="publishAppDialogVisible = false"
 	(primaryButtonClick)="PublishApp()"
 	(defaultButtonClick)="publishAppDialogVisible = false">
@@ -149,8 +149,8 @@
 	[header]="locale.addTableDialog.header"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="addTableDialogVisible"
-	[isLoading]="addTableDialogLoading"
+	[visible]="addTableDialogVisible"
+	[loading]="addTableDialogLoading"
 	(dismiss)="addTableDialogVisible = false"
 	(primaryButtonClick)="AddTable()"
 	(defaultButtonClick)="addTableDialogVisible = false">
@@ -170,8 +170,8 @@
 	[header]="locale.addApiDialog.header"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="addApiDialogVisible"
-	[isLoading]="addApiDialogLoading"
+	[visible]="addApiDialogVisible"
+	[loading]="addApiDialogLoading"
 	(dismiss)="addApiDialogVisible = false"
 	(primaryButtonClick)="AddApi()"
 	(defaultButtonClick)="addApiDialogVisible = false">

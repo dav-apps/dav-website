@@ -235,8 +235,8 @@
 	[header]="paymentFormDialogLocale.header"
 	[primaryButtonText]="paymentFormDialogLocale.save"
 	[defaultButtonText]="paymentFormDialogLocale.cancel"
-	[isVisible]="paymentFormDialogVisible"
-	[isLoading]="paymentFormDialogLoading"
+	[visible]="paymentFormDialogVisible"
+	[loading]="paymentFormDialogLoading"
 	(dismiss)="paymentFormDialogVisible = false"
 	(primaryButtonClick)="SavePaymentMethod()"
 	(defaultButtonClick)="paymentFormDialogVisible = false">
