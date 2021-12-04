@@ -9,7 +9,7 @@
 	</div>
 
 	<div>
-		<p class="mb-3 font-weight-light" style="font-size: 18px">{{ app.Description }}</p>
+		<p class="mb-3 fw-light" style="font-size: 18px">{{ app.Description }}</p>
 
 		<dav-button
 			type="accent"
@@ -23,7 +23,7 @@
 			{{ locale.edit }}
 		</dav-button>
 
-		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
+		<h5 class="fw-light mt-4">{{ locale.published }}</h5>
 
 		<dav-toggle
 			[checked]="app.Published"
@@ -33,17 +33,17 @@
 
 	<div class="row">
 		<div class="mx-4">
-			<h3 class="font-weight-light mb-3 mt-4">{{ locale.tables }}</h3>
+			<h3 class="fw-light mb-3 mt-4">{{ locale.tables }}</h3>
 			<ul class="list-group">
-				<li class="list-group-item text-center cursor font-weight-light p-1" style="font-size: 26px" (click)="ShowAddTableDialog()">+</li>
+				<li class="list-group-item text-center cursor fw-light p-1" style="font-size: 26px" (click)="ShowAddTableDialog()">+</li>
 				<li class="list-group-item text-center" *ngFor="let table of app.Tables">{{ table.Name }}</li>
 			</ul>
 		</div>
 
 		<div class="mx-4">
-			<h3 class="font-weight-light mb-3 mt-4">{{ locale.apis }}</h3>
+			<h3 class="fw-light mb-3 mt-4">{{ locale.apis }}</h3>
 			<ul class="list-group">
-				<li class="list-group-item text-center cursor font-weight-light p-1" style="font-size: 26px" (click)="ShowAddApiDialog()">+</li>
+				<li class="list-group-item text-center cursor fw-light p-1" style="font-size: 26px" (click)="ShowAddApiDialog()">+</li>
 				<li class="list-group-item text-center" *ngFor="let api of app.Apis">{{ api.Name }}</li>
 			</ul>
 		</div>
@@ -135,7 +135,7 @@
 	(primaryButtonClick)="PublishApp()"
 	(defaultButtonClick)="publishAppDialogVisible = false">
 
-	<p class="font-weight-light"
+	<p class="fw-light"
 		style="max-width: 300px; font-size: 14px">
 		{{ app.Published ? locale.publishAppDialog.unpublishSubtext : locale.publishAppDialog.publishSubtext }}
 	</p>

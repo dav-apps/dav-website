@@ -15,11 +15,11 @@
 		[labels]="userChartLabels"
 		chartType="line">
 	</canvas>
-	<p class="mx-auto mt-3 mb-5 pl-4 font-weight-light" style="max-width: 800px">{{ totalUsersText }}</p>
+	<p class="mx-auto mt-3 mb-5 pl-4 fw-light" style="max-width: 800px">{{ totalUsersText }}</p>
 
 	<div class="row d-flex justify-content-center mb-5">
 		<div class="my-4">
-			<h3 class="text-center font-weight-light">{{ locale.plans }}</h3>
+			<h3 class="text-center fw-light">{{ locale.plans }}</h3>
 			<canvas baseChart
 				style="height: 250px"
 				[data]="plansChartData"
@@ -29,7 +29,7 @@
 		</div>
 
 		<div class="my-4">
-			<h3 class="text-center font-weight-light">{{ locale.confirmations }}</h3>
+			<h3 class="text-center fw-light">{{ locale.confirmations }}</h3>
 			<canvas baseChart
 				style="height: 250px"
 				[data]="confirmationsChartData"
@@ -39,7 +39,7 @@
 		</div>
 	</div>
 
-	<h2 class="text-center font-weight-light mb-3">{{ locale.activeUsers }}</h2>
+	<h2 class="text-center fw-light mb-3">{{ locale.activeUsers }}</h2>
 
 	<canvas baseChart
 		class="mx-auto mb-5"

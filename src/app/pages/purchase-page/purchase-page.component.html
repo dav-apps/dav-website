@@ -5,14 +5,14 @@
 	*ngIf="loginUser">
 	<img src="/assets/images/dav-logo.png" width="60" height="60" class="align-self-center" />
 
-	<h2 class="text-center font-weight-light mt-4 mb-3">{{ locale.loginTitle }}</h2>
+	<h2 class="text-center fw-light mt-4 mb-3">{{ locale.loginTitle }}</h2>
 
 	<div class="d-flex flex-column">
 		<!-- User info -->
 		<div class="mx-auto list-group-item" style="border: none">
 			<div class="media">
 				<img class="mr-3 rounded" [src]="loginUser.profileImage" [alt]="locale.profileImageAlt" height="70" width="70">
-				<h5 class="my-auto font-weight-light">{{ loginUser.firstName }}</h5>
+				<h5 class="my-auto fw-light">{{ loginUser.firstName }}</h5>
 			</div>
 		</div>
 
@@ -108,7 +108,7 @@
 					</div>
 
 					<!-- Description -->
-					<h5 class="mt-4 font-weight-light">{{ purchase.ProductName }}</h5>
+					<h5 class="mt-4 fw-light">{{ purchase.ProductName }}</h5>
 
 					<!-- Provider image and name -->
 					<div class="d-flex">
@@ -117,7 +117,7 @@
 							class="rounded-circle shadow-sm"
 							style="width: 30px; height: 30px">
 						
-						<p class="font-weight-light my-auto"
+						<p class="fw-light my-auto"
 							style="font-size: 18px; margin-left: 13px">
 							{{ purchase.ProviderName }}
 						</p>
@@ -149,7 +149,7 @@
 				</div>
 
 				<!-- Description -->
-				<h5 class="mt-4 mx-auto font-weight-light text-center" style="max-width: 300px">{{ purchase.ProductName }}</h5>
+				<h5 class="mt-4 mx-auto fw-light text-center" style="max-width: 300px">{{ purchase.ProductName }}</h5>
 
 				<!-- Provider image and name -->
 				<div class="d-flex mx-auto">
@@ -158,7 +158,7 @@
 						class="rounded-circle shadow-sm"
 						style="width: 30px; height: 30px">
 					
-					<p class="font-weight-light my-auto"
+					<p class="fw-light my-auto"
 						style="font-size: 18px; margin-left: 13px">
 						{{ purchase.ProviderName }}
 					</p>
@@ -172,14 +172,14 @@
 					<div class="list-group-item mb-3 shadow-sm">
 						<div class="media">
 							<img class="mr-3 rounded" [src]="dataService.dav.user.ProfileImage" [alt]="locale.profileImageAlt" height="70" width="70">
-							<h5 class="my-auto font-weight-light">{{ dataService.dav.user.FirstName }}</h5>
+							<h5 class="my-auto fw-light">{{ dataService.dav.user.FirstName }}</h5>
 						</div>
 					</div>
 
 					<!-- Payment method card -->
 					<div class="card shadow-sm" style="display: inline-block" *ngIf="hasPaymentMethod">
 						<div class="card-body">
-							<h5 class="font-weight-light mb-3">{{ locale.paymentMethodCardHeader }}</h5>
+							<h5 class="fw-light mb-3">{{ locale.paymentMethodCardHeader }}</h5>
 
 							<div class="d-flex">
 								<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
@@ -206,7 +206,7 @@
 						(mouseover)="addPaymentMethodHover = true"
 						(mouseout)="addPaymentMethodHover = false">
 						<div class="card-body">
-							<h6 class="m-0 font-weight-light">{{ locale.addPaymentMethod }}</h6>
+							<h6 class="m-0 fw-light">{{ locale.addPaymentMethod }}</h6>
 						</div>
 					</div>
 

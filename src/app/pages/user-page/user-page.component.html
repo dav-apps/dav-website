@@ -51,7 +51,7 @@
 
 		<!-- General settings -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 0">
-			<h1 class="text-center font-weight-light mb-4">{{ locale.general.title }}</h1>
+			<h1 class="text-center fw-light mb-4">{{ locale.general.title }}</h1>
 
 			<div class="d-flex flex-column align-items-center">
 				<div style="width: 280px; margin-right: -70px">
@@ -214,7 +214,7 @@
 		<!-- Plans -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 1">
 			<h1
-				class="text-center font-weight-light"
+				class="text-center fw-light"
 				[ngClass]="dataService.dav.user.Plan == 0 ? 'mb-3' : 'mb-0'">
 				{{ locale.plans.title }}
 			</h1>
@@ -248,7 +248,7 @@
 							*ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
 
 							<div class="card-body">
-								<h5 class="font-weight-light mb-3">{{ pricingLocale.paymentMethodCardHeader }}</h5>
+								<h5 class="fw-light mb-3">{{ pricingLocale.paymentMethodCardHeader }}</h5>
 
 								<div class="d-flex">
 									<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
@@ -271,7 +271,7 @@
 							*ngIf="dataService.dav.user.Plan > 0 && periodEndDate">
 
 							<div class="card-body">
-								<h5 class="font-weight-light">{{ dataService.dav.user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd }}</h5>
+								<h5 class="fw-light">{{ dataService.dav.user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd }}</h5>
 								<p>{{ periodEndDate }}</p>
 
 								<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
@@ -295,7 +295,7 @@
 						<div class="col-md-4 mt-3 mb-4">
 							<div class="card text-center shadow">
 								<div class="card-body">
-									<h4 class="card-title font-weight-light" style="margin-bottom: 40px">Free</h4>
+									<h4 class="card-title fw-light" style="margin-bottom: 40px">Free</h4>
 									<ul class="list-group">
 										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.free.storage }}</li>
 										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
@@ -337,8 +337,8 @@
 						<div class="col-md-4 mt-3 mb-4">
 							<div class="card text-center shadow">
 								<div class="card-body">
-									<h4 class="card-title font-weight-light">Plus</h4>
-									<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem">{{ pricingLocale.plus.price }}</h6>
+									<h4 class="card-title fw-light">Plus</h4>
+									<h6 class="card-subtitle text-muted fw-light" style="margin-bottom: 1rem">{{ pricingLocale.plus.price }}</h6>
 									<ul class="list-group">
 										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.storage }}</li>
 										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
@@ -391,8 +391,8 @@
 						<div class="col-md-4 mt-3">
 							<div class="card text-center shadow">
 								<div class="card-body">
-									<h4 class="card-title font-weight-light">Pro</h4>
-									<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem;">{{ pricingLocale.pro.price }}</h6>
+									<h4 class="card-title fw-light">Pro</h4>
+									<h6 class="card-subtitle text-muted fw-light" style="margin-bottom: 1rem;">{{ pricingLocale.pro.price }}</h6>
 									<ul class="list-group">
 										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.pro.storage }}</li>
 										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
@@ -439,7 +439,7 @@
 
 		<!-- Apps -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 2">
-			<h1 class="text-center font-weight-light mb-4">{{ locale.apps.title }}</h1>
+			<h1 class="text-center fw-light mb-4">{{ locale.apps.title }}</h1>
 
 			<div class="mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0 || successMessage.length > 0">
 				<dav-message-bar
@@ -481,7 +481,7 @@
 		<!-- Provider -->
 		<div class="container navbar-margin pt-4 ms-motion-slideUpIn mb-4" style="background-color: white" *ngIf="selectedMenu == 3">
 			<div *ngIf="!providerStripeAccount">
-				<h1 class="text-center font-weight-light mb-3">{{ locale.provider.title }}</h1>
+				<h1 class="text-center fw-light mb-3">{{ locale.provider.title }}</h1>
 
 				<!-- Message bar for errors -->
 				<div class="mx-auto mb-3" style="width: 250px" *ngIf="errorMessage.length > 0">
@@ -492,15 +492,15 @@
 					</dav-message-bar>
 				</div>
 
-				<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
+				<p class="text-center fw-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
 
-				<p class="text-center font-weight-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
+				<p class="text-center fw-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
 				<div class="d-flex justify-content-center">
-					<a class="text-center font-weight-light" style="color: black; font-size: 19px" href="https://pocketlib.dav-apps.tech" target="blank">PocketLib</a>
+					<a class="text-center fw-light" style="color: black; font-size: 19px" href="https://pocketlib.dav-apps.tech" target="blank">PocketLib</a>
 				</div>
 
 				<div class="mt-5 d-flex flex-column align-items-center">
-					<p class="text-center font-weight-light">{{ locale.provider.setupExplanation }}</p>
+					<p class="text-center fw-light">{{ locale.provider.setupExplanation }}</p>
 
 					<dav-button
 						type="accent"
@@ -511,7 +511,7 @@
 			</div>
 
 			<div *ngIf="providerStripeAccount">
-				<h1 class="text-center font-weight-light mb-3">{{ locale.provider.dashboardTitle }}</h1>
+				<h1 class="text-center fw-light mb-3">{{ locale.provider.dashboardTitle }}</h1>
 
 				<div class="mx-auto my-2" style="width: 300px">
 					<!-- Message bar for currently due requirements -->
@@ -550,7 +550,7 @@
 						class="card shadow mt-3"
 						style="display: inline-block; margin: 0px 15px">
 						<div class="card-body">
-							<h5 class="font-weight-light mb-3">{{ locale.provider.aboutYou }}</h5>
+							<h5 class="fw-light mb-3">{{ locale.provider.aboutYou }}</h5>
 							<p>{{ providerStripeAccount.individual.first_name }} {{ providerStripeAccount.individual.last_name }}</p>
 
 							<dav-button
@@ -566,7 +566,7 @@
 						class="card shadow mt-3"
 						style="display: inline-block; margin: 0px 15px">
 						<div class="card-body">
-							<h5 class="font-weight-light mb-3">{{ locale.provider.yourPayoutAccount }}</h5>
+							<h5 class="fw-light mb-3">{{ locale.provider.yourPayoutAccount }}</h5>
 
 							<div *ngIf="providerStripeAccount.external_accounts.data.length > 0">
 								<p style="margin-bottom: 8px">{{ providerBankAccount.bank_name }}</p>
@@ -577,7 +577,7 @@
 							</div>
 
 							<div *ngIf="providerStripeAccount.external_accounts.data.length == 0">
-								<p class="font-weight-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
+								<p class="fw-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
 							</div>
 
 							<dav-button
@@ -594,7 +594,7 @@
 						style="display: inline-block; margin: 0px 15px"
 						*ngIf="providerStripeBalance">
 						<div class="card-body">
-							<h5 class="font-weight-light mb-3">{{ locale.provider.nextPayout }}</h5>
+							<h5 class="fw-light mb-3">{{ locale.provider.nextPayout }}</h5>
 
 							<p>{{ providerStripeBalance }}</p>
 						</div>
@@ -635,7 +635,7 @@
 	(primaryButtonClick)="SetStripeSubscription()"
 	(defaultButtonClick)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">
 
-	<p class="font-weight-light"
+	<p class="fw-light"
 		style="max-width: 300px; font-size: 14px">
 		{{ changePlanDialogDescription }}
 	</p>

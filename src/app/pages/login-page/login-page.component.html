@@ -1,7 +1,7 @@
 <div class="container d-flex flex-column ms-motion-slideUpIn" style="margin-top: 100px; margin-bottom: 100px">
 	<img src="/assets/images/dav-logo.png" width="60" height="60" class="align-self-center" />
 
-	<h2 class="text-center font-weight-light my-4">{{ locale.title }}</h2>
+	<h2 class="text-center fw-light my-4">{{ locale.title }}</h2>
 
 	<div class="d-flex flex-column">
 		<form>
@@ -81,7 +81,7 @@
 		<button class="list-group-item list-group-item-action" style="padding: 16px" (click)="LoginAsLoggedInUser()">
 			<div class="media">
 				<img class="mr-3 rounded" [src]="dataService.dav.user.ProfileImage" alt="Profile image of the user" height="70" width="70">
-				<h5 class="my-auto font-weight-light">{{ locale.loginAs.replace('{0}', dataService.dav.user.FirstName) }}</h5>
+				<h5 class="my-auto fw-light">{{ locale.loginAs.replace('{0}', dataService.dav.user.FirstName) }}</h5>
 			</div>
 		</button>
 	</div>

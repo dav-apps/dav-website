@@ -23,7 +23,7 @@
 	</div>
 
 	<div class="jumbotron mt-4" style="padding: 35px 38px" *ngIf="dataService.dav.user.Apps.length == 0">
-		<h1 class="font-weight-light">{{ locale.welcomeTitle.replace('{0}', dataService.dav.user.FirstName) }}</h1>
+		<h1 class="fw-light">{{ locale.welcomeTitle.replace('{0}', dataService.dav.user.FirstName) }}</h1>
 
 		<p class="lead">{{ locale.welcomeMessage }}</p>
 		<a class="btn btn-primary mt-2" routerLink="apps" role="button">{{ locale.welcomeButton }}</a>

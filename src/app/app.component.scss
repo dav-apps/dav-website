@@ -1,4 +1,4 @@
-.navbar-item{
+.navbar-item {
 	margin: 0px;
 	font-size: 19px;
 	color: rgba(0, 0, 0, 1) !important;
@@ -6,34 +6,38 @@
 	height: 56px;
 }
 
-.navbar-item:hover{
+.navbar-item:hover {
 	background-color: white;
 }
 
-footer{
+a.navbar-brand, a.navbar-item {
+	text-decoration: none;
+}
+
+footer {
    margin: 45px 0px;
    padding-top: 5px;
    border-top: 1px solid #eaeaea;
    color: #777;
 
-   a{
+   a {
       color: #222;
    }
 
-   a:hover{
+   a:hover {
       color: #222;
    }
 
-   small{
+   small {
       float: left;
    }
 
-   ul{
+   ul {
       float: right;
 		list-style: none;
 		font-size: 15px;
 
-      li{
+      li {
          float: left;
 			margin-left: 15px;
 			color: black;
