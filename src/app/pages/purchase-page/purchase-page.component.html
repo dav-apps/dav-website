@@ -11,7 +11,7 @@
 		<!-- User info -->
 		<div class="mx-auto list-group-item" style="border: none">
 			<div class="media">
-				<img class="mr-3 rounded" [src]="loginUser.profileImage" [alt]="locale.profileImageAlt" height="70" width="70">
+				<img class="me-3 rounded" [src]="loginUser.profileImage" [alt]="locale.profileImageAlt" height="70" width="70">
 				<h5 class="my-auto fw-light">{{ loginUser.firstName }}</h5>
 			</div>
 		</div>
@@ -87,12 +87,12 @@
 						<img
 							src="/assets/images/pocketlib-logo.png"
 							height="22"
-							class="pl-2 cursor"
+							class="ps-2 cursor"
 							style="margin-top: 1px"
 							(click)="NavigateBack()" />
 
 						<p
-							class="mb-0 pl-2 cursor"
+							class="mb-0 ps-2 cursor"
 							style="font-size: 15px; margin-top: 1px"
 							(click)="NavigateBack()">
 							PocketLib
@@ -138,8 +138,8 @@
 							<i class="ms-Icon ms-Icon--Back" aria-hidden="true" style="font-size: 13px"></i>
 						</button>
 
-						<img src="/assets/images/pocketlib-logo.png" height="22" class="pl-2 cursor" style="margin-top: 1px" />
-						<p class="mb-0 pl-2 cursor" style="font-size: 15px; margin-top: 1px">PocketLib</p>
+						<img src="/assets/images/pocketlib-logo.png" height="22" class="ps-2 cursor" style="margin-top: 1px" />
+						<p class="mb-0 ps-2 cursor" style="font-size: 15px; margin-top: 1px">PocketLib</p>
 					</div>
 
 					<img
@@ -171,7 +171,7 @@
 					<!-- User info -->
 					<div class="list-group-item mb-3 shadow-sm">
 						<div class="media">
-							<img class="mr-3 rounded" [src]="dataService.dav.user.ProfileImage" [alt]="locale.profileImageAlt" height="70" width="70">
+							<img class="me-3 rounded" [src]="dataService.dav.user.ProfileImage" [alt]="locale.profileImageAlt" height="70" width="70">
 							<h5 class="my-auto fw-light">{{ dataService.dav.user.FirstName }}</h5>
 						</div>
 					</div>
@@ -182,7 +182,7 @@
 							<h5 class="fw-light mb-3">{{ locale.paymentMethodCardHeader }}</h5>
 
 							<div class="d-flex">
-								<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+								<i class="ms-Icon ms-Icon--PaymentCard me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
 								<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
 							</div>
 							<p style="margin-bottom: 8px">{{ locale.cardExpires }} {{ paymentMethodExpirationMonth }} / {{ paymentMethodExpirationYear }}</p>

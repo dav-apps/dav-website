@@ -42,7 +42,7 @@
   	<mat-sidenav-content style="overflow: hidden">
 		<!-- SideNav toggle button -->
 		<button 
-			class="btn btn-sm ml-2 icon-button"
+			class="btn btn-sm ms-2 icon-button"
 			style="margin-top: 84px; height: 40px; width: 40px; font-size: 18px; position: absolute; z-index: 1"
 			(click)="sideNavOpened = !sideNavOpened"
 			*ngIf="sideNavHidden">
@@ -113,7 +113,7 @@
 
 							<button
 								type="button"
-								class="btn btn-sm ml-2 icon-button"
+								class="btn btn-sm ms-2 icon-button"
 								style="margin-top: 28px"
 								[disabled]="firstNameLoading"
 								(click)="SaveFirstName()"
@@ -146,7 +146,7 @@
 
 							<button
 								type="button"
-								class="btn btn-sm ml-2 icon-button"
+								class="btn btn-sm ms-2 icon-button"
 								style="margin-top: 28px"
 								[disabled]="emailLoading"
 								(click)="SaveEmail()"
@@ -251,7 +251,7 @@
 								<h5 class="fw-light mb-3">{{ pricingLocale.paymentMethodCardHeader }}</h5>
 
 								<div class="d-flex">
-									<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+									<i class="ms-Icon ms-Icon--PaymentCard me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
 									<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
 								</div>
 
@@ -544,7 +544,7 @@
 					</dav-message-bar>
 				</div>
 
-				<div class="row ml-2">
+				<div class="row ms-2">
 					<!-- Card for the provider -->
 					<div
 						class="card shadow mt-3"
@@ -571,7 +571,7 @@
 							<div *ngIf="providerStripeAccount.external_accounts.data.length > 0">
 								<p style="margin-bottom: 8px">{{ providerBankAccount.bank_name }}</p>
 								<div class="d-flex">
-									<i class="ms-Icon ms-Icon--BankSolid mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+									<i class="ms-Icon ms-Icon--BankSolid me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
 									<p style="margin-bottom: 8px">**** {{ providerBankAccount.last4 }}</p>
 								</div>
 							</div>
