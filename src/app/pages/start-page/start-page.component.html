@@ -1,15 +1,27 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="dataService.dav.isLoggedIn">
-	<h1 class="text-center fw-light mb-4">{{ locale.loggedInTitle }}</h1>
+	<h1
+		class="text-center fw-light"
+		[ngClass]="dataService.dav.user.Apps.length == 0 ? 'mb-4' : 'mb-3'">
+		{{ locale.loggedInTitle }}
+	</h1>
 
 	<!-- Error message -->
-	<div class="mx-auto mb-4" style="width: 300px" *ngIf="dataService.startPageErrorMessage.length > 0">
+	<div
+		class="mx-auto"
+		[ngClass]="dataService.dav.user.Apps.length == 0 ? 'mb-4' : 'mb-2'"
+		style="width: 300px"
+		*ngIf="dataService.startPageErrorMessage.length > 0">
 		<dav-message-bar type="danger">
 			{{ dataService.startPageErrorMessage }}
 		</dav-message-bar>
 	</div>
 
 	<!-- Success message -->
-	<div class="mx-auto mb-4" style="width: 300px" *ngIf="dataService.startPageSuccessMessage.length > 0">
+	<div
+		class="mx-auto"
+		[ngClass]="dataService.dav.user.Apps.length == 0 ? 'mb-4' : 'mb-2'"
+		style="width: 300px"
+		*ngIf="dataService.startPageSuccessMessage.length > 0">
 		<dav-message-bar type="success">
 			{{ dataService.startPageSuccessMessage }}
 		</dav-message-bar>
@@ -22,8 +34,8 @@
 		</dav-website-app-card>
 	</div>
 
-	<div class="d-flex justify-content-center">
-		<div class="px-sm-5 px-3 py-3 mx-sm-5 mx-3 bg-light rounded-3" style="max-width: 600px" *ngIf="dataService.dav.user.Apps.length == 0">
+	<div class="d-flex justify-content-center" *ngIf="dataService.dav.user.Apps.length == 0">
+		<div class="px-sm-5 px-3 py-3 mx-sm-5 mx-3 bg-light rounded-3" style="max-width: 600px">
 			<div class="container-fluid py-sm-5 py-3">
 				<h1 class="fw-light">{{ locale.welcomeTitle.replace('{0}', dataService.dav.user.FirstName) }}</h1>
 
@@ -64,8 +76,8 @@
 	</div>
 
 	<!-- PocketLib -->
-	<div class="row pt-3" style="width: 100%; margin: 0px; background-color: #efefef">
-		<div class="col-12 col-md-6 ps-5 pe-5 pr-md-0" style="width: 100%; font-family: 'Segoe UI'">
+	<div class="row pt-3" style="margin: 0px; background-color: #efefef">
+		<div class="col-12 col-md-6 ps-5 pe-5 pr-md-0" style="font-family: 'Segoe UI'">
 			<h2 class="mt-3 text-center">PocketLib</h2>
 
 			<p style="font-size: 20px" class="mt-5 mb-4" [innerHtml]="locale.pocketlibDescription"></p>
@@ -75,7 +87,7 @@
 			<a href='https://play.google.com/store/apps/details?id=app.dav.pocketlib&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' class="google-play-badge" /></a>
 			<a href='https://github.com/dav-apps/PocketLib' target="blank" class="ms-2"><img src="/assets/images/GitHub-Mark-64px.png" class="github-badge"></a>
 		</div>
-		<div class="col-12 col-md-6 d-flex" style="width: 100%">
+		<div class="col-12 col-md-6 d-flex">
 			<div class="mx-auto my-5">
 				<img
 					src="/assets/images/PocketLibScreenshot.png" 
@@ -88,7 +100,7 @@
 	</div>
 
 	<!-- UniversalSoundboard -->
-	<div class="row pt-3" style="width: 100%; margin: 0px; background-color: #efefef">
+	<div class="row pt-3" style="margin: 0px; background-color: #efefef">
 		<div class="col-12 col-md-7 d-flex">
 			<div class="mx-auto my-5">
 				<img
@@ -99,7 +111,7 @@
 					alt="Screenshot of UniversalSoundboard">
 			</div>
 		</div>
-		<div class="col-12 col-md-5 pe-5 pl-md-0 ps-5 pb-4" style="width: 100%; font-family: 'Segoe UI'">
+		<div class="col-12 col-md-5 pe-5 pl-md-0 ps-5 pb-4" style="font-family: 'Segoe UI'">
 			<h2 class="mt-3 text-center">UniversalSoundboard</h2>
 
 			<p style="font-size: 20px" class="mt-5 mb-4" [innerHtml]="locale.universalSoundboardDescription"></p>
@@ -110,8 +122,8 @@
 	</div>
 
 	<!-- Calendo -->
-	<div class="row pt-3" style="width: 100%; margin: 0px; background-color: #efefef">
-		<div class="col-12 col-md-6 ps-5 pe-5 pr-md-0" style="width: 100%; font-family: 'Segoe UI'">
+	<div class="row pt-3" style="margin: 0px; background-color: #efefef">
+		<div class="col-12 col-md-6 ps-5 pe-5 pr-md-0" style="font-family: 'Segoe UI'">
 			<h2 class="mt-3 text-center">Calendo</h2>
 
 			<p style="font-size: 20px" class="mt-5 mb-4" [innerHtml]="locale.calendoDescription"></p>
@@ -121,7 +133,7 @@
 			<a href='https://play.google.com/store/apps/details?id=app.dav.calendo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' class="google-play-badge" /></a>
 			<a href='https://github.com/dav-apps/Calendo' target="blank" class="ms-2"><img src="/assets/images/GitHub-Mark-64px.png" class="github-badge"></a>
 		</div>
-		<div class="col-12 col-md-6 d-flex" style="width: 100%">
+		<div class="col-12 col-md-6 d-flex">
 			<div class="mx-auto my-5">
 				<img
 					src="/assets/images/CalendoScreenshot.png" 

@@ -571,13 +571,13 @@ const deDefaults = {
 		universalSoundboardDescription: `
 			Erstelle dein eigenes Soundboard mit UniversalSoundboard!
 			<br>Füge deine Sounds oder deine Musiksammlung hinzu. Sortiere deine Sounds in Kategorien und speichere deine Lieblingssounds als Favoriten, um den Überblick über deine Sammlung zu behalten.
-			<br><br>Melde dich mit deinem dav-Account an, um dein Soundboard auf mehreren Geräten zu nutzen.
+			<br><br>Melde dich mit deinem dav Account an, um dein Soundboard auf mehreren Geräten zu nutzen.
 		`,
 		calendoDescription: `
 			Calendo ist eine einfache App, um deinen Zeitplan zu verwalten.
 			Organisiere deine Termine, verwalte deine Todos und gruppiere Todos nach Themen.
 			<br>Mit Calendo hast du immer den Überblick über bevorstehende Ereignisse und Aufgaben.
-			<br><br>Melde dich mit deinem dav-Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
+			<br><br>Melde dich mit deinem dav Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
 		`,
 		loggedInTitle: "Deine Apps",
 		welcomeTitle: "Hi, {0}",
