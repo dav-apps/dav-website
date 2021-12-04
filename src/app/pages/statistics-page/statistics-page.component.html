@@ -1,15 +1,11 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn">
-	<div class="d-flex mb-3">
-		<div class="mx-auto d-flex">
-			<button
-				type="button"
-				class="btn"
-				style="height: 35px; width: 41px; padding: 2px 0px 0px 0px; margin-top: 7px"
-				(click)="GoBack()">
-				<i class="ms-Icon ms-Icon--Back" aria-hidden="true" style="font-size: 19px"></i>
-			</button>
-			<h1 class="text-left ml-3 font-weight-light">{{ locale.title }}</h1>
-		</div>
+	<div class="mb-3">
+		<dav-header
+			[header]="locale.title"
+			backButtonVisible
+			size="big"
+			(backButtonClick)="GoBack()">
+		</dav-header>
 	</div>
 
 	<canvas baseChart
