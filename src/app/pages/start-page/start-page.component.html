@@ -1,5 +1,5 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="dataService.dav.isLoggedIn">
-	<h1 class="text-center font-weight-light mb-3">{{ locale.loggedInTitle }}</h1>
+	<h1 class="text-center fw-light mb-3">{{ locale.loggedInTitle }}</h1>
 
 	<!-- Error message -->
 	<div class="mx-auto mb-2" style="width: 300px" *ngIf="dataService.startPageErrorMessage.length > 0">
@@ -15,8 +15,11 @@
 		</dav-message-bar>
 	</div>
 
-	<div class="card-group">
-		<dav-website-app-card *ngFor="let app of dataService.dav.user.Apps" [app]="app"></dav-website-app-card>
+	<div class="d-flex flex-wrap justify-content-center">
+		<dav-website-app-card
+			[app]="app"
+			*ngFor="let app of dataService.dav.user.Apps">
+		</dav-website-app-card>
 	</div>
 
 	<div class="jumbotron mt-4" style="padding: 35px 38px" *ngIf="dataService.dav.user.Apps.length == 0">

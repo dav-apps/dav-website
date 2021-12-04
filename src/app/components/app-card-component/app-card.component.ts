@@ -5,9 +5,10 @@ import { faAndroid, faWindows } from '@fortawesome/free-brands-svg-icons'
 
 @Component({
 	selector: "dav-website-app-card",
-	templateUrl: './app-card.component.html'
+	templateUrl: './app-card.component.html',
+	styleUrls: ['./app-card.component.scss']
 })
-export class AppCardComponent{
+export class AppCardComponent {
 	faGlobe = faGlobe
 	faAndroid = faAndroid
 	faWindows = faWindows
