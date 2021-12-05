@@ -10,6 +10,7 @@ export class StartPageComponent {
 	locale = enUS.startPage
 	height: number = 500
 	width: number = 500
+	mobileView: boolean = false
 
 	constructor(
 		public dataService: DataService
@@ -24,13 +25,10 @@ export class StartPageComponent {
 	}
 
 	@HostListener('window:resize')
-	onResize() {
-		this.setSize()
-	}
-
 	setSize() {
 		this.height = window.innerHeight
 		this.width = window.innerWidth
+		this.mobileView = this.width <= 768
 	}
 
 	parallax() {

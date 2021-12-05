@@ -15,32 +15,32 @@ a.navbar-brand, a.navbar-item {
 }
 
 footer {
-   margin: 45px 0px;
-   padding-top: 5px;
-   border-top: 1px solid #eaeaea;
-   color: #777;
+	margin: 45px 0px;
+	padding-top: 5px;
+	border-top: 1px solid #eaeaea;
+	color: #777;
 
-   a {
-      color: #222;
-   }
+	a {
+		color: #222;
+	}
 
-   a:hover {
-      color: #222;
-   }
+	a:hover {
+		color: #222;
+	}
 
-   small {
-      float: left;
-   }
+	small {
+		float: left;
+	}
 
-   ul {
-      float: right;
+	ul {
+		float: right;
 		list-style: none;
 		font-size: 15px;
 
-      li {
-         float: left;
+		li {
+			float: left;
 			margin-left: 15px;
 			color: black;
-      }
-   }
+		}
+	}
 }

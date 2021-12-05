@@ -26,7 +26,7 @@ const enDefaults = {
 			The PocketLib Store contains a large collection of literature in the public domain, carefully selected and produced for the true book lover. Just log in to get free access to all these books.<br><br>
 
 			☁ Save your data and read on any device<br>
-			Log in with your dav Account to save your library and reading progress in the cloud. Read on any device, wherever and whenever you want.<br><br>
+			Log in with your dav Account to save your library and reading progress in the cloud. Read on any device, wherever and whenever you want.
 		`,
 		universalSoundboardDescription: `
 			Create your own soundboard with UniversalSoundboard!
@@ -566,7 +566,7 @@ const deDefaults = {
 			Der PocketLib Store enthält eine umfangreiche Sammlung an freier Literatur, sorgfältig ausgewählt und produziert für wahre Buchliebhaber. Melde dich an, um kostenlosen Zugriff auf all diese Bücher zu bekommen.<br><br>
 
 			☁ Sichere deine Daten und lese auf jedem Gerät<br>
-			Melde dich mit deinem dav Account an, um deine Bibliothek und deinen Lese-Fortschritt in der Cloud zu speichern. Lese auf jedem Gerät, wann und wo auch immer du willst.<br><br>
+			Melde dich mit deinem dav Account an, um deine Bibliothek und deinen Lese-Fortschritt in der Cloud zu speichern. Lese auf jedem Gerät, wann und wo auch immer du willst.
 		`,
 		universalSoundboardDescription: `
 			Erstelle dein eigenes Soundboard mit UniversalSoundboard!
