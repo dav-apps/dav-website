@@ -85,7 +85,7 @@ const enDefaults = {
 			header: "AppCenter",
 			text: `
 				In UniversalSoundboard we use <a href="https://appcenter.ms" target="blank">AppCenter</a>, a service provided by Microsoft for usage statistics and error diagnostics.
-				When you use UniversalSoundboard, the app version, your version of Windows 10, your device, your language, and your app settings, as well as other information, is stored by AppCenter.
+				When you use UniversalSoundboard, the app version, your version of Windows, your device, your language, and your app settings, as well as other information, is stored by AppCenter.
 				With this data we are able to find and fix errors and crashes.
 				<br>For more information, please refer to the <a href="https://privacy.microsoft.com/en-us/privacystatement" target="blank">Privacy Policy of Microsoft</a>.
 			`
@@ -101,7 +101,7 @@ const enDefaults = {
 		},
 		endText1: `These rules apply to all our apps and websites, including web apps and our blog. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
 		endText2: "We reserve the right to update this privacy policy in the future.",
-		endText3: "Last update: April 7, 2021"
+		endText3: "Last update: December 5, 2021"
 	},
 	pocketlibTermsPage: {
 		title: "Terms of Service for authors",
@@ -625,7 +625,7 @@ const deDefaults = {
 			header: "AppCenter",
 			text: `
 				In UniversalSoundboard verwenden wir <a href="https://appcenter.ms" target="blank">AppCenter</a>, ein Dienst von Microsoft für Nutzungsstatistiken und zur Fehlerdiagnose.
-				Wenn du UniversalSoundboard nutzt, werden u.a. die App-Version, deine Version von Windows 10, dein Gerät, deine Sprache und deine App-Einstellungen durch AppCenter gespeichert.
+				Wenn du UniversalSoundboard nutzt, werden u.a. die App-Version, deine Version von Windows, dein Gerät, deine Sprache und deine App-Einstellungen durch AppCenter gespeichert.
 				Mit diesen Daten sind wir in der Lage, Fehler und Abstürze zu finden und zu beheben.
 				<br>Für weitere Informationen verweisen wir auf die <a href="https://privacy.microsoft.com/en-us/privacystatement" target="blank">Datenschutzerklärung von Microsoft</a>.
 			`
@@ -641,7 +641,7 @@ const deDefaults = {
 		},
 		endText1: `Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Bei Fragen kannst du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
 		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu aktualisieren.",
-		endText3: "Letzte Aktualisierung: 7. April 2021"
+		endText3: "Letzte Aktualisierung: 5. Dezember 2021"
 	},
 	pocketlibTermsPage: {
 		title: "Allgemeine Geschäftsbedingungen für Autoren",
