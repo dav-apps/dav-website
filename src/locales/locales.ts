@@ -526,7 +526,7 @@ const enDefaults = {
 				downgradePlusHeader: "Downgrade to Plus",
 				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
 				downgradeFreeHeader: "Downgrade to Free",
-				downgradeFreeDescription: "Do you want to downgrade to the free plan?"
+				downgradeFreeDescription: "Do you want to end your subscription?"
 			},
 			continue: "Continue"
 		}
@@ -542,7 +542,7 @@ export var enGB = enDefaults
 const deDefaults = {
 	appComponent: {
 		navbar: {
-			pricing: "Pläne",
+			pricing: "Abos",
 			allApps: "Alle Apps",
 			devDashboard: "Entwickler-Dashboard",
 			login: "Anmelden",
@@ -726,7 +726,7 @@ const deDefaults = {
 		endText2: "Letzte Aktualisierung: 3. Dezember 2020",
 	},
 	pricingPage: {
-		title: "Pläne"
+		title: "Abos"
 	},
 	loginPage: {
 		title: "Bei dav anmelden",
@@ -826,7 +826,7 @@ const deDefaults = {
 	userPage: {
 		sideNav: {
 			general: "Allgemein",
-			plans: "Pläne",
+			plans: "Abos",
 			apps: "Apps",
 			provider: "Anbieter"
 		},
@@ -844,7 +844,7 @@ const deDefaults = {
 			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort"
 		},
 		plans: {
-			title: "Pläne",
+			title: "Abos",
 			confirmEmailText: "Bestätige deine Email-Adresse, um mehr kostenlosen Speicherplatz zu bekommen.",
 			confirmEmailLink: "Bestätigungsemail senden"
 		},
@@ -992,7 +992,7 @@ const deDefaults = {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		numberOfUsers: "Anzahl Nutzer",
-		plans: "Pläne",
+		plans: "Abos",
 		confirmations: "Email-Bestätigungen",
 		confirmed: "Bestätigt",
 		unconfirmed: "Unbestätigt",
@@ -1049,12 +1049,12 @@ const deDefaults = {
 			accessData: "Zugriff auf deine Daten von jedem Gerät",
 			noAds: "Keine Werbung",
 			signup: "Registrieren",
-			currentPlan: "Aktueller Plan",
+			currentPlan: "Aktuelles Abo",
 			upgrade: "Upgrade",
 			downgrade: "Downgrade",
 			cancel: "Abbrechen",
 			unexpectedError: "Unerwarteter Fehler ({0})",
-			changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert",
+			changePlanSuccessMessage: "Dein Abo wurde erfolgreich geändert",
 			paymentMethodCardHeader: "Deine Zahlungsmethode",
 			cardExpires: "Ablaufdatum:",
 			edit: "Bearbeiten",
@@ -1073,7 +1073,7 @@ const deDefaults = {
 				downgradePlusHeader: "Wechsel auf Plus",
 				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
 				downgradeFreeHeader: "Wechsel auf Free",
-				downgradeFreeDescription: "Möchtest du auf den kostenlosen Plan wechseln?"
+				downgradeFreeDescription: "Möchtest du dein Abo beenden?"
 			},
 			continue: "Weiter"
 		}
