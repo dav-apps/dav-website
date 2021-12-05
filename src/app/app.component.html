@@ -1,10 +1,10 @@
 <nav 
 	id="navbar" 
-	class="navbar navbar-expand-sm navbar-light fixed-top" 
-	style="position: fixed; height: 56px; padding: 0px; z-index: 2; transition: all 0.3s;" 
+	class="navbar navbar-expand-sm navbar-light fixed-top"
+	style="position: fixed; height: 56px; padding: 0px; z-index: 2; transition: all 0.3s;"
 	[ngClass]="offsetTop > 100 && width > 575 ? 'acrylic light shadow' : ''"
 	*ngIf="!dataService.hideNavbarAndFooter">
-	
+
 	<div class="container fixed-top" [ngClass]="width <= 575 ? 'acrylic light shadow' : ''" >
 		<!-- Branding -->
 		<a routerLink="/"
@@ -19,8 +19,8 @@
 			class="navbar-toggler me-3" 
 			style="margin-top: -7px"
 			type="button"
-			data-toggle="collapse"
-			data-target="#navbar-responsive"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbar-responsive"
 			aria-controls="navbar-responsive"
 			aria-expanded="false"
 			aria-label="Toggle navigation">
@@ -28,7 +28,7 @@
 		</button>
 
 		<!-- List items -->
-		<div class="collapse navbar-collapse" id="navbar-responsive" style="margin-top: -4px; font-family: 'Segoe UI';">
+		<div class="collapse navbar-collapse" id="navbar-responsive" style="margin-top: -4px; font-family: 'Segoe UI'; justify-content: right;">
 			<!-- Not logged in -->
 			<ul class="navbar-nav ml-auto" *ngIf="!dataService.dav.isLoggedIn">
 				<li class="nav-item">
