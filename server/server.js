@@ -3,9 +3,8 @@ import express from 'express'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
-import * as websocket from './websocket.js'
-
 dotenv.config()
+import * as websocket from './websocket.js'
 
 const app = express()
 const http = createServer(app)
