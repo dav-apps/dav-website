@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import * as moment from 'moment'
+import { faCheck } from '@fortawesome/pro-light-svg-icons'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -36,6 +37,7 @@ export class UserPageComponent {
 	locale = enUS.userPage
 	paymentFormDialogLocale = enUS.misc.paymentFormDialog
 	pricingLocale = enUS.misc.pricing
+	faCheck = faCheck
 
 	selectedMenu: Menu = Menu.General
 	sideNavHidden: boolean = false

@@ -486,21 +486,23 @@ const enDefaults = {
 		},
 		pricing: {
 			free: {
-				storage: "2 GB of storage"
+				storage: "2 GB"
 			},
 			plus: {
 				price: "3 € per month",
-				storage: "15 GB of storage",
-				features: "Use all Plus features in our apps"
+				storage: "15 GB"
 			},
 			pro: {
 				price: "10 € per month",
-				storage: "50 GB of storage",
-				features: "Use all Pro features in our apps"
+				storage: "50 GB"
 			},
-			useAllApps: "Use all our apps",
+			onlineStorage: "Online storage",
 			accessData: "Access your data on any device",
 			noAds: "No ads",
+			universalsoundboard: {
+				hotkeyFeature: "Assign hotkeys to sounds",
+				outputDeviceFeature: "Set the output device for each playing sound individually"
+			},
 			signup: "Sign up",
 			currentPlan: "Current plan",
 			upgrade: "Upgrade",
@@ -1033,21 +1035,23 @@ const deDefaults = {
 		},
 		pricing: {
 			free: {
-				storage: "2 GB Speicherplatz"
+				storage: "2 GB"
 			},
 			plus: {
-				storage: "15 GB Speicherplatz",
-				price: "3 € pro Monat",
-				features: "Zugriff auf alle Plus-Funktionen"
+				storage: "15 GB",
+				price: "3 € pro Monat"
 			},
 			pro: {
-				storage: "50 GB Speicherplatz",
-				price: "10 € pro Monat",
-				features: "Zugriff auf alle Pro-Funktionen"
+				storage: "50 GB",
+				price: "10 € pro Monat"
 			},
-			useAllApps: "Benutze all unsere Apps",
+			onlineStorage: "Online-Speicher",
 			accessData: "Zugriff auf deine Daten von jedem Gerät",
 			noAds: "Keine Werbung",
+			universalsoundboard: {
+				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu",
+				outputDeviceFeature: "Lege das Ausgabegerät für jeden Sound individuell fest"
+			},
 			signup: "Registrieren",
 			currentPlan: "Aktuelles Abo",
 			upgrade: "Upgrade",
