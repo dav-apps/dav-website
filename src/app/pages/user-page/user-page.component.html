@@ -291,8 +291,8 @@
 					</div>
 
 					<!-- Plans overview -->
-					<div class="d-flex justify-content-center mt-3">
-						<table style="max-width: 800px;">
+					<div class="d-flex justify-content-center mt-3" *ngIf="!mobilePlansTable">
+						<table style="max-width: 800px;" [style.fontSize.rem]="plansTableFontSize">
 							<thead>
 								<tr>
 									<th></th>
@@ -402,6 +402,201 @@
 											*ngIf="plusPlanLoading">
 										</fluent-progress-ring>
 									</td>
+									<td class="pt-3">
+										<button
+											class="btn btn-sm btn-dark"
+											[style.marginLeft]="proPlanLoading ? '32px' : '0px'"
+											type="button"
+											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(2)"
+											*ngIf="dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1">
+											{{ pricingLocale.upgrade }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-dark"
+											type="button"
+											disabled
+											*ngIf="dataService.dav.user.Plan == 2">
+											{{ pricingLocale.currentPlan }}
+										</button>
+
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+											*ngIf="proPlanLoading">
+										</fluent-progress-ring>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="d-flex flex-column justify-content-center mt-3" *ngIf="mobilePlansTable">
+						<table [style.fontSize.rem]="plansTableFontSize">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="fs-4 fw-normal">Free</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border-top">
+									<td>{{ pricingLocale.onlineStorage }}</td>
+									<td>{{ pricingLocale.free.storage }}</td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.accessData }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.noAds }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+
+								<tr class="border-top">
+									<td></td>
+									<td class="pt-3">
+										<button
+											class="btn btn-sm btn-outline-dark"
+											type="button"
+											disabled
+											*ngIf="dataService.dav.user.Plan == 0">
+											{{ pricingLocale.currentPlan }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-danger"
+											[style.marginLeft]="freePlanLoading ? '32px' : '0px'"
+											type="button"
+											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(0)"
+											*ngIf="dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2">
+											{{ pricingLocale.downgrade }}
+										</button>
+
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+											*ngIf="freePlanLoading">
+										</fluent-progress-ring>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="mt-5" [style.fontSize.rem]="plansTableFontSize">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="fs-4 fw-normal">Plus</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th class="fs-6 fw-light">{{ pricingLocale.plus.price }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border-top">
+									<td>{{ pricingLocale.onlineStorage }}</td>
+									<td>{{ pricingLocale.plus.storage }}</td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.accessData }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.noAds }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.hotkeyFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+
+								<tr class="border-top">
+									<td></td>
+									<td class="pt-3">
+										<button
+											class="btn btn-sm btn-dark"
+											[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+											type="button"
+											[disabled]="freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(1)"
+											*ngIf="dataService.dav.user.Plan == 0">
+											{{ pricingLocale.upgrade }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-dark"
+											type="button"
+											disabled
+											*ngIf="dataService.dav.user.Plan == 1">
+											{{ pricingLocale.currentPlan }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-danger"
+											[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+											type="button"
+											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(1)"
+											*ngIf="dataService.dav.user.Plan == 2">
+											{{ pricingLocale.downgrade }}
+										</button>
+
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
+											*ngIf="plusPlanLoading">
+										</fluent-progress-ring>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="mt-5" [style.fontSize.rem]="plansTableFontSize">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="fs-4 fw-normal">Pro</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th class="fs-6 fw-light">{{ pricingLocale.pro.price }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border-top">
+									<td>{{ pricingLocale.onlineStorage }}</td>
+									<td>{{ pricingLocale.pro.storage }}</td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.accessData }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.noAds }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.hotkeyFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+
+								<tr class="border-top">
+									<td></td>
 									<td class="pt-3">
 										<button
 											class="btn btn-sm btn-dark"
