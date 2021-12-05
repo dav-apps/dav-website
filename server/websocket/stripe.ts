@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import * as websocket from '../websocket.js'
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
+var stripe: Stripe = null
 
 export const sockets = {
 	saveStripePaymentMethod,
@@ -13,7 +13,15 @@ export const sockets = {
 	updateStripeCustomAccount
 }
 
+function initStripe() {
+	if (stripe == null) {
+		stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
+	}
+}
+
 export async function saveStripePaymentMethod(message: { paymentMethodId: string, customerId: string }) {
+	initStripe()
+
 	try {
 		// Attach the payment method to the customer
 		let result = await stripe.paymentMethods.attach(message.paymentMethodId, { customer: message.customerId })
@@ -49,6 +57,8 @@ export async function saveStripePaymentMethod(message: { paymentMethodId: string
 }
 
 export async function getStripePaymentMethod(message: { customerId: string }) {
+	initStripe()
+
 	try {
 		let result = await stripe.paymentMethods.list({
 			customer: message.customerId,
@@ -73,6 +83,8 @@ export async function getStripePaymentMethod(message: { customerId: string }) {
 }
 
 export async function setStripeSubscription(message: { customerId: string, planId: string }) {
+	initStripe()
+
 	try {
 		let result: any
 
@@ -118,6 +130,8 @@ export async function setStripeSubscription(message: { customerId: string, planI
 }
 
 export async function setStripeSubscriptionCancelled(message: { customerId: string, cancel: boolean }) {
+	initStripe()
+
 	try {
 		// Get the current subscription of the customer
 		let subscriptions = await stripe.subscriptions.list({ customer: message.customerId })
@@ -144,6 +158,8 @@ export async function setStripeSubscriptionCancelled(message: { customerId: stri
 }
 
 export async function retrieveStripeAccount(message: { id: string }) {
+	initStripe()
+
 	try {
 		let account = await stripe.accounts.retrieve(message.id)
 		websocket.emit(retrieveStripeAccount.name, {
@@ -159,6 +175,8 @@ export async function retrieveStripeAccount(message: { id: string }) {
 }
 
 export async function createStripeAccountLink(message: { account: string, returnUrl: string, type: Stripe.AccountLinkCreateParams.Type }) {
+	initStripe()
+
 	try {
 		let accountLink = await stripe.accountLinks.create({
 			account: message.account,
@@ -180,6 +198,8 @@ export async function createStripeAccountLink(message: { account: string, return
 }
 
 export async function retrieveStripeBalance(message: { account: string }) {
+	initStripe()
+
 	try {
 		let balance = await stripe.balance.retrieve({ stripeAccount: message.account })
 
@@ -196,6 +216,8 @@ export async function retrieveStripeBalance(message: { account: string }) {
 }
 
 export async function updateStripeCustomAccount(message: { id: string, bankAccountToken: string }) {
+	initStripe()
+
 	try {
 		let account = await stripe.accounts.update(message.id, {
 			external_account: message.bankAccountToken
