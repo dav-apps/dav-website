@@ -241,7 +241,7 @@
 			<div class="d-flex flex-column align-items-center pb-4">
 				<div style="width: 80%">
 					<!-- Cards for payment method and subscription status -->
-					<div class="row">
+					<div class="d-flex flex-wrap">
 						<div
 							class="card shadow mt-3"
 							style="display: inline-block; margin: 0px 15px"
@@ -291,7 +291,7 @@
 					</div>
 
 					<!-- Plans overview -->
-					<div class="d-flex justify-content-center mt-3" *ngIf="!mobilePlansTable">
+					<div class="d-flex justify-content-center mt-4" *ngIf="!mobilePlansTable">
 						<table style="max-width: 800px;" [style.fontSize.rem]="plansTableFontSize">
 							<thead>
 								<tr>
@@ -345,93 +345,95 @@
 								<tr class="border-top">
 									<td></td>
 									<td class="pt-3">
-										<button
-											class="btn btn-sm btn-outline-dark"
-											type="button"
-											disabled
-											*ngIf="dataService.dav.user.Plan == 0">
-											{{ pricingLocale.currentPlan }}
-										</button>
+										<div class="d-flex justify-content-center">
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+												*ngIf="freePlanLoading">
+											</fluent-progress-ring>
 
-										<button
-											class="btn btn-sm btn-outline-danger"
-											[style.marginLeft]="freePlanLoading ? '32px' : '0px'"
-											type="button"
-											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
-											(click)="PlanButtonClick(0)"
-											*ngIf="dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2">
-											{{ pricingLocale.downgrade }}
-										</button>
+											<button
+												class="btn btn-sm btn-outline-dark"
+												type="button"
+												disabled
+												*ngIf="dataService.dav.user.Plan == 0">
+												{{ pricingLocale.currentPlan }}
+											</button>
 
-										<fluent-progress-ring
-											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-											*ngIf="freePlanLoading">
-										</fluent-progress-ring>
+											<button
+												class="btn btn-sm btn-outline-danger"
+												type="button"
+												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(0)"
+												*ngIf="dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2">
+												{{ pricingLocale.downgrade }}
+											</button>
+										</div>
 									</td>
 									<td class="pt-3">
-										<button
-											class="btn btn-sm btn-dark"
-											[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
-											type="button"
-											[disabled]="freePlanLoading || plusPlanLoading || proPlanLoading"
-											(click)="PlanButtonClick(1)"
-											*ngIf="dataService.dav.user.Plan == 0">
-											{{ pricingLocale.upgrade }}
-										</button>
+										<div class="d-flex justify-content-center">
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+												*ngIf="plusPlanLoading">
+											</fluent-progress-ring>
 
-										<button
-											class="btn btn-sm btn-outline-dark"
-											type="button"
-											disabled
-											*ngIf="dataService.dav.user.Plan == 1">
-											{{ pricingLocale.currentPlan }}
-										</button>
+											<button
+												class="btn btn-sm btn-dark"
+												type="button"
+												[disabled]="freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(1)"
+												*ngIf="dataService.dav.user.Plan == 0">
+												{{ pricingLocale.upgrade }}
+											</button>
 
-										<button
-											class="btn btn-sm btn-outline-danger"
-											[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
-											type="button"
-											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
-											(click)="PlanButtonClick(1)"
-											*ngIf="dataService.dav.user.Plan == 2">
-											{{ pricingLocale.downgrade }}
-										</button>
+											<button
+												class="btn btn-sm btn-outline-dark"
+												type="button"
+												disabled
+												*ngIf="dataService.dav.user.Plan == 1">
+												{{ pricingLocale.currentPlan }}
+											</button>
 
-										<fluent-progress-ring
-											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-											*ngIf="plusPlanLoading">
-										</fluent-progress-ring>
+											<button
+												class="btn btn-sm btn-outline-danger"
+												type="button"
+												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(1)"
+												*ngIf="dataService.dav.user.Plan == 2">
+												{{ pricingLocale.downgrade }}
+											</button>
+										</div>
 									</td>
 									<td class="pt-3">
-										<button
-											class="btn btn-sm btn-dark"
-											[style.marginLeft]="proPlanLoading ? '32px' : '0px'"
-											type="button"
-											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
-											(click)="PlanButtonClick(2)"
-											*ngIf="dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1">
-											{{ pricingLocale.upgrade }}
-										</button>
+										<div class="d-flex justify-content-center">
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+												*ngIf="proPlanLoading">
+											</fluent-progress-ring>
 
-										<button
-											class="btn btn-sm btn-outline-dark"
-											type="button"
-											disabled
-											*ngIf="dataService.dav.user.Plan == 2">
-											{{ pricingLocale.currentPlan }}
-										</button>
+											<button
+												class="btn btn-sm btn-dark"
+												type="button"
+												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+												(click)="PlanButtonClick(2)"
+												*ngIf="dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1">
+												{{ pricingLocale.upgrade }}
+											</button>
 
-										<fluent-progress-ring
-											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-											*ngIf="proPlanLoading">
-										</fluent-progress-ring>
+											<button
+												class="btn btn-sm btn-outline-dark"
+												type="button"
+												disabled
+												*ngIf="dataService.dav.user.Plan == 2">
+												{{ pricingLocale.currentPlan }}
+											</button>
+										</div>
 									</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 
-					<div class="d-flex flex-column justify-content-center mt-3" *ngIf="mobilePlansTable">
+					<div class="d-flex flex-column justify-content-center mt-4" *ngIf="mobilePlansTable">
 						<table [style.fontSize.rem]="plansTableFontSize">
 							<thead>
 								<tr>
@@ -455,7 +457,12 @@
 
 								<tr class="border-top">
 									<td></td>
-									<td class="pt-3">
+									<td class="d-flex justify-content-center pt-3">
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+											*ngIf="freePlanLoading">
+										</fluent-progress-ring>
+
 										<button
 											class="btn btn-sm btn-outline-dark"
 											type="button"
@@ -466,18 +473,12 @@
 
 										<button
 											class="btn btn-sm btn-outline-danger"
-											[style.marginLeft]="freePlanLoading ? '32px' : '0px'"
 											type="button"
 											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
 											(click)="PlanButtonClick(0)"
 											*ngIf="dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2">
 											{{ pricingLocale.downgrade }}
 										</button>
-
-										<fluent-progress-ring
-											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-											*ngIf="freePlanLoading">
-										</fluent-progress-ring>
 									</td>
 								</tr>
 							</tbody>
@@ -521,10 +522,14 @@
 
 								<tr class="border-top">
 									<td></td>
-									<td class="pt-3">
+									<td class="d-flex justify-content-center pt-3">
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+											*ngIf="plusPlanLoading">
+										</fluent-progress-ring>
+
 										<button
 											class="btn btn-sm btn-dark"
-											[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
 											type="button"
 											[disabled]="freePlanLoading || plusPlanLoading || proPlanLoading"
 											(click)="PlanButtonClick(1)"
@@ -542,18 +547,12 @@
 
 										<button
 											class="btn btn-sm btn-outline-danger"
-											[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
 											type="button"
 											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
 											(click)="PlanButtonClick(1)"
 											*ngIf="dataService.dav.user.Plan == 2">
 											{{ pricingLocale.downgrade }}
 										</button>
-
-										<fluent-progress-ring
-											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-											*ngIf="plusPlanLoading">
-										</fluent-progress-ring>
 									</td>
 								</tr>
 							</tbody>
@@ -597,10 +596,14 @@
 
 								<tr class="border-top">
 									<td></td>
-									<td class="pt-3">
+									<td class="d-flex justify-content-center pt-3">
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+											*ngIf="proPlanLoading">
+										</fluent-progress-ring>
+
 										<button
 											class="btn btn-sm btn-dark"
-											[style.marginLeft]="proPlanLoading ? '32px' : '0px'"
 											type="button"
 											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
 											(click)="PlanButtonClick(2)"
@@ -615,11 +618,6 @@
 											*ngIf="dataService.dav.user.Plan == 2">
 											{{ pricingLocale.currentPlan }}
 										</button>
-
-										<fluent-progress-ring
-											style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-											*ngIf="proPlanLoading">
-										</fluent-progress-ring>
 									</td>
 								</tr>
 							</tbody>
