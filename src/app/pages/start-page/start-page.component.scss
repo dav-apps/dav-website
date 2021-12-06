@@ -1,4 +1,4 @@
-#start-header{
+#start-header {
 	background-image: url('/assets/images/start-background.jpg');
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -6,14 +6,23 @@
 	min-height: 400px;
 }
 
-.google-play-badge{
+.google-play-badge {
    height: 70px;
 }
 
-.microsoft-store-badge{
+.microsoft-store-badge {
    height: 48px;
 }
 
-.github-badge{
+.github-badge {
    height: 50px;
+}
+
+.links-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	min-height: 70px;
+	margin-top: 1.5rem;
 }

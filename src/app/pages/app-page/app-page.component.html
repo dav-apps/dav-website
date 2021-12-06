@@ -1,19 +1,15 @@
 <div class="container navbar-margin pt-4 ms-motion-slideUpIn">
-	<div class="d-flex mb-3">
-		<div class="mx-auto d-flex">
-			<button
-				type="button"
-				class="btn"
-				style="height: 35px; width: 41px; padding: 2px 0px 0px 0px; margin-top: 7px"
-				(click)="GoBack()">
-				<i class="ms-Icon ms-Icon--Back" aria-hidden="true" style="font-size: 19px"></i>
-			</button>
-			<h1 class="text-left ml-3 font-weight-light">{{ app.Name }}</h1>
-		</div>
+	<div class="mb-3">
+		<dav-header
+			[header]="app.Name"
+			backButtonVisible
+			size="big"
+			(backButtonClick)="GoBack()">
+		</dav-header>
 	</div>
 
 	<div>
-		<p class="mb-3 font-weight-light" style="font-size: 18px">{{ app.Description }}</p>
+		<p class="mb-3 fw-light" style="font-size: 18px">{{ app.Description }}</p>
 
 		<dav-button
 			type="accent"
@@ -27,7 +23,7 @@
 			{{ locale.edit }}
 		</dav-button>
 
-		<h5 class="font-weight-light mt-4">{{ locale.published }}</h5>
+		<h5 class="fw-light mt-4">{{ locale.published }}</h5>
 
 		<dav-toggle
 			[checked]="app.Published"
@@ -35,19 +31,19 @@
 		</dav-toggle>
 	</div>
 
-	<div class="row">
+	<div class="d-flex">
 		<div class="mx-4">
-			<h3 class="font-weight-light mb-3 mt-4">{{ locale.tables }}</h3>
+			<h3 class="fw-light mb-3 mt-4">{{ locale.tables }}</h3>
 			<ul class="list-group">
-				<li class="list-group-item text-center cursor font-weight-light p-1" style="font-size: 26px" (click)="ShowAddTableDialog()">+</li>
+				<li class="list-group-item text-center cursor fw-light p-1" style="font-size: 26px" (click)="ShowAddTableDialog()">+</li>
 				<li class="list-group-item text-center" *ngFor="let table of app.Tables">{{ table.Name }}</li>
 			</ul>
 		</div>
 
 		<div class="mx-4">
-			<h3 class="font-weight-light mb-3 mt-4">{{ locale.apis }}</h3>
+			<h3 class="fw-light mb-3 mt-4">{{ locale.apis }}</h3>
 			<ul class="list-group">
-				<li class="list-group-item text-center cursor font-weight-light p-1" style="font-size: 26px" (click)="ShowAddApiDialog()">+</li>
+				<li class="list-group-item text-center cursor fw-light p-1" style="font-size: 26px" (click)="ShowAddApiDialog()">+</li>
 				<li class="list-group-item text-center" *ngFor="let api of app.Apis">{{ api.Name }}</li>
 			</ul>
 		</div>
@@ -58,8 +54,8 @@
 	[header]="locale.editAppDialog.header"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="editAppDialogVisible"
-	[isLoading]="editAppDialogLoading"
+	[visible]="editAppDialogVisible"
+	[loading]="editAppDialogLoading"
 	(dismiss)="editAppDialogVisible = false"
 	(primaryButtonClick)="UpdateApp()"
 	(defaultButtonClick)="editAppDialogVisible = false">
@@ -133,13 +129,13 @@
 	[header]="app.Published ? locale.publishAppDialog.unpublishHeader : locale.publishAppDialog.publishHeader"
 	[primaryButtonText]="locale.publishAppDialog.confirm"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="publishAppDialogVisible"
-	[isLoading]="publishAppDialogLoading"
+	[visible]="publishAppDialogVisible"
+	[loading]="publishAppDialogLoading"
 	(dismiss)="publishAppDialogVisible = false"
 	(primaryButtonClick)="PublishApp()"
 	(defaultButtonClick)="publishAppDialogVisible = false">
 
-	<p class="font-weight-light"
+	<p class="fw-light"
 		style="max-width: 300px; font-size: 14px">
 		{{ app.Published ? locale.publishAppDialog.unpublishSubtext : locale.publishAppDialog.publishSubtext }}
 	</p>
@@ -149,8 +145,8 @@
 	[header]="locale.addTableDialog.header"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="addTableDialogVisible"
-	[isLoading]="addTableDialogLoading"
+	[visible]="addTableDialogVisible"
+	[loading]="addTableDialogLoading"
 	(dismiss)="addTableDialogVisible = false"
 	(primaryButtonClick)="AddTable()"
 	(defaultButtonClick)="addTableDialogVisible = false">
@@ -170,8 +166,8 @@
 	[header]="locale.addApiDialog.header"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="addApiDialogVisible"
-	[isLoading]="addApiDialogLoading"
+	[visible]="addApiDialogVisible"
+	[loading]="addApiDialogLoading"
 	(dismiss)="addApiDialogVisible = false"
 	(primaryButtonClick)="AddApi()"
 	(defaultButtonClick)="addApiDialogVisible = false">

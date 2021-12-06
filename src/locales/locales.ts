@@ -26,7 +26,7 @@ const enDefaults = {
 			The PocketLib Store contains a large collection of literature in the public domain, carefully selected and produced for the true book lover. Just log in to get free access to all these books.<br><br>
 
 			☁ Save your data and read on any device<br>
-			Log in with your dav Account to save your library and reading progress in the cloud. Read on any device, wherever and whenever you want.<br><br>
+			Log in with your dav Account to save your library and reading progress in the cloud. Read on any device, wherever and whenever you want.
 		`,
 		universalSoundboardDescription: `
 			Create your own soundboard with UniversalSoundboard!
@@ -85,7 +85,7 @@ const enDefaults = {
 			header: "AppCenter",
 			text: `
 				In UniversalSoundboard we use <a href="https://appcenter.ms" target="blank">AppCenter</a>, a service provided by Microsoft for usage statistics and error diagnostics.
-				When you use UniversalSoundboard, the app version, your version of Windows 10, your device, your language, and your app settings, as well as other information, is stored by AppCenter.
+				When you use UniversalSoundboard, the app version, your version of Windows, your device, your language, and your app settings, as well as other information, is stored by AppCenter.
 				With this data we are able to find and fix errors and crashes.
 				<br>For more information, please refer to the <a href="https://privacy.microsoft.com/en-us/privacystatement" target="blank">Privacy Policy of Microsoft</a>.
 			`
@@ -101,7 +101,7 @@ const enDefaults = {
 		},
 		endText1: `These rules apply to all our apps and websites, including web apps and our blog. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
 		endText2: "We reserve the right to update this privacy policy in the future.",
-		endText3: "Last update: April 7, 2021"
+		endText3: "Last update: December 5, 2021"
 	},
 	pocketlibTermsPage: {
 		title: "Terms of Service for authors",
@@ -486,21 +486,23 @@ const enDefaults = {
 		},
 		pricing: {
 			free: {
-				storage: "2 GB of storage"
+				storage: "2 GB"
 			},
 			plus: {
 				price: "3 € per month",
-				storage: "15 GB of storage",
-				features: "Use all Plus features in our apps"
+				storage: "15 GB"
 			},
 			pro: {
 				price: "10 € per month",
-				storage: "50 GB of storage",
-				features: "Use all Pro features in our apps"
+				storage: "50 GB"
 			},
-			useAllApps: "Use all our apps",
+			onlineStorage: "Online storage",
 			accessData: "Access your data on any device",
 			noAds: "No ads",
+			universalsoundboard: {
+				hotkeyFeature: "Assign hotkeys to sounds",
+				outputDeviceFeature: "Set the output device for each playing sound individually"
+			},
 			signup: "Sign up",
 			currentPlan: "Current plan",
 			upgrade: "Upgrade",
@@ -526,7 +528,7 @@ const enDefaults = {
 				downgradePlusHeader: "Downgrade to Plus",
 				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
 				downgradeFreeHeader: "Downgrade to Free",
-				downgradeFreeDescription: "Do you want to downgrade to the free plan?"
+				downgradeFreeDescription: "Do you want to end your subscription?"
 			},
 			continue: "Continue"
 		}
@@ -542,7 +544,7 @@ export var enGB = enDefaults
 const deDefaults = {
 	appComponent: {
 		navbar: {
-			pricing: "Pläne",
+			pricing: "Abos",
 			allApps: "Alle Apps",
 			devDashboard: "Entwickler-Dashboard",
 			login: "Anmelden",
@@ -566,18 +568,18 @@ const deDefaults = {
 			Der PocketLib Store enthält eine umfangreiche Sammlung an freier Literatur, sorgfältig ausgewählt und produziert für wahre Buchliebhaber. Melde dich an, um kostenlosen Zugriff auf all diese Bücher zu bekommen.<br><br>
 
 			☁ Sichere deine Daten und lese auf jedem Gerät<br>
-			Melde dich mit deinem dav Account an, um deine Bibliothek und deinen Lese-Fortschritt in der Cloud zu speichern. Lese auf jedem Gerät, wann und wo auch immer du willst.<br><br>
+			Melde dich mit deinem dav Account an, um deine Bibliothek und deinen Lese-Fortschritt in der Cloud zu speichern. Lese auf jedem Gerät, wann und wo auch immer du willst.
 		`,
 		universalSoundboardDescription: `
 			Erstelle dein eigenes Soundboard mit UniversalSoundboard!
 			<br>Füge deine Sounds oder deine Musiksammlung hinzu. Sortiere deine Sounds in Kategorien und speichere deine Lieblingssounds als Favoriten, um den Überblick über deine Sammlung zu behalten.
-			<br><br>Melde dich mit deinem dav-Account an, um dein Soundboard auf mehreren Geräten zu nutzen.
+			<br><br>Melde dich mit deinem dav Account an, um dein Soundboard auf mehreren Geräten zu nutzen.
 		`,
 		calendoDescription: `
 			Calendo ist eine einfache App, um deinen Zeitplan zu verwalten.
 			Organisiere deine Termine, verwalte deine Todos und gruppiere Todos nach Themen.
 			<br>Mit Calendo hast du immer den Überblick über bevorstehende Ereignisse und Aufgaben.
-			<br><br>Melde dich mit deinem dav-Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
+			<br><br>Melde dich mit deinem dav Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
 		`,
 		loggedInTitle: "Deine Apps",
 		welcomeTitle: "Hi, {0}",
@@ -625,7 +627,7 @@ const deDefaults = {
 			header: "AppCenter",
 			text: `
 				In UniversalSoundboard verwenden wir <a href="https://appcenter.ms" target="blank">AppCenter</a>, ein Dienst von Microsoft für Nutzungsstatistiken und zur Fehlerdiagnose.
-				Wenn du UniversalSoundboard nutzt, werden u.a. die App-Version, deine Version von Windows 10, dein Gerät, deine Sprache und deine App-Einstellungen durch AppCenter gespeichert.
+				Wenn du UniversalSoundboard nutzt, werden u.a. die App-Version, deine Version von Windows, dein Gerät, deine Sprache und deine App-Einstellungen durch AppCenter gespeichert.
 				Mit diesen Daten sind wir in der Lage, Fehler und Abstürze zu finden und zu beheben.
 				<br>Für weitere Informationen verweisen wir auf die <a href="https://privacy.microsoft.com/en-us/privacystatement" target="blank">Datenschutzerklärung von Microsoft</a>.
 			`
@@ -641,7 +643,7 @@ const deDefaults = {
 		},
 		endText1: `Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Bei Fragen kannst du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
 		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu aktualisieren.",
-		endText3: "Letzte Aktualisierung: 7. April 2021"
+		endText3: "Letzte Aktualisierung: 5. Dezember 2021"
 	},
 	pocketlibTermsPage: {
 		title: "Allgemeine Geschäftsbedingungen für Autoren",
@@ -726,7 +728,7 @@ const deDefaults = {
 		endText2: "Letzte Aktualisierung: 3. Dezember 2020",
 	},
 	pricingPage: {
-		title: "Pläne"
+		title: "Abos"
 	},
 	loginPage: {
 		title: "Bei dav anmelden",
@@ -826,7 +828,7 @@ const deDefaults = {
 	userPage: {
 		sideNav: {
 			general: "Allgemein",
-			plans: "Pläne",
+			plans: "Abos",
 			apps: "Apps",
 			provider: "Anbieter"
 		},
@@ -844,7 +846,7 @@ const deDefaults = {
 			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort"
 		},
 		plans: {
-			title: "Pläne",
+			title: "Abos",
 			confirmEmailText: "Bestätige deine Email-Adresse, um mehr kostenlosen Speicherplatz zu bekommen.",
 			confirmEmailLink: "Bestätigungsemail senden"
 		},
@@ -992,7 +994,7 @@ const deDefaults = {
 		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
 		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		numberOfUsers: "Anzahl Nutzer",
-		plans: "Pläne",
+		plans: "Abos",
 		confirmations: "Email-Bestätigungen",
 		confirmed: "Bestätigt",
 		unconfirmed: "Unbestätigt",
@@ -1033,28 +1035,30 @@ const deDefaults = {
 		},
 		pricing: {
 			free: {
-				storage: "2 GB Speicherplatz"
+				storage: "2 GB"
 			},
 			plus: {
-				storage: "15 GB Speicherplatz",
-				price: "3 € pro Monat",
-				features: "Zugriff auf alle Plus-Funktionen"
+				storage: "15 GB",
+				price: "3 € pro Monat"
 			},
 			pro: {
-				storage: "50 GB Speicherplatz",
-				price: "10 € pro Monat",
-				features: "Zugriff auf alle Pro-Funktionen"
+				storage: "50 GB",
+				price: "10 € pro Monat"
 			},
-			useAllApps: "Benutze all unsere Apps",
+			onlineStorage: "Online-Speicher",
 			accessData: "Zugriff auf deine Daten von jedem Gerät",
 			noAds: "Keine Werbung",
+			universalsoundboard: {
+				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu",
+				outputDeviceFeature: "Lege das Ausgabegerät für jeden Sound individuell fest"
+			},
 			signup: "Registrieren",
-			currentPlan: "Aktueller Plan",
+			currentPlan: "Aktuelles Abo",
 			upgrade: "Upgrade",
 			downgrade: "Downgrade",
 			cancel: "Abbrechen",
 			unexpectedError: "Unerwarteter Fehler ({0})",
-			changePlanSuccessMessage: "Dein Plan wurde erfolgreich geändert",
+			changePlanSuccessMessage: "Dein Abo wurde erfolgreich geändert",
 			paymentMethodCardHeader: "Deine Zahlungsmethode",
 			cardExpires: "Ablaufdatum:",
 			edit: "Bearbeiten",
@@ -1073,7 +1077,7 @@ const deDefaults = {
 				downgradePlusHeader: "Wechsel auf Plus",
 				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
 				downgradeFreeHeader: "Wechsel auf Free",
-				downgradeFreeDescription: "Möchtest du auf den kostenlosen Plan wechseln?"
+				downgradeFreeDescription: "Möchtest du dein Abo beenden?"
 			},
 			continue: "Weiter"
 		}

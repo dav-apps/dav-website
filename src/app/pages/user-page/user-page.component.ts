@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar'
 import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import * as moment from 'moment'
+import { faCheck } from '@fortawesome/pro-light-svg-icons'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -36,10 +37,13 @@ export class UserPageComponent {
 	locale = enUS.userPage
 	paymentFormDialogLocale = enUS.misc.paymentFormDialog
 	pricingLocale = enUS.misc.pricing
+	faCheck = faCheck
 
 	selectedMenu: Menu = Menu.General
 	sideNavHidden: boolean = false
 	sideNavOpened: boolean = false
+	mobilePlansTable: boolean = false
+	plansTableFontSize: number = 1.15
 
 	//#region General page
 	updatedAttribute: UserAttribute = UserAttribute.FirstName
@@ -153,12 +157,10 @@ export class UserPageComponent {
 	}
 
 	@HostListener('window:resize')
-	onResize() {
-		this.setSize()
-	}
-
 	setSize() {
-		this.sideNavHidden = window.outerWidth < 576
+		this.sideNavHidden = window.innerWidth < 576
+		this.mobilePlansTable = window.innerWidth < 800
+		this.plansTableFontSize = window.innerWidth < 1000 ? 1.05 : 1.15
 
 		if (!this.sideNavHidden) this.sideNavOpened = true
 		else this.sideNavOpened = false

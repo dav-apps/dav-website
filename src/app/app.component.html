@@ -1,14 +1,14 @@
 <nav 
 	id="navbar" 
-	class="navbar navbar-expand-sm navbar-light fixed-top" 
-	style="position: fixed; height: 56px; padding: 0px; z-index: 2; transition: all 0.3s;" 
+	class="navbar navbar-expand-sm navbar-light fixed-top"
+	style="position: fixed; height: 56px; padding: 0px; z-index: 2; transition: all 0.3s;"
 	[ngClass]="offsetTop > 100 && width > 575 ? 'acrylic light shadow' : ''"
 	*ngIf="!dataService.hideNavbarAndFooter">
-	
+
 	<div class="container fixed-top" [ngClass]="width <= 575 ? 'acrylic light shadow' : ''" >
 		<!-- Branding -->
 		<a routerLink="/"
-			class="navbar-brand ml-3" 
+			class="navbar-brand ms-3" 
 			style="color: black; font-size: 35px; font-weight: bold; font-family: mvboli, 'MV Boli', Kalam"
 			[style.marginTop.px]="width > 575 ? -3 : 0">
 			dav
@@ -16,11 +16,11 @@
 
 		<!-- Toggle button -->
 		<button
-			class="navbar-toggler mr-3" 
+			class="navbar-toggler me-3" 
 			style="margin-top: -7px"
 			type="button"
-			data-toggle="collapse"
-			data-target="#navbar-responsive"
+			data-bs-toggle="collapse"
+			data-bs-target="#navbar-responsive"
 			aria-controls="navbar-responsive"
 			aria-expanded="false"
 			aria-label="Toggle navigation">
@@ -28,9 +28,9 @@
 		</button>
 
 		<!-- List items -->
-		<div class="collapse navbar-collapse" id="navbar-responsive" style="margin-top: -4px; font-family: 'Segoe UI';">
+		<div class="collapse navbar-collapse" id="navbar-responsive" style="margin-top: -4px; font-family: 'Segoe UI'; justify-content: right;">
 			<!-- Not logged in -->
-			<ul class="navbar-nav ml-auto" *ngIf="!dataService.dav.isLoggedIn">
+			<ul class="navbar-nav" *ngIf="!dataService.dav.isLoggedIn">
 				<li class="nav-item">
 					<a routerLink="/pricing" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.pricing }}</a>
 				</li>
@@ -43,7 +43,7 @@
 			</ul>
 
 			<!-- Logged in -->
-			<ul class="navbar-nav ml-auto" *ngIf="dataService.dav.isLoggedIn">
+			<ul class="navbar-nav" *ngIf="dataService.dav.isLoggedIn">
 				<li class="nav-item" *ngIf="dataService.dav.user.Dev">
 					<a routerLink="/dev" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.devDashboard }}</a>
 				</li>

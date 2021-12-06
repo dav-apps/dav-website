@@ -42,7 +42,7 @@
   	<mat-sidenav-content style="overflow: hidden">
 		<!-- SideNav toggle button -->
 		<button 
-			class="btn btn-sm ml-2 icon-button"
+			class="btn btn-sm ms-2 icon-button"
 			style="margin-top: 84px; height: 40px; width: 40px; font-size: 18px; position: absolute; z-index: 1"
 			(click)="sideNavOpened = !sideNavOpened"
 			*ngIf="sideNavHidden">
@@ -51,7 +51,7 @@
 
 		<!-- General settings -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 0">
-			<h1 class="text-center font-weight-light mb-4">{{ locale.general.title }}</h1>
+			<h1 class="text-center fw-light mb-4">{{ locale.general.title }}</h1>
 
 			<div class="d-flex flex-column align-items-center">
 				<div style="width: 280px; margin-right: -70px">
@@ -113,7 +113,7 @@
 
 							<button
 								type="button"
-								class="btn btn-sm ml-2 icon-button"
+								class="btn btn-sm ms-2 icon-button"
 								style="margin-top: 28px"
 								[disabled]="firstNameLoading"
 								(click)="SaveFirstName()"
@@ -146,7 +146,7 @@
 
 							<button
 								type="button"
-								class="btn btn-sm ml-2 icon-button"
+								class="btn btn-sm ms-2 icon-button"
 								style="margin-top: 28px"
 								[disabled]="emailLoading"
 								(click)="SaveEmail()"
@@ -214,7 +214,7 @@
 		<!-- Plans -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 1">
 			<h1
-				class="text-center font-weight-light"
+				class="text-center fw-light"
 				[ngClass]="dataService.dav.user.Plan == 0 ? 'mb-3' : 'mb-0'">
 				{{ locale.plans.title }}
 			</h1>
@@ -241,17 +241,17 @@
 			<div class="d-flex flex-column align-items-center pb-4">
 				<div style="width: 80%">
 					<!-- Cards for payment method and subscription status -->
-					<div class="row">
+					<div class="d-flex flex-wrap">
 						<div
 							class="card shadow mt-3"
 							style="display: inline-block; margin: 0px 15px"
 							*ngIf="paymentMethodLast4 && paymentMethodExpirationMonth && paymentMethodExpirationYear">
 
 							<div class="card-body">
-								<h5 class="font-weight-light mb-3">{{ pricingLocale.paymentMethodCardHeader }}</h5>
+								<h5 class="fw-light mb-3">{{ pricingLocale.paymentMethodCardHeader }}</h5>
 
 								<div class="d-flex">
-									<i class="ms-Icon ms-Icon--PaymentCard mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+									<i class="ms-Icon ms-Icon--PaymentCard me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
 									<p style="margin-bottom: 0px;">**** **** **** {{ paymentMethodLast4 }}</p>
 								</div>
 
@@ -271,7 +271,7 @@
 							*ngIf="dataService.dav.user.Plan > 0 && periodEndDate">
 
 							<div class="card-body">
-								<h5 class="font-weight-light">{{ dataService.dav.user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd }}</h5>
+								<h5 class="fw-light">{{ dataService.dav.user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd }}</h5>
 								<p>{{ periodEndDate }}</p>
 
 								<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
@@ -291,23 +291,68 @@
 					</div>
 
 					<!-- Plans overview -->
-					<div class="row">
-						<div class="col-md-4 mt-3 mb-4">
-							<div class="card text-center shadow">
-								<div class="card-body">
-									<h4 class="card-title font-weight-light" style="margin-bottom: 40px">Free</h4>
-									<ul class="list-group">
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.free.storage }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
-									</ul>
-									<br>
+					<div class="d-flex justify-content-center mt-4" *ngIf="!mobilePlansTable">
+						<table style="max-width: 800px;" [style.fontSize.rem]="plansTableFontSize">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="fs-4 fw-normal">Free</th>
+									<th class="fs-4 fw-normal">Plus</th>
+									<th class="fs-4 fw-normal">Pro</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th></th>
+									<th class="fs-6 fw-light">{{ pricingLocale.plus.price }}</th>
+									<th class="fs-6 fw-light">{{ pricingLocale.pro.price }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border-top">
+									<td>{{ pricingLocale.onlineStorage }}</td>
+									<td>{{ pricingLocale.free.storage }}</td>
+									<td>{{ pricingLocale.plus.storage }}</td>
+									<td>{{ pricingLocale.pro.storage }}</td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.accessData }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.noAds }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.hotkeyFeature }}</td>
+									<td></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
+									<td></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
 
-									<div style="display: inline-block">
-										<div class="d-flex">
+								<tr class="border-top">
+									<td></td>
+									<td class="pt-3">
+										<div class="d-flex justify-content-center">
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+												*ngIf="freePlanLoading">
+											</fluent-progress-ring>
+
 											<button
-												class="btn btn-outline-primary"
+												class="btn btn-sm btn-outline-dark"
 												type="button"
 												disabled
 												*ngIf="dataService.dav.user.Plan == 0">
@@ -315,44 +360,24 @@
 											</button>
 
 											<button
-												class="btn btn-outline-danger"
-												[style.marginLeft]="freePlanLoading ? '32px' : '0px'"
+												class="btn btn-sm btn-outline-danger"
 												type="button"
 												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
 												(click)="PlanButtonClick(0)"
 												*ngIf="dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2">
 												{{ pricingLocale.downgrade }}
 											</button>
-
-											<fluent-progress-ring
-												style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-												*ngIf="freePlanLoading">
-											</fluent-progress-ring>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+									</td>
+									<td class="pt-3">
+										<div class="d-flex justify-content-center">
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+												*ngIf="plusPlanLoading">
+											</fluent-progress-ring>
 
-						<div class="col-md-4 mt-3 mb-4">
-							<div class="card text-center shadow">
-								<div class="card-body">
-									<h4 class="card-title font-weight-light">Plus</h4>
-									<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem">{{ pricingLocale.plus.price }}</h6>
-									<ul class="list-group">
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.storage }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.features }}</li>
-									</ul>
-									<br>
-
-									<div style="display: inline-block">
-										<div class="d-flex">
 											<button
-												class="btn btn-primary"
-												[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+												class="btn btn-sm btn-dark"
 												type="button"
 												[disabled]="freePlanLoading || plusPlanLoading || proPlanLoading"
 												(click)="PlanButtonClick(1)"
@@ -361,7 +386,7 @@
 											</button>
 
 											<button
-												class="btn btn-outline-primary"
+												class="btn btn-sm btn-outline-dark"
 												type="button"
 												disabled
 												*ngIf="dataService.dav.user.Plan == 1">
@@ -369,45 +394,24 @@
 											</button>
 
 											<button
-												class="btn btn-outline-danger"
-												[style.marginLeft]="plusPlanLoading ? '32px' : '0px'"
+												class="btn btn-sm btn-outline-danger"
 												type="button"
 												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
 												(click)="PlanButtonClick(1)"
 												*ngIf="dataService.dav.user.Plan == 2">
 												{{ pricingLocale.downgrade }}
 											</button>
-
-											<fluent-progress-ring
-												style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-												*ngIf="plusPlanLoading">
-											</fluent-progress-ring>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+									</td>
+									<td class="pt-3">
+										<div class="d-flex justify-content-center">
+											<fluent-progress-ring
+												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+												*ngIf="proPlanLoading">
+											</fluent-progress-ring>
 
-						<div class="col-md-4 mt-3">
-							<div class="card text-center shadow">
-								<div class="card-body">
-									<h4 class="card-title font-weight-light">Pro</h4>
-									<h6 class="card-subtitle text-muted font-weight-light" style="margin-bottom: 1rem;">{{ pricingLocale.pro.price }}</h6>
-									<ul class="list-group">
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.pro.storage }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.useAllApps }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.accessData }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.noAds }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.plus.features }}</li>
-										<li class="list-group-item border-left-0 border-right-0">{{ pricingLocale.pro.features }}</li>
-									</ul>
-									<br>
-
-									<div style="display: inline-block">
-										<div class="d-flex">
 											<button
-												class="btn btn-primary"
-												[style.marginLeft]="proPlanLoading ? '32px' : '0px'"
+												class="btn btn-sm btn-dark"
 												type="button"
 												[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
 												(click)="PlanButtonClick(2)"
@@ -416,22 +420,208 @@
 											</button>
 
 											<button
-												class="btn btn-outline-primary"
+												class="btn btn-sm btn-outline-dark"
 												type="button"
 												disabled
 												*ngIf="dataService.dav.user.Plan == 2">
 												{{ pricingLocale.currentPlan }}
 											</button>
-
-											<fluent-progress-ring
-												style="width: 16px; height: 16px; margin: 11px 0px 0px 16px"
-												*ngIf="proPlanLoading">
-											</fluent-progress-ring>
 										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="d-flex flex-column justify-content-center mt-4" *ngIf="mobilePlansTable">
+						<table [style.fontSize.rem]="plansTableFontSize">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="fs-4 fw-normal">Free</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border-top">
+									<td>{{ pricingLocale.onlineStorage }}</td>
+									<td>{{ pricingLocale.free.storage }}</td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.accessData }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.noAds }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+
+								<tr class="border-top">
+									<td></td>
+									<td class="d-flex justify-content-center pt-3">
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+											*ngIf="freePlanLoading">
+										</fluent-progress-ring>
+
+										<button
+											class="btn btn-sm btn-outline-dark"
+											type="button"
+											disabled
+											*ngIf="dataService.dav.user.Plan == 0">
+											{{ pricingLocale.currentPlan }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-danger"
+											type="button"
+											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(0)"
+											*ngIf="dataService.dav.user.Plan == 1 || dataService.dav.user.Plan == 2">
+											{{ pricingLocale.downgrade }}
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="mt-5" [style.fontSize.rem]="plansTableFontSize">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="fs-4 fw-normal">Plus</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th class="fs-6 fw-light">{{ pricingLocale.plus.price }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border-top">
+									<td>{{ pricingLocale.onlineStorage }}</td>
+									<td>{{ pricingLocale.plus.storage }}</td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.accessData }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.noAds }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.hotkeyFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+
+								<tr class="border-top">
+									<td></td>
+									<td class="d-flex justify-content-center pt-3">
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+											*ngIf="plusPlanLoading">
+										</fluent-progress-ring>
+
+										<button
+											class="btn btn-sm btn-dark"
+											type="button"
+											[disabled]="freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(1)"
+											*ngIf="dataService.dav.user.Plan == 0">
+											{{ pricingLocale.upgrade }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-dark"
+											type="button"
+											disabled
+											*ngIf="dataService.dav.user.Plan == 1">
+											{{ pricingLocale.currentPlan }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-danger"
+											type="button"
+											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(1)"
+											*ngIf="dataService.dav.user.Plan == 2">
+											{{ pricingLocale.downgrade }}
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<table class="mt-5" [style.fontSize.rem]="plansTableFontSize">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="fs-4 fw-normal">Pro</th>
+								</tr>
+								<tr>
+									<th></th>
+									<th class="fs-6 fw-light">{{ pricingLocale.pro.price }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="border-top">
+									<td>{{ pricingLocale.onlineStorage }}</td>
+									<td>{{ pricingLocale.pro.storage }}</td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.accessData }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td>{{ pricingLocale.noAds }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.hotkeyFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+								<tr class="border-top">
+									<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
+									<td><fa-icon [icon]="faCheck"></fa-icon></td>
+								</tr>
+
+								<tr class="border-top">
+									<td></td>
+									<td class="d-flex justify-content-center pt-3">
+										<fluent-progress-ring
+											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
+											*ngIf="proPlanLoading">
+										</fluent-progress-ring>
+
+										<button
+											class="btn btn-sm btn-dark"
+											type="button"
+											[disabled]="dataService.dav.user.SubscriptionStatus == 1 || freePlanLoading || plusPlanLoading || proPlanLoading"
+											(click)="PlanButtonClick(2)"
+											*ngIf="dataService.dav.user.Plan == 0 || dataService.dav.user.Plan == 1">
+											{{ pricingLocale.upgrade }}
+										</button>
+
+										<button
+											class="btn btn-sm btn-outline-dark"
+											type="button"
+											disabled
+											*ngIf="dataService.dav.user.Plan == 2">
+											{{ pricingLocale.currentPlan }}
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -439,7 +629,7 @@
 
 		<!-- Apps -->
 		<div class="navbar-margin pt-4 ms-motion-slideUpIn" style="background-color: white" *ngIf="selectedMenu == 2">
-			<h1 class="text-center font-weight-light mb-4">{{ locale.apps.title }}</h1>
+			<h1 class="text-center fw-light mb-4">{{ locale.apps.title }}</h1>
 
 			<div class="mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0 || successMessage.length > 0">
 				<dav-message-bar
@@ -481,7 +671,7 @@
 		<!-- Provider -->
 		<div class="container navbar-margin pt-4 ms-motion-slideUpIn mb-4" style="background-color: white" *ngIf="selectedMenu == 3">
 			<div *ngIf="!providerStripeAccount">
-				<h1 class="text-center font-weight-light mb-3">{{ locale.provider.title }}</h1>
+				<h1 class="text-center fw-light mb-3">{{ locale.provider.title }}</h1>
 
 				<!-- Message bar for errors -->
 				<div class="mx-auto mb-3" style="width: 250px" *ngIf="errorMessage.length > 0">
@@ -492,15 +682,15 @@
 					</dav-message-bar>
 				</div>
 
-				<p class="text-center font-weight-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
+				<p class="text-center fw-light" style="font-size: 20px">{{ locale.provider.subTitle }}</p>
 
-				<p class="text-center font-weight-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
+				<p class="text-center fw-light mt-3 mb-1" style="font-size: 20px">{{ locale.provider.supportedApps }}: </p>
 				<div class="d-flex justify-content-center">
-					<a class="text-center font-weight-light" style="color: black; font-size: 19px" href="https://pocketlib.dav-apps.tech" target="blank">PocketLib</a>
+					<a class="text-center fw-light" style="color: black; font-size: 19px" href="https://pocketlib.dav-apps.tech" target="blank">PocketLib</a>
 				</div>
 
 				<div class="mt-5 d-flex flex-column align-items-center">
-					<p class="text-center font-weight-light">{{ locale.provider.setupExplanation }}</p>
+					<p class="text-center fw-light">{{ locale.provider.setupExplanation }}</p>
 
 					<dav-button
 						type="accent"
@@ -511,7 +701,7 @@
 			</div>
 
 			<div *ngIf="providerStripeAccount">
-				<h1 class="text-center font-weight-light mb-3">{{ locale.provider.dashboardTitle }}</h1>
+				<h1 class="text-center fw-light mb-3">{{ locale.provider.dashboardTitle }}</h1>
 
 				<div class="mx-auto my-2" style="width: 300px">
 					<!-- Message bar for currently due requirements -->
@@ -544,13 +734,13 @@
 					</dav-message-bar>
 				</div>
 
-				<div class="row ml-2">
+				<div class="row ms-2">
 					<!-- Card for the provider -->
 					<div
 						class="card shadow mt-3"
 						style="display: inline-block; margin: 0px 15px">
 						<div class="card-body">
-							<h5 class="font-weight-light mb-3">{{ locale.provider.aboutYou }}</h5>
+							<h5 class="fw-light mb-3">{{ locale.provider.aboutYou }}</h5>
 							<p>{{ providerStripeAccount.individual.first_name }} {{ providerStripeAccount.individual.last_name }}</p>
 
 							<dav-button
@@ -566,18 +756,18 @@
 						class="card shadow mt-3"
 						style="display: inline-block; margin: 0px 15px">
 						<div class="card-body">
-							<h5 class="font-weight-light mb-3">{{ locale.provider.yourPayoutAccount }}</h5>
+							<h5 class="fw-light mb-3">{{ locale.provider.yourPayoutAccount }}</h5>
 
 							<div *ngIf="providerStripeAccount.external_accounts.data.length > 0">
 								<p style="margin-bottom: 8px">{{ providerBankAccount.bank_name }}</p>
 								<div class="d-flex">
-									<i class="ms-Icon ms-Icon--BankSolid mr-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+									<i class="ms-Icon ms-Icon--BankSolid me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
 									<p style="margin-bottom: 8px">**** {{ providerBankAccount.last4 }}</p>
 								</div>
 							</div>
 
 							<div *ngIf="providerStripeAccount.external_accounts.data.length == 0">
-								<p class="font-weight-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
+								<p class="fw-light" style="margin-bottom: 8px">{{ locale.provider.noAccountProvided }}</p>
 							</div>
 
 							<dav-button
@@ -594,7 +784,7 @@
 						style="display: inline-block; margin: 0px 15px"
 						*ngIf="providerStripeBalance">
 						<div class="card-body">
-							<h5 class="font-weight-light mb-3">{{ locale.provider.nextPayout }}</h5>
+							<h5 class="fw-light mb-3">{{ locale.provider.nextPayout }}</h5>
 
 							<p>{{ providerStripeBalance }}</p>
 						</div>
@@ -609,8 +799,8 @@
 	[header]="paymentFormDialogLocale.header"
 	[primaryButtonText]="paymentFormDialogLocale.save"
 	[defaultButtonText]="paymentFormDialogLocale.cancel"
-	[isVisible]="paymentFormDialogVisible"
-	[isLoading]="paymentFormDialogLoading"
+	[visible]="paymentFormDialogVisible"
+	[loading]="paymentFormDialogLoading"
 	(dismiss)="paymentFormDialogVisible = false"
 	(primaryButtonClick)="SavePaymentMethod()"
 	(defaultButtonClick)="paymentFormDialogVisible = false">
@@ -630,12 +820,12 @@
 	[header]="changePlanDialogHeader"
 	[primaryButtonText]="pricingLocale.continue"
 	[defaultButtonText]="pricingLocale.cancel"
-	[isVisible]="changePlanDialogVisible"
+	[visible]="changePlanDialogVisible"
 	(dismiss)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;"
 	(primaryButtonClick)="SetStripeSubscription()"
 	(defaultButtonClick)="changePlanDialogVisible = false; plusPlanLoading = false; proPlanLoading = false;">
 
-	<p class="font-weight-light"
+	<p class="fw-light"
 		style="max-width: 300px; font-size: 14px">
 		{{ changePlanDialogDescription }}
 	</p>
@@ -645,8 +835,8 @@
 	[header]="locale.provider.startStripeSetupDialog.header"
 	[primaryButtonText]="locale.provider.startSetup"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="startStripeSetupDialogVisible"
-	[isLoading]="startStripeSetupDialogLoading"
+	[visible]="startStripeSetupDialogVisible"
+	[loading]="startStripeSetupDialogLoading"
 	[maxWidth]="370"
 	(dismiss)="startStripeSetupDialogVisible = false"
 	(primaryButtonClick)="StartStripeProviderSetup()"
@@ -669,8 +859,8 @@
 	[header]="locale.provider.bankAccountDialog.header"
 	[primaryButtonText]="locale.save"
 	[defaultButtonText]="locale.cancel"
-	[isVisible]="bankAccountDialogVisible"
-	[isLoading]="bankAccountDialogLoading"
+	[visible]="bankAccountDialogVisible"
+	[loading]="bankAccountDialogLoading"
 	[maxWidth]="340"
 	(dismiss)="bankAccountDialogVisible = false"
 	(primaryButtonClick)="BankAccountDialogSave()"

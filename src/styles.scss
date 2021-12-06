@@ -28,6 +28,18 @@ body{
 	cursor: pointer;
 }
 
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a.btn {
+	text-decoration: none;
+}
+
 @font-face {
 	font-family: 'mvboli';
 	src: url('/assets/fonts/mvboli.woff2') format('woff2'),
