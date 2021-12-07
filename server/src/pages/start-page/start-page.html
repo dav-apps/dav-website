@@ -6,9 +6,15 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+		
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
 		<script type="module" src="start-page.ts" defer async></script>
 	</head>
 	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
 		<dav-button
 			id="login-button"
 			type="accent">
