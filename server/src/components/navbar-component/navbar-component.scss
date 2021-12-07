@@ -1,0 +1,31 @@
+.navbar {
+	padding-top: 0;
+}
+
+#navbar-container {
+	padding-top: 7px;
+}
+
+#navbar-items-container {
+	justify-content: end;
+	font-family: 'Segoe UI';
+}
+
+.navbar-brand {
+	font-size: 35px;
+	font-family: mvboli, 'MV Boli', Kalam;
+	font-weight: bold;
+	line-height: 0;
+}
+
+.nav-item {
+	font-size: 19px;
+	color: black;
+	margin: 0;
+	padding: 0;
+}
+
+.nav-link {
+	padding: 11px 18px 13px 18px !important;
+	color: black !important;
+}
