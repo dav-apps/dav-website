@@ -6,11 +6,74 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="login-page.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
 
 		<script type="module" src="login-page.ts" defer async></script>
+		<script type="module" src="/node_modules/bootstrap/dist/js/bootstrap.min.js" defer async></script>
 	</head>
-	<body>
-		
+	<body dir="ltr">
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container d-flex flex-column align-items-center" style="margin-top: 100px">
+			<img
+				src="/assets/images/dav-logo.png"
+				width="60"
+				height="60"
+				alt="dav Logo">
+
+			<h2 class="text-center fw-light my-4">Log in to dav</h2>
+
+			<form class="w-100">
+				<!-- Email -->
+				<div class="row">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
+						<!-- Error messages -->
+						<div class="mb-3">
+							<dav-message-bar id="error-message-bar">
+							</dav-message-bar>
+						</div>
+
+						<dav-textfield
+							id="email-textfield"
+							label="Email"
+							placeholder="Your email address"
+							type="email"
+							autocomplete="email"
+							autofocus>
+						</dav-textfield>
+					</div>
+				</div>
+
+				<!-- Password -->
+				<div class="row mt-3">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
+						<dav-textfield
+							id="password-textfield"
+							label="Password"
+							placeholder="Your password"
+							type="password"
+							autocomplete="current-password">
+						</dav-textfield>
+
+						<div class="d-flex flex-row">
+							<div class="d-flex mt-3">
+								<dav-button
+									id="login-button"
+									type="accent">
+									Log in
+								</dav-button>
+							</div>
+
+							<!-- TODO: Progress ring -->
+						</div>
+
+						<!-- TODO: Forgot password link -->
+					</div>
+				</div>
+			</form>
+		</div>
 	</body>
 </html>
