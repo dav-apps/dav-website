@@ -561,7 +561,7 @@ const deDefaults = {
 		pocketlibDescription: `
 			PocketLib ist ein einfacher und moderner Ebook-Reader.<br><br>
 
-			📖 Lesen jede epub-Datei<br>
+			📖 Lese jede epub-Datei<br>
 			Füge jede lokale epub-Datei zu deiner Bibliothek hinzu. PocketLib speichert automatisch deinen Fortschritt beim Lesen, so dass du direkt auf die zuletzt gelesene Seite kommst, wenn du die App öffnest.<br><br>
 
 			📚 Entdecke eine große Auswahl an Literatur<br>
