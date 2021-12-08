@@ -1,4 +1,5 @@
 import express from 'express'
+import ejs from 'ejs'
 import path from 'path'
 import url from 'url'
 import dotenv from 'dotenv'
@@ -34,11 +35,15 @@ export class App {
 	private mountRoutes() {
 		const router = express.Router()
 
+		this.express.set("view engine", "html")
+		this.express.engine('html', ejs.renderFile)
+		this.express.set('views', path.join(__dirname, 'src/pages'))
+
 		router.use(express.static(path.join(__dirname, 'src/pages')))
 		router.use(express.json())
 
-		router.get('/', (req, res) => res.sendFile(path.join(__dirname, './src/pages/start-page/start-page.html')))
-		router.get('/login', (req, res) => res.sendFile(path.join(__dirname, './src/pages/login-page/login-page.html')))
+		router.get('/', (req, res) => res.render("start-page/start-page"))
+		router.get('/login', (req, res) => res.render("login-page/login-page"))
 
 		router.post('/login', async (req, res) => {
 			if (!this.checkReferer(req, res)) return
