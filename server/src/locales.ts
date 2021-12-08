@@ -1,14 +1,6 @@
 //#region en
 const enDefaults = {
 	appComponent: {
-		navbar: {
-			pricing: "Pricing",
-			allApps: "All Apps",
-			devDashboard: "Developer Dashboard",
-			login: "Log in",
-			logout: "Log out",
-			signup: "Sign up"
-		},
 		footer: {
 			contact: "Contact",
 			privacy: "Privacy Policy"
@@ -468,6 +460,14 @@ const enDefaults = {
 		yearly: "Yearly",
 		totalUsers: "Total users: {0}"
 	},
+	navbarComponent: {
+		pricing: "Pricing",
+		allApps: "All Apps",
+		devDashboard: "Developer Dashboard",
+		login: "Log in",
+		logout: "Log out",
+		signup: "Sign up"
+	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
 		save: "Save",
@@ -543,14 +543,6 @@ export var enGB = enDefaults
 //#region de
 const deDefaults = {
 	appComponent: {
-		navbar: {
-			pricing: "Abos",
-			allApps: "Alle Apps",
-			devDashboard: "Entwickler-Dashboard",
-			login: "Anmelden",
-			logout: "Abmelden",
-			signup: "Registrieren"
-		},
 		footer: {
 			contact: "Kontakt",
 			privacy: "Datenschutzerklärung"
@@ -1016,6 +1008,14 @@ const deDefaults = {
 		monthly: "Monatlich",
 		yearly: "Jährlich",
 		totalUsers: "Nutzer insgesamt: {0}"
+	},
+	navbarComponent: {
+		pricing: "Abos",
+		allApps: "Alle Apps",
+		devDashboard: "Entwickler-Dashboard",
+		login: "Anmelden",
+		logout: "Abmelden",
+		signup: "Registrieren"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

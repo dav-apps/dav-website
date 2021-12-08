@@ -1,3 +1,10 @@
+import { getLocale } from '../../utils'
+
+let locale = getLocale().navbarComponent
+let pricingLink = document.getElementById("pricing-link") as HTMLAnchorElement
+let loginLink = document.getElementById("login-link") as HTMLAnchorElement
+let signupLink = document.getElementById("signup-link") as HTMLAnchorElement
+
 function updateNavbarContainerPadding() {
 	let navbarContainer = document.getElementById('navbar-container') as HTMLDivElement
 
@@ -8,8 +15,15 @@ function updateNavbarContainerPadding() {
 	}
 }
 
+function setStrings() {
+	pricingLink.innerText = locale.pricing
+	loginLink.innerText = locale.login
+	signupLink.innerText = locale.signup
+}
+
 window.addEventListener("resize", () => {
 	updateNavbarContainerPadding()
 })
 
 updateNavbarContainerPadding()
+setStrings()
