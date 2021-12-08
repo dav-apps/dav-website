@@ -7,7 +7,9 @@ import { Server } from 'socket.io'
 import {
 	Dav,
 	Auth,
+	App as DavApp,
 	Environment,
+	AppsController,
 	SessionsController,
 	ApiResponse,
 	ApiErrorResponse,
@@ -44,6 +46,18 @@ export class App {
 
 		router.get('/', (req, res) => res.render("start-page/start-page"))
 		router.get('/login', (req, res) => res.render("login-page/login-page"))
+
+		router.get('/apps', async (req, res) => {
+			// Get the apps
+			let response = await AppsController.GetApps()
+
+			if (response.status == 200) {
+				let responseData = (response as ApiResponse<DavApp[]>).data
+				res.render("apps-page/apps-page", { apps: responseData })
+			} else {
+				res.render("apps-page/apps-page", { apps: [] })
+			}
+		})
 
 		router.post('/login', async (req, res) => {
 			if (!this.checkReferer(req, res)) return

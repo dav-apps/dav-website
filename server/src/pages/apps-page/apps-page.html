@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="/node_modules/bootstrap/dist/js/bootstrap.min.js" defer async></script>
+	</head>
+	<body dir="ltr">
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container navbar-margin pt-4">
+			<h1 id="header" class="text-center fw-light mb-3"></h1>
+
+			<div class="d-flex flex-wrap justify-content-center">
+				<% apps.forEach((app) => { %>
+					<div class="card m-3" style="width: 18rem">
+						<div class="card-body">
+							<h5 class="card-title mb-3"><%= app.Name %></h5>
+							<p class="card-text"><%= app.Description %></p>
+	
+							<% if (app.WebLink) { %>
+							<a class="btn text-dark mx-1"
+								target="blank">
+								<!-- TODO: Icon -->
+							</a>
+							<% } %>
+	
+							<% if (app.GooglePlayLink) { %>
+								<a class="btn text-dark mx-1"
+									target="blank">
+									<!-- TODO: Icon -->
+								</a>
+							<% } %>
+
+							<% if (app.MicrosoftStoreLink) { %>
+								<a class="btn text-dark mx-1"
+									target="blank">
+									<!-- TODO: Icon -->
+								</a>
+							<% } %>
+						</div>
+					</div>
+				<% }) %>
+			</div>
+		</div>
+
+		<script type="module" src="apps-page.ts" defer async></script>
+	</body>
+</html>
