@@ -8,7 +8,7 @@ function updateNavbarContainerPadding() {
 	}
 }
 
-window.addEventListener("resize", (event: UIEvent) => {
+window.addEventListener("resize", () => {
 	updateNavbarContainerPadding()
 })
 

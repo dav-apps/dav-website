@@ -1,0 +1,75 @@
+#logged-in-container {
+	display: none;
+}
+
+#start-header {
+	background-image: url('/assets/images/start-background.jpg');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: top;
+	width: 100%;
+	min-height: 400px;
+}
+
+#start-header-message {
+	padding: 20px;
+	width: 300px;
+	margin: 0 10%;
+	color: white;
+	border-radius: 10%;
+}
+
+#start-header-message::before {
+	border-radius: 3px;
+}
+
+#start-header-message > p {
+	margin: 0;
+	font-size: 20px;
+}
+
+.app-container {
+	margin: 0;
+	background-color: #efefef;
+	font-family: 'Segoe UI';
+}
+
+.app-description {
+	font-size: 20px;
+}
+
+.links-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	min-height: 70px;
+	margin-top: 1.5rem;
+}
+
+.google-play-badge {
+   height: 70px;
+}
+
+.microsoft-store-badge {
+   height: 48px;
+}
+
+.github-badge {
+   height: 50px;
+}
+
+.screenshot-pocketlib {
+	min-width: 250px;
+	max-width: 400px;
+}
+
+.screenshot-universalsoundboard {
+	min-width: 300px;
+	max-width: 700px;
+}
+
+.screenshot-calendo {
+	min-width: 250px;
+	max-width: 400px;
+}

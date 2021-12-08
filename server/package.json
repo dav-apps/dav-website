@@ -6,7 +6,7 @@
 		"start": "node dist/src/server.js",
 		"build:watch": "concurrently 'npm:tsc:watch' 'npm:server:watch'",
 		"tsc:watch": "tsc -w",
-		"parcel:pages:watch": "npx parcel watch 'src/pages/**/*.html' --dist-dir dist/src/pages",
+		"parcel:watch": "npx parcel watch 'src/pages/**/*.html' --dist-dir dist/src/pages",
 		"server:watch": "nodemon dist/server.js"
 	},
 	"dependencies": {
