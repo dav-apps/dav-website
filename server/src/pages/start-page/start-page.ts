@@ -33,11 +33,11 @@ async function main() {
 	await userLoadedPromiseHolder.AwaitResult()
 
 	if (Dav.isLoggedIn) {
-		notLoggedInContainer.style.display = "none"
-		loggedInContainer.style.display = "block"
+		hideElement(notLoggedInContainer)
+		showElement(loggedInContainer)
 	} else {
-		notLoggedInContainer.style.display = "block"
-		loggedInContainer.style.display = "none"
+		showElement(notLoggedInContainer)
+		hideElement(loggedInContainer)
 	}
 }
 
