@@ -1,0 +1,20 @@
+.card-button-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.card-button {
+	display: flex !important;
+	justify-content: center;
+	align-items: center;
+	padding: 3px 10px;
+	height: 40px;
+}
+
+.card-button:hover {
+	background-color: #f8f9fa;
+}
+
+.card-button > i {
+	font-size: 23px;
+}

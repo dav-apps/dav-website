@@ -7,9 +7,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="apps-page.scss">
 		<link rel="stylesheet" href="../../styles.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.min.css">
 
 		<script type="module" src="/node_modules/bootstrap/dist/js/bootstrap.min.js" defer async></script>
 	</head>
@@ -25,27 +27,35 @@
 						<div class="card-body">
 							<h5 class="card-title mb-3"><%= app.Name %></h5>
 							<p class="card-text"><%= app.Description %></p>
-	
-							<% if (app.WebLink) { %>
-							<a class="btn text-dark mx-1"
-								target="blank">
-								<!-- TODO: Icon -->
-							</a>
-							<% } %>
-	
-							<% if (app.GooglePlayLink) { %>
-								<a class="btn text-dark mx-1"
-									target="blank">
-									<!-- TODO: Icon -->
-								</a>
-							<% } %>
 
-							<% if (app.MicrosoftStoreLink) { %>
-								<a class="btn text-dark mx-1"
-									target="blank">
-									<!-- TODO: Icon -->
-								</a>
-							<% } %>
+							<div class="card-button-container">
+								<% if (app.WebLink) { %>
+									<% var webLink = app.WebLink %>
+									<a class="btn card-button text-dark mx-2"
+										target="blank"
+										href="<%= webLink %>">
+										<i class="fas fa-globe"></i>
+									</a>
+								<% } %>
+	
+								<% if (app.GooglePlayLink) { %>
+									<% var playLink = app.GooglePlayLink %>
+									<a class="btn card-button text-dark mx-2"
+										target="blank"
+										href="<%= playLink %>">
+										<i class="fab fa-android"></i>
+									</a>
+								<% } %>
+	
+								<% if (app.MicrosoftStoreLink) { %>
+									<% microsoftStoreLink = app.MicrosoftStoreLink %>
+									<a class="btn card-button text-dark mx-2"
+										target="blank"
+										href="<%= microsoftStoreLink %>">
+										<i class="fab fa-windows"></i>
+									</a>
+								<% } %>
+							</div>
 						</div>
 					</div>
 				<% }) %>
