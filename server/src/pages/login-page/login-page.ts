@@ -14,18 +14,20 @@ let loginButton = document.getElementById('login-button') as Button
 let email: string = ""
 let password: string = ""
 
-emailTextfield.addEventListener('change', (event: Event) => {
-	email = (event as CustomEvent).detail.value
-	hideError()
-})
-
-passwordTextfield.addEventListener('change', (event: Event) => {
-	password = (event as CustomEvent).detail.value
-	hideError()
-})
-
-passwordTextfield.addEventListener('enter', login)
-loginButton.addEventListener('click', login)
+function setEventListeners() {
+	emailTextfield.addEventListener('change', (event: Event) => {
+		email = (event as CustomEvent).detail.value
+		hideError()
+	})
+	
+	passwordTextfield.addEventListener('change', (event: Event) => {
+		password = (event as CustomEvent).detail.value
+		hideError()
+	})
+	
+	passwordTextfield.addEventListener('enter', login)
+	loginButton.addEventListener('click', login)
+}
 
 function setStrings() {
 	header.innerText = locale.title
@@ -91,3 +93,4 @@ function getLoginErrorMessage(errorCode: number): string {
 }
 
 setStrings()
+setEventListeners()

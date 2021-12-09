@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="/node_modules/bootstrap/dist/js/bootstrap.min.js" defer async></script>
+	</head>
+	<body dir="ltr">
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container d-flex flex-column align-items-center" style="margin-top: 100px">
+			<img
+				src="/assets/images/dav-logo.png"
+				width="60"
+				height="60"
+				alt="dav Logo">
+
+			<h2 id="header" class="text-center fw-light my-4"></h2>
+
+			<form class="w-100">
+				<!-- First name -->
+				<div class="row">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
+						<!-- Error messages -->
+						<div class="mb-3 d-none">
+							<dav-message-bar id="error-message-bar">
+							</dav-message-bar>
+						</div>
+
+						<dav-textfield
+							id="first-name-textfield"
+							autocomplete="given-name"
+							autofocus>
+						</dav-textfield>
+					</div>
+				</div>
+
+				<!-- Email -->
+				<div class="row mt-3">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
+						<dav-textfield
+							id="email-textfield"
+							type="email"
+							autocomplete="email">
+						</dav-textfield>
+					</div>
+				</div>
+
+				<!-- Password -->
+				<div class="row mt-3">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
+						<dav-textfield
+							id="password-textfield"
+							type="password"
+							autocomplete="new-password">
+						</dav-textfield>
+					</div>
+				</div>
+
+				<!-- Password confirmation -->
+				<div class="row mt-3">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
+						<dav-textfield
+							id="password-confirmation-textfield"
+							type="password"
+							autocomplete="new-password">
+						</dav-textfield>
+
+						<div class="d-flex flex-row">
+							<div class="d-flex mt-3">
+								<dav-button
+									id="signup-button"
+									type="accent">
+								</dav-button>
+							</div>
+
+							<!-- TODO: Progress ring -->
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<script type="module" src="signup-page.ts" defer async></script>
+	</body>
+</html>
