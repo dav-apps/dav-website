@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="dev-page.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="/node_modules/bootstrap/dist/js/bootstrap.min.js" defer async></script>
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container navbar-margin pt-4">
+			<h1 id="header" class="text-center fw-light mb-3"></h1>
+
+			<!-- TODO: Error message -->
+
+			<div id="apps-container" class="d-flex flex-wrap justify-content-center">
+				<div
+					id="add-card"
+					class="card app-card text-center m-3 cursor shadow-sm">
+					<div class="card-body d-flex justify-content-center align-items-center">
+						<i class="ms-Icon ms-Icon--Add text-color" aria-hidden="true" style="font-size: 16px"></i>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="module" src="dev-page.ts" defer async></script>
+	</body>
+</html>

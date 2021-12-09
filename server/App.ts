@@ -49,6 +49,7 @@ export class App {
 		router.get('/', (req, res) => res.render("start-page/start-page"))
 		router.get('/login', (req, res) => res.render("login-page/login-page"))
 		router.get('/signup', (req, res) => res.render("signup-page/signup-page"))
+		router.get('/dev', (req, res) => res.render("dev-page/dev-page"))
 
 		router.get('/apps', async (req, res) => {
 			// Get the apps
