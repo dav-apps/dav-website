@@ -13,7 +13,9 @@ import {
 	SessionsController,
 	ApiResponse,
 	ApiErrorResponse,
-	SessionResponseData
+	SessionResponseData,
+	SignupResponseData,
+	UsersController
 } from 'dav-js'
 import * as websocket from './websocket.js'
 
@@ -77,6 +79,31 @@ export class App {
 
 			if (response.status == 201) {
 				response = response as ApiResponse<SessionResponseData>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send(response.errors)
+			}
+		})
+
+		router.post('/signup', async (req, res) => {
+			if (!this.checkReferer(req, res)) return
+			this.init()
+
+			// Do the API request
+			let response: ApiResponse<SignupResponseData> | ApiErrorResponse = await UsersController.Signup({
+				auth: this.auth,
+				email: req.body.email,
+				firstName: req.body.firstName,
+				password: req.body.password,
+				appId: +process.env.APP_ID,
+				apiKey: process.env.API_KEY,
+				deviceName: "",
+				deviceOs: ""
+			})
+			
+			if (response.status == 201) {
+				response = response as ApiResponse<SignupResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				response = response as ApiErrorResponse

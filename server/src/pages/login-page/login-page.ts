@@ -50,6 +50,7 @@ async function login() {
 			data: {
 				email,
 				password
+				// TODO: Device info
 			}
 		})
 	} catch (error) {
