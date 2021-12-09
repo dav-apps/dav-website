@@ -31,6 +31,14 @@ async function main() {
 		showElement(notLoggedInList)
 		hideElement(loggedInList)
 	}
+
+	logoutLink.addEventListener("click", (event: MouseEvent) => {
+		event.preventDefault()
+		
+		Dav.Logout().then(() => {
+			window.location.href = "/"
+		})
+	})
 }
 
 function updateNavbarContainerPadding() {
