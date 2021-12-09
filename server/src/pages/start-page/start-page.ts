@@ -28,6 +28,13 @@ let screenshotUniversalsoundboardMobile = document.getElementById("screenshot-un
 let screenshotCalendo = document.getElementById("screenshot-calendo") as HTMLImageElement
 let screenshotCalendoMobile = document.getElementById("screenshot-calendo-mobile") as HTMLImageElement
 
+let loggedInHeader = document.getElementById("logged-in-header") as HTMLHeadingElement
+let appsContainer = document.getElementById("apps-container") as HTMLDivElement
+let welcomeMessage = document.getElementById("welcome-message") as HTMLDivElement
+let welcomeMessageHeader = document.getElementById("welcome-message-header") as HTMLHeadingElement
+let welcomeMessageText = document.getElementById("welcome-message-text") as HTMLParagraphElement
+let welcomeMessageLink = document.getElementById("welcome-message-link") as HTMLAnchorElement
+
 async function main() {
 	initDav()
 	await userLoadedPromiseHolder.AwaitResult()
@@ -38,6 +45,73 @@ async function main() {
 	} else {
 		showElement(notLoggedInContainer)
 		hideElement(loggedInContainer)
+	}
+
+	if (Dav.user.Apps.length > 0) {
+		loggedInHeader.classList.add("mb-3")
+		hideElement(welcomeMessage)
+
+		appsContainer.innerHTML = ""
+
+		for (let app of Dav.user.Apps) {
+			let weblinkHtml = ""
+			let googlePlayLinkHtml = ""
+			let microsoftStoreLinkHtml = ""
+
+			if (app.WebLink) {
+				weblinkHtml = `
+					<div class="card-button-container">
+						<a class="btn card-button text-dark mx-2"
+							target="blank"
+							href="${app.WebLink}">
+							<i class="fas fa-globe"></i>
+						</a>
+					</div>
+				`
+			}
+
+			if (app.GooglePlayLink) {
+				googlePlayLinkHtml = `
+					<div class="card-button-container">
+						<a class="btn card-button text-dark mx-2"
+							target="blank"
+							href="${app.GooglePlayLink}">
+							<i class="fab fa-android"></i>
+						</a>
+					</div>
+				`
+			}
+
+			if (app.MicrosoftStoreLink) {
+				microsoftStoreLinkHtml = `
+					<div class="card-button-container">
+						<a class="btn card-button text-dark mx-2"
+							target="blank"
+							href="${app.MicrosoftStoreLink}">
+							<i class="fab fa-windows"></i>
+						</a>
+					</div>
+				`
+			}
+
+			appsContainer.innerHTML += `
+				<div class="card m-3" style="width: 18rem">
+					<div class="card-body">
+						<h5 class="card-title mb-3">${app.Name}</h5>
+						<p class="card-text">${app.Description}</p>
+
+						<div class="card-button-container">
+							${weblinkHtml}
+							${googlePlayLinkHtml}
+							${microsoftStoreLinkHtml}
+						</div>
+					</div>
+				</div>
+			`
+		}
+	} else {
+		loggedInHeader.classList.add("mb-4")
+		welcomeMessageHeader.innerText = locale.welcomeTitle.replace('{0}', Dav.user.FirstName)
 	}
 }
 
@@ -104,6 +178,11 @@ function setStrings() {
 	pocketlibDescription.innerHTML = locale.pocketlibDescription
 	universalsoundboardDescription.innerHTML = locale.universalSoundboardDescription
 	calendoDescription.innerHTML = locale.calendoDescription
+
+	loggedInHeader.innerText = locale.loggedInTitle
+	welcomeMessageHeader.innerText = locale.welcomeTitle.replace('{0}', '')
+	welcomeMessageText.innerText = locale.welcomeMessage
+	welcomeMessageLink.innerText = locale.welcomeButton
 }
 
 window.addEventListener("resize", setSize)
