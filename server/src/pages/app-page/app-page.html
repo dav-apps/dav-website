@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="app-page.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="/node_modules/bootstrap/dist/js/bootstrap.min.js" defer async></script>
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container navbar-margin">
+			<div class="mb-3">
+				<dav-header
+					id="header"
+					backButtonVisible
+					size="big">
+				</dav-header>
+			</div>
+
+			<div>
+				<p id="description" class="mb-3 fw-light"></p>
+
+				<dav-button
+					id="statistics-button"
+					type="accent">
+				</dav-button>
+
+				<dav-button
+					id="edit-button">
+				</dav-button>
+
+				<h5 id="published-header" class="fw-light mt-4"></h5>
+
+				<dav-toggle id="published-toggle">
+				</dav-toggle>
+			</div>
+
+			<div class="d-flex">
+				<div class="mx-4">
+					<h3 id="tables-header" class="fw-light text-center mb-3 mt-4"></h3>
+					<ul id="tables-list" class="list-group"></ul>
+				</div>
+
+				<div class="mx-4">
+					<h3 id="apis-header" class="fw-light text-center mb-3 mt-4"></h3>
+					<ul id="apis-list" class="list-group"></ul>
+				</div>
+			</div>
+		</div>
+
+		<script type="module" src="app-page.ts" defer async></script>
+	</body>
+</html>

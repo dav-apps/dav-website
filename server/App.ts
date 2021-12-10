@@ -50,6 +50,7 @@ export class App {
 		router.get('/login', (req, res) => res.render("login-page/login-page"))
 		router.get('/signup', (req, res) => res.render("signup-page/signup-page"))
 		router.get('/dev', (req, res) => res.render("dev-page/dev-page"))
+		router.get('/dev/:appId', (req, res) => res.render("app-page/app-page"))
 
 		router.get('/apps', async (req, res) => {
 			// Get the apps
