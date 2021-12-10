@@ -19,22 +19,22 @@ function setEventListeners() {
 		email = (event as CustomEvent).detail.value
 		hideError()
 	})
-	
+
 	passwordTextfield.addEventListener('change', (event: Event) => {
 		password = (event as CustomEvent).detail.value
 		hideError()
 	})
-	
+
 	passwordTextfield.addEventListener('enter', login)
 	loginButton.addEventListener('click', login)
 }
 
 function setStrings() {
 	header.innerText = locale.title
-	emailTextfield.setAttribute("label", locale.emailTextfieldLabel)
-	emailTextfield.setAttribute("placeholder", locale.emailTextfieldPlaceholder)
-	passwordTextfield.setAttribute("label", locale.passwordTextfieldLabel)
-	passwordTextfield.setAttribute("placeholder", locale.passwordTextfieldPlaceholder)
+	emailTextfield.label = locale.emailTextfieldLabel
+	emailTextfield.placeholder = locale.emailTextfieldPlaceholder
+	passwordTextfield.label = locale.passwordTextfieldLabel
+	passwordTextfield.placeholder = locale.passwordTextfieldPlaceholder
 	loginButton.innerText = locale.login
 }
 

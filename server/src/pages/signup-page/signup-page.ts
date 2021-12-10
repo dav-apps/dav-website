@@ -78,14 +78,14 @@ function setEventListeners() {
 
 function setStrings() {
 	header.innerText = locale.title
-	firstNameTextfield.setAttribute("label", locale.firstNameTextfieldLabel)
-	firstNameTextfield.setAttribute("placeholder", locale.firstNameTextfieldPlaceholder)
-	emailTextfield.setAttribute("label", locale.emailTextfieldLabel)
-	emailTextfield.setAttribute("placeholder", locale.emailTextfieldPlaceholder)
-	passwordTextfield.setAttribute("label", locale.passwordTextfieldLabel)
-	passwordTextfield.setAttribute("placeholder", locale.passwordTextfieldPlaceholder)
-	passwordConfirmationTextfield.setAttribute("label", locale.passwordConfirmationTextfieldLabel)
-	passwordConfirmationTextfield.setAttribute("placeholder", locale.passwordConfirmationTextFieldPlaceholder)
+	firstNameTextfield.label = locale.firstNameTextfieldLabel
+	firstNameTextfield.placeholder = locale.firstNameTextfieldPlaceholder
+	emailTextfield.label = locale.emailTextfieldLabel
+	emailTextfield.placeholder = locale.emailTextfieldPlaceholder
+	passwordTextfield.label = locale.passwordTextfieldLabel
+	passwordTextfield.placeholder = locale.passwordTextfieldPlaceholder
+	passwordConfirmationTextfield.label = locale.passwordConfirmationTextfieldLabel
+	passwordConfirmationTextfield.placeholder = locale.passwordConfirmationTextFieldPlaceholder
 	signupButton.innerText = locale.signup
 }
 

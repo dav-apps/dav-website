@@ -27,6 +27,10 @@ async function main() {
 		showElement(loggedInList)
 
 		userLink.innerText = Dav.user.FirstName
+
+		if (Dav.user.Dev) {
+			showElement(devDashboardLink)
+		}
 	} else {
 		showElement(notLoggedInList)
 		hideElement(loggedInList)
