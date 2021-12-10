@@ -20,17 +20,14 @@
 		<div class="container navbar-margin pt-4">
 			<h1 id="header" class="text-center fw-light mb-3"></h1>
 
-			<!-- TODO: Error message -->
-
-			<div id="apps-container" class="d-flex flex-wrap justify-content-center">
-				<div
-					id="add-card"
-					class="card app-card text-center m-3 cursor shadow-sm">
-					<div class="card-body d-flex justify-content-center align-items-center">
-						<i class="ms-Icon ms-Icon--Add text-color" aria-hidden="true" style="font-size: 16px"></i>
-					</div>
-				</div>
+			<div class="mb-3 mx-auto d-none" style="width: 250px">
+				<dav-message-bar
+					id="error-message-bar"
+					type="danger">
+				</dav-message-bar>
 			</div>
+
+			<div id="apps-container" class="d-flex flex-wrap justify-content-center"></div>
 		</div>
 
 		<script type="module" src="dev-page.ts" defer async></script>

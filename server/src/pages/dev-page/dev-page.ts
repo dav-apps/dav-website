@@ -7,12 +7,12 @@ import {
 	DevsController
 } from 'dav-js'
 import 'dav-ui-components'
-
-import { initDav, userLoadedPromiseHolder, getLocale } from '../../utils'
+import { MessageBar } from 'dav-ui-components'
+import { initDav, userLoadedPromiseHolder, getLocale, showElement } from '../../utils'
 
 let locale = getLocale().devPage
 let header = document.getElementById("header") as HTMLHeadingElement
-let addCard = document.getElementById("add-card") as HTMLDivElement
+let errorMessageBar = document.getElementById("error-message-bar") as MessageBar
 let appsContainer = document.getElementById("apps-container") as HTMLDivElement
 
 async function main() {
@@ -50,30 +50,13 @@ async function main() {
 			appsContainer.appendChild(appCardElement)
 		}
 	} else {
-		// TODO: Show error
+		errorMessageBar.innerText = locale.unexpectedErrorShort.replace('{0}', (response as ApiErrorResponse).errors[0].code.toString())
+		showElement(errorMessageBar)
 	}
-}
-
-function setEventListeners() {
-	addCard.addEventListener("mouseover", () => {
-		addCard.classList.remove("shadow-sm")
-		addCard.classList.add("shadow")
-	})
-
-	addCard.addEventListener("mouseout", () => {
-		addCard.classList.remove("shadow")
-		addCard.classList.add("shadow-sm")
-	})
-
-	addCard.addEventListener("click", showAddAppDialog)
 }
 
 function setStrings() {
 	header.innerText = locale.title
-}
-
-function showAddAppDialog() {
-	
 }
 
 function appCardMouseOver(app: App) {
@@ -97,5 +80,4 @@ function appCardClick(app: App) {
 }
 
 setStrings()
-setEventListeners()
 main()
