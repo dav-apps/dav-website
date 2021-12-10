@@ -1,8 +1,6 @@
 import { Dav, ApiResponse, ApiErrorResponse, AppsController, App } from 'dav-js'
 import 'dav-ui-components'
-import { Button } from 'dav-ui-components/src/button/button'
-import { Header } from 'dav-ui-components/src/header/header'
-import { Toggle } from 'dav-ui-components/src/toggle/toggle'
+import { Button, Dialog, Header, Toggle } from 'dav-ui-components'
 import { initDav, userLoadedPromiseHolder, getLocale } from '../../utils'
 
 let locale = getLocale().appPage
@@ -16,6 +14,8 @@ let tablesHeader = document.getElementById("tables-header") as HTMLHeadingElemen
 let tablesList = document.getElementById("tables-list") as HTMLUListElement
 let apisHeader = document.getElementById("apis-header") as HTMLHeadingElement
 let apisList = document.getElementById("apis-list") as HTMLUListElement
+let publishAppDialog = document.getElementById("publish-app-dialog") as Dialog
+let publishAppDialogText = document.getElementById("publish-app-dialog-text") as HTMLParagraphElement
 
 let app: App
 
@@ -63,8 +63,12 @@ async function main() {
 }
 
 function setEventListeners() {
-	header.addEventListener("backButtonClick", goBack)
-	
+	header.addEventListener("backButtonClick", navigateBack)
+	statisticsButton.addEventListener("click", navigateToStatisticsPage)
+	publishedToggle.addEventListener("change", showPublishAppDialog)
+	publishAppDialog.addEventListener("dismiss", hidePublishAppDialog)
+	publishAppDialog.addEventListener("primaryButtonClick", publishUnpublishApp)
+	publishAppDialog.addEventListener("defaultButtonClick", hidePublishAppDialog)
 }
 
 function setStrings() {
@@ -75,9 +79,43 @@ function setStrings() {
 	apisHeader.innerText = locale.apis
 }
 
-function goBack() {
+function navigateBack() {
 	// Redirect to the Dev page
 	window.location.href = "/dev"
+}
+
+function navigateToStatisticsPage() {
+	window.location.href = `/dev/${app.Id}/statistics`
+}
+
+function showPublishAppDialog() {
+	publishAppDialog.header = app.Published ? locale.publishAppDialog.unpublishHeader : locale.publishAppDialog.publishHeader
+	publishAppDialog.primaryButtonText = locale.publishAppDialog.confirm
+	publishAppDialog.defaultButtonText = locale.cancel
+	publishAppDialogText.innerText = app.Published ? locale.publishAppDialog.unpublishSubtext : locale.publishAppDialog.publishSubtext
+	publishAppDialog.visible = true
+}
+
+function hidePublishAppDialog() {
+	publishAppDialog.visible = false
+}
+
+async function publishUnpublishApp() {
+	publishAppDialog.loading = true
+
+	let response = await AppsController.UpdateApp({
+		id: app.Id,
+		published: !app.Published
+	})
+
+	if (response.status == 200) {
+		let responseData = (response as ApiResponse<App>).data
+		app.Published = responseData.Published
+		publishedToggle.checked = responseData.Published
+	}
+
+	publishAppDialog.loading = false
+	publishAppDialog.visible = false
 }
 
 setStrings()
