@@ -360,7 +360,7 @@ const enDefaults = {
 		unexpectedErrorShort: "Unexpected error ({0})",
 		save: "Save",
 		cancel: "Cancel",
-		addAppDialog: {
+		newAppDialog: {
 			header: "Add app",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "The name of the app",
@@ -407,25 +407,6 @@ const enDefaults = {
 			publishSubtext: "Are you sure you want to publish this app?",
 			unpublishSubtext: "Are you sure you want to unpublish this app?",
 			confirm: "Confirm"
-		},
-		addTableDialog: {
-			header: "Add table",
-			nameTextfieldLabel: "Name",
-			nameTextfieldPlaceholder: "The name of the table",
-			errors: {
-				nameTooShort: "The name is too short",
-				nameTooLong: "The name is too long",
-				nameInvalid: "The name is invalid"
-			}
-		},
-		addApiDialog: {
-			header: "Add API",
-			nameTextfieldLabel: "Name",
-			nameTextfieldPlaceholder: "The name of the api",
-			errors: {
-				nameTooShort: "The name is too short",
-				nameTooLong: "The name is too long"
-			}
 		},
 		save: "Save",
 		cancel: "Cancel",
@@ -909,7 +890,7 @@ const deDefaults = {
 		unexpectedErrorShort: "Unerwarteter Fehler ({0})",
 		save: "Speichern",
 		cancel: "Abbrechen",
-		addAppDialog: {
+		newAppDialog: {
 			header: "App hinzufügen",
 			nameTextfieldLabel: "Name",
 			nameTextfieldPlaceholder: "Der Name der App",
@@ -956,25 +937,6 @@ const deDefaults = {
 			publishSubtext: "Bist du dir sicher, dass du diese App veröffentlichen willst?",
 			unpublishSubtext: "Bist du dir sicher, dass du die Veröffentlichung dieser App aufheben willst?",
 			confirm: "Bestätigen"
-		},
-		addTableDialog: {
-			header: "Tabelle hinzufügen",
-			nameTextfieldLabel: "Name",
-			nameTextfieldPlaceholder: "Der Name der Tabelle",
-			errors: {
-				nameTooShort: "Der Name ist zu kurz",
-				nameTooLong: "Der Name ist zu lang",
-				nameInvalid: "Der Name ist ungültig"
-			}
-		},
-		addApiDialog: {
-			header: "API hinzufügen",
-			nameTextfieldLabel: "Name",
-			nameTextfieldPlaceholder: "Der Name der API",
-			errors: {
-				nameTooShort: "Der Name ist zu kurz",
-				nameTooLong: "Der Name ist zu lang"
-			}
 		},
 		save: "Speichern",
 		cancel: "Abbrechen",

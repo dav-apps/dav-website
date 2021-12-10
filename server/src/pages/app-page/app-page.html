@@ -58,6 +58,54 @@
 		</div>
 
 		<dav-dialog
+			id="edit-app-dialog">
+
+			<form>
+				<!-- Name -->
+				<div class="mb-3">
+					<dav-textfield
+						id="edit-app-dialog-name-textfield">
+					</dav-textfield>
+				</div>
+
+				<!-- Description -->
+				<div class="mb-3">
+					<dav-textarea
+						id="edit-app-dialog-description-textarea"
+						resize="vertical">
+					</dav-textareaa>
+				</div>
+
+				<!-- WebLink -->
+				<div class="mb-3">
+					<dav-textfield
+						id="edit-app-dialog-weblink-textfield"
+						type="url"
+						autocomplete="url">
+					</dav-textfield>
+				</div>
+
+				<!-- GooglePlayLink -->
+				<div class="mb-3">
+					<dav-textfield
+						id="edit-app-dialog-googleplaylink-textfield"
+						type="url"
+						autocomplete="url">
+					</dav-textfield>
+				</div>
+
+				<!-- MicrosoftStoreLink -->
+				<div class="mb-3">
+					<dav-textfield
+						id="edit-app-dialog-microsoftstorelink-textfield"
+						type="url"
+						autocomplete="url">
+					</dav-textfield>
+				</div>
+			</form>
+		</dav-dialog>
+
+		<dav-dialog
 			id="publish-app-dialog">
 			<p id="publish-app-dialog-text" class="fw-light"></p>
 		</dav-dialog>
