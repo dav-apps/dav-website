@@ -7,13 +7,14 @@ import {
 	DevsController
 } from 'dav-js'
 import 'dav-ui-components'
-import { MessageBar } from 'dav-ui-components'
+import { Button, MessageBar } from 'dav-ui-components'
 import { initDav, userLoadedPromiseHolder, getLocale, showElement } from '../../utils'
 
 let locale = getLocale().devPage
 let header = document.getElementById("header") as HTMLHeadingElement
 let errorMessageBar = document.getElementById("error-message-bar") as MessageBar
 let appsContainer = document.getElementById("apps-container") as HTMLDivElement
+let statisticsButton = document.getElementById("statistics-button") as Button
 
 async function main() {
 	initDav()
@@ -25,7 +26,7 @@ async function main() {
 	}
 
 	// Get the dev
-	let response: ApiResponse<GetDevResponseData> | ApiErrorResponse = await DevsController.GetDev()
+	let response = await DevsController.GetDev()
 
 	if (response.status == 200) {
 		let apps: App[] = (response as ApiResponse<GetDevResponseData>).data.apps
@@ -55,8 +56,13 @@ async function main() {
 	}
 }
 
+function setEventListeners() {
+	statisticsButton.addEventListener("click", navigateToStatisticsPage)
+}
+
 function setStrings() {
 	header.innerText = locale.title
+	statisticsButton.innerText = locale.statistics
 }
 
 function appCardMouseOver(app: App) {
@@ -79,5 +85,10 @@ function appCardClick(app: App) {
 	window.location.href = `/dev/${app.Id}`
 }
 
+function navigateToStatisticsPage() {
+	window.location.href = "/dev/statistics"
+}
+
 setStrings()
+setEventListeners()
 main()
