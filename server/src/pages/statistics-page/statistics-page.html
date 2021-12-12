@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="statistics-page.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="/node_modules/bootstrap/dist/js/bootstrap.min.js" defer async></script>
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container navbar-margin pt-4">
+			<div class="mb-3">
+				<dav-header
+					id="header"
+					backButtonVisible
+					size="big">
+				</dav-header>
+			</div>
+
+			<div id="user-chart-container" class="mx-auto">
+				<canvas id="user-chart"></canvas>
+			</div>
+
+			<p id="total-users-text"
+				class="mx-auto mt-3 mb-5 ps-4 fw-light">
+			</p>
+
+			<div class="d-flex flex-wrap justify-content-center mb-5">
+				<div class="my-4 mx-auto">
+					<h3 id="plans-header" class="text-center fw-light"></h3>
+					<canvas id="plans-chart"></canvas>
+				</div>
+
+				<div class="my-4 mx-auto">
+					<h3 id="confirmations-header" class="text-center fw-light"></h3>
+					<canvas id="confirmations-chart"></canvas>
+				</div>
+			</div>
+		</div>
+
+		<h2 id="active-users-header" class="text-center fw-light mb-3"></h2>
+
+		<div id="active-users-chart-container" class="mx-auto mb-5 px-3">
+			<canvas id="active-users-chart"></canvas>
+		</div>
+
+		<script type="module" src="statistics-page.ts" defer async></script>
+	</body>
+</html>
