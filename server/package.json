@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-free": "^5.15.4",
+		"axios": "^0.24.0",
 		"bootstrap": "^5.1.3",
 		"chart.js": "^3.6.2",
 		"dav-js": "git+https://github.com/dav-apps/dav-js.git#v2.1.1",
