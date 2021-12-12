@@ -3,9 +3,11 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"start": "node dist/src/server.js",
+		"start": "node dist/server.js",
+		"build": "npm install && tsc && npm run parcel:build",
 		"build:watch": "concurrently 'npm:tsc:watch' 'npm:server:watch'",
 		"tsc:watch": "tsc -w",
+		"parcel:build": "npx parcel build 'src/pages/**/*.html' --dist-dir dist/src/pages",
 		"parcel:watch": "npx parcel watch 'src/pages/**/*.html' --dist-dir dist/src/pages",
 		"server:watch": "nodemon dist/server.js"
 	},
