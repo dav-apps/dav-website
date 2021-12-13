@@ -8,7 +8,8 @@ import {
 } from 'dav-js'
 import 'dav-ui-components'
 import { Button, MessageBar } from 'dav-ui-components'
-import { initDav, userLoadedPromiseHolder, getLocale, showElement } from '../../utils'
+import { getLocale } from '../../locales'
+import { initDav, userLoadedPromiseHolder, showElement } from '../../utils'
 
 let locale = getLocale().devPage
 let header = document.getElementById("header") as HTMLHeadingElement

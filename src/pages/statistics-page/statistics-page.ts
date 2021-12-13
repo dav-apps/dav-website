@@ -19,7 +19,8 @@ import {
 } from 'dav-js'
 import 'dav-ui-components'
 import { Header } from 'dav-ui-components'
-import { initDav, userLoadedPromiseHolder, getLocale } from '../../utils'
+import { getLocale } from '../../locales'
+import { initDav, userLoadedPromiseHolder } from '../../utils'
 
 let locale = getLocale().statisticsPage
 let header = document.getElementById("header") as Header

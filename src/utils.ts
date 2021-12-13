@@ -1,6 +1,5 @@
 import { Dav, Environment, PromiseHolder } from 'dav-js'
 import { devEnvironment, prodEnvironment } from './environments'
-import * as locales from './locales'
 
 var davInitialized: boolean = false
 export var userLoadedPromiseHolder: PromiseHolder<boolean> = new PromiseHolder()
@@ -21,21 +20,6 @@ export function initDav() {
 			}
 		}
 	})
-}
-
-export function getLocale() {
-	let lang = navigator.language.toLowerCase()
-
-	if (lang.startsWith("en")) {
-		if (lang == "en-gb") return locales.enGB
-		else return locales.enUS
-	} else if (lang.startsWith("de")) {
-		if (lang == "de-at") return locales.deAT
-		else if (lang == "de-ch") return locales.deCH
-		else return locales.deDE
-	}
-
-	return locales.enUS
 }
 
 export function getEnvironment() {

@@ -1,7 +1,8 @@
 import { Dav, ApiResponse, ApiErrorResponse, AppsController, App, ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
 import { Button, Dialog, Header, Textarea, Textfield, Toggle } from 'dav-ui-components'
-import { initDav, userLoadedPromiseHolder, getLocale } from '../../utils'
+import { getLocale } from '../../locales'
+import { initDav, userLoadedPromiseHolder } from '../../utils'
 
 let locale = getLocale().appPage
 let header = document.getElementById("header") as Header

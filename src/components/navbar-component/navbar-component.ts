@@ -1,8 +1,8 @@
 import 'bootstrap'
 import { Dav } from 'dav-js'
+import { getLocale } from '../../locales'
 import {
 	initDav,
-	getLocale,
 	userLoadedPromiseHolder,
 	hideElement,
 	showElement

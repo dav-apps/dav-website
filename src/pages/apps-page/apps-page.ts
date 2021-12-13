@@ -1,4 +1,4 @@
-import { getLocale } from '../../utils'
+import { getLocale } from '../../locales'
 
 let locale = getLocale().appsPage
 let header = document.getElementById("header") as HTMLHeadingElement

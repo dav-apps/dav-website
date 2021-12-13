@@ -1026,3 +1026,22 @@ export var deAT = deDefaults
 
 export var deCH = deDefaults
 //#endregion
+
+export function getLocale(lang?: string) {
+	if (lang == null) {
+		lang = navigator.language.toLowerCase()
+	} else {
+		lang = lang.toLowerCase()
+	}
+
+	if (lang.startsWith("en")) {
+		if (lang == "en-gb") return enGB
+		else return enUS
+	} else if (lang.startsWith("de")) {
+		if (lang == "de-at") return deAT
+		else if (lang == "de-ch") return deCH
+		else return deDE
+	}
+
+	return enUS
+}

@@ -2,7 +2,8 @@ import axios from 'axios'
 import 'dav-ui-components'
 import { Button, Textfield, MessageBar } from 'dav-ui-components'
 import { Dav, ErrorCodes } from 'dav-js'
-import { getLocale, showElement, hideElement } from '../../utils'
+import { getLocale } from '../../locales'
+import { showElement, hideElement } from '../../utils'
 
 let locale = getLocale().signupPage
 let header = document.getElementById("header") as HTMLHeadingElement

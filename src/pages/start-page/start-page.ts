@@ -1,8 +1,8 @@
 import { Dav } from 'dav-js'
+import { getLocale } from '../../locales'
 import {
 	initDav,
 	userLoadedPromiseHolder,
-	getLocale,
 	showElement,
 	hideElement
 } from '../../utils'
