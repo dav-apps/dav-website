@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="env" content="<%= process.env.ENV %>">
+
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+		<link rel="stylesheet" href="pricing-page.scss">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/all.min.css">
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container navbar-margin pt-4">
+			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
+
+			<div id="plans-table-container" class="d-flex justify-content-center mt-3 d-none">
+				<table id="plans-table">
+					<thead>
+						<tr>
+							<th></th>
+							<th class="fs-4 fw-normal">Free</th>
+							<th class="fs-4 fw-normal">Plus</th>
+							<th class="fs-4 fw-normal">Pro</th>
+						</tr>
+						<tr>
+							<th></th>
+							<th></th>
+							<th class="fs-6 fw-light"><%= pricingLocale.plus.price %></th>
+							<th class="fs-6 fw-light"><%= pricingLocale.pro.price %></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-top">
+							<td><%= pricingLocale.onlineStorage %></td>
+							<td><%= pricingLocale.free.storage %></td>
+							<td><%= pricingLocale.plus.storage %></td>
+							<td><%= pricingLocale.pro.storage %></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.accessData %></td>
+							<td><i class="fal fa-check"></i></td>
+							<td><i class="fal fa-check"></i></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.noAds %></td>
+							<td><i class="fal fa-check"></i></td>
+							<td><i class="fal fa-check"></i></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+							<td></td>
+							<td><i class="fal fa-check"></i></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
+							<td></td>
+							<td><i class="fal fa-check"></i></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="plans-table-mobile-container" class="d-flex flex-column justify-content-center mt-3">
+				<table id="plans-table-mobile-free">
+					<thead>
+						<tr>
+							<th></th>
+							<th class="fs-4 fw-normal">Free</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-top">
+							<td><%= pricingLocale.onlineStorage %></td>
+							<td><%= pricingLocale.free.storage %></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.accessData %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.noAds %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<table id="plans-table-mobile-plus" class="mt-5">
+					<thead>
+						<tr>
+							<th></th>
+							<th class="fs-4 fw-normal">Plus</th>
+						</tr>
+						<tr>
+							<th></th>
+							<th class="fs-6 fw-light"><%= pricingLocale.plus.price %></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-top">
+							<td><%= pricingLocale.onlineStorage %></td>
+							<td><%= pricingLocale.plus.storage %></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.accessData %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.noAds %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<table id="plans-table-mobile-pro" class="mt-5">
+					<thead>
+						<tr>
+							<th></th>
+							<th class="fs-4 fw-normal">Pro</th>
+						</tr>
+						<tr>
+							<th></th>
+							<th class="fs-6 fw-light"><%= pricingLocale.pro.price %></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="border-top">
+							<td><%= pricingLocale.onlineStorage %></td>
+							<td><%= pricingLocale.pro.storage %></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.accessData %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td><%= pricingLocale.noAds %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<script type="module" src="pricing-page.ts" defer async></script>
+	</body>
+</html>

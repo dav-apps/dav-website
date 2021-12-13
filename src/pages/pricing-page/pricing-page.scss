@@ -1,0 +1,15 @@
+#plans-table {
+	max-width: 800px;
+}
+
+th {
+	min-width: 140px;
+}
+
+td {
+	height: 48px;
+}
+
+th:not(first-child), td:not(:first-child) {
+	text-align: center;
+}

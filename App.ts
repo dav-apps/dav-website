@@ -18,6 +18,7 @@ import {
 	UsersController
 } from 'dav-js'
 import * as websocket from './websocket.js'
+import { getLocale } from './src/locales.js'
 
 dotenv.config()
 
@@ -49,6 +50,14 @@ export class App {
 		router.get('/', (req, res) => res.render("start-page/start-page"))
 		router.get('/login', (req, res) => res.render("login-page/login-page"))
 		router.get('/signup', (req, res) => res.render("signup-page/signup-page"))
+		router.get('/pricing', (req, res) => {
+			let locales = getLocale(req.acceptsLanguages()[0])
+
+			res.render("pricing-page/pricing-page", {
+				locale: locales.pricingPage,
+				pricingLocale: locales.misc.pricing
+			})
+		})
 		router.get('/dev', (req, res) => res.render("dev-page/dev-page"))
 		router.get('/dev/statistics', (req, res) => res.render("statistics-page/statistics-page"))
 		router.get('/dev/:appId', (req, res) => res.render("app-page/app-page"))
