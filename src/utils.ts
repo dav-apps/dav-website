@@ -1,5 +1,5 @@
 import { Dav, Environment, PromiseHolder } from 'dav-js'
-import { environment } from './environment'
+import { devEnvironment, prodEnvironment } from './environments'
 import * as locales from './locales'
 
 var davInitialized: boolean = false
@@ -9,9 +9,12 @@ export function initDav() {
 	if (davInitialized) return
 	davInitialized = true
 
+	// Get the env vars
+	let env = getEnvironment()
+
 	new Dav({
-		environment: environment.production ? Environment.Production : Environment.Development,
-		appId: environment.appId,
+		environment: env.production ? Environment.Production : Environment.Development,
+		appId: env.appId,
 		callbacks: {
 			UserLoaded: () => {
 				userLoadedPromiseHolder.resolve(Dav.isLoggedIn)
@@ -33,6 +36,13 @@ export function getLocale() {
 	}
 
 	return locales.enUS
+}
+
+export function getEnvironment() {
+	let metas = document.getElementsByName("env")
+	if (metas.length == 0) return devEnvironment
+
+	return (metas[0] as HTMLMetaElement).content == "production" ? prodEnvironment : devEnvironment
 }
 
 function getUpmostParentWithSingleChild(element: HTMLElement) {
