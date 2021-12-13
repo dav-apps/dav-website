@@ -37,6 +37,11 @@
 		"parcel": "^2.0.1",
 		"posthtml-include": "^1.7.2"
 	},
+	"targets": {
+		"browser": {
+			"includeNodeModules": true
+		}
+	},
 	"engines": {
 		"node": "14.x",
 		"npm": "8.x"
