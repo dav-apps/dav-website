@@ -1,3 +1,4 @@
+import 'bootstrap'
 import { Dav } from 'dav-js'
 import {
 	initDav,
