@@ -9,6 +9,7 @@ import {
 } from '../../utils'
 
 let locale = getLocale().navbarComponent
+let navbar = document.getElementById("navbar") as HTMLElement
 let notLoggedInList = document.getElementById("not-logged-in-list") as HTMLUListElement
 let loggedInList = document.getElementById("logged-in-list") as HTMLUListElement
 let pricingLink = document.getElementById("pricing-link") as HTMLAnchorElement
@@ -18,6 +19,8 @@ let devDashboardLink = document.getElementById("dev-dashboard-link") as HTMLAnch
 let appsLink = document.getElementById("apps-link") as HTMLAnchorElement
 let userLink = document.getElementById("user-link") as HTMLAnchorElement
 let logoutLink = document.getElementById("logout-link") as HTMLAnchorElement
+
+let navbarBackgroundVisible = false
 
 async function main() {
 	initDav()
@@ -64,6 +67,30 @@ function setStrings() {
 	appsLink.innerText = locale.allApps
 	logoutLink.innerText = locale.logout
 }
+
+window.addEventListener("scroll", () => {
+	if (window.scrollY > 80 && !navbarBackgroundVisible) {
+		navbar.classList.add("acrylic", "light", "shadow")
+		navbarBackgroundVisible = true
+	} else if (window.scrollY <= 80 && navbarBackgroundVisible) {
+		navbarBackgroundVisible = false
+
+		let animation = navbar.animate([
+			{
+				opacity: 1
+			},
+			{
+				opacity: 0
+			}
+		], {
+			duration: 300,
+			pseudoElement: "::before"
+		})
+
+		navbar.classList.remove("shadow")
+		animation.onfinish = () => navbar.classList.remove("acrylic", "light")
+	}
+})
 
 window.addEventListener("resize", () => {
 	updateNavbarContainerPadding()

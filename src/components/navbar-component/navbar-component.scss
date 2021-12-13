@@ -1,3 +1,14 @@
+#navbar {
+	transition: all 0.3s;
+}
+
+#navbar::before {
+	transition: all 0.3s;
+
+	animation: fadeIn 0.3s;
+	animation-fill-mode: forwards;
+}
+
 .navbar {
 	padding-top: 0;
 }
@@ -8,12 +19,12 @@
 
 #navbar-items-container {
 	justify-content: end;
-	font-family: 'Segoe UI';
+	font-family: "Segoe UI";
 }
 
 .navbar-brand {
 	font-size: 35px;
-	font-family: mvboli, 'MV Boli', Kalam;
+	font-family: mvboli, "MV Boli", Kalam;
 	font-weight: bold;
 	line-height: 0;
 }
@@ -28,4 +39,13 @@
 .nav-link {
 	padding: 11px 18px 13px 18px !important;
 	color: black !important;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
