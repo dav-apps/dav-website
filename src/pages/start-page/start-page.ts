@@ -8,34 +8,54 @@ import {
 } from '../../utils'
 
 let locale = getLocale().startPage
-let notLoggedInContainer = document.getElementById("not-logged-in-container") as HTMLDivElement
-let loggedInContainer = document.getElementById("logged-in-container") as HTMLDivElement
-let startHeader = document.getElementById("start-header") as HTMLDivElement
-let startHeaderMessageText = document.getElementById("start-header-message-text") as HTMLParagraphElement
-let largeHeaderPocketlib = document.getElementById("large-header-pocketlib") as HTMLHeadingElement
-let smallHeaderPocketlib = document.getElementById("small-header-pocketlib") as HTMLHeadingElement
-let largeHeaderUniversalsoundboard = document.getElementById("large-header-universalsoundboard") as HTMLHeadingElement
-let smallHeaderUniversalsoundboard = document.getElementById("small-header-universalsoundboard") as HTMLHeadingElement
-let largeHeaderCalendo = document.getElementById("large-header-calendo") as HTMLHeadingElement
-let smallHeaderCalendo = document.getElementById("small-header-calendo") as HTMLHeadingElement
-let pocketlibDescription = document.getElementById("pocketlib-description") as HTMLParagraphElement
-let universalsoundboardDescription = document.getElementById("universalsoundboard-description") as HTMLParagraphElement
-let calendoDescription = document.getElementById("calendo-description") as HTMLParagraphElement
-let screenshotPocketlib = document.getElementById("screenshot-pocketlib") as HTMLImageElement
-let screenshotPocketlibMobile = document.getElementById("screenshot-pocketlib-mobile") as HTMLImageElement
-let screenshotUniversalsoundboard = document.getElementById("screenshot-universalsoundboard") as HTMLImageElement
-let screenshotUniversalsoundboardMobile = document.getElementById("screenshot-universalsoundboard-mobile") as HTMLImageElement
-let screenshotCalendo = document.getElementById("screenshot-calendo") as HTMLImageElement
-let screenshotCalendoMobile = document.getElementById("screenshot-calendo-mobile") as HTMLImageElement
+let notLoggedInContainer: HTMLDivElement
+let loggedInContainer: HTMLDivElement
+let startHeader: HTMLDivElement
+let largeHeaderPocketlib: HTMLHeadingElement
+let smallHeaderPocketlib: HTMLHeadingElement
+let largeHeaderUniversalsoundboard: HTMLHeadingElement
+let smallHeaderUniversalsoundboard: HTMLHeadingElement
+let largeHeaderCalendo: HTMLHeadingElement
+let smallHeaderCalendo: HTMLHeadingElement
+let screenshotPocketlib: HTMLImageElement
+let screenshotPocketlibMobile: HTMLImageElement
+let screenshotUniversalsoundboard: HTMLImageElement
+let screenshotUniversalsoundboardMobile: HTMLImageElement
+let screenshotCalendo: HTMLImageElement
+let screenshotCalendoMobile: HTMLImageElement
 
-let loggedInHeader = document.getElementById("logged-in-header") as HTMLHeadingElement
-let appsContainer = document.getElementById("apps-container") as HTMLDivElement
-let welcomeMessage = document.getElementById("welcome-message") as HTMLDivElement
-let welcomeMessageHeader = document.getElementById("welcome-message-header") as HTMLHeadingElement
-let welcomeMessageText = document.getElementById("welcome-message-text") as HTMLParagraphElement
-let welcomeMessageLink = document.getElementById("welcome-message-link") as HTMLAnchorElement
+let loggedInHeader: HTMLHeadingElement
+let appsContainer: HTMLDivElement
+let welcomeMessage: HTMLDivElement
+let welcomeMessageHeader: HTMLHeadingElement
+
+window.addEventListener("resize", setSize)
+window.addEventListener("load", main)
 
 async function main() {
+	notLoggedInContainer = document.getElementById("not-logged-in-container") as HTMLDivElement
+	loggedInContainer = document.getElementById("logged-in-container") as HTMLDivElement
+	startHeader = document.getElementById("start-header") as HTMLDivElement
+	largeHeaderPocketlib = document.getElementById("large-header-pocketlib") as HTMLHeadingElement
+	smallHeaderPocketlib = document.getElementById("small-header-pocketlib") as HTMLHeadingElement
+	largeHeaderUniversalsoundboard = document.getElementById("large-header-universalsoundboard") as HTMLHeadingElement
+	smallHeaderUniversalsoundboard = document.getElementById("small-header-universalsoundboard") as HTMLHeadingElement
+	largeHeaderCalendo = document.getElementById("large-header-calendo") as HTMLHeadingElement
+	smallHeaderCalendo = document.getElementById("small-header-calendo") as HTMLHeadingElement
+	screenshotPocketlib = document.getElementById("screenshot-pocketlib") as HTMLImageElement
+	screenshotPocketlibMobile = document.getElementById("screenshot-pocketlib-mobile") as HTMLImageElement
+	screenshotUniversalsoundboard = document.getElementById("screenshot-universalsoundboard") as HTMLImageElement
+	screenshotUniversalsoundboardMobile = document.getElementById("screenshot-universalsoundboard-mobile") as HTMLImageElement
+	screenshotCalendo = document.getElementById("screenshot-calendo") as HTMLImageElement
+	screenshotCalendoMobile = document.getElementById("screenshot-calendo-mobile") as HTMLImageElement
+
+	loggedInHeader = document.getElementById("logged-in-header") as HTMLHeadingElement
+	appsContainer = document.getElementById("apps-container") as HTMLDivElement
+	welcomeMessage = document.getElementById("welcome-message") as HTMLDivElement
+	welcomeMessageHeader = document.getElementById("welcome-message-header") as HTMLHeadingElement
+
+	setSize()
+	setStrings()
 	initDav()
 	await userLoadedPromiseHolder.AwaitResult()
 
@@ -174,19 +194,5 @@ function setSize() {
 }
 
 function setStrings() {
-	startHeaderMessageText.innerText = locale.title
-	pocketlibDescription.innerHTML = locale.pocketlibDescription
-	universalsoundboardDescription.innerHTML = locale.universalSoundboardDescription
-	calendoDescription.innerHTML = locale.calendoDescription
-
-	loggedInHeader.innerText = locale.loggedInTitle
 	welcomeMessageHeader.innerText = locale.welcomeTitle.replace('{0}', '')
-	welcomeMessageText.innerText = locale.welcomeMessage
-	welcomeMessageLink.innerText = locale.welcomeButton
 }
-
-window.addEventListener("resize", setSize)
-
-setSize()
-setStrings()
-main()

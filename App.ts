@@ -47,7 +47,14 @@ export class App {
 		router.use(express.static(path.join(__dirname, 'src/pages')))
 		router.use(express.json())
 
-		router.get('/', (req, res) => res.render("start-page/start-page"))
+		router.get('/', (req, res) => {
+			let locales = getLocale(req.acceptsLanguages()[0])
+
+			res.render("start-page/start-page", {
+				locale: locales.startPage
+			})
+		})
+
 		router.get('/login', (req, res) => res.render("login-page/login-page"))
 		router.get('/signup', (req, res) => res.render("signup-page/signup-page"))
 		router.get('/pricing', (req, res) => {

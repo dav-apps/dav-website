@@ -13,6 +13,8 @@
 		<link rel="stylesheet" href="../apps-page/apps-page.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/all.min.css">
+
+		<script type="module" src="start-page.ts" defer async></script>
 	</head>
 	<body>
 		<include src="src/components/navbar-component/navbar-component.html"></include>
@@ -23,7 +25,7 @@
 				<!-- TODO Error & Success messages -->
 
 				<div id="start-header-message" class="acrylic align-self-center">
-					<p id="start-header-message-text"></p>
+					<p><%= locale.title %></p>
 				</div>
 			</div>
 
@@ -41,7 +43,7 @@
 							alt="Screenshot of PocketLib">
 					</div>
 
-					<p id="pocketlib-description" class="app-description mt-5 mb-0"></p>
+					<p class="app-description mt-5 mb-0"><%- locale.pocketlibDescription %></p>
 
 					<div class="links-container">
 						<a href="https://pocketlib.dav-apps.tech" target="blank" class="me-2"><img src="/assets/images/globe-solid.png" height="40"></a>
@@ -86,7 +88,7 @@
 							alt="Screenshot of UniversalSoundboard">
 					</div>
 
-					<p id="universalsoundboard-description" class="app-description mt-5 mb-0"></p>
+					<p class="app-description mt-5 mb-0"><%- locale.universalSoundboardDescription %></p>
 
 					<div class="links-container">
 						<a href='//www.microsoft.com/store/apps/9NBLGGH51005?cid=storebadge&ocid=badge' target="blank" class="me-2"><img src="/assets/images/MicrosoftStoreBadge.png" alt='English badge' class="microsoft-store-badge" /></a>
@@ -109,7 +111,7 @@
 							alt="Screenshot of Calendo">
 					</div>
 
-					<p id="calendo-description" class="app-description mt-5 mb-0"></p>
+					<p class="app-description mt-5 mb-0"><%- locale.calendoDescription %></p>
 
 					<div class="links-container">
 						<a href="https://calendo.dav-apps.tech" target="blank" class="me-2"><img src="/assets/images/globe-solid.png" height="40"></a>
@@ -136,6 +138,7 @@
 			<h1
 				id="logged-in-header"
 				class="text-center fw-light">
+				<%= locale.loggedInTitle %>
 			</h1>
 
 			<!-- TODO Error + Success messages -->
@@ -145,15 +148,13 @@
 					<div class="container-fluid py-sm-5 py-3">
 						<h1 id="welcome-message-header" class="fw-light"></h1>
 
-						<p id="welcome-message-text" class="fs-5 fw-light"></p>
-						<a id="welcome-message-link" class="btn btn-primary mt-2" href="/apps" role="button"></a>
+						<p class="fs-5 fw-light"><%= locale.welcomeMessage %></p>
+						<a class="btn btn-primary mt-2" href="/apps" role="button"><%= locale.welcomeButton %></a>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<div id="apps-container" class="d-flex flex-wrap justify-content-center"></div>
-
-		<script type="module" src="start-page.ts" defer async></script>
 	</body>
 </html>
