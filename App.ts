@@ -73,12 +73,22 @@ export class App {
 		router.get('/apps', async (req, res) => {
 			// Get the apps
 			let response = await AppsController.GetApps()
+			let locales = getLocale(req.acceptsLanguages()[0])
 
 			if (response.status == 200) {
 				let responseData = (response as ApiResponse<DavApp[]>).data
-				res.render("apps-page/apps-page", { apps: responseData })
+
+				res.render("apps-page/apps-page", {
+					lang: locales.lang,
+					locale: locales.appsPage,
+					apps: responseData
+				})
 			} else {
-				res.render("apps-page/apps-page", { apps: [] })
+				res.render("apps-page/apps-page", {
+					lang: locales.lang,
+					locale: locales.appsPage,
+					apps: []
+				})
 			}
 		})
 

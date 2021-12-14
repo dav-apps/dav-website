@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
 		<base href="/">
@@ -18,7 +18,7 @@
 		<include src="src/components/navbar-component/navbar-component.html"></include>
 
 		<div class="container navbar-margin pt-4">
-			<h1 id="header" class="text-center fw-light mb-3"></h1>
+			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
 
 			<div class="d-flex flex-wrap justify-content-center">
 				<% apps.forEach((app) => { %>
@@ -60,7 +60,5 @@
 				<% }) %>
 			</div>
 		</div>
-
-		<script type="module" src="apps-page.ts" defer async></script>
 	</body>
 </html>
