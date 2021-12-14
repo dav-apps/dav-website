@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
 		<base href="/">
@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="app-page.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="app-page.ts" defer async></script>
 	</head>
 	<body>
 		<include src="src/components/navbar-component/navbar-component.html"></include>
@@ -31,13 +33,16 @@
 				<dav-button
 					id="statistics-button"
 					type="accent">
+					<%= locale.statistics %>
 				</dav-button>
 
-				<dav-button
-					id="edit-button">
+				<dav-button id="edit-button">
+					<%= locale.edit %>
 				</dav-button>
 
-				<h5 id="published-header" class="fw-light mt-4"></h5>
+				<h5 class="fw-light mt-4">
+					<%= locale.published %>
+				</h5>
 
 				<dav-toggle id="published-toggle">
 				</dav-toggle>
@@ -45,12 +50,18 @@
 
 			<div class="d-flex">
 				<div class="mx-4">
-					<h3 id="tables-header" class="fw-light text-center mb-3 mt-4"></h3>
+					<h3 class="fw-light text-center mb-3 mt-4">
+						<%= locale.tables %>
+					</h3>
+
 					<ul id="tables-list" class="list-group"></ul>
 				</div>
 
 				<div class="mx-4">
-					<h3 id="apis-header" class="fw-light text-center mb-3 mt-4"></h3>
+					<h3 class="fw-light text-center mb-3 mt-4">
+						<%= locale.apis %>
+					</h3>
+
 					<ul id="apis-list" class="list-group"></ul>
 				</div>
 			</div>
@@ -63,7 +74,9 @@
 				<!-- Name -->
 				<div class="mb-3">
 					<dav-textfield
-						id="edit-app-dialog-name-textfield">
+						id="edit-app-dialog-name-textfield"
+						label="<%= locale.editAppDialog.nameTextfieldLabel %>"
+						placeholder="<%= locale.editAppDialog.nameTextfieldPlaceholder %>">
 					</dav-textfield>
 				</div>
 
@@ -71,6 +84,8 @@
 				<div class="mb-3">
 					<dav-textarea
 						id="edit-app-dialog-description-textarea"
+						label="<%= locale.editAppDialog.descriptionTextfieldLabel %>"
+						placeholder="<%= locale.editAppDialog.descriptionTextfieldPlaceholder %>"
 						resize="vertical">
 					</dav-textareaa>
 				</div>
@@ -79,6 +94,8 @@
 				<div class="mb-3">
 					<dav-textfield
 						id="edit-app-dialog-weblink-textfield"
+						label="<%= locale.editAppDialog.webLinkTextfieldLabel %>"
+						placeholder="<%= locale.editAppDialog.webLinkTextfieldPlaceholder %>"
 						type="url"
 						autocomplete="url">
 					</dav-textfield>
@@ -88,6 +105,8 @@
 				<div class="mb-3">
 					<dav-textfield
 						id="edit-app-dialog-googleplaylink-textfield"
+						label="<%= locale.editAppDialog.googlePlayLinkTextfieldLabel %>"
+						placeholder="<%= locale.editAppDialog.googlePlayLinkTextfieldPlaceholder %>"
 						type="url"
 						autocomplete="url">
 					</dav-textfield>
@@ -97,6 +116,8 @@
 				<div class="mb-3">
 					<dav-textfield
 						id="edit-app-dialog-microsoftstorelink-textfield"
+						label="<%= locale.editAppDialog.microsoftStoreLinkTextfieldLabel %>"
+						placeholder="<%= locale.editAppDialog.microsoftStoreLinkTextfieldPlaceholder %>"
 						type="url"
 						autocomplete="url">
 					</dav-textfield>
@@ -108,7 +129,5 @@
 			id="publish-app-dialog">
 			<p id="publish-app-dialog-text" class="fw-light"></p>
 		</dav-dialog>
-
-		<script type="module" src="app-page.ts" defer async></script>
 	</body>
 </html>

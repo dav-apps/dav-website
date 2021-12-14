@@ -86,7 +86,15 @@ export class App {
 
 		router.get('/dev', (req, res) => res.render("dev-page/dev-page"))
 		router.get('/dev/statistics', (req, res) => res.render("statistics-page/statistics-page"))
-		router.get('/dev/:appId', (req, res) => res.render("app-page/app-page"))
+
+		router.get('/dev/:appId', (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+
+			res.render("app-page/app-page", {
+				lang: locale.lang,
+				locale: locale.appPage
+			})
+		})
 
 		router.get('/apps', async (req, res) => {
 			this.init()

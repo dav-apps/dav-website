@@ -5,24 +5,21 @@ import { getLocale } from '../../locales'
 import { initDav, userLoadedPromiseHolder } from '../../utils'
 
 let locale = getLocale().appPage
-let header = document.getElementById("header") as Header
-let description = document.getElementById("description") as HTMLParagraphElement
-let statisticsButton = document.getElementById("statistics-button") as Button
-let editButton = document.getElementById("edit-button") as Button
-let publishedHeader = document.getElementById("published-header") as HTMLHeadingElement
-let publishedToggle = document.getElementById("published-toggle") as Toggle
-let tablesHeader = document.getElementById("tables-header") as HTMLHeadingElement
-let tablesList = document.getElementById("tables-list") as HTMLUListElement
-let apisHeader = document.getElementById("apis-header") as HTMLHeadingElement
-let apisList = document.getElementById("apis-list") as HTMLUListElement
-let editAppDialog = document.getElementById("edit-app-dialog") as Dialog
-let editAppDialogNameTextfield = document.getElementById("edit-app-dialog-name-textfield") as Textfield
-let editAppDialogDescriptionTextarea = document.getElementById("edit-app-dialog-description-textarea") as Textarea
-let editAppDialogWebLinkTextfield = document.getElementById("edit-app-dialog-weblink-textfield") as Textfield
-let editAppDialogGooglePlayLinkTextfield = document.getElementById("edit-app-dialog-googleplaylink-textfield") as Textfield
-let editAppDialogMicrosoftStoreLinkTextfield = document.getElementById("edit-app-dialog-microsoftstorelink-textfield") as Textfield
-let publishAppDialog = document.getElementById("publish-app-dialog") as Dialog
-let publishAppDialogText = document.getElementById("publish-app-dialog-text") as HTMLParagraphElement
+let header: Header
+let description: HTMLParagraphElement
+let statisticsButton: Button
+let editButton: Button
+let publishedToggle: Toggle
+let tablesList: HTMLUListElement
+let apisList: HTMLUListElement
+let editAppDialog: Dialog
+let editAppDialogNameTextfield: Textfield
+let editAppDialogDescriptionTextarea: Textarea
+let editAppDialogWebLinkTextfield: Textfield
+let editAppDialogGooglePlayLinkTextfield: Textfield
+let editAppDialogMicrosoftStoreLinkTextfield: Textfield
+let publishAppDialog: Dialog
+let publishAppDialogText: HTMLParagraphElement
 
 let app: App
 let editAppDialogName = ""
@@ -31,7 +28,26 @@ let editAppDialogWebLink = ""
 let editAppDialogGooglePlayLink = ""
 let editAppDialogMicrosoftStoreLink = ""
 
+window.addEventListener("load", main)
+
 async function main() {
+	header = document.getElementById("header") as Header
+	description = document.getElementById("description") as HTMLParagraphElement
+	statisticsButton = document.getElementById("statistics-button") as Button
+	editButton = document.getElementById("edit-button") as Button
+	publishedToggle = document.getElementById("published-toggle") as Toggle
+	tablesList = document.getElementById("tables-list") as HTMLUListElement
+	apisList = document.getElementById("apis-list") as HTMLUListElement
+	editAppDialog = document.getElementById("edit-app-dialog") as Dialog
+	editAppDialogNameTextfield = document.getElementById("edit-app-dialog-name-textfield") as Textfield
+	editAppDialogDescriptionTextarea = document.getElementById("edit-app-dialog-description-textarea") as Textarea
+	editAppDialogWebLinkTextfield = document.getElementById("edit-app-dialog-weblink-textfield") as Textfield
+	editAppDialogGooglePlayLinkTextfield = document.getElementById("edit-app-dialog-googleplaylink-textfield") as Textfield
+	editAppDialogMicrosoftStoreLinkTextfield = document.getElementById("edit-app-dialog-microsoftstorelink-textfield") as Textfield
+	publishAppDialog = document.getElementById("publish-app-dialog") as Dialog
+	publishAppDialogText = document.getElementById("publish-app-dialog-text") as HTMLParagraphElement
+
+	setEventListeners()
 	initDav()
 	await userLoadedPromiseHolder.AwaitResult()
 
@@ -110,24 +126,6 @@ function setEventListeners() {
 		editAppDialogMicrosoftStoreLink = (event as CustomEvent).detail.value
 		hideEditAppDialogErrors()
 	})
-}
-
-function setStrings() {
-	statisticsButton.innerText = locale.statistics
-	editButton.innerText = locale.edit
-	publishedHeader.innerText = locale.published
-	tablesHeader.innerText = locale.tables
-	apisHeader.innerText = locale.apis
-	editAppDialogNameTextfield.label = locale.editAppDialog.nameTextfieldLabel
-	editAppDialogNameTextfield.placeholder = locale.editAppDialog.nameTextfieldPlaceholder
-	editAppDialogDescriptionTextarea.label = locale.editAppDialog.descriptionTextfieldLabel
-	editAppDialogDescriptionTextarea.placeholder = locale.editAppDialog.descriptionTextfieldPlaceholder
-	editAppDialogWebLinkTextfield.label = locale.editAppDialog.webLinkTextfieldLabel
-	editAppDialogWebLinkTextfield.placeholder = locale.editAppDialog.webLinkTextfieldPlaceholder
-	editAppDialogGooglePlayLinkTextfield.label = locale.editAppDialog.googlePlayLinkTextfieldLabel
-	editAppDialogGooglePlayLinkTextfield.placeholder = locale.editAppDialog.googlePlayLinkTextfieldPlaceholder
-	editAppDialogMicrosoftStoreLinkTextfield.label = locale.editAppDialog.microsoftStoreLinkTextfieldLabel
-	editAppDialogMicrosoftStoreLinkTextfield.placeholder = locale.editAppDialog.microsoftStoreLinkTextfieldPlaceholder
 }
 
 function navigateBack() {
@@ -274,7 +272,3 @@ async function publishUnpublishApp() {
 	publishAppDialog.loading = false
 	publishAppDialog.visible = false
 }
-
-setStrings()
-setEventListeners()
-main()
