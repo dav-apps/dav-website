@@ -6,18 +6,30 @@ import { getLocale } from '../../locales'
 import { showElement, hideElement } from '../../utils'
 
 let locale = getLocale().signupPage
-let header = document.getElementById("header") as HTMLHeadingElement
-let errorMessageBar = document.getElementById('error-message-bar') as MessageBar
-let firstNameTextfield = document.getElementById("first-name-textfield") as Textfield
-let emailTextfield = document.getElementById("email-textfield") as Textfield
-let passwordTextfield = document.getElementById("password-textfield") as Textfield
-let passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
-let signupButton = document.getElementById("signup-button") as Button
+let errorMessageBar: MessageBar
+let firstNameTextfield: Textfield
+let emailTextfield: Textfield
+let passwordTextfield: Textfield
+let passwordConfirmationTextfield: Textfield
+let signupButton: Button
 
 let firstName = ""
 let email = ""
 let password = ""
 let passwordConfirmation = ""
+
+window.addEventListener("load", main)
+
+function main() {
+	errorMessageBar = document.getElementById('error-message-bar') as MessageBar
+	firstNameTextfield = document.getElementById("first-name-textfield") as Textfield
+	emailTextfield = document.getElementById("email-textfield") as Textfield
+	passwordTextfield = document.getElementById("password-textfield") as Textfield
+	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
+	signupButton = document.getElementById("signup-button") as Button
+
+	setEventListeners()
+}
 
 async function signup() {
 	if (password != passwordConfirmation) {
@@ -77,19 +89,6 @@ function setEventListeners() {
 	signupButton.addEventListener("click", signup)
 }
 
-function setStrings() {
-	header.innerText = locale.title
-	firstNameTextfield.label = locale.firstNameTextfieldLabel
-	firstNameTextfield.placeholder = locale.firstNameTextfieldPlaceholder
-	emailTextfield.label = locale.emailTextfieldLabel
-	emailTextfield.placeholder = locale.emailTextfieldPlaceholder
-	passwordTextfield.label = locale.passwordTextfieldLabel
-	passwordTextfield.placeholder = locale.passwordTextfieldPlaceholder
-	passwordConfirmationTextfield.label = locale.passwordConfirmationTextfieldLabel
-	passwordConfirmationTextfield.placeholder = locale.passwordConfirmationTextFieldPlaceholder
-	signupButton.innerText = locale.signup
-}
-
 function showError(errors: { code: number, message: string }[]) {
 	let errorCode = errors[0].code
 	errorMessageBar.innerText = getSignupErrorMessage(errorCode)
@@ -130,6 +129,3 @@ function getSignupErrorMessage(errorCode: number): string {
 			return locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString())
 	}
 }
-
-setStrings()
-setEventListeners()

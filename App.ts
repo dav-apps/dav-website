@@ -65,7 +65,14 @@ export class App {
 			})
 		})
 
-		router.get('/signup', (req, res) => res.render("signup-page/signup-page"))
+		router.get('/signup', (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+
+			res.render("signup-page/signup-page", {
+				lang: locale.lang,
+				locale: locale.signupPage
+			})
+		})
 
 		router.get('/pricing', (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])

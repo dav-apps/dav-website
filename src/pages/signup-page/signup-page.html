@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
 		<base href="/">
@@ -10,6 +10,8 @@
 		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="signup-page.ts" defer async></script>
 	</head>
 	<body dir="ltr">
 		<include src="src/components/navbar-component/navbar-component.html"></include>
@@ -21,7 +23,9 @@
 				height="60"
 				alt="dav Logo">
 
-			<h2 id="header" class="text-center fw-light my-4"></h2>
+			<h2 class="text-center fw-light my-4">
+				<%= locale.title %>
+			</h2>
 
 			<form class="w-100">
 				<!-- First name -->
@@ -35,6 +39,8 @@
 
 						<dav-textfield
 							id="first-name-textfield"
+							label="<%= locale.firstNameTextfieldLabel %>"
+							placeholder="<%= locale.firstNameTextfieldPlaceholder %>"
 							autocomplete="given-name"
 							autofocus>
 						</dav-textfield>
@@ -46,6 +52,8 @@
 					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<dav-textfield
 							id="email-textfield"
+							label="<%= locale.emailTextfieldLabel %>"
+							placeholder="<%= locale.emailTextfieldPlaceholder %>"
 							type="email"
 							autocomplete="email">
 						</dav-textfield>
@@ -57,6 +65,8 @@
 					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<dav-textfield
 							id="password-textfield"
+							label="<%= locale.passwordTextfieldLabel %>"
+							placeholder="<%= locale.passwordTextfieldPlaceholder %>"
 							type="password"
 							autocomplete="new-password">
 						</dav-textfield>
@@ -68,6 +78,8 @@
 					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<dav-textfield
 							id="password-confirmation-textfield"
+							label="<%= locale.passwordConfirmationTextfieldLabel %>"
+							placeholder="<%= locale.passwordConfirmationTextFieldPlaceholder %>"
 							type="password"
 							autocomplete="new-password">
 						</dav-textfield>
@@ -77,6 +89,7 @@
 								<dav-button
 									id="signup-button"
 									type="accent">
+									<%= locale.signup %>
 								</dav-button>
 							</div>
 
@@ -86,7 +99,5 @@
 				</div>
 			</form>
 		</div>
-
-		<script type="module" src="signup-page.ts" defer async></script>
 	</body>
 </html>
