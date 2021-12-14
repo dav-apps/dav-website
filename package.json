@@ -39,7 +39,8 @@
 	},
 	"targets": {
 		"browser": {
-			"includeNodeModules": true
+			"includeNodeModules": true,
+			"optimize": true
 		}
 	},
 	"engines": {
