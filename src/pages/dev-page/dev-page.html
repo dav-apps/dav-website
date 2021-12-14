@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
 		<base href="/">
@@ -12,12 +12,16 @@
 		<link rel="stylesheet" href="dev-page.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="dev-page.ts" defer async></script>
 	</head>
 	<body>
 		<include src="src/components/navbar-component/navbar-component.html"></include>
 
 		<div class="container navbar-margin pt-4">
-			<h1 id="header" class="text-center fw-light mb-3"></h1>
+			<h1 class="text-center fw-light mb-3">
+				<%= locale.title %>
+			</h1>
 
 			<div class="mb-3 mx-auto d-none" style="width: 250px">
 				<dav-message-bar
@@ -32,10 +36,9 @@
 				<dav-button
 					id="statistics-button"
 					type="accent">
+					<%= locale.statistics %>
 				</dav-button>
 			</div>
 		</div>
-
-		<script type="module" src="dev-page.ts" defer async></script>
 	</body>
 </html>

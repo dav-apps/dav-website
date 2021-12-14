@@ -84,7 +84,15 @@ export class App {
 			})
 		})
 
-		router.get('/dev', (req, res) => res.render("dev-page/dev-page"))
+		router.get('/dev', (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+
+			res.render("dev-page/dev-page", {
+				lang: locale.lang,
+				locale: locale.devPage
+			})
+		})
+
 		router.get('/dev/statistics', (req, res) => res.render("statistics-page/statistics-page"))
 
 		router.get('/dev/:appId', (req, res) => {

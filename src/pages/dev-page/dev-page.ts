@@ -12,12 +12,14 @@ import { getLocale } from '../../locales'
 import { initDav, userLoadedPromiseHolder, showElement } from '../../utils'
 
 let locale = getLocale().devPage
-let header = document.getElementById("header") as HTMLHeadingElement
 let errorMessageBar = document.getElementById("error-message-bar") as MessageBar
 let appsContainer = document.getElementById("apps-container") as HTMLDivElement
 let statisticsButton = document.getElementById("statistics-button") as Button
 
+window.addEventListener("load", main)
+
 async function main() {
+	setEventListeners()
 	initDav()
 	await userLoadedPromiseHolder.AwaitResult()
 
@@ -61,11 +63,6 @@ function setEventListeners() {
 	statisticsButton.addEventListener("click", navigateToStatisticsPage)
 }
 
-function setStrings() {
-	header.innerText = locale.title
-	statisticsButton.innerText = locale.statistics
-}
-
 function appCardMouseOver(app: App) {
 	let appCardElement = document.getElementById(`app-card-${app.Id}`) as HTMLDivElement
 	if (appCardElement == null) return
@@ -89,7 +86,3 @@ function appCardClick(app: App) {
 function navigateToStatisticsPage() {
 	window.location.href = "/dev/statistics"
 }
-
-setStrings()
-setEventListeners()
-main()
