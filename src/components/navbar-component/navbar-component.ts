@@ -10,6 +10,7 @@ import {
 
 let locale = getLocale().navbarComponent
 let navbar = document.getElementById("navbar") as HTMLElement
+let navbarContainer = document.getElementById('navbar-container') as HTMLDivElement
 let notLoggedInList = document.getElementById("not-logged-in-list") as HTMLUListElement
 let loggedInList = document.getElementById("logged-in-list") as HTMLUListElement
 let pricingLink = document.getElementById("pricing-link") as HTMLAnchorElement
@@ -49,14 +50,16 @@ async function main() {
 	})
 }
 
-function updateNavbarContainerPadding() {
-	let navbarContainer = document.getElementById('navbar-container') as HTMLDivElement
-
+function setSize() {
 	if (window.innerWidth < 576) {
+		navbar.classList.remove("pb-0")
 		navbarContainer.classList.remove("pt-0")
 	} else {
+		navbar.classList.add("pb-0")
 		navbarContainer.classList.add("pt-0")
 	}
+
+	onScroll()
 }
 
 function setStrings() {
@@ -68,8 +71,8 @@ function setStrings() {
 	logoutLink.innerText = locale.logout
 }
 
-window.addEventListener("scroll", () => {
-	if (window.scrollY > 80 && !navbarBackgroundVisible) {
+function onScroll() {
+	if (window.innerWidth < 576 || (window.scrollY > 80 && !navbarBackgroundVisible)) {
 		navbar.classList.add("acrylic", "light", "shadow")
 		navbarBackgroundVisible = true
 	} else if (window.scrollY <= 80 && navbarBackgroundVisible) {
@@ -90,12 +93,13 @@ window.addEventListener("scroll", () => {
 		navbar.classList.remove("shadow")
 		animation.onfinish = () => navbar.classList.remove("acrylic", "light")
 	}
-})
+}
 
-window.addEventListener("resize", () => {
-	updateNavbarContainerPadding()
-})
+window.addEventListener("scroll", onScroll)
+window.addEventListener("resize", setSize)
 
-updateNavbarContainerPadding()
-setStrings()
-main()
+window.addEventListener("load", () => {
+	setSize()
+	setStrings()
+	main()
+})
