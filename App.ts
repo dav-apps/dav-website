@@ -51,6 +51,7 @@ export class App {
 			let locales = getLocale(req.acceptsLanguages()[0])
 
 			res.render("start-page/start-page", {
+				lang: locales.lang,
 				locale: locales.startPage
 			})
 		})

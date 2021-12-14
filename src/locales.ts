@@ -1,5 +1,6 @@
 //#region en
 const enDefaults = {
+	lang: "en",
 	appComponent: {
 		footer: {
 			contact: "Contact",
@@ -503,13 +504,20 @@ const enDefaults = {
 	}
 }
 
-export var enUS = enDefaults
+export var enUS = {
+	...enDefaults,
+	lang: "en-US"
+}
 
-export var enGB = enDefaults
+export var enGB = {
+	...enDefaults,
+	lang: "en-GB"
+}
 //#endregion
 
 //#region de
 const deDefaults = {
+	lang: "de",
 	appComponent: {
 		footer: {
 			contact: "Kontakt",
@@ -1020,11 +1028,20 @@ const deDefaults = {
 	}
 }
 
-export var deDE = deDefaults
+export var deDE = {
+	...deDefaults,
+	lang: "de-DE"
+}
 
-export var deAT = deDefaults
+export var deAT = {
+	...deDefaults,
+	lang: "de-AT"
+}
 
-export var deCH = deDefaults
+export var deCH = {
+	...deDefaults,
+	lang: "de-CH"
+}
 //#endregion
 
 export function getLocale(lang?: string) {
