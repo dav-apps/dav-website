@@ -48,45 +48,50 @@ export class App {
 		router.use(express.json())
 
 		router.get('/', (req, res) => {
-			let locales = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages()[0])
 
 			res.render("start-page/start-page", {
-				lang: locales.lang,
-				locale: locales.startPage
+				lang: locale.lang,
+				locale: locale.startPage
 			})
 		})
 
 		router.get('/login', (req, res) => res.render("login-page/login-page"))
 		router.get('/signup', (req, res) => res.render("signup-page/signup-page"))
+
 		router.get('/pricing', (req, res) => {
-			let locales = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages()[0])
 
 			res.render("pricing-page/pricing-page", {
-				locale: locales.pricingPage,
-				pricingLocale: locales.misc.pricing
+				lang: locale.lang,
+				locale: locale.pricingPage,
+				pricingLocale: locale.misc.pricing
 			})
 		})
+
 		router.get('/dev', (req, res) => res.render("dev-page/dev-page"))
 		router.get('/dev/statistics', (req, res) => res.render("statistics-page/statistics-page"))
 		router.get('/dev/:appId', (req, res) => res.render("app-page/app-page"))
 
 		router.get('/apps', async (req, res) => {
+			this.init()
+
 			// Get the apps
 			let response = await AppsController.GetApps()
-			let locales = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages()[0])
 
 			if (response.status == 200) {
 				let responseData = (response as ApiResponse<DavApp[]>).data
 
 				res.render("apps-page/apps-page", {
-					lang: locales.lang,
-					locale: locales.appsPage,
+					lang: locale.lang,
+					locale: locale.appsPage,
 					apps: responseData
 				})
 			} else {
 				res.render("apps-page/apps-page", {
-					lang: locales.lang,
-					locale: locales.appsPage,
+					lang: locale.lang,
+					locale: locale.appsPage,
 					apps: []
 				})
 			}

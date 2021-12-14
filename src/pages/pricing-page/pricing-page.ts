@@ -1,12 +1,25 @@
-import 'bootstrap'
 import { showElement, hideElement } from '../../utils'
 
-let plansTableContainer = document.getElementById("plans-table-container") as HTMLDivElement
-let plansTable = document.getElementById("plans-table") as HTMLTableElement
-let plansTableMobileContainer = document.getElementById("plans-table-mobile-container") as HTMLDivElement
-let plansTableMobileFree = document.getElementById("plans-table-mobile-free") as HTMLTableElement
-let plansTableMobilePlus = document.getElementById("plans-table-mobile-plus") as HTMLTableElement
-let plansTableMobilePro = document.getElementById("plans-table-mobile-pro") as HTMLTableElement
+let plansTableContainer: HTMLDivElement
+let plansTable: HTMLTableElement
+let plansTableMobileContainer: HTMLDivElement
+let plansTableMobileFree: HTMLTableElement
+let plansTableMobilePlus: HTMLTableElement
+let plansTableMobilePro: HTMLTableElement
+
+window.addEventListener("resize", setSize)
+window.addEventListener("load", main)
+
+function main() {
+	plansTableContainer = document.getElementById("plans-table-container") as HTMLDivElement
+	plansTable = document.getElementById("plans-table") as HTMLTableElement
+	plansTableMobileContainer = document.getElementById("plans-table-mobile-container") as HTMLDivElement
+	plansTableMobileFree = document.getElementById("plans-table-mobile-free") as HTMLTableElement
+	plansTableMobilePlus = document.getElementById("plans-table-mobile-plus") as HTMLTableElement
+	plansTableMobilePro = document.getElementById("plans-table-mobile-pro") as HTMLTableElement
+
+	setSize()
+}
 
 function setSize() {
 	let width = window.innerWidth
@@ -24,7 +37,3 @@ function setSize() {
 		showElement(plansTableContainer)
 	}
 }
-
-window.addEventListener("resize", setSize)
-
-setSize()

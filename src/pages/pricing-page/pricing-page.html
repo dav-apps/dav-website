@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
 		<base href="/">
@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="../../styles.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/all.min.css">
+
+		<script type="module" src="pricing-page.ts" defer async></script>
 	</head>
 	<body>
 		<include src="src/components/navbar-component/navbar-component.html"></include>
@@ -174,7 +176,5 @@
 				</table>
 			</div>
 		</div>
-
-		<script type="module" src="pricing-page.ts" defer async></script>
 	</body>
 </html>
