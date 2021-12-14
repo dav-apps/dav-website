@@ -23,15 +23,12 @@ import { getLocale } from '../../locales'
 import { initDav, userLoadedPromiseHolder } from '../../utils'
 
 let locale = getLocale().statisticsPage
-let header = document.getElementById("header") as Header
-let userChartCanvas = document.getElementById("user-chart") as HTMLCanvasElement
-let totalUsersText = document.getElementById("total-users-text") as HTMLParagraphElement
-let plansHeader = document.getElementById("plans-header") as HTMLHeadingElement
-let plansChartCanvas = document.getElementById("plans-chart") as HTMLCanvasElement
-let confirmationsHeader = document.getElementById("confirmations-header") as HTMLHeadingElement
-let confirmationsChartCanvas = document.getElementById("confirmations-chart") as HTMLCanvasElement
-let activeUsersHeader = document.getElementById("active-users-header") as HTMLHeadingElement
-let activeUsersChartCanvas = document.getElementById("active-users-chart") as HTMLCanvasElement
+let header: Header
+let userChartCanvas: HTMLCanvasElement
+let totalUsersText: HTMLParagraphElement
+let plansChartCanvas: HTMLCanvasElement
+let confirmationsChartCanvas: HTMLCanvasElement
+let activeUsersChartCanvas: HTMLCanvasElement
 
 Chart.register(
 	LineController,
@@ -43,60 +40,75 @@ Chart.register(
 	ArcElement
 )
 
-let userChart = new Chart(userChartCanvas, {
-	type: 'line',
-	data: {
-		labels: [],
-		datasets: [{
-			label: locale.numberOfUsers,
-			data: [],
-			borderColor: 'rgb(255, 99, 132)'
-		}]
-	}
-})
+let userChart: Chart
+let plansChart: Chart
+let confirmationsChart: Chart
+let activeUsersChart: Chart
 
-let plansChart = new Chart(plansChartCanvas, {
-	type: 'pie',
-	data: {
-		labels: ["Free", "Plus", "Pro"],
-		datasets: [{
-			data: [0, 0, 0],
-			backgroundColor: [
-				'rgb(255, 99, 132)',
-      		'rgb(54, 162, 235)',
-      		'rgb(255, 205, 86)'
-			]
-		}]
-	}
-})
-
-let confirmationsChart = new Chart(confirmationsChartCanvas, {
-	type: 'pie',
-	data: {
-		labels: [locale.confirmed, locale.unconfirmed],
-		datasets: [{
-			data: [0, 0],
-			backgroundColor: [
-				'rgb(255, 99, 132)',
-      		'rgb(54, 162, 235)'
-			]
-		}]
-	}
-})
-
-let activeUsersChart = new Chart(activeUsersChartCanvas, {
-	type: 'line',
-	data: {
-		labels: [],
-		datasets: [
-			{ label: locale.daily, data: [], borderColor: 'rgb(255, 99, 132)' },
-			{ label: locale.monthly, data: [], borderColor: 'rgb(54, 162, 235)' },
-			{ label: locale.yearly, data: [], borderColor: 'rgb(255, 205, 86)' }
-		]
-	}
-})
+window.addEventListener("load", main)
 
 async function main() {
+	header = document.getElementById("header") as Header
+	userChartCanvas = document.getElementById("user-chart") as HTMLCanvasElement
+	totalUsersText = document.getElementById("total-users-text") as HTMLParagraphElement
+	plansChartCanvas = document.getElementById("plans-chart") as HTMLCanvasElement
+	confirmationsChartCanvas = document.getElementById("confirmations-chart") as HTMLCanvasElement
+	activeUsersChartCanvas = document.getElementById("active-users-chart") as HTMLCanvasElement
+
+	userChart = new Chart(userChartCanvas, {
+		type: 'line',
+		data: {
+			labels: [],
+			datasets: [{
+				label: locale.numberOfUsers,
+				data: [],
+				borderColor: 'rgb(255, 99, 132)'
+			}]
+		}
+	})
+
+	plansChart = new Chart(plansChartCanvas, {
+		type: 'pie',
+		data: {
+			labels: ["Free", "Plus", "Pro"],
+			datasets: [{
+				data: [0, 0, 0],
+				backgroundColor: [
+					'rgb(255, 99, 132)',
+					'rgb(54, 162, 235)',
+					'rgb(255, 205, 86)'
+				]
+			}]
+		}
+	})
+
+	confirmationsChart = new Chart(confirmationsChartCanvas, {
+		type: 'pie',
+		data: {
+			labels: [locale.confirmed, locale.unconfirmed],
+			datasets: [{
+				data: [0, 0],
+				backgroundColor: [
+					'rgb(255, 99, 132)',
+					'rgb(54, 162, 235)'
+				]
+			}]
+		}
+	})
+
+	activeUsersChart = new Chart(activeUsersChartCanvas, {
+		type: 'line',
+		data: {
+			labels: [],
+			datasets: [
+				{ label: locale.daily, data: [], borderColor: 'rgb(255, 99, 132)' },
+				{ label: locale.monthly, data: [], borderColor: 'rgb(54, 162, 235)' },
+				{ label: locale.yearly, data: [], borderColor: 'rgb(255, 205, 86)' }
+			]
+		}
+	})
+
+	setEventListeners()
 	initDav()
 	await userLoadedPromiseHolder.AwaitResult()
 
@@ -129,13 +141,6 @@ async function main() {
 
 function setEventListeners() {
 	header.addEventListener("backButtonClick", navigateBack)
-}
-
-function setStrings(){
-	header.header = locale.title
-	plansHeader.innerText = locale.plans
-	confirmationsHeader.innerText = locale.confirmations
-	activeUsersHeader.innerText = locale.activeUsers
 }
 
 function navigateBack() {
@@ -173,12 +178,12 @@ function processUsers(userResponseData: GetUsersResponseData) {
 				months.set(month[0], month[1] + 1)
 			}
 		}
-		
+
 		// Count the plan
-		plansChart.data.datasets[0].data[user.plan]++
+		(plansChart.data.datasets[0].data[user.plan] as number)++
 
 		// Count the email confirmation
-		confirmationsChart.data.datasets[0].data[user.confirmed ? 0 : 1]++
+		(confirmationsChart.data.datasets[0].data[user.confirmed ? 0 : 1] as number)++
 	}
 
 	// Show the number of users
@@ -235,7 +240,3 @@ function processUserActivities(userActivities: GetUserActivitiesResponseData) {
 
 	activeUsersChart.update()
 }
-
-setEventListeners()
-setStrings()
-main()
