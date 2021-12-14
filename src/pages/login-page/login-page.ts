@@ -6,14 +6,24 @@ import { getLocale } from '../../locales'
 import { showElement, hideElement } from '../../utils'
 
 let locale = getLocale().loginPage
-let header = document.getElementById("header") as HTMLHeadingElement
-let errorMessageBar = document.getElementById('error-message-bar') as MessageBar
-let emailTextfield = document.getElementById('email-textfield') as Textfield
-let passwordTextfield = document.getElementById('password-textfield') as Textfield
-let loginButton = document.getElementById('login-button') as Button
+let errorMessageBar: MessageBar
+let emailTextfield: Textfield
+let passwordTextfield: Textfield
+let loginButton: Button
 
 let email: string = ""
 let password: string = ""
+
+window.addEventListener("load", main)
+
+function main() {
+	errorMessageBar = document.getElementById('error-message-bar') as MessageBar
+	emailTextfield = document.getElementById('email-textfield') as Textfield
+	passwordTextfield = document.getElementById('password-textfield') as Textfield
+	loginButton = document.getElementById('login-button') as Button
+
+	setEventListeners()
+}
 
 function setEventListeners() {
 	emailTextfield.addEventListener('change', (event: Event) => {
@@ -28,15 +38,6 @@ function setEventListeners() {
 
 	passwordTextfield.addEventListener('enter', login)
 	loginButton.addEventListener('click', login)
-}
-
-function setStrings() {
-	header.innerText = locale.title
-	emailTextfield.label = locale.emailTextfieldLabel
-	emailTextfield.placeholder = locale.emailTextfieldPlaceholder
-	passwordTextfield.label = locale.passwordTextfieldLabel
-	passwordTextfield.placeholder = locale.passwordTextfieldPlaceholder
-	loginButton.innerText = locale.login
 }
 
 async function login() {
@@ -93,6 +94,3 @@ function getLoginErrorMessage(errorCode: number): string {
 			return locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
 	}
 }
-
-setStrings()
-setEventListeners()
