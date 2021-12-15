@@ -4,7 +4,9 @@ import {
 	CategoryScale,
 	LinearScale,
 	PointElement,
-	LineElement
+	LineElement,
+	Legend,
+	Tooltip
 } from 'chart.js'
 import { DateTime } from 'luxon'
 import {
@@ -33,7 +35,9 @@ Chart.register(
 	CategoryScale,
 	LinearScale,
 	PointElement,
-	LineElement
+	LineElement,
+	Legend,
+	Tooltip
 )
 
 let userChart: Chart
@@ -56,7 +60,8 @@ async function main() {
 			datasets: [{
 				label: locale.numberOfUsers,
 				data: [],
-				borderColor: 'rgb(255, 99, 132)'
+				borderColor: 'rgb(255, 99, 132)',
+				backgroundColor: 'rgb(255, 99, 132)'
 			}]
 		}
 	})
@@ -66,9 +71,9 @@ async function main() {
 		data: {
 			labels: [],
 			datasets: [
-				{ label: locale.daily, data: [], borderColor: 'rgb(255, 99, 132)' },
-				{ label: locale.monthly, data: [], borderColor: 'rgb(54, 162, 235)' },
-				{ label: locale.yearly, data: [], borderColor: 'rgb(255, 205, 86)' }
+				{ label: locale.daily, data: [], borderColor: 'rgb(255, 99, 132)', backgroundColor: 'rgb(255, 99, 132)' },
+				{ label: locale.monthly, data: [], borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgb(54, 162, 235)' },
+				{ label: locale.yearly, data: [], borderColor: 'rgb(255, 205, 86)', backgroundColor: 'rgb(255, 205, 86)' }
 			]
 		}
 	})
