@@ -170,7 +170,7 @@ function processUsers(userResponseData: GetUsersResponseData) {
 
 	for (let user of userResponseData.users) {
 		// Add the cumulative user count
-		let createdAt = DateTime.fromJSDate(user.createdAt).startOf("month")
+		let createdAt = DateTime.fromJSDate(user.createdAt).startOf("month").setLocale(navigator.language)
 		let createdMonth = createdAt.toFormat("MMMM yyyy")
 		let createdBeforeStart = start > createdAt
 
@@ -211,7 +211,7 @@ function processUserActivities(userActivities: GetUserActivitiesResponseData) {
 
 	for (let day of userActivities.days) {
 		days.push({
-			date: DateTime.fromJSDate(day.time).minus({ days: 1 }),
+			date: DateTime.fromJSDate(day.time).setLocale(navigator.language).minus({ days: 1 }),
 			daily: day.countDaily,
 			monthly: day.countMonthly,
 			yearly: day.countYearly
