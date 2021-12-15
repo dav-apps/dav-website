@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="env" content="<%= process.env.ENV %>">
+
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="app-statistics-page.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+
+		<script type="module" src="app-statistics-page.ts" defer async></script>
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container navbar-margin pt-4">
+			<div class="mb-3">
+				<dav-header
+					id="header"
+					backButtonVisible
+					size="big">
+				</dav-header>
+			</div>
+
+			<div id="user-chart-container" class="mx-auto">
+				<canvas id="user-chart"></canvas>
+			</div>
+
+			<p id="total-users-text"
+				class="mx-auto mt-3 mb-5 ps-4 fw-light">
+			</p>
+
+			<h2 class="text-center fw-light mb-3">
+				<%= locale.activeUsers %>
+			</h2>
+
+			<div id="active-users-chart-container" class="mx-auto mb-5">
+				<canvas id="active-users-chart"></canvas>
+			</div>
+		</div>
+	</body>
+</html>

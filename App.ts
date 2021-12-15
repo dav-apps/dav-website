@@ -111,6 +111,15 @@ export class App {
 			})
 		})
 
+		router.get('/dev/:appId/statistics', (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+
+			res.render("app-statistics-page/app-statistics-page", {
+				lang: locale.lang,
+				locale: locale.appStatisticsPage
+			})
+		})
+
 		router.get('/apps', async (req, res) => {
 			this.init()
 
