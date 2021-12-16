@@ -1,14 +1,13 @@
 import 'bootstrap'
-import { Dav } from 'dav-js'
 import { getLocale } from '../../locales'
 import {
-	initDav,
-	userLoadedPromiseHolder,
 	hideElement,
-	showElement
+	showElement,
+	getDataService
 } from '../../utils'
 
 let locale = getLocale().navbarComponent
+let dataService = getDataService()
 let navbar = document.getElementById("navbar") as HTMLElement
 let navbarContainer = document.getElementById('navbar-container') as HTMLDivElement
 let notLoggedInList = document.getElementById("not-logged-in-list") as HTMLUListElement
@@ -24,16 +23,16 @@ let logoutLink = document.getElementById("logout-link") as HTMLAnchorElement
 let navbarBackgroundVisible = false
 
 async function main() {
-	initDav()
-	await userLoadedPromiseHolder.AwaitResult()
-	
-	if (Dav.isLoggedIn) {
+	dataService.initDav()
+	await dataService.userLoadedPromiseHolder.AwaitResult()
+
+	if (dataService.dav.isLoggedIn) {
 		hideElement(notLoggedInList)
 		showElement(loggedInList)
 
-		userLink.innerText = Dav.user.FirstName
+		userLink.innerText = dataService.dav.user.FirstName
 
-		if (Dav.user.Dev) {
+		if (dataService.dav.user.Dev) {
 			showElement(devDashboardLink)
 		}
 	} else {
@@ -43,8 +42,8 @@ async function main() {
 
 	logoutLink.addEventListener("click", (event: MouseEvent) => {
 		event.preventDefault()
-		
-		Dav.Logout().then(() => {
+
+		dataService.dav.Logout().then(() => {
 			window.location.href = "/"
 		})
 	})

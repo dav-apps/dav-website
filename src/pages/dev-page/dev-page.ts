@@ -1,5 +1,4 @@
 import {
-	Dav,
 	App,
 	ApiResponse,
 	ApiErrorResponse,
@@ -9,9 +8,10 @@ import {
 import 'dav-ui-components'
 import { Button, MessageBar } from 'dav-ui-components'
 import { getLocale } from '../../locales'
-import { initDav, userLoadedPromiseHolder, showElement } from '../../utils'
+import { getDataService, showElement } from '../../utils'
 
 let locale = getLocale().devPage
+let dataService = getDataService()
 let errorMessageBar = document.getElementById("error-message-bar") as MessageBar
 let appsContainer = document.getElementById("apps-container") as HTMLDivElement
 let statisticsButton = document.getElementById("statistics-button") as Button
@@ -20,10 +20,10 @@ window.addEventListener("load", main)
 
 async function main() {
 	setEventListeners()
-	initDav()
-	await userLoadedPromiseHolder.AwaitResult()
+	dataService.initDav()
+	await dataService.userLoadedPromiseHolder.AwaitResult()
 
-	if (!Dav.isLoggedIn || !Dav.user.Dev) {
+	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {
 		window.location.href = "/"
 		return
 	}

@@ -1,10 +1,11 @@
-import { Dav, ApiResponse, ApiErrorResponse, AppsController, App, ErrorCodes } from 'dav-js'
+import { ApiResponse, ApiErrorResponse, AppsController, App, ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
 import { Button, Dialog, Header, Textarea, Textfield, Toggle } from 'dav-ui-components'
 import { getLocale } from '../../locales'
-import { initDav, userLoadedPromiseHolder } from '../../utils'
+import { getDataService } from '../../utils'
 
 let locale = getLocale().appPage
+let dataService = getDataService()
 let header: Header
 let description: HTMLParagraphElement
 let statisticsButton: Button
@@ -48,10 +49,10 @@ async function main() {
 	publishAppDialogText = document.getElementById("publish-app-dialog-text") as HTMLParagraphElement
 
 	setEventListeners()
-	initDav()
-	await userLoadedPromiseHolder.AwaitResult()
+	dataService.initDav()
+	await dataService.userLoadedPromiseHolder.AwaitResult()
 
-	if (!Dav.isLoggedIn || !Dav.user.Dev) {
+	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {
 		window.location.href = "/"
 		return
 	}
@@ -61,7 +62,7 @@ async function main() {
 	let appId = +urlPathParts[urlPathParts.length - 1]
 
 	// Get the app
-	let response: ApiResponse<App> | ApiErrorResponse = await AppsController.GetApp({ id: appId })
+	let response = await AppsController.GetApp({ id: appId })
 
 	if (response.status == 200) {
 		app = (response as ApiResponse<App>).data

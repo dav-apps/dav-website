@@ -1,11 +1,12 @@
 import axios from 'axios'
-import { Dav, ErrorCodes } from 'dav-js'
+import { ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
 import { Button, Textfield, MessageBar } from 'dav-ui-components'
 import { getLocale } from '../../locales'
-import { showElement, hideElement } from '../../utils'
+import { getDataService, showElement, hideElement } from '../../utils'
 
 let locale = getLocale().loginPage
+let dataService = getDataService()
 let errorMessageBar: MessageBar
 let emailTextfield: Textfield
 let passwordTextfield: Textfield
@@ -61,7 +62,7 @@ async function login() {
 		return
 	}
 
-	await Dav.Login(response.data.accessToken)
+	await dataService.dav.Login(response.data.accessToken)
 	window.location.href = "/"
 }
 

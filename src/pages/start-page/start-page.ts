@@ -1,13 +1,12 @@
-import { Dav } from 'dav-js'
 import { getLocale } from '../../locales'
 import {
-	initDav,
-	userLoadedPromiseHolder,
 	showElement,
-	hideElement
+	hideElement,
+	getDataService
 } from '../../utils'
 
 let locale = getLocale().startPage
+let dataService = getDataService()
 let notLoggedInContainer: HTMLDivElement
 let loggedInContainer: HTMLDivElement
 let startHeader: HTMLDivElement
@@ -68,10 +67,10 @@ async function main() {
 
 	setSize()
 	setStrings()
-	initDav()
-	await userLoadedPromiseHolder.AwaitResult()
+	dataService.initDav()
+	await dataService.userLoadedPromiseHolder.AwaitResult()
 
-	if (Dav.isLoggedIn) {
+	if (dataService.dav.isLoggedIn) {
 		hideElement(notLoggedInContainer)
 		showElement(loggedInContainer)
 	} else {
@@ -79,13 +78,13 @@ async function main() {
 		hideElement(loggedInContainer)
 	}
 
-	if (Dav.user.Apps.length > 0) {
+	if (dataService.dav.user.Apps.length > 0) {
 		loggedInHeader.classList.add("mb-3")
 		hideElement(welcomeMessage)
 
 		appsContainer.innerHTML = ""
 
-		for (let app of Dav.user.Apps) {
+		for (let app of dataService.dav.user.Apps) {
 			let weblinkHtml = ""
 			let googlePlayLinkHtml = ""
 			let microsoftStoreLinkHtml = ""
@@ -143,7 +142,7 @@ async function main() {
 		}
 	} else {
 		loggedInHeader.classList.add("mb-4")
-		welcomeMessageHeader.innerText = locale.welcomeTitle.replace('{0}', Dav.user.FirstName)
+		welcomeMessageHeader.innerText = locale.welcomeTitle.replace('{0}', dataService.dav.user.FirstName)
 	}
 }
 

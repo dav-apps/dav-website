@@ -13,7 +13,6 @@ import {
 import { DateTime } from 'luxon'
 import {
 	ApiResponse,
-	Dav,
 	GetUsersResponseData,
 	GetUserActivitiesResponseData,
 	UsersController,
@@ -22,9 +21,10 @@ import {
 import 'dav-ui-components'
 import { Header } from 'dav-ui-components'
 import { getLocale } from '../../locales'
-import { initDav, userLoadedPromiseHolder } from '../../utils'
+import { getDataService } from '../../utils'
 
 let locale = getLocale().statisticsPage
+let dataService = getDataService()
 let header: Header
 let userChartCanvas: HTMLCanvasElement
 let totalUsersText: HTMLParagraphElement
@@ -114,10 +114,10 @@ async function main() {
 	})
 
 	setEventListeners()
-	initDav()
-	await userLoadedPromiseHolder.AwaitResult()
+	dataService.initDav()
+	await dataService.userLoadedPromiseHolder.AwaitResult()
 
-	if (!Dav.isLoggedIn || !Dav.user.Dev) {
+	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {
 		window.location.href = "/"
 		return
 	}
