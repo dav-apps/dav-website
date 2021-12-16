@@ -20,6 +20,7 @@ import {
 } from 'dav-js'
 import 'dav-ui-components'
 import { Header } from 'dav-ui-components'
+import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import { getDataService } from '../../utils'
 
@@ -78,7 +79,6 @@ async function main() {
 		}
 	})
 
-	dataService.initDav()
 	await dataService.userLoadedPromiseHolder.AwaitResult()
 
 	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {

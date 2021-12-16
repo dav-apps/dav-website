@@ -1,3 +1,4 @@
+import '../../components/navbar-component/navbar-component'
 import { showElement, hideElement } from '../../utils'
 
 let plansTableContainer: HTMLDivElement

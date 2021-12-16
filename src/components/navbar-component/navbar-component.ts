@@ -23,8 +23,12 @@ let logoutLink = document.getElementById("logout-link") as HTMLAnchorElement
 let navbarBackgroundVisible = false
 
 async function main() {
-	dataService.initDav()
 	await dataService.userLoadedPromiseHolder.AwaitResult()
+
+	if (
+		dataService.dav.isLoggedIn
+		&& dataService.dav.user.FirstName.length == 0
+	) await dataService.userDownloadedPromiseHolder.AwaitResult()
 
 	if (dataService.dav.isLoggedIn) {
 		hideElement(notLoggedInList)

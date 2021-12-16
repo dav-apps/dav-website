@@ -1,3 +1,4 @@
+import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import {
 	showElement,
@@ -67,8 +68,12 @@ async function main() {
 
 	setSize()
 	setStrings()
-	dataService.initDav()
 	await dataService.userLoadedPromiseHolder.AwaitResult()
+
+	if (
+		dataService.dav.isLoggedIn
+		&& dataService.dav.user.FirstName.length == 0
+	) await dataService.userDownloadedPromiseHolder.AwaitResult()
 
 	if (dataService.dav.isLoggedIn) {
 		hideElement(notLoggedInContainer)

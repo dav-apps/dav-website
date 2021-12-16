@@ -2,6 +2,7 @@ import axios from 'axios'
 import { ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
 import { Button, Textfield, MessageBar } from 'dav-ui-components'
+import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import { getDataService, showElement, hideElement } from '../../utils'
 

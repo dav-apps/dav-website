@@ -1,6 +1,7 @@
 import { ApiResponse, ApiErrorResponse, AppsController, App, ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
 import { Button, Dialog, Header, Textarea, Textfield, Toggle } from 'dav-ui-components'
+import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import { getDataService } from '../../utils'
 
@@ -49,7 +50,6 @@ async function main() {
 	publishAppDialogText = document.getElementById("publish-app-dialog-text") as HTMLParagraphElement
 
 	setEventListeners()
-	dataService.initDav()
 	await dataService.userLoadedPromiseHolder.AwaitResult()
 
 	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {

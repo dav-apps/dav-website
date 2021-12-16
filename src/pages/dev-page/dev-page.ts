@@ -7,6 +7,7 @@ import {
 } from 'dav-js'
 import 'dav-ui-components'
 import { Button, MessageBar } from 'dav-ui-components'
+import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import { getDataService, showElement } from '../../utils'
 
@@ -20,7 +21,6 @@ window.addEventListener("load", main)
 
 async function main() {
 	setEventListeners()
-	dataService.initDav()
 	await dataService.userLoadedPromiseHolder.AwaitResult()
 
 	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {
@@ -41,7 +41,7 @@ async function main() {
 			appCardElement.addEventListener("mouseover", () => appCardMouseOver(app))
 			appCardElement.addEventListener("mouseout", () => appCardMouseOut(app))
 			appCardElement.addEventListener("click", () => appCardClick(app))
-			
+
 			let appCardBodyElement = document.createElement("div") as HTMLDivElement
 			appCardBodyElement.classList.add("card-body")
 
