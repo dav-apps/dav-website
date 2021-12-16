@@ -2,24 +2,21 @@ import { Dav, Environment, PromiseHolder } from 'dav-js'
 import { devEnvironment, prodEnvironment } from './environments'
 
 class DataService {
-	davInitialized: boolean = false
 	userLoadedPromiseHolder: PromiseHolder<boolean> = new PromiseHolder()
+	userDownloadedPromiseHolder: PromiseHolder<boolean> = new PromiseHolder()
 	dav = Dav
 
-	initDav() {
-		if (this.davInitialized) return
-		this.davInitialized = true
-	
-		// Get the env vars
+	constructor() {
+		// Get the correct env vars
 		let env = getEnvironment()
-	
+
+		// Init dav-js
 		new Dav({
 			environment: env.production ? Environment.Production : Environment.Development,
 			appId: env.appId,
 			callbacks: {
-				UserLoaded: () => {
-					this.userLoadedPromiseHolder.resolve(this.dav.isLoggedIn)
-				}
+				UserLoaded: () => this.userLoadedPromiseHolder.resolve(this.dav.isLoggedIn),
+				UserDownloaded: () => this.userDownloadedPromiseHolder.resolve(this.dav.isLoggedIn)
 			}
 		})
 	}
