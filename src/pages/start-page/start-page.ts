@@ -10,7 +10,6 @@ let locale = getLocale().startPage
 let dataService = getDataService()
 let notLoggedInContainer: HTMLDivElement
 let loggedInContainer: HTMLDivElement
-let startHeader: HTMLDivElement
 let largeHeaderPocketlib: HTMLHeadingElement
 let smallHeaderPocketlib: HTMLHeadingElement
 let largeHeaderUniversalsoundboard: HTMLHeadingElement
@@ -41,7 +40,6 @@ window.addEventListener("load", main)
 async function main() {
 	notLoggedInContainer = document.getElementById("not-logged-in-container") as HTMLDivElement
 	loggedInContainer = document.getElementById("logged-in-container") as HTMLDivElement
-	startHeader = document.getElementById("start-header") as HTMLDivElement
 	largeHeaderPocketlib = document.getElementById("large-header-pocketlib") as HTMLHeadingElement
 	smallHeaderPocketlib = document.getElementById("small-header-pocketlib") as HTMLHeadingElement
 	largeHeaderUniversalsoundboard = document.getElementById("large-header-universalsoundboard") as HTMLHeadingElement
@@ -154,7 +152,6 @@ async function main() {
 function setSize() {
 	let mobileView: boolean = window.innerWidth <= 768
 
-	startHeader.style.height = `${window.innerHeight * 0.7}px`
 	screenshotPocketlib.style.width = `${window.innerWidth * 0.3}px`
 	screenshotPocketlibMobile.style.width = `${window.innerWidth * 0.3}px`
 	screenshotUniversalsoundboard.style.width = `${window.innerWidth * 0.5}px`
