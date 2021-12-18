@@ -1,7 +1,7 @@
-import { Component } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { Router } from '@angular/router'
-import { ChartDataSets } from 'chart.js'
-import { Label } from 'ng2-charts'
+import { ChartConfiguration } from 'chart.js'
+import { BaseChartDirective } from 'ng2-charts'
 import * as moment from 'moment'
 import {
 	ApiResponse,
@@ -20,21 +20,48 @@ import { DataService } from 'src/app/services/data-service'
 })
 export class StatisticsPageComponent {
 	locale = enUS.statisticsPage
-	userChartDataSets: ChartDataSets[] = [{ data: [], label: this.locale.numberOfUsers }]
-	userChartLabels: Label[] = []
-	plansChartData: number[] = [0, 0, 0]
-	plansChartLabels: Label[] = ["Free", "Plus", "Pro"]
-	confirmationsChartData: number[] = [0, 0]
-	confirmationsChartLabels: Label[] = [this.locale.confirmed, this.locale.unconfirmed]
-	activeUsersChartDataSets: ChartDataSets[] = [
-		{ data: [], label: this.locale.daily },
-		{ data: [], label: this.locale.monthly },
-		{ data: [], label: this.locale.yearly }
-	]
-	activeUsersChartLabels: Label[] = []
-	currentlyActiveUsersDataSets: ChartDataSets[] = [{ data: [], label: this.locale.currentlyActiveUsers }]
-	currentlyActiveUsersChartLabels: Label[] = [this.locale.daily, this.locale.monthly, this.locale.yearly]
+	@ViewChild("userChart") userChart: BaseChartDirective
+	@ViewChild("plansChart") plansChart: BaseChartDirective
+	@ViewChild("confirmationsChart") confirmationsChart: BaseChartDirective
+	@ViewChild("activeUsersChart") activeUsersChart: BaseChartDirective
 	totalUsersText: string = this.locale.totalUsers.replace('{0}', '0')
+
+	userChartData: ChartConfiguration['data'] = {
+		datasets: [{
+			data: [],
+			label: this.locale.numberOfUsers
+		}],
+		labels: []
+	}
+	plansChartData: ChartConfiguration['data'] = {
+		datasets: [{
+			data: [0, 0, 0]
+		}],
+		labels: ["Free", "Plus", "Pro"]
+	}
+	confirmationsChartData: ChartConfiguration['data'] = {
+		datasets: [{
+			data: [0, 0]
+		}],
+		labels: [this.locale.confirmed, this.locale.unconfirmed]
+	}
+	activeUsersChartData: ChartConfiguration['data'] = {
+		datasets: [
+			{
+				data: [],
+				label: this.locale.daily
+			},
+			{
+				data: [],
+				label: this.locale.monthly
+			},
+			{
+				data: [],
+				label: this.locale.yearly
+			}
+		],
+		labels: []
+	}
 
 	constructor(
 		public dataService: DataService,
@@ -44,16 +71,12 @@ export class StatisticsPageComponent {
 		moment.locale(this.dataService.locale)
 
 		// Set the labels
-		this.userChartDataSets[0].label = this.locale.numberOfUsers
-		this.confirmationsChartLabels[0] = this.locale.confirmed
-		this.confirmationsChartLabels[1] = this.locale.unconfirmed
-		this.activeUsersChartDataSets[0].label = this.locale.daily
-		this.activeUsersChartDataSets[1].label = this.locale.monthly
-		this.activeUsersChartDataSets[2].label = this.locale.yearly
-		this.currentlyActiveUsersDataSets[0].label = this.locale.currentlyActiveUsers
-		this.currentlyActiveUsersChartLabels[0] = this.locale.daily
-		this.currentlyActiveUsersChartLabels[1] = this.locale.monthly
-		this.currentlyActiveUsersChartLabels[2] = this.locale.yearly
+		this.userChartData.datasets[0].label = this.locale.numberOfUsers
+		this.confirmationsChartData.labels[0] = this.locale.confirmed
+		this.confirmationsChartData.labels[1] = this.locale.unconfirmed
+		this.activeUsersChartData.datasets[0].label = this.locale.daily
+		this.activeUsersChartData.datasets[1].label = this.locale.monthly
+		this.activeUsersChartData.datasets[2].label = this.locale.yearly
 	}
 
 	async ngOnInit() {
@@ -85,8 +108,8 @@ export class StatisticsPageComponent {
 		let currentDate = moment().startOf('month').subtract(5, 'months')
 		let start = currentDate.clone()
 		let months: Map<string, number> = new Map()
-		this.plansChartData = [0, 0, 0]
-		this.confirmationsChartData = [0, 0]
+		this.plansChartData.datasets[0].data = [0, 0, 0]
+		this.confirmationsChartData.datasets[0].data = [0, 0]
 
 		// Get the last 6 months
 		for (let i = 0; i < 6; i++) {
@@ -111,19 +134,24 @@ export class StatisticsPageComponent {
 			}
 
 			// Count the plan
-			this.plansChartData[user.plan]++
+			(this.plansChartData.datasets[0].data[user.plan] as number)++
 
 			// Count the email confirmation
-			this.confirmationsChartData[user.confirmed ? 0 : 1]++
+			(this.confirmationsChartData.datasets[0].data[user.confirmed ? 0 : 1] as number)++
 		}
 
 		// Show the number of users
-		this.userChartDataSets[0].data = []
-		this.userChartLabels = []
+		this.userChartData.datasets[0].data = []
+		this.userChartData.labels = []
+
 		for (let month of months.entries()) {
-			this.userChartLabels.push(month[0])
-			this.userChartDataSets[0].data.push(month[1])
+			this.userChartData.labels.push(month[0])
+			this.userChartData.datasets[0].data.push(month[1])
 		}
+
+		this.userChart.update()
+		this.plansChart.update()
+		this.confirmationsChart.update()
 	}
 
 	ProcessUserActivities(userActivities: GetUserActivitiesResponseData) {
@@ -131,6 +159,7 @@ export class StatisticsPageComponent {
 		let days: { timestamp: number, daily: number, monthly: number, yearly: number }[] = []
 		for (let day of userActivities.days) {
 			let timestamp = moment(day.time).subtract(1, 'day').unix()
+
 			days.push({
 				timestamp,
 				daily: day.countDaily,
@@ -151,23 +180,18 @@ export class StatisticsPageComponent {
 		})
 
 		// Show the days on the active users line chart
-		this.activeUsersChartDataSets[0].data = []
-		this.activeUsersChartDataSets[1].data = []
-		this.activeUsersChartDataSets[2].data = []
+		this.activeUsersChartData.datasets[0].data = []
+		this.activeUsersChartData.datasets[1].data = []
+		this.activeUsersChartData.datasets[2].data = []
 
 		for (let day of days) {
-			this.activeUsersChartDataSets[0].data.push(day.daily)
-			this.activeUsersChartDataSets[1].data.push(day.monthly)
-			this.activeUsersChartDataSets[2].data.push(day.yearly)
-			this.activeUsersChartLabels.push(moment.unix(day.timestamp).format('LL'))
+			this.activeUsersChartData.datasets[0].data.push(day.daily)
+			this.activeUsersChartData.datasets[1].data.push(day.monthly)
+			this.activeUsersChartData.datasets[2].data.push(day.yearly)
+			this.activeUsersChartData.labels.push(moment.unix(day.timestamp).format('LL'))
 		}
 
-		// Show the currently active users on the bar chart
-		if (days.length > 0) {
-			this.currentlyActiveUsersDataSets[0].data = [days[days.length - 1].daily, days[days.length - 1].monthly, days[days.length - 1].yearly]
-		} else {
-			this.currentlyActiveUsersDataSets[0].data = [0, 0, 0]
-		}
+		this.activeUsersChart.update()
 	}
 
 	GetUsersResponse(response: ApiResponse<GetUsersResponseData> | ApiErrorResponse) {

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core'
+import { Component, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { ChartDataSets } from 'chart.js'
-import { Label } from 'ng2-charts'
+import { ChartConfiguration } from 'chart.js'
+import { BaseChartDirective } from 'ng2-charts'
 import * as moment from 'moment'
 import {
 	ApiResponse,
@@ -22,18 +22,35 @@ import { DataService } from 'src/app/services/data-service'
 })
 export class AppStatisticsPageComponent {
 	locale = enUS.appStatisticsPage
+	@ViewChild("userChart") userChart: BaseChartDirective
+	@ViewChild("activeUsersChart") activeUsersChart: BaseChartDirective
 	app: App = new App(0, "", "", false, null, null, null)
-	userChartDataSets: ChartDataSets[] = [{ data: [], label: this.locale.numberOfUsers }]
-	userChartLabels: Label[] = []
-	activeUsersChartDataSets: ChartDataSets[] = [
-		{ data: [], label: this.locale.daily },
-		{ data: [], label: this.locale.monthly },
-		{ data: [], label: this.locale.yearly }
-	]
-	activeUsersChartLabels: Label[] = []
-	currentlyActiveUsersDataSets: ChartDataSets[] = [{ data: [], label: this.locale.currentlyActiveUsers }]
-	currentlyActiveUsersChartLabels: Label[] = [this.locale.daily, this.locale.monthly, this.locale.yearly]
 	totalUsersText: string = this.locale.totalUsers.replace('{0}', '0')
+
+	userChartData: ChartConfiguration['data'] = {
+		datasets: [{
+			data: [],
+			label: this.locale.numberOfUsers
+		}],
+		labels: []
+	}
+	activeUsersChartData: ChartConfiguration['data'] = {
+		datasets: [
+			{
+				data: [],
+				label: this.locale.daily
+			},
+			{
+				data: [],
+				label: this.locale.monthly
+			},
+			{
+				data: [],
+				label: this.locale.yearly
+			}
+		],
+		labels: []
+	}
 
 	constructor(
 		public dataService: DataService,
@@ -44,14 +61,10 @@ export class AppStatisticsPageComponent {
 		moment.locale(this.dataService.locale)
 
 		// Set the labels
-		this.userChartDataSets[0].label = this.locale.numberOfUsers
-		this.activeUsersChartDataSets[0].label = this.locale.daily
-		this.activeUsersChartDataSets[1].label = this.locale.monthly
-		this.activeUsersChartDataSets[2].label = this.locale.yearly
-		this.currentlyActiveUsersDataSets[0].label = this.locale.currentlyActiveUsers
-		this.currentlyActiveUsersChartLabels[0] = this.locale.daily
-		this.currentlyActiveUsersChartLabels[1] = this.locale.monthly
-		this.currentlyActiveUsersChartLabels[2] = this.locale.yearly
+		this.userChartData.datasets[0].label = this.locale.numberOfUsers
+		this.activeUsersChartData.datasets[0].label = this.locale.daily
+		this.activeUsersChartData.datasets[1].label = this.locale.monthly
+		this.activeUsersChartData.datasets[2].label = this.locale.yearly
 	}
 
 	async ngOnInit() {
@@ -137,12 +150,15 @@ export class AppStatisticsPageComponent {
 			}
 		}
 
-		this.userChartDataSets[0].data = []
-		this.userChartLabels = []
+		this.userChartData.datasets[0].data = []
+		this.userChartData.labels = []
+
 		for (let month of months.entries()) {
-			this.userChartLabels.push(month[0])
-			this.userChartDataSets[0].data.push(month[1])
+			this.userChartData.labels.push(month[0])
+			this.userChartData.datasets[0].data.push(month[1])
 		}
+
+		this.userChart.update()
 	}
 
 	ProcessActiveUsers(activeUsers: GetAppUserActivitiesResponseData) {
@@ -150,6 +166,7 @@ export class AppStatisticsPageComponent {
 		let days: { timestamp: number, daily: number, monthly: number, yearly: number }[] = []
 		for (let day of activeUsers.days) {
 			let timestamp = moment(day.time).subtract(1, 'day').unix()
+
 			days.push({
 				timestamp,
 				daily: day.countDaily,
@@ -170,23 +187,18 @@ export class AppStatisticsPageComponent {
 		})
 
 		// Show the days on the active users line chart
-		this.activeUsersChartDataSets[0].data = []
-		this.activeUsersChartDataSets[1].data = []
-		this.activeUsersChartDataSets[2].data = []
+		this.activeUsersChartData.datasets[0].data = []
+		this.activeUsersChartData.datasets[1].data = []
+		this.activeUsersChartData.datasets[2].data = []
 
 		for (let day of days) {
-			this.activeUsersChartDataSets[0].data.push(day.daily)
-			this.activeUsersChartDataSets[1].data.push(day.monthly)
-			this.activeUsersChartDataSets[2].data.push(day.yearly)
-			this.activeUsersChartLabels.push(moment.unix(day.timestamp).format('LL'))
+			this.activeUsersChartData.datasets[0].data.push(day.daily)
+			this.activeUsersChartData.datasets[1].data.push(day.monthly)
+			this.activeUsersChartData.datasets[2].data.push(day.yearly)
+			this.activeUsersChartData.labels.push(moment.unix(day.timestamp).format('LL'))
 		}
 
-		// Show the currently active users on the bar chart
-		if (days.length > 0) {
-			this.currentlyActiveUsersDataSets[0].data = [days[days.length - 1].daily, days[days.length - 1].monthly, days[days.length - 1].yearly]
-		} else {
-			this.currentlyActiveUsersDataSets[0].data = [0, 0, 0]
-		}
+		this.activeUsersChart.update()
 	}
 
 	GoBack() {

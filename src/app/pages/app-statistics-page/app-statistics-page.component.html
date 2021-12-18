@@ -8,30 +8,29 @@
 		</dav-header>
 	</div>
 
-	<canvas baseChart
-		style="max-width: 800px"
+	<div
 		class="mx-auto"
-		[datasets]="userChartDataSets"
-		[labels]="userChartLabels"
-		chartType="line">
-	</canvas>
+		style="max-width: 800px">
+		<canvas
+			baseChart
+			#userChart="base-chart"
+			[data]="userChartData"
+			type="line">
+		</canvas>
+	</div>
+
 	<p class="mx-auto mt-3 mb-5 ps-4 fw-light" style="max-width: 800px">{{ totalUsersText }}</p>
 
 	<h2 class="text-center fw-light mb-3">{{ locale.activeUsers }}</h2>
 
-	<canvas baseChart
+	<div
 		class="mx-auto mb-5"
-		style="max-width: 800px"
-		[datasets]="activeUsersChartDataSets"
-		[labels]="activeUsersChartLabels"
-		chartType="line">
-	</canvas>
-
-	<canvas baseChart
-		class="mx-auto"
-		style="max-width: 500px"
-		[datasets]="currentlyActiveUsersDataSets"
-		[labels]="currentlyActiveUsersChartLabels"
-		chartType="bar">
-	</canvas>
+		style="max-width: 800px">
+		<canvas
+			baseChart
+			#activeUsersChart="base-chart"
+			[data]="activeUsersChartData"
+			type="line">
+		</canvas>
+	</div>
 </div>
