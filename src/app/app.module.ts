@@ -14,7 +14,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { MatButtonModule } from '@angular/material/button'
 import { NgxFileHelpersModule } from 'ngx-file-helpers'
-import { ChartsModule } from 'ng2-charts'
+import { NgChartsModule } from 'ng2-charts'
 
 // Services
 import { DataService } from './services/data-service'
@@ -85,7 +85,7 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
 		MatExpansionModule,
 		MatButtonModule,
 		NgxFileHelpersModule,
-		ChartsModule
+		NgChartsModule
   	],
   	providers: [
 		DataService,
