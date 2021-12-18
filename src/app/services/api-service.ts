@@ -98,4 +98,108 @@ export class ApiService {
 			}
 		}
 	}
+
+	async ConfirmUser(params: {
+		id: number,
+		emailConfirmationToken: string
+	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/confirm_user',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
+
+	async SaveNewPassword(params: {
+		id: number,
+		passwordConfirmationToken: string
+	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/save_new_password',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
+
+	async SaveNewEmail(params: {
+		id: number,
+		emailConfirmationToken: string
+	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/save_new_email',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
+
+	async ResetEmail(params: {
+		id: number,
+		emailConfirmationToken: string
+	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/reset_email',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
 }

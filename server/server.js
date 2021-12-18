@@ -78,7 +78,6 @@ app.post('/signup', async (req, res) => {
 	if (!checkReferer(req, res)) return
 	init()
 
-	// Do the API request
 	let response = await UsersController.Signup({
 		auth,
 		email: req.body.email,
@@ -91,6 +90,74 @@ app.post('/signup', async (req, res) => {
 	})
 
 	if (response.status == 201) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
+app.post('/confirm_user', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	let response = await UsersController.ConfirmUser({
+		auth,
+		id: req.body.id,
+		emailConfirmationToken: req.body.emailConfirmationToken
+	})
+
+	if (response.status == 204) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
+app.post('/save_new_password', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	let response = await UsersController.SaveNewPassword({
+		auth,
+		id: req.body.id,
+		passwordConfirmationToken: req.body.passwordConfirmationToken
+	})
+
+	if (response.status == 204) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
+app.post('/save_new_email', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	let response = await UsersController.SaveNewEmail({
+		auth,
+		id: req.body.id,
+		emailConfirmationToken: req.body.emailConfirmationToken
+	})
+
+	if (response.status == 204) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
+app.post('/reset_email', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	let response = await UsersController.ResetEmail({
+		auth,
+		id: req.body.id,
+		emailConfirmationToken: req.body.emailConfirmationToken
+	})
+
+	if (response.status == 204) {
 		res.status(response.status).send(response.data)
 	} else {
 		res.status(response.status).send(response.errors)

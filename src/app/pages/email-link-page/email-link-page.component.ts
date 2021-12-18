@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { ApiResponse, ApiErrorResponse } from 'dav-js'
 import { DataService } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { ApiService } from 'src/app/services/api-service'
 import { enUS } from 'src/locales/locales'
 
 @Component({
@@ -15,7 +15,7 @@ export class EmailLinkPageComponent {
 
 	constructor(
 		public dataService: DataService,
-		private websocketService: WebsocketService,
+		private apiService: ApiService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	) {
@@ -84,18 +84,14 @@ export class EmailLinkPageComponent {
 	}
 
 	@HostListener('window:resize')
-	onResize() {
-		this.setSize()
-	}
-
 	setSize() {
 		this.height = window.innerHeight
 	}
 
 	async HandleConfirmUser(userId: number, emailConfirmationToken: string) {
 		this.ConfirmUserResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.ConfirmUser, {
-				userId,
+			await this.apiService.ConfirmUser({
+				id: userId,
 				emailConfirmationToken
 			})
 		)
@@ -103,8 +99,8 @@ export class EmailLinkPageComponent {
 
 	async HandleChangePassword(userId: number, passwordConfirmationToken: string) {
 		this.SaveNewPasswordResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SaveNewPassword, {
-				userId,
+			await this.apiService.SaveNewPassword({
+				id: userId,
 				passwordConfirmationToken
 			})
 		)
@@ -112,8 +108,8 @@ export class EmailLinkPageComponent {
 
 	async HandleChangeEmail(userId: number, emailConfirmationToken: string) {
 		this.SaveNewEmailResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SaveNewEmail, {
-				userId,
+			await this.apiService.SaveNewEmail({
+				id: userId,
 				emailConfirmationToken
 			})
 		)
@@ -121,8 +117,8 @@ export class EmailLinkPageComponent {
 
 	async HandleResetNewEmail(userId: number, emailConfirmationToken: string) {
 		this.ResetEmailResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.ResetEmail, {
-				userId,
+			await this.apiService.ResetEmail({
+				id: userId,
 				emailConfirmationToken
 			})
 		)
