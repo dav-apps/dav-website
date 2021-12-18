@@ -202,4 +202,29 @@ export class ApiService {
 			}
 		}
 	}
+
+	async SendPasswordResetEmail(params: {
+		email: string
+	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/send_password_reset_email',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
 }

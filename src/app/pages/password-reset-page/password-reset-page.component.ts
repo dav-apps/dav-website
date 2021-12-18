@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 import { ApiResponse, ApiErrorResponse, ErrorCodes } from 'dav-js'
 import { DataService } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { ApiService } from 'src/app/services/api-service'
 import { enUS } from 'src/locales/locales'
 
 @Component({
@@ -17,7 +17,7 @@ export class PasswordResetPageComponent {
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
+		private apiService: ApiService,
 		private router: Router
 	) {
 		this.locale = this.dataService.GetLocale().passwordResetPage
@@ -32,7 +32,9 @@ export class PasswordResetPageComponent {
 		this.errorMessage = ""
 		this.loading = true
 		this.SendPasswordResetEmailResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SendPasswordResetEmail, { email: this.email })
+			await this.apiService.SendPasswordResetEmail({
+				email: this.email
+			})
 		)
 	}
 

@@ -164,6 +164,22 @@ app.post('/reset_email', async (req, res) => {
 	}
 })
 
+app.post('/send_password_reset_email', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	let response = await UsersController.SendPasswordResetEmail({
+		auth,
+		email: req.body.email
+	})
+
+	if (response.status == 204) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
 // Get the base urls from the environment variables
 const baseUrl = process.env.BASE_URL
 var baseUrls = []
