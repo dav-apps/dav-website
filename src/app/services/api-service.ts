@@ -6,6 +6,7 @@ import {
 	SessionResponseData,
 	SignupResponseData
 } from "dav-js"
+import { StripeApiResponse } from "./data-service"
 
 @Injectable()
 export class ApiService {
@@ -203,6 +204,31 @@ export class ApiService {
 		}
 	}
 
+	async SendConfirmationEmail(params: {
+		id: number
+	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/send_confirmation_email',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
+
 	async SendPasswordResetEmail(params: {
 		email: string
 	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
@@ -235,7 +261,7 @@ export class ApiService {
 	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
 		try {
 			let response = await axios({
-				method: 'put',
+				method: 'post',
 				url: '/set_password',
 				headers: {
 					'Content-Type': 'application/json'
@@ -251,6 +277,160 @@ export class ApiService {
 			return {
 				status: error.response.status,
 				errors: error.response.data
+			}
+		}
+	}
+
+	async GetStripePaymentMethod(params: {
+		customerId: string
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/get_stripe_payment_method',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
+			}
+		}
+	}
+
+	async SetStripeSubscriptionCancelled(params: {
+		customerId: string,
+		cancel: boolean
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/set_stripe_subscription_cancelled',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
+			}
+		}
+	}
+
+	async SetStripeSubscription(params: {
+		customerId: string,
+		planId: string
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/set_stripe_subscription',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
+			}
+		}
+	}
+
+	async RetrieveStripeAccount(params: {
+		id: string
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/retrieve_stripe_account',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
+			}
+		}
+	}
+
+	async RetrieveStripeBalance(params: {
+		account: string
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/retrieve_stripe_balance',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
+			}
+		}
+	}
+
+	async CreateStripeAccountLink(params: {
+		account: string,
+		returnUrl: string,
+		type: string
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/create_stripe_account_link',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
 			}
 		}
 	}

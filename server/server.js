@@ -4,6 +4,7 @@ import { createServer } from 'http'
 import { Server } from 'socket.io'
 import dotenv from 'dotenv'
 dotenv.config()
+import Stripe from 'stripe'
 import {
 	Dav,
 	Auth,
@@ -18,6 +19,7 @@ const http = createServer(app)
 const io = new Server(http)
 var initialized = false
 var auth
+var stripe
 
 function getRoot(request, response) {
 	response.sendFile(path.resolve('./dav-website/index.html'))
@@ -164,6 +166,22 @@ app.post('/reset_email', async (req, res) => {
 	}
 })
 
+app.post('/send_confirmation_email', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	let response = await UsersController.SendConfirmationEmail({
+		auth,
+		id: req.body.id
+	})
+
+	if (response.status == 204) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
 app.post('/send_password_reset_email', async (req, res) => {
 	if (!checkReferer(req, res)) return
 	init()
@@ -180,7 +198,7 @@ app.post('/send_password_reset_email', async (req, res) => {
 	}
 })
 
-app.put('/set_password', async (req, res) => {
+app.post('/set_password', async (req, res) => {
 	if (!checkReferer(req, res)) return
 	init()
 
@@ -195,6 +213,135 @@ app.put('/set_password', async (req, res) => {
 		res.status(response.status).send(response.data)
 	} else {
 		res.status(response.status).send(response.errors)
+	}
+})
+
+app.post('/get_stripe_payment_method', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		let result = await stripe.paymentMethods.list({
+			customer: req.body.customerId,
+			type: 'card'
+		})
+
+		let paymentMethod = null
+		if (result.data.length > 0) {
+			paymentMethod = result.data[0]
+		}
+
+		res.status(200).send(paymentMethod)
+	} catch (error) {
+		res.status(400).send(error.raw)
+	}
+})
+
+app.post('/set_stripe_subscription', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		// Get the current subscription of the customer
+		let subscriptions = await stripe.subscriptions.list({ customer: req.body.customerId })
+		let result
+
+		if (req.body.planId) {
+			if (subscriptions.data.length == 0) {
+				// Create a new subscription
+				result = await stripe.subscriptions.create({
+					customer: req.body.customerId,
+					items: [{ plan: req.body.planId }]
+				})
+			} else {
+				let subscriptionItem = subscriptions.data[0].items.data[0]
+
+				// Update the subscription
+				result = await stripe.subscriptions.update(subscriptions.data[0].id, {
+					items: [{
+						id: subscriptionItem.id,
+						plan: req.body.planId
+					}],
+					cancel_at_period_end: false
+				})
+			}
+		} else {
+			// Cancel the subscription
+			result = await stripe.subscriptions.update(subscriptions.data[0].id, {
+				cancel_at_period_end: true
+			})
+		}
+
+		res.status(200).send(result)
+	} catch (error) {
+		res.status(400).send(error.raw)
+	}
+})
+
+app.post('/set_stripe_subscription_cancelled', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		// Get the current subscription of the customer
+		let subscriptions = await stripe.subscriptions.list({ customer: req.body.customerId })
+		let subscriptionId = ""
+
+		if (subscriptions.data.length > 0) {
+			subscriptionId = subscriptions.data[0].id
+		}
+
+		let result = await stripe.subscriptions.update(subscriptionId, {
+			cancel_at_period_end: req.body.cancel
+		})
+
+		res.status(200).send(result)
+	} catch (error) {
+		res.status(400).send(error.raw)
+	}
+})
+
+app.post('/retrieve_stripe_account', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		let account = await stripe.accounts.retrieve(req.body.id)
+
+		res.status(200).send(account)
+	} catch (error) {
+		res.status(400).send(error.raw)
+	}
+})
+
+app.post('/retrieve_stripe_balance', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		let balance = await stripe.balance.retrieve({ stripeAccount: req.body.account })
+
+		res.status(200).send(balance)
+	} catch (error) {
+		res.status(400).send(error.raw)
+	}
+})
+
+app.post('/create_stripe_account_link', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		let accountLink = await stripe.accountLinks.create({
+			account: req.body.account,
+			return_url: req.body.returnUrl,
+			refresh_url: req.body.returnUrl,
+			type: req.body.type
+		})
+
+		res.status(200).send(accountLink)
+	} catch (error) {
+		res.status(400).send(error.raw)
 	}
 })
 
@@ -250,6 +397,12 @@ function init() {
 		secretKey: process.env.DAV_SECRET_KEY,
 		uuid: process.env.DAV_UUID
 	})
+}
+
+function initStripe() {
+	if (stripe == null) {
+		stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
+	}
 }
 
 http.listen(process.env.PORT || 3000)

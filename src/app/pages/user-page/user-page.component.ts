@@ -19,7 +19,7 @@ import { DropdownOption, DropdownOptionType } from 'dav-ui-components'
 import { PaymentFormComponent } from 'src/app/components/payment-form-component/payment-form.component'
 import { BankAccountFormComponent } from 'src/app/components/bank-account-form-component/bank-account-form.component'
 import { DataService, StripeApiResponse } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { ApiService } from 'src/app/services/api-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 
@@ -113,7 +113,7 @@ export class UserPageComponent {
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
+		private apiService: ApiService,
 		private snackBar: MatSnackBar,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
@@ -295,7 +295,9 @@ export class UserPageComponent {
 			&& this.dataService.dav.user.StripeCustomerId != null
 		) {
 			this.GetStripePaymentMethodResponse(
-				await this.websocketService.Emit(WebsocketCallbackType.GetStripePaymentMethod, { customerId: this.dataService.dav.user.StripeCustomerId })
+				await this.apiService.GetStripePaymentMethod({
+					customerId: this.dataService.dav.user.StripeCustomerId
+				})
 			)
 		} else {
 			this.paymentMethodResolve()
@@ -372,7 +374,7 @@ export class UserPageComponent {
 		this.continueOrCancelSubscriptionLoading = true
 
 		this.SetStripeSubscriptionCancelledResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscriptionCancelled, {
+			await this.apiService.SetStripeSubscriptionCancelled({
 				customerId: this.dataService.dav.user.StripeCustomerId,
 				cancel: this.dataService.dav.user.SubscriptionStatus == 0
 			})
@@ -445,7 +447,7 @@ export class UserPageComponent {
 		else if (this.selectedPlan == 2) planId = environment.stripeDavProEurPlanId
 
 		this.SetStripeSubscriptionResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SetStripeSubscription, {
+			await this.apiService.SetStripeSubscription({
 				customerId: this.dataService.dav.user.StripeCustomerId,
 				planId
 			})
@@ -476,10 +478,9 @@ export class UserPageComponent {
 	}
 
 	SendConfirmationEmail() {
-		this.websocketService.Emit(
-			WebsocketCallbackType.SendConfirmationEmail,
-			{ userId: this.dataService.dav.user.Id }
-		).then((response: ApiResponse<{}> | ApiErrorResponse) => {
+		this.apiService.SendConfirmationEmail({
+			id: this.dataService.dav.user.Id
+		}).then((response: ApiResponse<{}> | ApiErrorResponse) => {
 			this.SendConfirmationEmailResponse(response)
 		})
 
@@ -550,14 +551,18 @@ export class UserPageComponent {
 
 	async GetStripeData() {
 		// Get the stripe account
-		let stripeAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeAccount, { id: this.providerStripeAccountId })
+		let stripeAccountResponse: StripeApiResponse = await this.apiService.RetrieveStripeAccount({
+			id: this.providerStripeAccountId
+		})
 		if (!stripeAccountResponse.success) return
 
 		this.providerStripeAccount = stripeAccountResponse.response
 		this.providerBankAccount = this.providerStripeAccount.external_accounts.data[0] as Stripe.BankAccount
 
 		// Get the balance
-		let stripeBalanceResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.RetrieveStripeBalance, { account: this.providerStripeAccountId })
+		let stripeBalanceResponse: StripeApiResponse = await this.apiService.RetrieveStripeBalance({
+			account: this.providerStripeAccountId
+		})
 		if (!stripeBalanceResponse.success) return
 
 		// Calculate the balance
@@ -573,14 +578,11 @@ export class UserPageComponent {
 
 	async OpenStripeOnboardingPage(update: boolean = false) {
 		// Create stripe account link
-		let stripeAccountLinkResponse: StripeApiResponse = await this.websocketService.Emit(
-			WebsocketCallbackType.CreateStripeAccountLink,
-			{
-				account: this.providerStripeAccountId,
-				returnUrl: `${environment.baseUrl}/user#provider`,
-				type: update ? "custom_account_update" : "custom_account_verification"
-			}
-		)
+		let stripeAccountLinkResponse: StripeApiResponse = await this.apiService.CreateStripeAccountLink({
+			account: this.providerStripeAccountId,
+			returnUrl: `${environment.baseUrl}/user#provider`,
+			type: update ? "custom_account_update" : "custom_account_verification"
+		})
 
 		if (!stripeAccountLinkResponse.success) {
 			// Show error
