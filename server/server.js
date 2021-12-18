@@ -74,6 +74,29 @@ app.post('/create_session_from_access_token', async (req, res) => {
 	}
 })
 
+app.post('/signup', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	// Do the API request
+	let response = await UsersController.Signup({
+		auth,
+		email: req.body.email,
+		firstName: req.body.firstName,
+		password: req.body.password,
+		appId: req.body.appId,
+		apiKey: req.body.apiKey,
+		deviceName: req.body.deviceName,
+		deviceOs: req.body.deviceOs
+	})
+
+	if (response.status == 201) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
 // Get the base urls from the environment variables
 const baseUrl = process.env.BASE_URL
 var baseUrls = []

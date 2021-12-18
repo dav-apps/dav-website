@@ -12,7 +12,7 @@ import {
 	GetUserAgentModel,
 	GetUserAgentPlatform
 } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { ApiService } from 'src/app/services/api-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 
@@ -38,7 +38,7 @@ export class SignupPageComponent {
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
+		public apiService: ApiService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	) {
@@ -84,10 +84,6 @@ export class SignupPageComponent {
 	}
 
 	@HostListener('window:resize')
-	onResize() {
-		this.setSize()
-	}
-
 	setSize() {
 		this.height = window.innerHeight
 		this.backButtonWidth = window.innerWidth < 576 ? 25 : 40
@@ -104,7 +100,7 @@ export class SignupPageComponent {
 
 		// Create the user on the server
 		this.SignupResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.Signup, {
+			await this.apiService.Signup({
 				email: this.email,
 				firstName: this.firstName,
 				password: this.password,

@@ -1,6 +1,11 @@
 import { Injectable } from "@angular/core"
 import axios from 'axios'
-import { ApiResponse, ApiErrorResponse } from "dav-js"
+import {
+	ApiResponse,
+	ApiErrorResponse,
+	SessionResponseData,
+	SignupResponseData
+} from "dav-js"
 
 @Injectable()
 export class ApiService {
@@ -11,7 +16,7 @@ export class ApiService {
 		apiKey: string,
 		deviceName: string,
 		deviceOs: string
-	}): Promise<ApiResponse<any> | ApiErrorResponse> {
+	}): Promise<ApiResponse<SessionResponseData> | ApiErrorResponse> {
 		try {
 			let response = await axios({
 				method: 'post',
@@ -19,14 +24,7 @@ export class ApiService {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				data: {
-					email: params.email,
-					password: params.password,
-					appId: params.appId,
-					apiKey: params.apiKey,
-					deviceName: params.deviceName,
-					deviceOs: params.deviceOs
-				}
+				data: params
 			})
 
 			return {
@@ -47,7 +45,7 @@ export class ApiService {
 		apiKey: string,
 		deviceName: string,
 		deviceOs: string
-	}): Promise<ApiResponse<any> | ApiErrorResponse> {
+	}): Promise<ApiResponse<SessionResponseData> | ApiErrorResponse> {
 		try {
 			let response = await axios({
 				method: 'post',
@@ -55,13 +53,38 @@ export class ApiService {
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				data: {
-					accessToken: params.accessToken,
-					appId: params.appId,
-					apiKey: params.apiKey,
-					deviceName: params.deviceName,
-					deviceOs: params.deviceOs
-				}
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
+
+	async Signup(params: {
+		email: string,
+		firstName: string,
+		password: string,
+		appId: number,
+		apiKey: string,
+		deviceName: string,
+		deviceOs: string
+	}): Promise<ApiResponse<SignupResponseData> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/signup',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
 			})
 
 			return {
