@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { ApiResponse, ApiErrorResponse } from 'dav-js'
 import { DataService } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { ApiService } from 'src/app/services/api-service'
 import { enUS } from 'src/locales/locales'
 
 @Component({
@@ -19,7 +19,7 @@ export class ResetPasswordPageComponent {
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
+		private apiService: ApiService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	) {
@@ -45,8 +45,8 @@ export class ResetPasswordPageComponent {
 		// Send new password to the server
 		this.loading = true
 		this.SetPasswordResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.SetPassword, {
-				userId: this.userId,
+			await this.apiService.SetPassword({
+				id: this.userId,
 				password: this.password,
 				passwordConfirmationToken: this.passwordConfirmationToken
 			})

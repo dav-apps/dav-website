@@ -180,6 +180,24 @@ app.post('/send_password_reset_email', async (req, res) => {
 	}
 })
 
+app.put('/set_password', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	init()
+
+	let response = await UsersController.SetPassword({
+		auth,
+		id: req.body.id,
+		password: req.body.password,
+		passwordConfirmationToken: req.body.passwordConfirmationToken
+	})
+
+	if (response.status == 204) {
+		res.status(response.status).send(response.data)
+	} else {
+		res.status(response.status).send(response.errors)
+	}
+})
+
 // Get the base urls from the environment variables
 const baseUrl = process.env.BASE_URL
 var baseUrls = []

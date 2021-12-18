@@ -227,4 +227,31 @@ export class ApiService {
 			}
 		}
 	}
+
+	async SetPassword(params: {
+		id: number,
+		password: string,
+		passwordConfirmationToken: string
+	}): Promise<ApiResponse<{}> | ApiErrorResponse> {
+		try {
+			let response = await axios({
+				method: 'put',
+				url: '/set_password',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				status: response.status,
+				data: response.data
+			}
+		} catch (error) {
+			return {
+				status: error.response.status,
+				errors: error.response.data
+			}
+		}
+	}
 }
