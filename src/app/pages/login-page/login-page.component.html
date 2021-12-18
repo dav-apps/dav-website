@@ -79,7 +79,7 @@
 
 	<div class="mx-auto shadow-sm" *ngIf="dataService.dav.isLoggedIn && !websiteLogin && !loginCompleted">
 		<button class="list-group-item list-group-item-action" style="padding: 16px" (click)="LoginAsLoggedInUser()">
-			<div class="media">
+			<div class="d-flex">
 				<img class="me-3 rounded" [src]="dataService.dav.user.ProfileImage" alt="Profile image of the user" height="70" width="70">
 				<h5 class="my-auto fw-light">{{ locale.loginAs.replace('{0}', dataService.dav.user.FirstName) }}</h5>
 			</div>
