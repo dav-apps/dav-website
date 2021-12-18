@@ -5,8 +5,8 @@ import {
 	UsersController,
 	CreateStripeCustomerForUserResponseData
 } from 'dav-js'
-import { DataService, StripeApiResponse } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { DataService } from 'src/app/services/data-service'
+import { ApiService } from 'src/app/services/api-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 declare var Stripe: any
@@ -14,9 +14,7 @@ declare var Stripe: any
 @Component({
 	selector: 'dav-website-payment-form',
 	templateUrl: './payment-form.component.html',
-	styleUrls: [
-		'./payment-form.component.scss'
-	]
+	styleUrls: ['./payment-form.component.scss']
 })
 export class PaymentFormComponent {
 	locale = enUS.paymentFormComponent
@@ -34,7 +32,7 @@ export class PaymentFormComponent {
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
+		private apiService: ApiService,
 		private cd: ChangeDetectorRef
 	) {
 		this.locale = this.dataService.GetLocale().paymentFormComponent
@@ -106,7 +104,7 @@ export class PaymentFormComponent {
 			}
 
 			// Send the payment method to the server
-			let saveStripePaymentMethodResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.SaveStripePaymentMethod, {
+			let saveStripePaymentMethodResponse = await this.apiService.SaveStripePaymentMethod({
 				paymentMethodId: result.paymentMethod.id,
 				customerId: this.dataService.dav.user.StripeCustomerId
 			})

@@ -281,6 +281,32 @@ export class ApiService {
 		}
 	}
 
+	async SaveStripePaymentMethod(params: {
+		paymentMethodId: string,
+		customerId: string
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/save_stripe_payment_method',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
+			}
+		}
+	}
+
 	async GetStripePaymentMethod(params: {
 		customerId: string
 	}): Promise<StripeApiResponse> {
@@ -417,6 +443,32 @@ export class ApiService {
 			let response = await axios({
 				method: 'post',
 				url: '/create_stripe_account_link',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				data: params
+			})
+
+			return {
+				success: true,
+				response: response.data
+			}
+		} catch (error) {
+			return {
+				success: false,
+				response: error.response.data
+			}
+		}
+	}
+
+	async UpdateStripeCustomAccount(params: {
+		id: string,
+		bankAccountToken: string
+	}): Promise<StripeApiResponse> {
+		try {
+			let response = await axios({
+				method: 'post',
+				url: '/update_stripe_custom_account',
 				headers: {
 					'Content-Type': 'application/json'
 				},

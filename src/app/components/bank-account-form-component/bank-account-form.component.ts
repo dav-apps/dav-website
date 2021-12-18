@@ -1,6 +1,6 @@
 import { Component, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core'
 import { DataService, StripeApiResponse } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { ApiService } from 'src/app/services/api-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 declare var Stripe: any
@@ -26,7 +26,7 @@ export class BankAccountFormComponent {
 
 	constructor(
 		public dataService: DataService,
-		private websocketService: WebsocketService,
+		private apiService: ApiService,
 		private cd: ChangeDetectorRef
 	) {
 		this.locale = this.dataService.GetLocale().bankAccountFormComponent
@@ -92,7 +92,7 @@ export class BankAccountFormComponent {
 			this.loadingEnd.emit(null)
 		} else {
 			// Save the token on the server
-			let updateStripeCustomAccountResponse: StripeApiResponse = await this.websocketService.Emit(WebsocketCallbackType.UpdateStripeCustomAccount, {
+			let updateStripeCustomAccountResponse: StripeApiResponse = await this.apiService.UpdateStripeCustomAccount({
 				id: this.stripeCustomAccountId,
 				bankAccountToken: tokenResult.token.id
 			})

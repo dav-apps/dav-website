@@ -216,6 +216,38 @@ app.post('/set_password', async (req, res) => {
 	}
 })
 
+app.post('/save_stripe_payment_method', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		// Attach the payment method to the customer
+		let result = await stripe.paymentMethods.attach(req.body.paymentMethodId, { customer: req.body.customerId })
+
+		// Set the payment method as default
+		await stripe.customers.update(req.body.customerId, {
+			invoice_settings: {
+				default_payment_method: req.body.paymentMethodId
+			}
+		})
+
+		// Remove all other payment methods
+		let paymentMethods = await stripe.paymentMethods.list({
+			customer: req.body.customerId,
+			type: 'card'
+		})
+
+		for (let paymentMethod of paymentMethods.data) {
+			if (paymentMethod.id == req.body.paymentMethodId) continue
+			await stripe.paymentMethods.detach(paymentMethod.id)
+		}
+
+		res.status(200).send(result)
+	} catch (error) {
+		res.status(400).send(error.raw)
+	}
+})
+
 app.post('/get_stripe_payment_method', async (req, res) => {
 	if (!checkReferer(req, res)) return
 	initStripe()
@@ -340,6 +372,21 @@ app.post('/create_stripe_account_link', async (req, res) => {
 		})
 
 		res.status(200).send(accountLink)
+	} catch (error) {
+		res.status(400).send(error.raw)
+	}
+})
+
+app.post('/update_stripe_custom_account', async (req, res) => {
+	if (!checkReferer(req, res)) return
+	initStripe()
+
+	try {
+		let account = await stripe.accounts.update(req.body.id, {
+			external_account: req.body.bankAccountToken
+		})
+
+		res.status(200).send(account)
 	} catch (error) {
 		res.status(400).send(error.raw)
 	}
