@@ -40,10 +40,10 @@
 							{{ locale.login }}
 						</dav-button>
 
-						<fluent-progress-ring
+						<dav-progress-ring
 							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"
 							*ngIf="loginLoading">
-						</fluent-progress-ring>
+						</dav-progress-ring>
 					</div>
 
 					<div class="d-flex ms-auto text-right" style="margin-top: 6px">
@@ -220,10 +220,10 @@
 							{{ locale.pay.replace('{0}', price) }}
 						</dav-button>
 
-						<fluent-progress-ring
+						<dav-progress-ring
 							style="width: 16px; height: 16px; margin: 8px 0px 0px 14px"
 							*ngIf="paymentLoading">
-						</fluent-progress-ring>
+						</dav-progress-ring>
 					</div>
 				</div>
 			</div>

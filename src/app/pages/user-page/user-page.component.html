@@ -72,10 +72,10 @@
 						class="mb-3"
 						style="position: relative; display: inline-block">
 
-						<fluent-progress-ring
+						<dav-progress-ring
 							style="position: absolute; width: 20px; height: 20px; margin-top: 65px; margin-left: 65px;"
 							*ngIf="profileImageLoading">
-						</fluent-progress-ring>
+						</dav-progress-ring>
 
 						<img
 							id="profile-image"
@@ -121,10 +121,10 @@
 								<i class="ms-Icon ms-Icon--Save" aria-hidden="true" style="font-size: 16px"></i>
 							</button>
 
-							<fluent-progress-ring
+							<dav-progress-ring
 								style="margin: 33px 0px 0px 14px; width: 16px; height: 16px"
 								*ngIf="firstNameLoading">
-							</fluent-progress-ring>
+							</dav-progress-ring>
 						</div>
 					</form>
 
@@ -154,10 +154,10 @@
 								<i class="ms-Icon ms-Icon--Save" aria-hidden="true" style="font-size: 16px"></i>
 							</button>
 
-							<fluent-progress-ring
+							<dav-progress-ring
 								style="margin: 33px 0px 0px 14px; width: 16px; height: 16px"
 								*ngIf="emailLoading">
-							</fluent-progress-ring>
+							</dav-progress-ring>
 						</div>
 					</form>
 
@@ -200,10 +200,10 @@
 									{{ locale.save }}
 								</dav-button>
 
-								<fluent-progress-ring
+								<dav-progress-ring
 									style="margin: 24px 0px 0px 14px; width: 16px; height: 16px"
 									*ngIf="passwordLoading">
-								</fluent-progress-ring>
+								</dav-progress-ring>
 							</div>
 						</div>
 					</form>
@@ -275,10 +275,10 @@
 								<p>{{ periodEndDate }}</p>
 
 								<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
-									<fluent-progress-ring
+									<dav-progress-ring
 										style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
 										*ngIf="continueOrCancelSubscriptionLoading">
-									</fluent-progress-ring>
+									</dav-progress-ring>
 
 									<dav-button
 										[disabled]="continueOrCancelSubscriptionLoading"
@@ -346,10 +346,10 @@
 									<td></td>
 									<td class="pt-3">
 										<div class="d-flex justify-content-center">
-											<fluent-progress-ring
+											<dav-progress-ring
 												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
 												*ngIf="freePlanLoading">
-											</fluent-progress-ring>
+											</dav-progress-ring>
 
 											<button
 												class="btn btn-sm btn-outline-dark"
@@ -371,10 +371,10 @@
 									</td>
 									<td class="pt-3">
 										<div class="d-flex justify-content-center">
-											<fluent-progress-ring
+											<dav-progress-ring
 												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
 												*ngIf="plusPlanLoading">
-											</fluent-progress-ring>
+											</dav-progress-ring>
 
 											<button
 												class="btn btn-sm btn-dark"
@@ -405,10 +405,10 @@
 									</td>
 									<td class="pt-3">
 										<div class="d-flex justify-content-center">
-											<fluent-progress-ring
+											<dav-progress-ring
 												style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
 												*ngIf="proPlanLoading">
-											</fluent-progress-ring>
+											</dav-progress-ring>
 
 											<button
 												class="btn btn-sm btn-dark"
@@ -458,10 +458,10 @@
 								<tr class="border-top">
 									<td></td>
 									<td class="d-flex justify-content-center pt-3">
-										<fluent-progress-ring
+										<dav-progress-ring
 											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
 											*ngIf="freePlanLoading">
-										</fluent-progress-ring>
+										</dav-progress-ring>
 
 										<button
 											class="btn btn-sm btn-outline-dark"
@@ -523,10 +523,10 @@
 								<tr class="border-top">
 									<td></td>
 									<td class="d-flex justify-content-center pt-3">
-										<fluent-progress-ring
+										<dav-progress-ring
 											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
 											*ngIf="plusPlanLoading">
-										</fluent-progress-ring>
+										</dav-progress-ring>
 
 										<button
 											class="btn btn-sm btn-dark"
@@ -597,10 +597,10 @@
 								<tr class="border-top">
 									<td></td>
 									<td class="d-flex justify-content-center pt-3">
-										<fluent-progress-ring
+										<dav-progress-ring
 											style="width: 16px; height: 16px; margin: 8px 14px 0px 0px"
 											*ngIf="proPlanLoading">
-										</fluent-progress-ring>
+										</dav-progress-ring>
 
 										<button
 											class="btn btn-sm btn-dark"
