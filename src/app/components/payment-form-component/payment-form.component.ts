@@ -46,7 +46,7 @@ export class PaymentFormComponent {
 	}
 
 	Init() {
-		this.stripe = Stripe(environment.stripePublishableKey)
+		this.stripe = new Stripe(environment.stripePublishableKey)
 		this.elements = this.stripe.elements()
 
 		this.card = this.elements.create('card')
