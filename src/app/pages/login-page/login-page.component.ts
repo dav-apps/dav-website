@@ -12,7 +12,7 @@ import {
 	GetUserAgentModel,
 	GetUserAgentPlatform
 } from 'src/app/services/data-service'
-import { WebsocketService, WebsocketCallbackType } from 'src/app/services/websocket-service'
+import { ApiService } from 'src/app/services/api-service'
 import { environment } from 'src/environments/environment'
 import { enUS } from 'src/locales/locales'
 
@@ -37,7 +37,7 @@ export class LoginPageComponent {
 
 	constructor(
 		public dataService: DataService,
-		public websocketService: WebsocketService,
+		public apiService: ApiService,
 		private router: Router,
 		private activatedRoute: ActivatedRoute
 	) {
@@ -91,10 +91,6 @@ export class LoginPageComponent {
 	}
 
 	@HostListener('window:resize')
-	onResize() {
-		this.setSize()
-	}
-
 	setSize() {
 		this.height = window.innerHeight
 		this.backButtonWidth = window.innerWidth < 576 ? 25 : 40
@@ -106,7 +102,7 @@ export class LoginPageComponent {
 
 		// Create the session on the server
 		this.CreateSessionResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.CreateSession, {
+			await this.apiService.CreateSession({
 				email: this.email,
 				password: this.password,
 				appId: this.appId,
@@ -120,7 +116,7 @@ export class LoginPageComponent {
 	async LoginAsLoggedInUser() {
 		// Create the session on the server
 		this.CreateSessionWithAccessTokenResponse(
-			await this.websocketService.Emit(WebsocketCallbackType.CreateSessionFromAccessToken, {
+			await this.apiService.CreateSessionFromAccessToken({
 				accessToken: Dav.accessToken,
 				appId: this.appId,
 				apiKey: this.apiKey,
