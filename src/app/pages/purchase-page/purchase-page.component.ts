@@ -112,10 +112,6 @@ export class PurchasePageComponent {
 	}
 
 	@HostListener('window:resize')
-	onResize() {
-		this.setSize()
-	}
-
 	setSize() {
 		this.mobileView = window.outerWidth < 768
 	}

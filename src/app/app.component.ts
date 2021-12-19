@@ -50,13 +50,13 @@ export class AppComponent {
 				UserDownloaded: () => this.dataService.userDownloadPromiseResolve()
 			}
 		})
+
+		// Set the lang attribute of the html element
+		let htmlElement = document.getElementsByTagName("html")[0] as HTMLHtmlElement
+		if (htmlElement) htmlElement.setAttribute("lang", this.dataService.locale)
 	}
 
 	@HostListener('window:resize')
-	onResize() {
-		this.setSize()
-	}
-
 	setSize() {
 		this.width = window.outerWidth
 	}
