@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { ChartConfiguration } from 'chart.js'
 import { BaseChartDirective } from 'ng2-charts'
-import * as moment from 'moment'
+import { DateTime } from 'luxon'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -58,7 +58,6 @@ export class AppStatisticsPageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().appStatisticsPage
-		moment.locale(this.dataService.locale)
 
 		// Set the labels
 		this.userChartData.datasets[0].label = this.locale.numberOfUsers
@@ -123,21 +122,21 @@ export class AppStatisticsPageComponent {
 		// Set the total users
 		this.totalUsersText = this.locale.totalUsers.replace('{0}', appUsersResponseData.appUsers.length.toString())
 
-		let currentDate = moment().startOf('month').subtract(5, 'months')
-		let start = currentDate.clone()
+		let currentDate = DateTime.now().startOf("month").minus({ months: 5 }).setLocale(this.dataService.locale)
+		let start = currentDate
 		let months: Map<string, number> = new Map()
 
 		// Get the last 6 months
 		for (let i = 0; i < 6; i++) {
-			months.set(currentDate.format('MMMM YYYY'), 0)
-			currentDate.add(1, 'month')
+			months.set(currentDate.toFormat('MMMM yyyy'), 0)
+			currentDate = currentDate.plus({ months: 1 })
 		}
 
 		for (let appUser of appUsersResponseData.appUsers) {
 			// Add the cumulative user count
-			let startedUsing = moment(appUser.createdAt).startOf('month')
-			let startedUsingMonth = startedUsing.format('MMMM YYYY')
-			let startedUsingBeforeStart: boolean = startedUsing.isBefore(start)
+			let startedUsing = DateTime.fromJSDate(appUser.createdAt).startOf('month').setLocale(this.dataService.locale)
+			let startedUsingMonth = startedUsing.toFormat('MMMM yyyy')
+			let startedUsingBeforeStart: boolean = start > startedUsing
 
 			let startedUsingMonthFound: boolean = false
 			for (let month of months.entries()) {
@@ -163,12 +162,11 @@ export class AppStatisticsPageComponent {
 
 	ProcessActiveUsers(activeUsers: GetAppUserActivitiesResponseData) {
 		// Save the days in a separate array with timestamps
-		let days: { timestamp: number, daily: number, monthly: number, yearly: number }[] = []
-		for (let day of activeUsers.days) {
-			let timestamp = moment(day.time).subtract(1, 'day').unix()
+		let days: { date: DateTime, daily: number, monthly: number, yearly: number }[] = []
 
+		for (let day of activeUsers.days) {
 			days.push({
-				timestamp,
+				date: DateTime.fromJSDate(day.time).setLocale(this.dataService.locale).minus({ days: 1 }),
 				daily: day.countDaily,
 				monthly: day.countMonthly,
 				yearly: day.countYearly
@@ -177,9 +175,9 @@ export class AppStatisticsPageComponent {
 
 		// Sort the days by time
 		days.sort((a, b) => {
-			if (a.timestamp > b.timestamp) {
+			if (a.date > b.date) {
 				return 1
-			} else if (a.timestamp < b.timestamp) {
+			} else if (a.date < b.date) {
 				return -1
 			} else {
 				return 0
@@ -195,7 +193,7 @@ export class AppStatisticsPageComponent {
 			this.activeUsersChartData.datasets[0].data.push(day.daily)
 			this.activeUsersChartData.datasets[1].data.push(day.monthly)
 			this.activeUsersChartData.datasets[2].data.push(day.yearly)
-			this.activeUsersChartData.labels.push(moment.unix(day.timestamp).format('LL'))
+			this.activeUsersChartData.labels.push(day.date.toFormat("DDD"))
 		}
 
 		this.activeUsersChart.update()

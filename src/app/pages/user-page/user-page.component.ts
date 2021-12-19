@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
-import * as moment from 'moment'
+import { DateTime } from 'luxon'
 import { faCheck } from '@fortawesome/pro-light-svg-icons'
 import {
 	ApiResponse,
@@ -121,7 +121,6 @@ export class UserPageComponent {
 		this.locale = this.dataService.GetLocale().userPage
 		this.paymentFormDialogLocale = this.dataService.GetLocale().misc.paymentFormDialog
 		this.pricingLocale = this.dataService.GetLocale().misc.pricing
-		moment.locale(this.dataService.locale)
 
 		this.activatedRoute.fragment.subscribe((value) => {
 			switch (value) {
@@ -305,7 +304,7 @@ export class UserPageComponent {
 
 		if (this.dataService.dav.user.Plan > 0 && this.dataService.dav.user.PeriodEnd) {
 			// Show the date of the next payment or the subscription end
-			this.periodEndDate = moment(this.dataService.dav.user.PeriodEnd).format('LL')
+			this.periodEndDate = DateTime.fromJSDate(this.dataService.dav.user.PeriodEnd).setLocale(this.dataService.locale).toFormat('DDD')
 		}
 	}
 
@@ -325,7 +324,7 @@ export class UserPageComponent {
 
 			// Show the date of the next payment or the subscription end
 			this.dataService.dav.user.PeriodEnd = new Date(message.response.current_period_end * 1000)
-			this.periodEndDate = moment(this.dataService.dav.user.PeriodEnd).format('LL')
+			this.periodEndDate = DateTime.fromJSDate(this.dataService.dav.user.PeriodEnd).setLocale(this.dataService.locale).toFormat('DDD')
 		} else {
 			// Show error
 			this.successMessage = ""

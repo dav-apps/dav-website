@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core'
 import { Router } from '@angular/router'
 import { ChartConfiguration } from 'chart.js'
 import { BaseChartDirective } from 'ng2-charts'
-import * as moment from 'moment'
+import { DateTime } from 'luxon'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -68,7 +68,6 @@ export class StatisticsPageComponent {
 		private router: Router
 	) {
 		this.locale = this.dataService.GetLocale().statisticsPage
-		moment.locale(this.dataService.locale)
 
 		// Set the labels
 		this.userChartData.datasets[0].label = this.locale.numberOfUsers
@@ -95,7 +94,7 @@ export class StatisticsPageComponent {
 			await UsersController.GetUsers()
 		)
 
-		let start = moment().startOf('day').subtract(6, 'months').unix()
+		let start = DateTime.now().startOf('day').minus({ months: 6 }).toSeconds()
 		this.GetActiveUsersResponse(
 			await UserActivitiesController.GetUserActivities({ start })
 		)
@@ -105,25 +104,25 @@ export class StatisticsPageComponent {
 		// Set the total users
 		this.totalUsersText = this.locale.totalUsers.replace('{0}', userResponseData.users.length.toString())
 
-		let currentDate = moment().startOf('month').subtract(5, 'months')
-		let start = currentDate.clone()
+		let currentDate = DateTime.now().startOf('month').minus({ months: 5 }).setLocale(this.dataService.locale)
+		let start = currentDate
 		let months: Map<string, number> = new Map()
 		this.plansChartData.datasets[0].data = [0, 0, 0]
 		this.confirmationsChartData.datasets[0].data = [0, 0]
 
 		// Get the last 6 months
 		for (let i = 0; i < 6; i++) {
-			months.set(currentDate.format('MMMM YYYY'), 0)
-			currentDate.add(1, 'month')
+			months.set(currentDate.toFormat('MMMM yyyy'), 0)
+			currentDate = currentDate.plus({ months: 1 })
 		}
 
 		for (let user of userResponseData.users) {
 			// Add the cumulative user counts
-			let createdAt = moment(user.createdAt).startOf('month')
-			let createdMonth = createdAt.format('MMMM YYYY')
-			let createdBeforeStart: boolean = createdAt.isBefore(start)
+			let createdAt = DateTime.fromJSDate(user.createdAt).startOf("month").setLocale(this.dataService.locale)
+			let createdMonth = createdAt.toFormat('MMMM yyyy')
+			let createdBeforeStart = start > createdAt
 
-			let createdMonthFound: boolean = false
+			let createdMonthFound = false
 			for (let month of months.entries()) {
 				if (createdMonthFound || createdBeforeStart) {
 					months.set(month[0], month[1] + 1)
@@ -156,12 +155,11 @@ export class StatisticsPageComponent {
 
 	ProcessUserActivities(userActivities: GetUserActivitiesResponseData) {
 		// Save the days in a separate array with timestamps
-		let days: { timestamp: number, daily: number, monthly: number, yearly: number }[] = []
-		for (let day of userActivities.days) {
-			let timestamp = moment(day.time).subtract(1, 'day').unix()
+		let days: { date: DateTime, daily: number, monthly: number, yearly: number }[] = []
 
+		for (let day of userActivities.days) {
 			days.push({
-				timestamp,
+				date: DateTime.fromJSDate(day.time).setLocale(this.dataService.locale).minus({ days: 1 }),
 				daily: day.countDaily,
 				monthly: day.countMonthly,
 				yearly: day.countYearly
@@ -170,9 +168,9 @@ export class StatisticsPageComponent {
 
 		// Sort the days by time
 		days.sort((a, b) => {
-			if (a.timestamp > b.timestamp) {
+			if (a.date > b.date) {
 				return 1
-			} else if (a.timestamp < b.timestamp) {
+			} else if (a.date < b.date) {
 				return -1
 			} else {
 				return 0
@@ -188,7 +186,7 @@ export class StatisticsPageComponent {
 			this.activeUsersChartData.datasets[0].data.push(day.daily)
 			this.activeUsersChartData.datasets[1].data.push(day.monthly)
 			this.activeUsersChartData.datasets[2].data.push(day.yearly)
-			this.activeUsersChartData.labels.push(moment.unix(day.timestamp).format('LL'))
+			this.activeUsersChartData.labels.push(day.date.toFormat("DDD"))
 		}
 
 		this.activeUsersChart.update()
