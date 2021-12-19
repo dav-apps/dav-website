@@ -58,6 +58,8 @@ export class AppStatisticsPageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().appStatisticsPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 
 		// Set the labels
 		this.userChartData.datasets[0].label = this.locale.numberOfUsers

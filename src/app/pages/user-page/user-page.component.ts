@@ -121,6 +121,8 @@ export class UserPageComponent {
 		this.locale = this.dataService.GetLocale().userPage
 		this.paymentFormDialogLocale = this.dataService.GetLocale().misc.paymentFormDialog
 		this.pricingLocale = this.dataService.GetLocale().misc.pricing
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 
 		this.activatedRoute.fragment.subscribe((value) => {
 			switch (value) {

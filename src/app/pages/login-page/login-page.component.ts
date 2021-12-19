@@ -42,6 +42,8 @@ export class LoginPageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().loginPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 
 		this.appId = +this.activatedRoute.snapshot.queryParamMap.get("appId")
 		this.apiKey = this.activatedRoute.snapshot.queryParamMap.get("apiKey")
@@ -71,7 +73,7 @@ export class LoginPageComponent {
 				return
 			}
 
-			this.dataService.hideNavbarAndFooter = true
+			this.dataService.showNavbar = false
 		}
 	}
 

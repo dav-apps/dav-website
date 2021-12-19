@@ -14,5 +14,7 @@ export class PocketLibTermsPageComponent{
 		public dataService: DataService
 	) {
 		this.locale = this.dataService.GetLocale().pocketlibTermsPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = true
 	}
 }

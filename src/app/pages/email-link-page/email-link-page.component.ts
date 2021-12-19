@@ -21,7 +21,8 @@ export class EmailLinkPageComponent {
 	) {
 		this.locale = this.dataService.GetLocale().emailLinkPage
 
-		this.dataService.hideNavbarAndFooter = true
+		this.dataService.showNavbar = false
+		this.dataService.showFooter = false
 		this.setSize()
 
 		let type = this.activatedRoute.snapshot.queryParamMap.get('type')
@@ -157,13 +158,11 @@ export class EmailLinkPageComponent {
 	}
 
 	RedirectToStartPageWithSuccess(message: string) {
-		this.dataService.hideNavbarAndFooter = false
 		this.dataService.startPageSuccessMessage = message
 		this.router.navigate(['/'])
 	}
 
 	RedirectToStartPageWithError() {
-		this.dataService.hideNavbarAndFooter = false
 		this.dataService.startPageErrorMessage = this.locale.errorMessage
 		this.router.navigate(['/'])
 	}

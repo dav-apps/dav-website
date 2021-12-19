@@ -50,6 +50,8 @@ export class AppPageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().appPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 	}
 
 	async ngOnInit() {

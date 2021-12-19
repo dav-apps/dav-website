@@ -16,12 +16,16 @@ export class StartPageComponent {
 		public dataService: DataService
 	) {
 		this.locale = this.dataService.GetLocale().startPage
-		this.dataService.hideNavbarAndFooter = false
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = true
 	}
 
-	ngOnInit() {
+	async ngOnInit() {
 		this.setSize()
 		this.parallax()
+
+		await this.dataService.userPromise
+		this.dataService.showFooter = !this.dataService.dav.isLoggedIn
 	}
 
 	@HostListener('window:resize')

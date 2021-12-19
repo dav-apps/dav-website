@@ -24,6 +24,8 @@ export class ResetPasswordPageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().resetPasswordPage
+		this.dataService.showNavbar = false
+		this.dataService.showFooter = false
 
 		this.userId = +this.activatedRoute.snapshot.queryParamMap.get('userId')
 		this.passwordConfirmationToken = this.activatedRoute.snapshot.queryParamMap.get('passwordConfirmationToken')

@@ -14,5 +14,7 @@ export class PrivacyPageComponent {
 		public dataService: DataService
 	) {
 		this.locale = this.dataService.GetLocale().privacyPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = true
 	}
 }

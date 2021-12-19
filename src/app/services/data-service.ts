@@ -6,7 +6,8 @@ import * as locales from 'src/locales/locales'
 export class DataService {
 	dav = Dav
 	locale: string = navigator.language
-	hideNavbarAndFooter: boolean = false
+	showNavbar: boolean = false
+	showFooter: boolean = false
 	userPromise = new Promise(resolve => this.userPromiseResolve = resolve)
 	userPromiseResolve: Function
 	userDownloadPromise = new Promise(resolve => this.userDownloadPromiseResolve = resolve)

@@ -3,7 +3,7 @@
 	class="navbar navbar-expand-sm navbar-light fixed-top"
 	style="position: fixed; height: 56px; padding: 0px; z-index: 2; transition: all 0.3s;"
 	[ngClass]="offsetTop > 100 && width > 575 ? 'acrylic light shadow' : ''"
-	*ngIf="!dataService.hideNavbarAndFooter">
+	*ngIf="dataService.showNavbar">
 
 	<div class="container fixed-top" [ngClass]="width <= 575 ? 'acrylic light shadow' : ''" >
 		<!-- Branding -->
@@ -63,7 +63,7 @@
 
 <router-outlet></router-outlet>
 
-<div class="container" *ngIf="!dataService.hideNavbarAndFooter">
+<div class="container" *ngIf="dataService.showFooter">
 	<footer class="footer">
 		<small>
 			Copyright &copy; {{ year }} by dav

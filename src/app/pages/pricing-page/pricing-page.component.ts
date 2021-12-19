@@ -20,6 +20,8 @@ export class PricingPageComponent {
 	) {
 		this.locale = this.dataService.GetLocale().pricingPage
 		this.pricingLocale = this.dataService.GetLocale().misc.pricing
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = true
 	}
 
 	@HostListener('window:resize')

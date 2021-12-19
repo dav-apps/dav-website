@@ -21,6 +21,8 @@ export class PasswordResetPageComponent {
 		private router: Router
 	) {
 		this.locale = this.dataService.GetLocale().passwordResetPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 	}
 
 	async SendPasswordResetEmail() {

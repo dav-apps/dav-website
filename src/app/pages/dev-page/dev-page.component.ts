@@ -34,6 +34,8 @@ export class DevPageComponent {
 		private router: Router
 	) {
 		this.locale = this.dataService.GetLocale().devPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 	}
 
 	async ngOnInit() {

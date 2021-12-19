@@ -43,6 +43,8 @@ export class SignupPageComponent {
 		private activatedRoute: ActivatedRoute
 	) {
 		this.locale = this.dataService.GetLocale().signupPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 
 		// Check if the user is coming from the login page
 		let extras = this.router.getCurrentNavigation().extras;
@@ -75,7 +77,7 @@ export class SignupPageComponent {
 				return
 			}
 
-			this.dataService.hideNavbarAndFooter = true
+			this.dataService.showNavbar = false
 		}
 	}
 

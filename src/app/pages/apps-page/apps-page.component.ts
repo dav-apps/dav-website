@@ -15,6 +15,8 @@ export class AppsPageComponent {
 		public dataService: DataService
 	) {
 		this.locale = this.dataService.GetLocale().appsPage
+		this.dataService.showNavbar = true
+		this.dataService.showFooter = false
 	}
 
 	async ngOnInit() {

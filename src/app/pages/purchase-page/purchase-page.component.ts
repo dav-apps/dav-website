@@ -55,7 +55,8 @@ export class PurchasePageComponent {
 	) {
 		this.locale = this.dataService.GetLocale().purchasePage
 		this.paymentFormDialogLocale = this.dataService.GetLocale().misc.paymentFormDialog
-		this.dataService.hideNavbarAndFooter = true
+		this.dataService.showNavbar = false
+		this.dataService.showFooter = false
 
 		this.redirectUrl = this.activatedRoute.snapshot.queryParamMap.get("redirectUrl")
 		if (!this.redirectUrl) this.RedirectToStartPageWithError()
