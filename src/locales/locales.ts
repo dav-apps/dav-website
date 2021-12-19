@@ -179,7 +179,7 @@ const enDefaults = {
 		endText2: "Last update: December 3, 2020"
 	},
 	pricingPage: {
-		title: "Pricing"
+		title: "Our pricing"
 	},
 	loginPage: {
 		title: "Log in to dav",
@@ -728,7 +728,7 @@ const deDefaults = {
 		endText2: "Letzte Aktualisierung: 3. Dezember 2020",
 	},
 	pricingPage: {
-		title: "Abos"
+		title: "Unsere Abos"
 	},
 	loginPage: {
 		title: "Bei dav anmelden",
