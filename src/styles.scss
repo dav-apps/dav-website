@@ -5,18 +5,19 @@ body{
 	margin: 0;
 }
 
-.navbar-margin{
+.page-container {
 	margin-top: 56px;
+	min-height: calc(100vh - 56px - 330px);
 }
 
-.icon-button{
+.icon-button {
 	padding: 2px 0px 0px 0px;
 	height: 30px;
 	width: 30px;
 	font-size: 16px;
 }
 
-.text-field-error{
+.text-field-error {
 	max-width: 200px;
 	margin: -2px 0px 0px 0px;
 	color: #A80000;
@@ -24,7 +25,7 @@ body{
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.cursor:hover{
+.cursor:hover {
 	cursor: pointer;
 }
 

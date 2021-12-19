@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
+import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons'
 import { Dav, Environment } from 'dav-js'
 import * as DavUIComponents from 'dav-ui-components'
 import { enUS } from 'src/locales/locales'
@@ -13,6 +14,8 @@ import { environment } from 'src/environments/environment'
 })
 export class AppComponent {
 	locale = enUS.appComponent
+	faTwitter = faTwitter
+	faGithub = faGithub
 	width: number = 500
 	offsetTop: number = 0
 	year = (new Date()).getFullYear()
@@ -62,13 +65,11 @@ export class AppComponent {
 	}
 
 	Logout() {
-		this.HideNavbar()
 		Dav.Logout().then(() => this.router.navigate(['/']))
 		return false
 	}
 
-	HideNavbar() {
-		let navbar = document.getElementById('navbar-responsive')
-		if (navbar) navbar.classList.remove('show')
+	FooterLinkClick() {
+		window.scrollTo(0, 0)
 	}
 }

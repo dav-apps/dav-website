@@ -32,26 +32,26 @@
 			<!-- Not logged in -->
 			<ul class="navbar-nav" *ngIf="!dataService.dav.isLoggedIn">
 				<li class="nav-item">
-					<a routerLink="/pricing" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.pricing }}</a>
+					<a routerLink="/pricing" class="nav-link navbar-item">{{ locale.navbar.pricing }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/login" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.login }}</a>
+					<a routerLink="/login" class="nav-link navbar-item">{{ locale.navbar.login }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/signup" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.signup }}</a>
+					<a routerLink="/signup" class="nav-link navbar-item">{{ locale.navbar.signup }}</a>
 				</li>
 			</ul>
 
 			<!-- Logged in -->
 			<ul class="navbar-nav" *ngIf="dataService.dav.isLoggedIn">
 				<li class="nav-item" *ngIf="dataService.dav.user.Dev">
-					<a routerLink="/dev" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.devDashboard }}</a>
+					<a routerLink="/dev" class="nav-link navbar-item">{{ locale.navbar.devDashboard }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/apps" class="nav-link navbar-item" (click)="HideNavbar()">{{ locale.navbar.allApps }}</a>
+					<a routerLink="/apps" class="nav-link navbar-item">{{ locale.navbar.allApps }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/user" class="nav-link navbar-item" (click)="HideNavbar()">{{ dataService.dav.user.FirstName }}</a>
+					<a routerLink="/user" class="nav-link navbar-item">{{ dataService.dav.user.FirstName }}</a>
 				</li>
 				<li class="nav-item">
 					<a href="#logout" class="nav-link navbar-item" (click)="Logout()">{{ locale.navbar.logout }}</a>
@@ -63,18 +63,44 @@
 
 <router-outlet></router-outlet>
 
-<div class="container" *ngIf="dataService.showFooter">
-	<footer class="footer">
-		<small>
-			Copyright &copy; {{ year }} by dav
-		</small>
-		<nav>
-			<ul>
-				<li><a href="https://blog.dav-apps.tech" target="blank">Blog</a></li>
-				<li><a href="https://www.twitter.com/dav_apps" target="blank">Twitter</a></li>
-				<li><a routerLink="/contact">{{ locale.footer.contact }}</a></li>
-				<li><a routerLink="/privacy">{{ locale.footer.privacy }}</a></li>
-			</ul>
-		</nav>
-	</footer>
+<div class="footer py-4" *ngIf="dataService.showFooter">
+	<a routerLink="/" (click)="FooterLinkClick()">
+		<picture>
+			<source srcset="/assets/images/dav-logo-text.webp" type="image/webp" />
+			<img
+				style="margin: 25px"
+				src="/assets/images/dav-logo-text.png"
+				width="200">
+		</picture>
+	</a>
+
+	<div class="d-flex">
+		<a class="btn footer-icon-button"
+			href="https://twitter.com/dav_apps"
+			target="blank">
+			<fa-icon [icon]="faTwitter"></fa-icon>
+		</a>
+
+		<a class="btn footer-icon-button"
+			href="https://github.com/dav-apps"
+			target="blank">
+			<fa-icon [icon]="faGithub"></fa-icon>
+		</a>
+	</div>
+
+	<p class="footer-links-container my-4">
+		<a href="https://blog.dav-apps.tech" target="blank">
+			Blog
+		</a>
+		|
+		<a routerLink="/contact" (click)="FooterLinkClick()">
+			{{ locale.footer.contact }}
+		</a>
+		|
+		<a routerLink="/privacy" (click)="FooterLinkClick()">
+			{{ locale.footer.privacy }}
+		</a>
+	</p>
+
+	<p style="color: white">Copyright &copy; {{ year }}</p>
 </div>

@@ -14,6 +14,6 @@ export class ContactPageComponent {
 	) {
 		this.locale = this.dataService.GetLocale().contactPage
 		this.dataService.showNavbar = true
-		this.dataService.showFooter = false
+		this.dataService.showFooter = true
 	}
 }

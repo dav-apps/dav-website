@@ -50,7 +50,7 @@
 		</button>
 
 		<!-- General settings -->
-		<div class="settings-container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="selectedMenu == 0">
+		<div class="settings-container page-container pt-4 ms-motion-slideUpIn" *ngIf="selectedMenu == 0">
 			<h1 class="text-center fw-light mb-4">{{ locale.general.title }}</h1>
 
 			<div class="d-flex flex-column align-items-center">
@@ -212,7 +212,7 @@
 		</div>
 
 		<!-- Plans -->
-		<div class="settings-container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="selectedMenu == 1">
+		<div class="settings-container page-container pt-4 ms-motion-slideUpIn" *ngIf="selectedMenu == 1">
 			<h1
 				class="text-center fw-light"
 				[ngClass]="dataService.dav.user.Plan == 0 ? 'mb-3' : 'mb-0'">
@@ -628,7 +628,7 @@
 		</div>
 
 		<!-- Apps -->
-		<div class="settings-container navbar-margin pt-4 ms-motion-slideUpIn" *ngIf="selectedMenu == 2">
+		<div class="settings-container page-container pt-4 ms-motion-slideUpIn" *ngIf="selectedMenu == 2">
 			<h1 class="text-center fw-light mb-4">{{ locale.apps.title }}</h1>
 
 			<div class="mx-auto" style="width: 250px" *ngIf="errorMessage.length > 0 || successMessage.length > 0">
@@ -669,7 +669,7 @@
 		</div>
 
 		<!-- Provider -->
-		<div class="settings-container container navbar-margin pt-4 ms-motion-slideUpIn mb-4" *ngIf="selectedMenu == 3">
+		<div class="settings-container container page-container pt-4 ms-motion-slideUpIn mb-4" *ngIf="selectedMenu == 3">
 			<div *ngIf="!providerStripeAccount">
 				<h1 class="text-center fw-light mb-3">{{ locale.provider.title }}</h1>
 

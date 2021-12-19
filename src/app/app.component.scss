@@ -14,33 +14,32 @@ a.navbar-brand, a.navbar-item {
 	text-decoration: none;
 }
 
-footer {
-	margin: 45px 0px;
-	padding-top: 5px;
-	border-top: 1px solid #eaeaea;
-	color: #777;
+.footer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #2e3c7c;
+}
 
-	a {
-		color: #222;
-	}
+.footer-icon-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin: 0 6px;
+	padding: 0;
+	color: white;
+	font-size: 22px;
+	line-height: 50%;
+}
 
-	a:hover {
-		color: #222;
-	}
+.footer-links-container {
+	color: white;
+}
 
-	small {
-		float: left;
-	}
-
-	ul {
-		float: right;
-		list-style: none;
-		font-size: 15px;
-
-		li {
-			float: left;
-			margin-left: 15px;
-			color: black;
-		}
-	}
+.footer-links-container > a {
+	color: white;
+	text-decoration: none;
 }
