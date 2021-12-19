@@ -22,3 +22,8 @@ td {
 th:not(first-child), td:not(:first-child) {
 	text-align: center;
 }
+
+.settings-container {
+	background-color: white;
+	min-height: calc(100vh - 56px);
+}
