@@ -29,7 +29,8 @@ export class StatisticsPageComponent {
 	userChartData: ChartConfiguration['data'] = {
 		datasets: [{
 			data: [],
-			label: this.locale.numberOfUsers
+			label: this.locale.numberOfUsers,
+			fill: "origin"
 		}],
 		labels: []
 	}
@@ -49,15 +50,18 @@ export class StatisticsPageComponent {
 		datasets: [
 			{
 				data: [],
-				label: this.locale.daily
+				label: this.locale.daily,
+				fill: "origin"
 			},
 			{
 				data: [],
-				label: this.locale.monthly
+				label: this.locale.monthly,
+				fill: "origin"
 			},
 			{
 				data: [],
-				label: this.locale.yearly
+				label: this.locale.yearly,
+				fill: "origin"
 			}
 		],
 		labels: []
