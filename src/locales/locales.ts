@@ -452,6 +452,7 @@ const enDefaults = {
 		activeUsers: "Active users",
 		currentlyActiveUsers: "Currently active users",
 		daily: "Daily",
+		weekly: "Weekly",
 		monthly: "Monthly",
 		yearly: "Yearly",
 		totalUsers: "Total users: {0}"
@@ -464,6 +465,7 @@ const enDefaults = {
 		activeUsers: "Active users",
 		currentlyActiveUsers: "Currently active users",
 		daily: "Daily",
+		weekly: "Weekly",
 		monthly: "Monthly",
 		yearly: "Yearly",
 		totalUsers: "Total users: {0}"
@@ -1001,6 +1003,7 @@ const deDefaults = {
 		activeUsers: "Aktive Nutzer",
 		currentlyActiveUsers: "Aktuell aktive Nutzer",
 		daily: "Täglich",
+		weekly: "Wöchentlich",
 		monthly: "Monatlich",
 		yearly: "Jährlich",
 		totalUsers: "Nutzer insgesamt: {0}"
@@ -1013,6 +1016,7 @@ const deDefaults = {
 		activeUsers: "Aktive Nutzer",
 		currentlyActiveUsers: "Aktuell aktive Nutzer",
 		daily: "Täglich",
+		weekly: "Wöchentlich",
 		monthly: "Monatlich",
 		yearly: "Jährlich",
 		totalUsers: "Nutzer insgesamt: {0}"

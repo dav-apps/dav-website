@@ -44,6 +44,11 @@ export class AppStatisticsPageComponent {
 			},
 			{
 				data: [],
+				label: this.locale.weekly,
+				fill: "origin"
+			},
+			{
+				data: [],
 				label: this.locale.monthly,
 				fill: "origin"
 			},
@@ -68,8 +73,9 @@ export class AppStatisticsPageComponent {
 		// Set the labels
 		this.userChartData.datasets[0].label = this.locale.numberOfUsers
 		this.activeUsersChartData.datasets[0].label = this.locale.daily
-		this.activeUsersChartData.datasets[1].label = this.locale.monthly
-		this.activeUsersChartData.datasets[2].label = this.locale.yearly
+		this.activeUsersChartData.datasets[1].label = this.locale.weekly
+		this.activeUsersChartData.datasets[2].label = this.locale.monthly
+		this.activeUsersChartData.datasets[3].label = this.locale.yearly
 	}
 
 	async ngOnInit() {
@@ -168,12 +174,13 @@ export class AppStatisticsPageComponent {
 
 	ProcessActiveUsers(activeUsers: GetAppUserActivitiesResponseData) {
 		// Save the days in a separate array with timestamps
-		let days: { date: DateTime, daily: number, monthly: number, yearly: number }[] = []
+		let days: { date: DateTime, daily: number, weekly: number, monthly: number, yearly: number }[] = []
 
 		for (let day of activeUsers.days) {
 			days.push({
 				date: DateTime.fromJSDate(day.time).setLocale(this.dataService.locale).minus({ days: 1 }),
 				daily: day.countDaily,
+				weekly: day.countWeekly,
 				monthly: day.countMonthly,
 				yearly: day.countYearly
 			})
@@ -194,11 +201,13 @@ export class AppStatisticsPageComponent {
 		this.activeUsersChartData.datasets[0].data = []
 		this.activeUsersChartData.datasets[1].data = []
 		this.activeUsersChartData.datasets[2].data = []
+		this.activeUsersChartData.datasets[3].data = []
 
 		for (let day of days) {
 			this.activeUsersChartData.datasets[0].data.push(day.daily)
-			this.activeUsersChartData.datasets[1].data.push(day.monthly)
-			this.activeUsersChartData.datasets[2].data.push(day.yearly)
+			this.activeUsersChartData.datasets[1].data.push(day.weekly)
+			this.activeUsersChartData.datasets[2].data.push(day.monthly)
+			this.activeUsersChartData.datasets[3].data.push(day.yearly)
 			this.activeUsersChartData.labels.push(day.date.toFormat("DDD"))
 		}
 
