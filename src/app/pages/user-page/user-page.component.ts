@@ -1,10 +1,11 @@
-import { Component, HostListener, ViewChild } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { ReadFile } from 'ngx-file-helpers'
 import Stripe from 'stripe'
 import { DateTime } from 'luxon'
 import { faCheck } from '@fortawesome/pro-light-svg-icons'
+import Cropper from 'cropperjs'
 import {
 	ApiResponse,
 	ApiErrorResponse,
@@ -65,6 +66,10 @@ export class UserPageComponent {
 	firstNameLoading: boolean = false
 	emailLoading: boolean = false
 	passwordLoading: boolean = false
+
+	@ViewChild('profileImageDialogImage', { static: false }) profileImageDialogImage: ElementRef<HTMLImageElement>
+	profileImageDialogVisible: boolean = false
+	profileImageCropper: Cropper
 	//#endregion
 
 	//#region Plans page
@@ -239,16 +244,46 @@ export class UserPageComponent {
 		}
 		this.ClearMessages()
 
-		this.updatedAttribute = UserAttribute.ProfileImage
+		this.profileImageDialogVisible = true
+
+		this.profileImageDialogImage.nativeElement.onload = () => {
+			this.profileImageCropper = new Cropper(this.profileImageDialogImage.nativeElement, {
+				aspectRatio: 1,
+				autoCropArea: 1,
+				viewMode: 2
+			})
+		}
+
+		this.profileImageDialogImage.nativeElement.src = file.content
+	}
+
+	async GetProfileImageData() {
 		this.profileImageLoading = true
-		this.profileImageContent = file.content
+		this.profileImageDialogVisible = false
+
+		let canvas = this.profileImageCropper.getCroppedCanvas()
+		this.profileImageContent = canvas.toDataURL("image/png")
+
+		let resolve: Function
+		let blobPromise = new Promise<Blob>(r => resolve = r)
+		canvas.toBlob((blob: Blob) => resolve(blob))
+		let blob = await blobPromise
+		
+		this.profileImageCropper.destroy()
 
 		// Send the file content to the server
+		this.updatedAttribute = UserAttribute.ProfileImage
+
 		this.UpdateUserResponse(
 			await UsersController.SetProfileImageOfUser({
-				file: new Blob([file.underlyingFile], { type: file.type })
+				file: blob
 			})
 		)
+	}
+
+	HideProfileImageDialog() {
+		this.profileImageDialogVisible = false
+		this.profileImageCropper.destroy()
 	}
 
 	async SaveFirstName() {

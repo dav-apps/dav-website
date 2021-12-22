@@ -286,7 +286,7 @@ const enDefaults = {
 		general: {
 			title: "General Settings",
 			profileImageAlt: "Your profile image",
-			uploadProfileImage: "Upload profile image",
+			selectProfileImage: "Select profile image",
 			firstNameTextfieldLabel: "Your first name",
 			firstNameTextfieldPlaceholder: "How should we call you?",
 			emailTextfieldLabel: "Email",
@@ -294,7 +294,10 @@ const enDefaults = {
 			passwordTextfieldLabel: "New Password",
 			passwordTextfieldPlaceholder: "Your new password",
 			passwordConfirmationTextfieldLabel: "Password confirmation",
-			passwordConfirmationTextfieldPlaceholder: "Repeat your new password"
+			passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
+			profileImageDialog: {
+				header: "Crop your profile image"
+			}
 		},
 		plans: {
 			title: "Plans",
@@ -837,7 +840,7 @@ const deDefaults = {
 		general: {
 			title: "Allgemeine Einstellungen",
 			profileImageAlt: "Dein Profilbild",
-			uploadProfileImage: "Profilbild hochladen",
+			selectProfileImage: "Profilbild auswählen",
 			firstNameTextfieldLabel: "Dein Vorname",
 			firstNameTextfieldPlaceholder: "Wie sollen wir dich nennen?",
 			emailTextfieldLabel: "Email",
@@ -845,7 +848,10 @@ const deDefaults = {
 			passwordTextfieldLabel: "Neues Passwort",
 			passwordTextfieldPlaceholder: "Dein neues Passwort",
 			passwordConfirmationTextfieldLabel: "Passwortbestätigung",
-			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort"
+			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort",
+			profileImageDialog: {
+				header: "Profilbild zuschneiden"
+			}
 		},
 		plans: {
 			title: "Abos",
