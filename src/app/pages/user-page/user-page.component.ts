@@ -266,9 +266,9 @@ export class UserPageComponent {
 
 		let resolve: Function
 		let blobPromise = new Promise<Blob>(r => resolve = r)
-		canvas.toBlob((blob: Blob) => resolve(blob))
+		canvas.toBlob((blob: Blob) => resolve(blob), "image/jpeg", 0.5)
 		let blob = await blobPromise
-		
+
 		this.profileImageCropper.destroy()
 
 		// Send the file content to the server
@@ -717,7 +717,11 @@ export class UserPageComponent {
 	}
 
 	GetProfileImageErrorMessage(errorCode: number): string {
-		return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
+		if (errorCode == 1202) {
+			return this.locale.errors.profileImageFileTooLarge
+		} else {
+			return this.locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
+		}
 	}
 
 	GetFirstNameErrorMessage(errorCode: number): string {
