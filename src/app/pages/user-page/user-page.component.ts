@@ -237,13 +237,8 @@ export class UserPageComponent {
 		await this.GetStripeData()
 	}
 
-	async UpdateProfileImage(file: ReadFile) {
-		if (file.size > maxProfileImageFileSize) {
-			this.errorMessage = this.locale.errors.profileImageFileTooLarge
-			return
-		}
+	async ProfileImageFileSelected(file: ReadFile) {
 		this.ClearMessages()
-
 		this.profileImageDialogVisible = true
 
 		this.profileImageDialogImage.nativeElement.onload = () => {
@@ -257,19 +252,22 @@ export class UserPageComponent {
 		this.profileImageDialogImage.nativeElement.src = file.content
 	}
 
-	async GetProfileImageData() {
-		this.profileImageLoading = true
+	async UploadProfileImage() {
 		this.profileImageDialogVisible = false
 
 		let canvas = this.profileImageCropper.getCroppedCanvas()
-		this.profileImageContent = canvas.toDataURL("image/png")
-
-		let resolve: Function
-		let blobPromise = new Promise<Blob>(r => resolve = r)
-		canvas.toBlob((blob: Blob) => resolve(blob), "image/jpeg", 0.5)
-		let blob = await blobPromise
-
+		let blob = await new Promise<Blob>((r: Function) =>
+			canvas.toBlob((blob: Blob) => r(blob), "image/jpeg", 0.5)
+		)
 		this.profileImageCropper.destroy()
+
+		if (blob.size > maxProfileImageFileSize) {
+			this.errorMessage = this.locale.errors.profileImageFileTooLarge
+			return
+		}
+
+		this.profileImageLoading = true
+		this.profileImageContent = canvas.toDataURL("image/png")
 
 		// Send the file content to the server
 		this.updatedAttribute = UserAttribute.ProfileImage

@@ -92,7 +92,7 @@
 						accept="image/png,image/jpeg"
 						type="accent"
 						[disabled]="profileImageLoading"
-						(filePick)="UpdateProfileImage($event)">
+						(filePick)="ProfileImageFileSelected($event)">
 						{{ locale.general.selectProfileImage }}
 					</dav-button>
 
@@ -801,7 +801,7 @@
 	[defaultButtonText]="locale.cancel"
 	[visible]="profileImageDialogVisible"
 	(dismiss)="HideProfileImageDialog()"
-	(primaryButtonClick)="GetProfileImageData()"
+	(primaryButtonClick)="UploadProfileImage()"
 	(defaultButtonClick)="HideProfileImageDialog()">
 
 	<div class="mb-3" style="max-height: 400px">
