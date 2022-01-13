@@ -1,10 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { environment } from '../environments/environment'
 
 // Modules
 import { AppRoutingModule } from './app-routing.module'
-import { ServiceWorkerModule } from '@angular/service-worker'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { MatSidenavModule } from '@angular/material/sidenav'
@@ -75,7 +73,6 @@ import { PurchasePageComponent } from 'src/app/pages/purchase-page/purchase-page
   	imports: [
 		BrowserModule,
 		AppRoutingModule,
-		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
 		BrowserAnimationsModule,
 		FontAwesomeModule,
 		MatSidenavModule,
