@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core'
+import { Component, HostListener, ViewChild, ElementRef } from '@angular/core'
 import { Router, NavigationEnd } from '@angular/router'
 import { faTwitter, faGithub } from '@fortawesome/free-brands-svg-icons'
 import { Dav, Environment } from 'dav-js'
@@ -16,6 +16,7 @@ export class AppComponent {
 	locale = enUS.appComponent
 	faTwitter = faTwitter
 	faGithub = faGithub
+	@ViewChild('navbarResponsive', { static: false }) navbar: ElementRef<HTMLDivElement>
 	width: number = 500
 	offsetTop: number = 0
 	year = (new Date()).getFullYear()
@@ -65,8 +66,13 @@ export class AppComponent {
 	}
 
 	Logout() {
+		this.navbar.nativeElement.classList.remove("show")
 		Dav.Logout().then(() => this.router.navigate(['/']))
 		return false
+	}
+
+	NavbarLinkClick() {
+		this.navbar.nativeElement.classList.remove("show")
 	}
 
 	FooterLinkClick() {

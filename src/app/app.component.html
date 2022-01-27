@@ -28,30 +28,35 @@
 		</button>
 
 		<!-- List items -->
-		<div class="collapse navbar-collapse" id="navbar-responsive" style="margin-top: -4px; font-family: 'Segoe UI'; justify-content: right;">
+		<div
+			#navbarResponsive
+			id="navbar-responsive"
+			class="collapse navbar-collapse"
+			style="margin-top: -4px; font-family: 'Segoe UI'; justify-content: right">
+
 			<!-- Not logged in -->
-			<ul class="navbar-nav" *ngIf="!dataService.dav.isLoggedIn">
+			<ul class="navbar-nav" *ngIf="!dataService.dav.isLoggedIn" (click)="NavbarLinkClick()">
 				<li class="nav-item">
-					<a routerLink="/pricing" class="nav-link navbar-item">{{ locale.navbar.pricing }}</a>
+					<a routerLink="/pricing" class="nav-link navbar-item" (click)="NavbarLinkClick()">{{ locale.navbar.pricing }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/login" class="nav-link navbar-item">{{ locale.navbar.login }}</a>
+					<a routerLink="/login" class="nav-link navbar-item" (click)="NavbarLinkClick()">{{ locale.navbar.login }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/signup" class="nav-link navbar-item">{{ locale.navbar.signup }}</a>
+					<a routerLink="/signup" class="nav-link navbar-item" (click)="NavbarLinkClick()">{{ locale.navbar.signup }}</a>
 				</li>
 			</ul>
 
 			<!-- Logged in -->
 			<ul class="navbar-nav" *ngIf="dataService.dav.isLoggedIn">
 				<li class="nav-item" *ngIf="dataService.dav.user.Dev">
-					<a routerLink="/dev" class="nav-link navbar-item">{{ locale.navbar.devDashboard }}</a>
+					<a routerLink="/dev" class="nav-link navbar-item" (click)="NavbarLinkClick()">{{ locale.navbar.devDashboard }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/apps" class="nav-link navbar-item">{{ locale.navbar.allApps }}</a>
+					<a routerLink="/apps" class="nav-link navbar-item" (click)="NavbarLinkClick()">{{ locale.navbar.allApps }}</a>
 				</li>
 				<li class="nav-item">
-					<a routerLink="/user" class="nav-link navbar-item">{{ dataService.dav.user.FirstName }}</a>
+					<a routerLink="/user" class="nav-link navbar-item" (click)="NavbarLinkClick()">{{ dataService.dav.user.FirstName }}</a>
 				</li>
 				<li class="nav-item">
 					<a href="#logout" class="nav-link navbar-item" (click)="Logout()">{{ locale.navbar.logout }}</a>
