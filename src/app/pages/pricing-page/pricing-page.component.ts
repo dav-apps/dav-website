@@ -24,6 +24,10 @@ export class PricingPageComponent {
 		this.dataService.showFooter = true
 	}
 
+	ngOnInit() {
+		this.setSize()
+	}
+
 	@HostListener('window:resize')
 	setSize() {
 		this.mobilePlansTable = window.innerWidth < 768

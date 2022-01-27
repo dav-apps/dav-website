@@ -1,4 +1,4 @@
-<div class="container page-container pt-4 ms-motion-slideUpIn">
+<div class="container page-container pt-4 mb-4 ms-motion-slideUpIn">
 	<h1
 		class="text-center fw-light mb-3">
 		{{ locale.title }}
@@ -50,6 +50,12 @@
 				</tr>
 				<tr class="border-top">
 					<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
+					<td></td>
+					<td><fa-icon [icon]="faCheck"></fa-icon></td>
+					<td><fa-icon [icon]="faCheck"></fa-icon></td>
+				</tr>
+				<tr class="border-top">
+					<td class="ps-3">{{ pricingLocale.universalsoundboard.playlistDownloadFeature }}</td>
 					<td></td>
 					<td><fa-icon [icon]="faCheck"></fa-icon></td>
 					<td><fa-icon [icon]="faCheck"></fa-icon></td>
@@ -117,6 +123,10 @@
 					<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
 					<td><fa-icon [icon]="faCheck"></fa-icon></td>
 				</tr>
+				<tr class="border-top">
+					<td class="ps-3">{{ pricingLocale.universalsoundboard.playlistDownloadFeature }}</td>
+					<td><fa-icon [icon]="faCheck"></fa-icon></td>
+				</tr>
 			</tbody>
 		</table>
 
@@ -153,6 +163,10 @@
 				</tr>
 				<tr class="border-top">
 					<td class="ps-3">{{ pricingLocale.universalsoundboard.outputDeviceFeature }}</td>
+					<td><fa-icon [icon]="faCheck"></fa-icon></td>
+				</tr>
+				<tr class="border-top">
+					<td class="ps-3">{{ pricingLocale.universalsoundboard.playlistDownloadFeature }}</td>
 					<td><fa-icon [icon]="faCheck"></fa-icon></td>
 				</tr>
 			</tbody>
