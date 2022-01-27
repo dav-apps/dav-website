@@ -1,6 +1,6 @@
 {
 	"name": "dav-website",
-	"version": "1.10.1",
+	"version": "1.11.0",
 	"scripts": {
 		"ng": "ng",
 		"start": "cd dist && node server.js",
