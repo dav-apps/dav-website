@@ -8,6 +8,7 @@ import {
 	Dav,
 	Auth,
 	App as DavApp,
+	User,
 	Environment,
 	AppsController,
 	SessionsController,
@@ -47,13 +48,15 @@ export class App {
 		router.use(express.static(path.join(__dirname, 'src/pages')))
 		router.use(express.json())
 
-		router.get('/', (req, res) => {
+		router.get('/', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("start-page/start-page", {
 				lang: locale.lang,
 				locale: locale.startPage,
-				navbarLocale: locale.navbarComponent
+				navbarLocale: locale.navbarComponent,
+				user
 			})
 		})
 
@@ -193,7 +196,7 @@ export class App {
 				deviceName: "",
 				deviceOs: ""
 			})
-			
+
 			if (response.status == 201) {
 				response = response as ApiResponse<SignupResponseData>
 				res.status(response.status).send(response.data)
@@ -218,7 +221,7 @@ export class App {
 		this.io.on('connection', (socket) => {
 			// Check if the request has the referer header
 			let refererHeader = socket.handshake.headers.referer
-		
+
 			// Check if the base urls contain the referer
 			if (!refererHeader || baseUrls.findIndex(baseUrl => refererHeader.startsWith(baseUrl)) == -1) {
 				// Close the connection
@@ -260,5 +263,26 @@ export class App {
 			secretKey: process.env.DAV_SECRET_KEY,
 			uuid: process.env.DAV_UUID
 		})
+	}
+
+	private getRequestCookies(req) {
+		const rawCookies = req.headers.cookie.split('; ')
+		const parsedCookies = {}
+
+		rawCookies.forEach(rawCookie => {
+			const parsedCookie = rawCookie.split('=')
+			parsedCookies[parsedCookie[0]] = parsedCookie[1]
+		})
+
+		return parsedCookies
+	}
+
+	private async getUser(accessToken: string): Promise<User> {
+		if (accessToken == null) return null
+
+		let getUserResponse = await UsersController.GetUser({ accessToken })
+		if (getUserResponse.status != 200) return null
+
+		return (getUserResponse as ApiResponse<User>).data
 	}
 }
