@@ -99,54 +99,64 @@ export class App {
 			res.clearCookie("accessToken").redirect("/")
 		})
 
-		router.get('/pricing', (req, res) => {
+		router.get('/pricing', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("pricing-page/pricing-page", {
 				lang: locale.lang,
 				locale: locale.pricingPage,
 				navbarLocale: locale.navbarComponent,
-				pricingLocale: locale.misc.pricing
+				pricingLocale: locale.misc.pricing,
+				user
 			})
 		})
 
-		router.get('/dev', (req, res) => {
+		router.get('/dev', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("dev-page/dev-page", {
 				lang: locale.lang,
 				locale: locale.devPage,
-				navbarLocale: locale.navbarComponent
+				navbarLocale: locale.navbarComponent,
+				user
 			})
 		})
 
-		router.get('/dev/statistics', (req, res) => {
+		router.get('/dev/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("statistics-page/statistics-page", {
 				lang: locale.lang,
 				locale: locale.statisticsPage,
-				navbarLocale: locale.navbarComponent
+				navbarLocale: locale.navbarComponent,
+				user
 			})
 		})
 
-		router.get('/dev/:appId', (req, res) => {
+		router.get('/dev/:appId', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("app-page/app-page", {
 				lang: locale.lang,
 				locale: locale.appPage,
-				navbarLocale: locale.navbarComponent
+				navbarLocale: locale.navbarComponent,
+				user
 			})
 		})
 
-		router.get('/dev/:appId/statistics', (req, res) => {
+		router.get('/dev/:appId/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("app-statistics-page/app-statistics-page", {
 				lang: locale.lang,
 				locale: locale.appStatisticsPage,
-				navbarLocale: locale.navbarComponent
+				navbarLocale: locale.navbarComponent,
+				user
 			})
 		})
 
@@ -156,24 +166,15 @@ export class App {
 			// Get the apps
 			let response = await AppsController.GetApps()
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
-			if (response.status == 200) {
-				let responseData = (response as ApiResponse<DavApp[]>).data
-
-				res.render("apps-page/apps-page", {
-					lang: locale.lang,
-					locale: locale.appsPage,
-					navbarLocale: locale.navbarComponent,
-					apps: responseData
-				})
-			} else {
-				res.render("apps-page/apps-page", {
-					lang: locale.lang,
-					locale: locale.appsPage,
-					navbarLocale: locale.navbarComponent,
-					apps: []
-				})
-			}
+			res.render("apps-page/apps-page", {
+				lang: locale.lang,
+				locale: locale.appsPage,
+				navbarLocale: locale.navbarComponent,
+				user,
+				apps: response.status == 200 ? (response as ApiResponse<DavApp[]>).data : []
+			})
 		})
 
 		router.post('/login', async (req, res) => {
