@@ -1,22 +1,16 @@
 import 'bootstrap'
-import { getLocale } from '../../locales'
 import {
 	hideElement,
 	showElement,
 	getDataService
 } from '../../utils'
 
-let locale = getLocale().navbarComponent
 let dataService = getDataService()
 let navbar = document.getElementById("navbar") as HTMLElement
 let navbarContainer = document.getElementById('navbar-container') as HTMLDivElement
 let notLoggedInList = document.getElementById("not-logged-in-list") as HTMLUListElement
 let loggedInList = document.getElementById("logged-in-list") as HTMLUListElement
-let pricingLink = document.getElementById("pricing-link") as HTMLAnchorElement
-let loginLink = document.getElementById("login-link") as HTMLAnchorElement
-let signupLink = document.getElementById("signup-link") as HTMLAnchorElement
 let devDashboardLink = document.getElementById("dev-dashboard-link") as HTMLAnchorElement
-let appsLink = document.getElementById("apps-link") as HTMLAnchorElement
 let userLink = document.getElementById("user-link") as HTMLAnchorElement
 let logoutLink = document.getElementById("logout-link") as HTMLAnchorElement
 
@@ -65,15 +59,6 @@ function setSize() {
 	onScroll()
 }
 
-function setStrings() {
-	pricingLink.innerText = locale.pricing
-	loginLink.innerText = locale.login
-	signupLink.innerText = locale.signup
-	devDashboardLink.innerText = locale.devDashboard
-	appsLink.innerText = locale.allApps
-	logoutLink.innerText = locale.logout
-}
-
 function onScroll() {
 	if (window.innerWidth < 576 || (window.scrollY > 80 && !navbarBackgroundVisible)) {
 		navbar.classList.add("acrylic", "light", "shadow")
@@ -103,6 +88,5 @@ window.addEventListener("resize", setSize)
 
 window.addEventListener("load", () => {
 	setSize()
-	setStrings()
 	main()
 })

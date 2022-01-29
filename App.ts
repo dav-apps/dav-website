@@ -52,7 +52,8 @@ export class App {
 
 			res.render("start-page/start-page", {
 				lang: locale.lang,
-				locale: locale.startPage
+				locale: locale.startPage,
+				navbarLocale: locale.navbarComponent
 			})
 		})
 
@@ -61,7 +62,8 @@ export class App {
 
 			res.render("login-page/login-page", {
 				lang: locale.lang,
-				locale: locale.loginPage
+				locale: locale.loginPage,
+				navbarLocale: locale.navbarComponent
 			})
 		})
 
@@ -70,7 +72,8 @@ export class App {
 
 			res.render("signup-page/signup-page", {
 				lang: locale.lang,
-				locale: locale.signupPage
+				locale: locale.signupPage,
+				navbarLocale: locale.navbarComponent
 			})
 		})
 
@@ -80,6 +83,7 @@ export class App {
 			res.render("pricing-page/pricing-page", {
 				lang: locale.lang,
 				locale: locale.pricingPage,
+				navbarLocale: locale.navbarComponent,
 				pricingLocale: locale.misc.pricing
 			})
 		})
@@ -89,7 +93,8 @@ export class App {
 
 			res.render("dev-page/dev-page", {
 				lang: locale.lang,
-				locale: locale.devPage
+				locale: locale.devPage,
+				navbarLocale: locale.navbarComponent
 			})
 		})
 
@@ -98,7 +103,8 @@ export class App {
 
 			res.render("statistics-page/statistics-page", {
 				lang: locale.lang,
-				locale: locale.statisticsPage
+				locale: locale.statisticsPage,
+				navbarLocale: locale.navbarComponent
 			})
 		})
 
@@ -107,7 +113,8 @@ export class App {
 
 			res.render("app-page/app-page", {
 				lang: locale.lang,
-				locale: locale.appPage
+				locale: locale.appPage,
+				navbarLocale: locale.navbarComponent
 			})
 		})
 
@@ -116,7 +123,8 @@ export class App {
 
 			res.render("app-statistics-page/app-statistics-page", {
 				lang: locale.lang,
-				locale: locale.appStatisticsPage
+				locale: locale.appStatisticsPage,
+				navbarLocale: locale.navbarComponent
 			})
 		})
 
@@ -133,12 +141,14 @@ export class App {
 				res.render("apps-page/apps-page", {
 					lang: locale.lang,
 					locale: locale.appsPage,
+					navbarLocale: locale.navbarComponent,
 					apps: responseData
 				})
 			} else {
 				res.render("apps-page/apps-page", {
 					lang: locale.lang,
 					locale: locale.appsPage,
+					navbarLocale: locale.navbarComponent,
 					apps: []
 				})
 			}

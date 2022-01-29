@@ -28,28 +28,40 @@
 			<!-- Not logged in -->
 			<ul id="not-logged-in-list" class="navbar-nav d-none">
 				<li class="nav-item">
-					<a id="pricing-link" class="nav-link" href="/pricing"></a>
+					<a class="nav-link" href="/pricing">
+						<%= navbarLocale.pricing %>
+					</a>
 				</li>
 				<li class="nav-item">
-					<a id="login-link" class="nav-link" href="/login"></a>
+					<a class="nav-link" href="/login">
+						<%= navbarLocale.login %>
+					</a>
 				</li>
 				<li class="nav-item">
-					<a id="signup-link" class="nav-link" href="/signup"></a>
+					<a class="nav-link" href="/signup">
+						<%= navbarLocale.signup %>
+					</a>
 				</li>
 			</ul>
 
 			<ul id="logged-in-list" class="navbar-nav d-none">
 				<li class="nav-item d-none">
-					<a id="dev-dashboard-link" class="nav-link" href="/dev"></a>
+					<a id="dev-dashboard-link" class="nav-link" href="/dev">
+						<%= navbarLocale.devDashboard %>
+					</a>
 				</li>
 				<li class="nav-item">
-					<a id="apps-link" class="nav-link" href="/apps"></a>
+					<a class="nav-link" href="/apps">
+						<%= navbarLocale.allApps %>
+					</a>
 				</li>
 				<li class="nav-item">
 					<a id="user-link" class="nav-link" href="/user"></a>
 				</li>
 				<li class="nav-item">
-					<a id="logout-link" class="nav-link" href="/logout"></a>
+					<a id="logout-link" class="nav-link" href="/logout">
+						<%= navbarLocale.logout %>
+					</a>
 				</li>
 			</ul>
 		</div>
