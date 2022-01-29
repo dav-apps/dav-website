@@ -70,13 +70,15 @@ export class App {
 			}
 		})
 
-		router.get('/login', (req, res) => {
+		router.get('/login', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("login-page/login-page", {
 				lang: locale.lang,
 				locale: locale.loginPage,
-				navbarLocale: locale.navbarComponent
+				navbarLocale: locale.navbarComponent,
+				user
 			})
 		})
 
@@ -184,7 +186,10 @@ export class App {
 
 			if (response.status == 201) {
 				response = response as ApiResponse<SessionResponseData>
-				res.status(response.status).send(response.data)
+				res
+					.status(response.status)
+					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true })
+					.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send(response.errors)

@@ -4,10 +4,9 @@ import 'dav-ui-components'
 import { Button, Textfield, MessageBar } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
-import { getDataService, showElement, hideElement } from '../../utils'
+import { showElement, hideElement } from '../../utils'
 
 let locale = getLocale().loginPage
-let dataService = getDataService()
 let errorMessageBar: MessageBar
 let emailTextfield: Textfield
 let passwordTextfield: Textfield
@@ -45,10 +44,9 @@ function setEventListeners() {
 async function login() {
 	hideError()
 	loginButton.toggleAttribute("disabled")
-	let response
 
 	try {
-		response = await axios({
+		await axios({
 			method: 'post',
 			url: '/login',
 			data: {
@@ -63,7 +61,6 @@ async function login() {
 		return
 	}
 
-	await dataService.dav.Login(response.data.accessToken)
 	window.location.href = "/"
 }
 
