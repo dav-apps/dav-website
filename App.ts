@@ -92,6 +92,11 @@ export class App {
 			})
 		})
 
+		router.get('/logout', (req, res) => {
+			// Remove the accessToken cookie and redirect to the start page
+			res.clearCookie("accessToken").redirect("/")
+		})
+
 		router.get('/pricing', (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 
