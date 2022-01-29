@@ -12,11 +12,13 @@ import {
 	Environment,
 	AppsController,
 	SessionsController,
+	UsersController,
+	DevsController,
 	ApiResponse,
 	ApiErrorResponse,
 	SessionResponseData,
 	SignupResponseData,
-	UsersController
+	GetDevResponseData
 } from 'dav-js'
 import * as websocket from './websocket.js'
 import { getLocale } from './src/locales.js'
@@ -114,13 +116,20 @@ export class App {
 
 		router.get('/dev', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let user = await this.getUser(accessToken)
+			let dev = await this.getDev(accessToken)
+
+			if (user == null || dev == null) {
+				res.redirect("/")
+			}
 
 			res.render("dev-page/dev-page", {
 				lang: locale.lang,
 				locale: locale.devPage,
 				navbarLocale: locale.navbarComponent,
-				user
+				user,
+				dev
 			})
 		})
 
@@ -311,5 +320,14 @@ export class App {
 		if (getUserResponse.status != 200) return null
 
 		return (getUserResponse as ApiResponse<User>).data
+	}
+
+	private async getDev(accessToken: string): Promise<GetDevResponseData> {
+		if (accessToken == null) return null
+
+		let getDevResponse = await DevsController.GetDev({ accessToken })
+		if (getDevResponse.status != 200) return null
+
+		return (getDevResponse as ApiResponse<GetDevResponseData>).data
 	}
 }

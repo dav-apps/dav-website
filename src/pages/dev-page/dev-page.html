@@ -30,7 +30,21 @@
 				</dav-message-bar>
 			</div>
 
-			<div id="apps-container" class="d-flex flex-wrap justify-content-center"></div>
+			<div class="d-flex flex-wrap justify-content-center">
+				<% dev.apps.forEach(app => { %>
+				<div
+					id="<%= `app-card-${app.Id}` %>"
+					class="card app-card text-center m-3 cursor shadow-sm"
+					onmouseover="appCardMouseOver(<%= app.Id %>)"
+					onmouseout="appCardMouseOut(<%= app.Id %>)"
+					onclick="appCardClick(<%= app.Id %>)">
+
+					<div class="card-body">
+						<p class="card-text"><%= app.Name %></p>
+					</div>
+				</div>
+				<% }) %>
+			</div>
 
 			<div class="d-flex justify-content-center mt-3 ms-3">
 				<dav-button
