@@ -1,15 +1,9 @@
 import '../../components/navbar-component/navbar-component'
-import { getLocale } from '../../locales'
 import {
 	showElement,
-	hideElement,
-	getDataService
+	hideElement
 } from '../../utils'
 
-let locale = getLocale().startPage
-let dataService = getDataService()
-let notLoggedInContainer: HTMLDivElement
-let loggedInContainer: HTMLDivElement
 let largeHeaderPocketlib: HTMLHeadingElement
 let smallHeaderPocketlib: HTMLHeadingElement
 let largeHeaderUniversalsoundboard: HTMLHeadingElement
@@ -29,17 +23,10 @@ let screenshotCalendo: HTMLImageElement
 let screenshotCalendoMobileContainer: HTMLDivElement
 let screenshotCalendoMobile: HTMLImageElement
 
-let loggedInHeader: HTMLHeadingElement
-let appsContainer: HTMLDivElement
-let welcomeMessage: HTMLDivElement
-let welcomeMessageHeader: HTMLHeadingElement
-
 window.addEventListener("resize", setSize)
 window.addEventListener("load", main)
 
 async function main() {
-	notLoggedInContainer = document.getElementById("not-logged-in-container") as HTMLDivElement
-	loggedInContainer = document.getElementById("logged-in-container") as HTMLDivElement
 	largeHeaderPocketlib = document.getElementById("large-header-pocketlib") as HTMLHeadingElement
 	smallHeaderPocketlib = document.getElementById("small-header-pocketlib") as HTMLHeadingElement
 	largeHeaderUniversalsoundboard = document.getElementById("large-header-universalsoundboard") as HTMLHeadingElement
@@ -59,94 +46,7 @@ async function main() {
 	screenshotCalendoMobileContainer = document.getElementById("screenshot-calendo-mobile-container") as HTMLDivElement
 	screenshotCalendoMobile = document.getElementById("screenshot-calendo-mobile") as HTMLImageElement
 
-	loggedInHeader = document.getElementById("logged-in-header") as HTMLHeadingElement
-	appsContainer = document.getElementById("apps-container") as HTMLDivElement
-	welcomeMessage = document.getElementById("welcome-message") as HTMLDivElement
-	welcomeMessageHeader = document.getElementById("welcome-message-header") as HTMLHeadingElement
-
 	setSize()
-	setStrings()
-	await dataService.userLoadedPromiseHolder.AwaitResult()
-
-	if (
-		dataService.dav.isLoggedIn
-		&& dataService.dav.user.FirstName.length == 0
-	) await dataService.userDownloadedPromiseHolder.AwaitResult()
-
-	if (dataService.dav.isLoggedIn) {
-		hideElement(notLoggedInContainer)
-		showElement(loggedInContainer)
-	} else {
-		showElement(notLoggedInContainer)
-		hideElement(loggedInContainer)
-	}
-
-	if (dataService.dav.user.Apps.length > 0) {
-		loggedInHeader.classList.add("mb-3")
-		hideElement(welcomeMessage)
-
-		appsContainer.innerHTML = ""
-
-		for (let app of dataService.dav.user.Apps) {
-			let weblinkHtml = ""
-			let googlePlayLinkHtml = ""
-			let microsoftStoreLinkHtml = ""
-
-			if (app.WebLink) {
-				weblinkHtml = `
-					<div class="card-button-container">
-						<a class="btn card-button text-dark mx-2"
-							target="blank"
-							href="${app.WebLink}">
-							<i class="fas fa-globe"></i>
-						</a>
-					</div>
-				`
-			}
-
-			if (app.GooglePlayLink) {
-				googlePlayLinkHtml = `
-					<div class="card-button-container">
-						<a class="btn card-button text-dark mx-2"
-							target="blank"
-							href="${app.GooglePlayLink}">
-							<i class="fab fa-android"></i>
-						</a>
-					</div>
-				`
-			}
-
-			if (app.MicrosoftStoreLink) {
-				microsoftStoreLinkHtml = `
-					<div class="card-button-container">
-						<a class="btn card-button text-dark mx-2"
-							target="blank"
-							href="${app.MicrosoftStoreLink}">
-							<i class="fab fa-windows"></i>
-						</a>
-					</div>
-				`
-			}
-
-			appsContainer.innerHTML += `
-				<div class="card m-3" style="width: 18rem">
-					<div class="card-body">
-						<h5 class="card-title mb-3">${app.Name}</h5>
-						<p class="card-text">${app.Description}</p>
-
-						<div class="card-button-container">
-							${weblinkHtml}
-							${googlePlayLinkHtml}
-							${microsoftStoreLinkHtml}
-						</div>
-					</div>
-				</div>
-			`
-		}
-	} else {
-		loggedInHeader.classList.add("mb-4")
-		welcomeMessageHeader.innerText = locale.welcomeTitle.replace('{0}', dataService.dav.user.FirstName)
-	}
 }
 
 function setSize() {
@@ -204,8 +104,4 @@ function setSize() {
 			screenshotCalendoContainer
 		)
 	}
-}
-
-function setStrings() {
-	welcomeMessageHeader.innerText = locale.welcomeTitle.replace('{0}', '')
 }

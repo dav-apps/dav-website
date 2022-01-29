@@ -19,8 +19,7 @@
 	<body>
 		<include src="src/components/navbar-component/navbar-component.html"></include>
 
-		<!-- Not logged in -->
-		<div id="not-logged-in-container">
+		<div>
 			<div id="start-header" class="d-flex">
 				<!-- TODO Error & Success messages -->
 
@@ -32,10 +31,10 @@
 			<!-- PocketLib -->
 			<div class="app-container row pt-3 m-0">
 				<div class="col-12 col-md-6 ps-5 pe-5 pe-md-0">
-					<h1 id="large-header-pocketlib" class="mt-3 text-center fw-normal">PocketLib</h1>
-					<h2 id="small-header-pocketlib" class="mt-3 text-center fw-normal d-none">PocketLib</h2>
+					<h1 id="large-header-pocketlib" class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>">PocketLib</h1>
+					<h2 id="small-header-pocketlib" class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>">PocketLib</h2>
 
-					<div id="screenshot-pocketlib-mobile-container" class="d-flex justify-content-center my-5 d-none">
+					<div id="screenshot-pocketlib-mobile-container" class="d-flex justify-content-center my-5 <%= isMobile ? 'd-none' : '' %>">
 						<picture>
 							<source srcset="/assets/images/PocketLibScreenshot.jpg?as=avif" type="image/avif" />
 							<source srcset="/assets/images/PocketLibScreenshot.jpg?as=webp" type="image/webp" />
@@ -57,7 +56,7 @@
 					</div>
 				</div>
 
-				<div id="screenshot-pocketlib-container" class="col-12 col-md-6 d-flex d-none">
+				<div id="screenshot-pocketlib-container" class="col-12 col-md-6 d-flex <%= isMobile ? '' : 'd-none' %>">
 					<div class="mx-auto my-5">
 						<picture>
 							<source srcset="/assets/images/PocketLibScreenshot.jpg?as=avif" type="image/avif" />
@@ -74,7 +73,7 @@
 
 			<!-- UniversalSoundboard -->
 			<div class="app-container row pt-3 m-0">
-				<div id="screenshot-universalsoundboard-container" class="col-12 col-md-7 d-flex d-none">
+				<div id="screenshot-universalsoundboard-container" class="col-12 col-md-7 d-flex <%= isMobile ? 'd-none' : '' %>">
 					<div class="mx-auto my-5">
 						<picture>
 							<source srcset="/assets/images/UniversalSoundboardScreenshot.jpg?as=avif" type="image/avif" />
@@ -89,10 +88,10 @@
 				</div>
 
 				<div class="col-12 col-md-5 pe-5 ps-md-0 ps-5 pb-4" style="font-family: 'Segoe UI'">
-					<h1 id="large-header-universalsoundboard" class="mt-3 text-center fw-normal">UniversalSoundboard</h1>
-					<h2 id="small-header-universalsoundboard" class="mt-3 text-center fw-normal d-none">UniversalSoundboard</h2>
+					<h1 id="large-header-universalsoundboard" class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>">UniversalSoundboard</h1>
+					<h2 id="small-header-universalsoundboard" class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>">UniversalSoundboard</h2>
 
-					<div id="screenshot-universalsoundboard-mobile-container" class="d-flex justify-content-center my-5 d-none">
+					<div id="screenshot-universalsoundboard-mobile-container" class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>">
 						<picture>
 							<source srcset="/assets/images/UniversalSoundboardScreenshot.jpg?as=avif" type="image/avif" />
 							<source srcset="/assets/images/UniversalSoundboardScreenshot.jpg?as=webp" type="image/webp" />
@@ -116,10 +115,10 @@
 			<!-- Calendo -->
 			<div class="app-container row py-3 m-0">
 				<div class="col-12 col-md-6 ps-5 pe-5 pe-md-0">
-					<h1 id="large-header-calendo" class="mt-3 text-center fw-normal">Calendo</h1>
-					<h2 id="small-header-calendo" class="mt-3 text-center fw-normal d-none">Calendo</h2>
+					<h1 id="large-header-calendo" class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>">Calendo</h1>
+					<h2 id="small-header-calendo" class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>">Calendo</h2>
 
-					<div id="screenshot-calendo-mobile-container" class="d-flex justify-content-center my-5 d-none">
+					<div id="screenshot-calendo-mobile-container" class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>">
 						<picture>
 							<source srcset="/assets/images/CalendoScreenshot.jpg?as=avif" type="image/avif" />
 							<source srcset="/assets/images/CalendoScreenshot.jpg?as=webp" type="image/webp" />
@@ -141,7 +140,7 @@
 					</div>
 				</div>
 
-				<div id="screenshot-calendo-container" class="col-12 col-md-6 d-flex d-none">
+				<div id="screenshot-calendo-container" class="col-12 col-md-6 d-flex <%= isMobile ? 'd-none' : '' %>">
 					<div class="mx-auto my-5">
 						<picture>
 							<source srcset="/assets/images/CalendoScreenshot.jpg?as=avif" type="image/avif" />
@@ -156,29 +155,5 @@
 				</div>
 			</div>
 		</div>
-
-		<!-- Logged in -->
-		<div id="logged-in-container" class="container navbar-margin d-none">
-			<h1
-				id="logged-in-header"
-				class="text-center fw-light">
-				<%= locale.loggedInTitle %>
-			</h1>
-
-			<!-- TODO Error + Success messages -->
-
-			<div id="welcome-message" class="d-flex justify-content-center">
-				<div class="px-sm-5 px-3 py-3 mx-sm-5 mx-3 bg-light rounded-3" style="max-width: 600px">
-					<div class="container-fluid py-sm-5 py-3">
-						<h1 id="welcome-message-header" class="fw-light"></h1>
-
-						<p class="fs-5 fw-light"><%= locale.welcomeMessage %></p>
-						<a class="btn btn-primary mt-2" href="/apps" role="button"><%= locale.welcomeButton %></a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div id="apps-container" class="d-flex flex-wrap justify-content-center"></div>
 	</body>
 </html>

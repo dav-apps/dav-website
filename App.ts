@@ -63,7 +63,9 @@ export class App {
 				res.render("start-page/start-page", {
 					lang: locale.lang,
 					locale: locale.startPage,
-					navbarLocale: locale.navbarComponent
+					navbarLocale: locale.navbarComponent,
+					user: null,
+					isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
 				})
 			}
 		})
@@ -274,6 +276,7 @@ export class App {
 	}
 
 	private getRequestCookies(req) {
+		if (req.headers.cookie == null) return {}
 		const rawCookies = req.headers.cookie.split('; ')
 		const parsedCookies = {}
 
