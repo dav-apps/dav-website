@@ -4,10 +4,9 @@ import { Button, Textfield, MessageBar } from 'dav-ui-components'
 import { ErrorCodes } from 'dav-js'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
-import { getDataService, showElement, hideElement } from '../../utils'
+import { showElement, hideElement } from '../../utils'
 
 let locale = getLocale().signupPage
-let dataService = getDataService()
 let errorMessageBar: MessageBar
 let firstNameTextfield: Textfield
 let emailTextfield: Textfield
@@ -43,10 +42,9 @@ async function signup() {
 
 	hideError()
 	signupButton.toggleAttribute("disabled")
-	let response
 
 	try {
-		response = await axios({
+		await axios({
 			method: 'post',
 			url: '/signup',
 			data: {
@@ -62,7 +60,6 @@ async function signup() {
 		return
 	}
 
-	await dataService.dav.Login(response.data.accessToken)
 	window.location.href = "/"
 }
 

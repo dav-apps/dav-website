@@ -82,13 +82,15 @@ export class App {
 			})
 		})
 
-		router.get('/signup', (req, res) => {
+		router.get('/signup', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("signup-page/signup-page", {
 				lang: locale.lang,
 				locale: locale.signupPage,
-				navbarLocale: locale.navbarComponent
+				navbarLocale: locale.navbarComponent,
+				user
 			})
 		})
 
@@ -179,7 +181,7 @@ export class App {
 			this.init()
 
 			// Do the API request
-			let response: ApiResponse<SessionResponseData> | ApiErrorResponse = await SessionsController.CreateSession({
+			let response = await SessionsController.CreateSession({
 				auth: this.auth,
 				email: req.body.email,
 				password: req.body.password,
@@ -206,7 +208,7 @@ export class App {
 			this.init()
 
 			// Do the API request
-			let response: ApiResponse<SignupResponseData> | ApiErrorResponse = await UsersController.Signup({
+			let response = await UsersController.Signup({
 				auth: this.auth,
 				email: req.body.email,
 				firstName: req.body.firstName,
@@ -219,7 +221,10 @@ export class App {
 
 			if (response.status == 201) {
 				response = response as ApiResponse<SignupResponseData>
-				res.status(response.status).send(response.data)
+				res
+					.status(response.status)
+					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true })
+					.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send(response.errors)
