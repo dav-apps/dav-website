@@ -55,7 +55,7 @@ export class App {
 			if (user != null) {
 				res.render("user-start-page/user-start-page", {
 					lang: locale.lang,
-					locale: locale.startPage,
+					locale: locale.userStartPage,
 					navbarLocale: locale.navbarComponent,
 					user
 				})

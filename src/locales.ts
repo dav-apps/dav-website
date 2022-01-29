@@ -31,7 +31,9 @@ const enDefaults = {
 			You can organize your appointments, manage your todos and group todos by topic.
 			<br>With Calendo you have always an overview of upcoming events and todos.
 			<br><br>You can log in with your dav Account to use the same calendar on all your devices.
-		`,
+		`
+	},
+	userStartPage: {
 		loggedInTitle: "Your Apps",
 		welcomeTitle: "Hi, {0}",
 		welcomeMessage: "You're not using any app right now. Check out the All Apps page to find your first app!",
@@ -548,7 +550,9 @@ const deDefaults = {
 			Organisiere deine Termine, verwalte deine Todos und gruppiere Todos nach Themen.
 			<br>Mit Calendo hast du immer den Überblick über bevorstehende Ereignisse und Aufgaben.
 			<br><br>Melde dich mit deinem dav Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
-		`,
+		`
+	},
+	userStartPage: {
 		loggedInTitle: "Deine Apps",
 		welcomeTitle: "Hi, {0}",
 		welcomeMessage: "Im Moment benutzt du keine App. Sieh dir alle Apps an, um deine erste App zu finden!",
