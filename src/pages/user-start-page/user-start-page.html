@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="env" content="<%= process.env.ENV %>">
+
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="../apps-page/apps-page.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/all.min.css">
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container navbar-margin">
+			<h1 class="text-center fw-light <%= user.Apps.length > 0 ? 'mb-3' : 'mb-4' %>">
+				<%= locale.loggedInTitle %>
+			</h1>
+
+			<!-- TODO Error + Success messages -->
+
+			<% if (user.Apps.length == 0) { %>
+			<div id="welcome-message" class="d-flex justify-content-center">
+				<div class="px-sm-5 px-3 py-3 mx-sm-5 mx-3 bg-light rounded-3" style="max-width: 600px">
+					<div class="container-fluid py-sm-5 py-3">
+						<h1 id="welcome-message-header" class="fw-light">
+							<%= locale.welcomeTitle.replace('{0}', user.FirstName) %>
+						</h1>
+
+						<p class="fs-5 fw-light"><%= locale.welcomeMessage %></p>
+						<a class="btn btn-primary mt-2" href="/apps" role="button"><%= locale.welcomeButton %></a>
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</div>
+
+		<div id="apps-container" class="d-flex flex-wrap justify-content-center">
+			<% user.Apps.forEach(app => { %>
+				<div class="card m-3" style="width: 18rem">
+					<div class="card-body">
+						<h5 class="card-title mb-3"><%= app.Name %></h5>
+						<p class="card-text"><%= app.Description %></p>
+
+						<div class="card-button-container">
+							<% if (app.WebLink) { %>
+								<% let webLink = app.WebLink %>
+			
+								<div class="card-button-container">
+									<a class="btn card-button text-dark mx-2"
+										target="blank"
+										href="<%= webLink %>">
+										<i class="fas fa-globe"></i>
+									</a>
+								</div>
+							<% } %>
+
+							<% if (app.GooglePlayLink) { %>
+								<% let googlePlayLink = app.GooglePlayLink %>
+
+								<div class="card-button-container">
+									<a class="btn card-button text-dark mx-2"
+										target="blank"
+										href="<%= googlePlayLink %>">
+										<i class="fab fa-android"></i>
+									</a>
+								</div>
+							<% } %>
+
+							<% if (app.MicrosoftStoreLink) { %>
+								<% let microsoftStoreLink = app.MicrosoftStoreLink %>
+
+								<div class="card-button-container">
+									<a class="btn card-button text-dark mx-2"
+										target="blank"
+										href="<%= microsoftStoreLink %>">
+										<i class="fab fa-windows"></i>
+									</a>
+								</div>
+							<% } %>
+						</div>
+					</div>
+				</div>
+			<% }) %>
+		</div>
+	</body>
+</html>

@@ -52,12 +52,20 @@ export class App {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
-			res.render("start-page/start-page", {
-				lang: locale.lang,
-				locale: locale.startPage,
-				navbarLocale: locale.navbarComponent,
-				user
-			})
+			if (user != null) {
+				res.render("user-start-page/user-start-page", {
+					lang: locale.lang,
+					locale: locale.startPage,
+					navbarLocale: locale.navbarComponent,
+					user
+				})
+			} else {
+				res.render("start-page/start-page", {
+					lang: locale.lang,
+					locale: locale.startPage,
+					navbarLocale: locale.navbarComponent
+				})
+			}
 		})
 
 		router.get('/login', (req, res) => {
