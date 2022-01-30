@@ -17,13 +17,17 @@ import {
 	UsersController,
 	DevsController,
 	UserActivitiesController,
+	AppUsersController,
+	AppUserActivitiesController,
 	ApiResponse,
 	ApiErrorResponse,
 	SessionResponseData,
 	SignupResponseData,
 	GetDevResponseData,
 	GetUsersResponseData,
-	GetUserActivitiesResponseData
+	GetUserActivitiesResponseData,
+	GetAppUsersResponseData,
+	GetAppUserActivitiesResponseData
 } from 'dav-js'
 import * as websocket from './websocket.js'
 import { CsrfToken, CsrfTokenContext } from './src/types.js'
@@ -171,11 +175,13 @@ export class App {
 		router.get('/dev/:appId/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			res.render("app-statistics-page/app-statistics-page", {
 				lang: locale.lang,
 				locale: locale.appStatisticsPage,
 				navbarLocale: locale.navbarComponent,
+				csrfToken,
 				user
 			})
 		})
@@ -238,6 +244,78 @@ export class App {
 
 			if (response.status == 200) {
 				response = response as ApiResponse<GetUserActivitiesResponseData>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send(response.errors)
+			}
+		})
+
+		router.get('/api/app/:id', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await AppsController.GetApp({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				id: +req.params.id
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<DavApp>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send(response.errors)
+			}
+		})
+
+		router.get('/api/app/:id/users', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await AppUsersController.GetAppUsers({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				id: +req.params.id
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<GetAppUsersResponseData>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send(response.errors)
+			}
+		})
+
+		router.get('/api/app/:id/user_activities', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await AppUserActivitiesController.GetAppUserActivities({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				id: +req.params.id
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<GetAppUserActivitiesResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				response = response as ApiErrorResponse

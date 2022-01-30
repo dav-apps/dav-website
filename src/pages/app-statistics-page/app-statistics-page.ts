@@ -8,24 +8,15 @@ import {
 	Legend,
 	Tooltip
 } from 'chart.js'
+import axios from 'axios'
 import { DateTime } from 'luxon'
-import {
-	ApiResponse,
-	AppsController,
-	App,
-	AppUsersController,
-	GetAppUsersResponseData,
-	GetAppUserActivitiesResponseData,
-	AppUserActivitiesController
-} from 'dav-js'
+import { App } from 'dav-js'
 import 'dav-ui-components'
 import { Header } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
-import { getDataService } from '../../utils'
 
 let locale = getLocale().appStatisticsPage
-let dataService = getDataService()
 let header: Header
 let userChartCanvas: HTMLCanvasElement
 let totalUsersText: HTMLParagraphElement
@@ -79,22 +70,22 @@ async function main() {
 		}
 	})
 
-	await dataService.userLoadedPromiseHolder.AwaitResult()
-
-	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {
-		window.location.href = "/"
-		return
-	}
-
 	// Get the app id
 	let urlPathParts = window.location.pathname.split('/')
 	let appId = +urlPathParts[2]
+	let csrfToken = document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 
 	// Get the app
-	let getAppResponse = await AppsController.GetApp({ id: appId })
+	let getAppResponse = await axios({
+		method: 'get',
+		url: `/api/app/${appId}`,
+		headers: {
+			"X-CSRF-TOKEN": csrfToken
+		}
+	})
 
 	if (getAppResponse.status == 200) {
-		app = (getAppResponse as ApiResponse<App>).data
+		app = getAppResponse.data
 	} else {
 		// Redirect to the Dev page
 		window.location.href = "/dev"
@@ -104,20 +95,32 @@ async function main() {
 	header.header = locale.title.replace('{0}', app.Name)
 	setEventListeners()
 
-	let getAppUsersResponse = await AppUsersController.GetAppUsers({ id: appId })
+	let getAppUsersResponse = await axios({
+		method: 'get',
+		url: `/api/app/${appId}/users`,
+		headers: {
+			"X-CSRF-TOKEN": csrfToken
+		}
+	})
 
 	if (getAppUsersResponse.status == 200) {
-		processUsers((getAppUsersResponse as ApiResponse<GetAppUsersResponseData>).data)
+		processUsers(getAppUsersResponse.data)
 	} else {
 		// Redirect to the app page
 		window.location.href = `/dev/${appId}`
 		return
 	}
 
-	let getAppUserActivitiesResponse = await AppUserActivitiesController.GetAppUserActivities({ id: appId })
+	let getAppUserActivitiesResponse = await axios({
+		method: 'get',
+		url: `/api/app/${appId}/user_activities`,
+		headers: {
+			"X-CSRF-TOKEN": csrfToken
+		}
+	})
 
 	if (getAppUserActivitiesResponse.status == 200) {
-		processUserActivities((getAppUserActivitiesResponse as ApiResponse<GetAppUserActivitiesResponseData>).data)
+		processUserActivities(getAppUserActivitiesResponse.data)
 	} else {
 		// Redirect to the app page
 		window.location.href = `/dev/${appId}`
@@ -134,7 +137,14 @@ function navigateBack() {
 	window.location.href = `/dev/${app.Id}`
 }
 
-function processUsers(appUsersResponseData: GetAppUsersResponseData) {
+function processUsers(
+	appUsersResponseData: {
+		appUsers: {
+			userId: number,
+			createdAt: string
+		}[]
+	}
+) {
 	totalUsersText.innerText = locale.totalUsers.replace('{0}', appUsersResponseData.appUsers.length.toString())
 
 	let currentDate = DateTime.now().startOf("month").minus({ months: 5 }).setLocale(navigator.language)
@@ -149,7 +159,7 @@ function processUsers(appUsersResponseData: GetAppUsersResponseData) {
 
 	for (let appUser of appUsersResponseData.appUsers) {
 		// Add the cumulative user count
-		let startedUsing = DateTime.fromJSDate(appUser.createdAt).startOf('month').setLocale(navigator.language)
+		let startedUsing = DateTime.fromJSDate(new Date(appUser.createdAt)).startOf('month').setLocale(navigator.language)
 		let startedUsingMonth = startedUsing.toFormat("MMMM yyyy")
 		let startedUsingBeforeStart = start > startedUsing
 
@@ -175,13 +185,23 @@ function processUsers(appUsersResponseData: GetAppUsersResponseData) {
 	userChart.update()
 }
 
-function processUserActivities(userActivities: GetAppUserActivitiesResponseData) {
+function processUserActivities(
+	userActivities: {
+		days: {
+			time: string,
+			countDaily: number,
+			countWeekly: number,
+			countMonthly: number,
+			countYearly: number
+		}[]
+	}
+) {
 	// Save the days in a separate array with timestamps
 	let days: { date: DateTime, daily: number, monthly: number, yearly: number }[] = []
 
 	for (let day of userActivities.days) {
 		days.push({
-			date: DateTime.fromJSDate(day.time).setLocale(navigator.language).minus({ days: 1 }),
+			date: DateTime.fromJSDate(new Date(day.time)).setLocale(navigator.language).minus({ days: 1 }),
 			daily: day.countDaily,
 			monthly: day.countMonthly,
 			yearly: day.countYearly
