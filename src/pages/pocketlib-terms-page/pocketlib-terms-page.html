@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="env" content="<%= process.env.ENV %>">
+
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+		<link rel="stylesheet" href="pocketlib-terms-page.scss">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+		<script type="module" src="pocketlib-terms-page.ts" defer async></script>
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container page-container pt-4 pb-3">
+			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
+
+			<div class="my-4" style="font-size: 18px">
+				<p><%= locale.intro %></p>
+				<br>
+
+				<h3 class="fw-light mb-2"><%= locale.section1.title %></h3>
+				<p><%- locale.section1.text1 %></p>
+				<p><%- locale.section1.text2 %></p>
+				<p><%- locale.section1.text3 %></p>
+				<p><%- locale.section1.text4 %></p>
+				<p><%- locale.section1.text5 %></p>
+				<p><%- locale.section1.text6 %></p>
+				<br>
+
+				<h3 class="fw-light mb-2"><%= locale.section2.title %></h3>
+				<p><%= locale.section2.text1 %></p>
+
+				<ul>
+					<li><%= locale.section2.list1.item1 %></li>
+					<li><%= locale.section2.list1.item2 %></li>
+					<li><%= locale.section2.list1.item3 %></li>
+					<li><%= locale.section2.list1.item4 %></li>
+					<li><%= locale.section2.list1.item5 %></li>
+					<li><%= locale.section2.list1.item6 %></li>
+				</ul>
+				<br>
+
+				<p><%= locale.section2.text2 %></p>
+
+				<ul>
+					<li><%= locale.section2.list2.item1 %></li>
+					
+					<ul>
+						<li><%= locale.section2.list2.sublist.item1 %></li>
+						<li><%= locale.section2.list2.sublist.item2 %></li>
+					</ul>
+		
+					<li><%= locale.section2.list2.item2 %></li>
+				</ul>
+				<br>
+
+				<p><%= locale.section2.text3 %></p>
+				<br>
+
+				<h3 class="fw-light mb-2"><%= locale.section3.title %></h3>
+				<p><%= locale.section3.text1 %></p>
+				<br>
+
+				<h4 class="fw-light mb-2"><%= locale.section3.subtitle1 %></h4>
+				<p><%= locale.section3.text2 %></p>
+				<p><%= locale.section3.text3 %></p>
+				<br>
+
+				<h4 class="fw-light mb-2"><%= locale.section3.subtitle2 %></h4>
+				<p><%= locale.section3.text4 %></p>
+				<p><%- locale.section3.text5 %></p>
+				<br>
+
+				<h4 class="fw-light mb-2"><%= locale.section3.subtitle3 %></h4>
+				<p><%= locale.section3.text6 %></p>
+				<p class="mb-0"><%= locale.section3.text7 %></p>
+				<br>
+
+				<div class="border-top mx-4 my-3"></div><br>
+
+				<p><%- locale.endText1 %></p>
+				<p><%= locale.endText2 %></p>
+			</div>
+		</div>
+
+		<include src="src/components/footer-component/footer-component.html"></include>
+	</body>
+</html>

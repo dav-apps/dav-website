@@ -140,6 +140,19 @@ export class App {
 			})
 		})
 
+		router.get('/pocketlib/terms', async (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+
+			res.render("pocketlib-terms-page/pocketlib-terms-page", {
+				lang: locale.lang,
+				locale: locale.pocketlibTermsPage,
+				navbarLocale: locale.navbarComponent,
+				footerLocale: locale.footerComponent,
+				user
+			})
+		})
+
 		router.get('/pricing', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
