@@ -4,6 +4,8 @@ import path from 'path'
 import url from 'url'
 import dotenv from 'dotenv'
 import { Server } from 'socket.io'
+import CryptoJS from 'crypto-js'
+import { DateTime } from 'luxon'
 import {
 	Dav,
 	Auth,
@@ -14,13 +16,17 @@ import {
 	SessionsController,
 	UsersController,
 	DevsController,
+	UserActivitiesController,
 	ApiResponse,
 	ApiErrorResponse,
 	SessionResponseData,
 	SignupResponseData,
-	GetDevResponseData
+	GetDevResponseData,
+	GetUsersResponseData,
+	GetUserActivitiesResponseData
 } from 'dav-js'
 import * as websocket from './websocket.js'
+import { CsrfToken, CsrfTokenContext } from './src/types.js'
 import { getLocale } from './src/locales.js'
 
 dotenv.config()
@@ -32,6 +38,9 @@ export class App {
 	public io
 	private initialized: boolean = false
 	private auth: Auth
+	private csrfTokenStore: {
+		[key: string]: CsrfToken
+	} = {}
 
 	constructor() {
 		this.express = express()
@@ -136,11 +145,13 @@ export class App {
 		router.get('/dev/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			res.render("statistics-page/statistics-page", {
 				lang: locale.lang,
 				locale: locale.statisticsPage,
 				navbarLocale: locale.navbarComponent,
+				csrfToken,
 				user
 			})
 		})
@@ -186,8 +197,59 @@ export class App {
 			})
 		})
 
+		//#region API endpoints
+		router.get('/api/users', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await UsersController.GetUsers({
+				accessToken: this.getRequestCookies(req)["accessToken"]
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<GetUsersResponseData>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send(response.errors)
+			}
+		})
+
+		router.get('/api/user_activities', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await UserActivitiesController.GetUserActivities({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				start: DateTime.now().startOf("day").minus({ months: 6 }).toSeconds()
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<GetUserActivitiesResponseData>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send(response.errors)
+			}
+		})
+
 		router.post('/login', async (req, res) => {
-			if (!this.checkReferer(req, res)) return
+			if (!this.checkReferer(req, res)) {
+				res.status(403).end()
+				return
+			}
 			this.init()
 
 			// Do the API request
@@ -214,7 +276,10 @@ export class App {
 		})
 
 		router.post('/signup', async (req, res) => {
-			if (!this.checkReferer(req, res)) return
+			if (!this.checkReferer(req, res)) {
+				res.status(403).end()
+				return
+			}
 			this.init()
 
 			// Do the API request
@@ -240,6 +305,7 @@ export class App {
 				res.status(response.status).send(response.errors)
 			}
 		})
+		//#endregion
 
 		this.express.use('/', router)
 	}
@@ -329,5 +395,41 @@ export class App {
 		if (getDevResponse.status != 200) return null
 
 		return (getDevResponse as ApiResponse<GetDevResponseData>).data
+	}
+
+	private addCsrfToken(context: CsrfTokenContext): string {
+		let token = CryptoJS.lib.WordArray.random(32).toString(CryptoJS.enc.Hex)
+
+		this.csrfTokenStore[token] = {
+			creationDate: DateTime.now(),
+			context
+		}
+
+		return token
+	}
+
+	private checkCsrfToken(token: string, context: CsrfTokenContext): boolean {
+		if (token == null || token.length == 0) return false
+
+		let currentDate = DateTime.now()
+		let result = false
+
+		for (let key of Object.keys(this.csrfTokenStore)) {
+			let csrfToken = this.csrfTokenStore[key]
+			if (csrfToken == null) continue
+
+			if (csrfToken.creationDate.plus({ hours: 1 }) < currentDate) {
+				// Remove the token
+				delete this.csrfTokenStore[key]
+				continue
+			}
+
+			if (csrfToken.context == context && key == token) {
+				result = true
+				break
+			}
+		}
+
+		return result
 	}
 }

@@ -10,22 +10,14 @@ import {
 	Legend,
 	Tooltip
 } from 'chart.js'
+import axios from 'axios'
 import { DateTime } from 'luxon'
-import {
-	ApiResponse,
-	GetUsersResponseData,
-	GetUserActivitiesResponseData,
-	UsersController,
-	UserActivitiesController
-} from 'dav-js'
 import 'dav-ui-components'
 import { Header } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
-import { getDataService } from '../../utils'
 
 let locale = getLocale().statisticsPage
-let dataService = getDataService()
 let header: Header
 let userChartCanvas: HTMLCanvasElement
 let totalUsersText: HTMLParagraphElement
@@ -115,28 +107,34 @@ async function main() {
 	})
 
 	setEventListeners()
-	await dataService.userLoadedPromiseHolder.AwaitResult()
 
-	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {
-		window.location.href = "/"
-		return
-	}
-
-	let getUsersResponse = await UsersController.GetUsers()
+	let csrfToken = document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+	let getUsersResponse = await axios({
+		method: 'get',
+		url: '/api/users',
+		headers: {
+			"X-CSRF-TOKEN": csrfToken
+		}
+	})
 
 	if (getUsersResponse.status == 200) {
-		processUsers((getUsersResponse as ApiResponse<GetUsersResponseData>).data)
+		processUsers(getUsersResponse.data)
 	} else {
 		// Redirect to the Dev page
 		navigateBack()
 		return
 	}
 
-	let start = DateTime.now().startOf("day").minus({ months: 6 }).toSeconds()
-	let getUserActivitiesResponse = await UserActivitiesController.GetUserActivities({ start })
+	let getUserActivitiesResponse = await axios({
+		method: 'get',
+		url: '/api/user_activities',
+		headers: {
+			"X-CSRF-TOKEN": csrfToken
+		}
+	})
 
 	if (getUserActivitiesResponse.status == 200) {
-		processUserActivities((getUserActivitiesResponse as ApiResponse<GetUserActivitiesResponseData>).data)
+		processUserActivities(getUserActivitiesResponse.data)
 	} else {
 		// Redirect to the Dev page
 		navigateBack()
@@ -153,7 +151,17 @@ function navigateBack() {
 	window.location.href = "/dev"
 }
 
-function processUsers(userResponseData: GetUsersResponseData) {
+function processUsers(
+	userResponseData: {
+		users: {
+			id: number,
+			confirmed: boolean,
+			plan: number,
+			lastActive: string,
+			createdAt: string,
+		}[]
+	}
+) {
 	totalUsersText.innerText = locale.totalUsers.replace('{0}', userResponseData.users.length.toString())
 
 	let currentDate = DateTime.now().startOf("month").minus({ months: 5 }).setLocale(navigator.language)
@@ -170,7 +178,7 @@ function processUsers(userResponseData: GetUsersResponseData) {
 
 	for (let user of userResponseData.users) {
 		// Add the cumulative user count
-		let createdAt = DateTime.fromJSDate(user.createdAt).startOf("month").setLocale(navigator.language)
+		let createdAt = DateTime.fromJSDate(new Date(user.createdAt)).startOf("month").setLocale(navigator.language)
 		let createdMonth = createdAt.toFormat("MMMM yyyy")
 		let createdBeforeStart = start > createdAt
 
@@ -205,13 +213,23 @@ function processUsers(userResponseData: GetUsersResponseData) {
 	userChart.update()
 }
 
-function processUserActivities(userActivities: GetUserActivitiesResponseData) {
+function processUserActivities(
+	userActivities: {
+		days: {
+			time: string,
+			countDaily: number,
+			countWeekly: number,
+			countMonthly: number,
+			countYearly: number
+		}[]
+	}
+) {
 	// Save the days in a separate array with timestamps
 	let days: { date: DateTime, daily: number, monthly: number, yearly: number }[] = []
 
 	for (let day of userActivities.days) {
 		days.push({
-			date: DateTime.fromJSDate(day.time).setLocale(navigator.language).minus({ days: 1 }),
+			date: DateTime.fromJSDate(new Date(day.time)).setLocale(navigator.language).minus({ days: 1 }),
 			daily: day.countDaily,
 			monthly: day.countMonthly,
 			yearly: day.countYearly
