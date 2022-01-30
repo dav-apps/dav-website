@@ -476,7 +476,8 @@ const enDefaults = {
 			noAds: "No ads",
 			universalsoundboard: {
 				hotkeyFeature: "Assign hotkeys to sounds",
-				outputDeviceFeature: "Set the output device for each playing sound individually"
+				outputDeviceFeature: "Set the output device for each playing sound individually",
+				playlistDownloadFeature: "Download entire YouTube playlists"
 			},
 			signup: "Sign up",
 			currentPlan: "Current plan",
@@ -1006,7 +1007,8 @@ const deDefaults = {
 			noAds: "Keine Werbung",
 			universalsoundboard: {
 				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu",
-				outputDeviceFeature: "Lege das Ausgabegerät für jeden Sound individuell fest"
+				outputDeviceFeature: "Lege das Ausgabegerät für jeden Sound individuell fest",
+				playlistDownloadFeature: "Lade komplette YouTube-Playlisten herunter"
 			},
 			signup: "Registrieren",
 			currentPlan: "Aktuelles Abo",

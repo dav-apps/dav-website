@@ -18,7 +18,7 @@
 	<body>
 		<include src="src/components/navbar-component/navbar-component.html"></include>
 
-		<div class="container page-container pt-4">
+		<div class="container page-container pt-4 mb-4">
 			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
 
 			<div id="plans-table-container" class="d-flex justify-content-center mt-3 <%= isMobile ? 'd-none' : '' %>">
@@ -67,6 +67,12 @@
 						</tr>
 						<tr class="border-top">
 							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
+							<td></td>
+							<td><i class="fal fa-check"></i></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.playlistDownloadFeature %></td>
 							<td></td>
 							<td><i class="fal fa-check"></i></td>
 							<td><i class="fal fa-check"></i></td>
@@ -134,6 +140,10 @@
 							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
 							<td><i class="fal fa-check"></i></td>
 						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.playlistDownloadFeature %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -170,6 +180,10 @@
 						</tr>
 						<tr class="border-top">
 							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
+							<td><i class="fal fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3"><%= pricingLocale.universalsoundboard.playlistDownloadFeature %></td>
 							<td><i class="fal fa-check"></i></td>
 						</tr>
 					</tbody>
