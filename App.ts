@@ -74,6 +74,7 @@ export class App {
 					lang: locale.lang,
 					locale: locale.startPage,
 					navbarLocale: locale.navbarComponent,
+					footerLocale: locale.footerComponent,
 					user: null,
 					isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
 				})
@@ -121,6 +122,7 @@ export class App {
 				lang: locale.lang,
 				locale: locale.pricingPage,
 				navbarLocale: locale.navbarComponent,
+				footerLocale: locale.footerComponent,
 				pricingLocale: locale.misc.pricing,
 				user,
 				isMobile: req.headers["sec-ch-ua-mobile"] == "?1"

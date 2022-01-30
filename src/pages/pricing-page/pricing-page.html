@@ -18,7 +18,7 @@
 	<body>
 		<include src="src/components/navbar-component/navbar-component.html"></include>
 
-		<div class="container navbar-margin pt-4">
+		<div class="container page-container pt-4">
 			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
 
 			<div id="plans-table-container" class="d-flex justify-content-center mt-3 <%= isMobile ? 'd-none' : '' %>">
@@ -176,5 +176,7 @@
 				</table>
 			</div>
 		</div>
+
+		<include src="src/components/footer-component/footer-component.html"></include>
 	</body>
 </html>
