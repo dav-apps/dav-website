@@ -439,6 +439,10 @@ const enDefaults = {
 		logout: "Log out",
 		signup: "Sign up"
 	},
+	footerComponent: {
+		contact: "Contact",
+		privacy: "Privacy Policy"
+	},
 	paymentFormComponent: {
 		header: "Credit or debit card",
 		save: "Save",
@@ -964,6 +968,10 @@ const deDefaults = {
 		login: "Anmelden",
 		logout: "Abmelden",
 		signup: "Registrieren"
+	},
+	footerComponent: {
+		contact: "Kontakt",
+		privacy: "Datenschutzerklärung"
 	},
 	paymentFormComponent: {
 		header: "Kredit- oder Debitkarte",

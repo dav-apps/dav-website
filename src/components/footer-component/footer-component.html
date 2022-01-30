@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="/src/components/footer-component/footer-component.scss" />
+<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/all.min.css">
+
+<div class="footer py-4">
+	<a href="/">
+		<picture>
+			<source srcset="/assets/images/dav-logo-text.webp" type="image/webp" />
+			<img
+				style="margin: 25px"
+				src="/assets/images/dav-logo-text.png"
+				width="200">
+		</picture>
+	</a>
+
+	<div class="d-flex">
+		<a class="btn footer-icon-button"
+			href="https://twitter.com/dav_apps"
+			target="blank">
+			<i class="fab fa-twitter"></i>
+		</a>
+
+		<a class="btn footer-icon-button"
+			href="https://github.com/dav-apps"
+			target="blank">
+			<i class="fab fa-github"></i>
+		</a>
+	</div>
+
+	<p class="footer-links-container my-4">
+		<a href="https://blog.dav-apps.tech" target="blank">
+			Blog
+		</a>
+		|
+		<a href="/contact">
+			<%= footerLocale.contact %>
+		</a>
+		|
+		<a href="/privacy">
+			<%= footerLocale.privacy %>
+		</a>
+	</p>
+
+	<p style="color: white">Copyright &copy; <%= new Date().getFullYear() %></p>
+</div>
