@@ -127,6 +127,19 @@ export class App {
 			})
 		})
 
+		router.get('/privacy', async (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+
+			res.render("privacy-page/privacy-page", {
+				lang: locale.lang,
+				locale: locale.privacyPage,
+				navbarLocale: locale.navbarComponent,
+				footerLocale: locale.footerComponent,
+				user
+			})
+		})
+
 		router.get('/pricing', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="<%= lang %>">
+	<head>
+		<title>dav</title>
+		<base href="/">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="env" content="<%= process.env.ENV %>">
+
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+		<script type="module" src="privacy-page.ts" defer async></script>
+	</head>
+	<body>
+		<include src="src/components/navbar-component/navbar-component.html"></include>
+
+		<div class="container page-container pt-4 pb-3">
+			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
+
+			<div class="my-4" style="font-size: 18px">
+				<p><%= locale.intro %></p>
+				<br>
+
+				<h3 class="fw-light mb-2"><%= locale.section1.header %></h3>
+				<p><%- locale.section1.text1 %></p>
+				<p><%- locale.section1.text2 %></p>
+				<br>
+
+				<h3 class="fw-light mb-2"><%= locale.section2.header %></h3>
+				<p><%= locale.section2.text %></p>
+				<br>
+
+				<h4 class="fw-light mb-2"><%= locale.section2a.header %></h4>
+				<p><%- locale.section2a.text %></p><br>
+
+				<h4 class="fw-light mb-2"><%= locale.section2b.header %></h4>
+				<p><%- locale.section2b.text %></p><br>
+
+				<h4 class="fw-light mb-2"><%= locale.section2c.header %></h4>
+				<p class="mb-0"><%- locale.section2c.text %></p><br>
+
+				<div class="border-top mx-4 my-3"></div><br>
+
+				<p><%- locale.endText1 %></p>
+				<p><%= locale.endText2 %></p>
+				<p><%= locale.endText3 %></p>
+			</div>
+		</div>
+
+		<include src="src/components/footer-component/footer-component.html"></include>
+	</body>
+</html>
