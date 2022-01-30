@@ -163,11 +163,13 @@ export class App {
 		router.get('/dev/:appId', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			res.render("app-page/app-page", {
 				lang: locale.lang,
 				locale: locale.appPage,
 				navbarLocale: locale.navbarComponent,
+				csrfToken,
 				user
 			})
 		})
@@ -381,6 +383,43 @@ export class App {
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send(response.errors)
+			}
+		})
+
+		router.put('/api/app/:id', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let name = req.body.name
+			let description = req.body.description
+			let webLink = req.body.webLink
+			let googlePlayLink = req.body.googlePlayLink
+			let microsoftStoreLink = req.body.microsoftStoreLink
+			let published = req.body.published
+
+			let response = await AppsController.UpdateApp({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				id: +req.params.id,
+				name,
+				description,
+				webLink,
+				googlePlayLink,
+				microsoftStoreLink,
+				published
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<DavApp>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 		//#endregion

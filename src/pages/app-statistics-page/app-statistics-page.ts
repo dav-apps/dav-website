@@ -76,17 +76,17 @@ async function main() {
 	let csrfToken = document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 
 	// Get the app
-	let getAppResponse = await axios({
-		method: 'get',
-		url: `/api/app/${appId}`,
-		headers: {
-			"X-CSRF-TOKEN": csrfToken
-		}
-	})
+	try {
+		let getAppResponse = await axios({
+			method: 'get',
+			url: `/api/app/${appId}`,
+			headers: {
+				"X-CSRF-TOKEN": csrfToken
+			}
+		})
 
-	if (getAppResponse.status == 200) {
 		app = getAppResponse.data
-	} else {
+	} catch (error) {
 		// Redirect to the Dev page
 		window.location.href = "/dev"
 		return
@@ -95,33 +95,33 @@ async function main() {
 	header.header = locale.title.replace('{0}', app.Name)
 	setEventListeners()
 
-	let getAppUsersResponse = await axios({
-		method: 'get',
-		url: `/api/app/${appId}/users`,
-		headers: {
-			"X-CSRF-TOKEN": csrfToken
-		}
-	})
+	try {
+		let getAppUsersResponse = await axios({
+			method: 'get',
+			url: `/api/app/${appId}/users`,
+			headers: {
+				"X-CSRF-TOKEN": csrfToken
+			}
+		})
 
-	if (getAppUsersResponse.status == 200) {
 		processUsers(getAppUsersResponse.data)
-	} else {
+	} catch (error) {
 		// Redirect to the app page
 		window.location.href = `/dev/${appId}`
 		return
 	}
 
-	let getAppUserActivitiesResponse = await axios({
-		method: 'get',
-		url: `/api/app/${appId}/user_activities`,
-		headers: {
-			"X-CSRF-TOKEN": csrfToken
-		}
-	})
+	try {
+		let getAppUserActivitiesResponse = await axios({
+			method: 'get',
+			url: `/api/app/${appId}/user_activities`,
+			headers: {
+				"X-CSRF-TOKEN": csrfToken
+			}
+		})
 
-	if (getAppUserActivitiesResponse.status == 200) {
 		processUserActivities(getAppUserActivitiesResponse.data)
-	} else {
+	} catch (error) {
 		// Redirect to the app page
 		window.location.href = `/dev/${appId}`
 		return

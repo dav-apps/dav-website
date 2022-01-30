@@ -1,12 +1,11 @@
-import { ApiResponse, ApiErrorResponse, AppsController, App, ErrorCodes } from 'dav-js'
+import axios from 'axios'
+import { App, ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
 import { Button, Dialog, Header, Textarea, Textfield, Toggle } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
-import { getDataService } from '../../utils'
 
 let locale = getLocale().appPage
-let dataService = getDataService()
 let header: Header
 let description: HTMLParagraphElement
 let statisticsButton: Button
@@ -50,23 +49,23 @@ async function main() {
 	publishAppDialogText = document.getElementById("publish-app-dialog-text") as HTMLParagraphElement
 
 	setEventListeners()
-	await dataService.userLoadedPromiseHolder.AwaitResult()
-
-	if (!dataService.dav.isLoggedIn || !dataService.dav.user.Dev) {
-		window.location.href = "/"
-		return
-	}
 
 	// Get the app id
 	let urlPathParts = window.location.pathname.split('/')
 	let appId = +urlPathParts[urlPathParts.length - 1]
 
 	// Get the app
-	let response = await AppsController.GetApp({ id: appId })
+	try {
+		let getAppResponse = await axios({
+			method: 'get',
+			url: `/api/app/${appId}`,
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			}
+		})
 
-	if (response.status == 200) {
-		app = (response as ApiResponse<App>).data
-	} else {
+		app = getAppResponse.data
+	} catch (error) {
 		// Redirect to the Dev page
 		window.location.href = "/dev"
 		return
@@ -182,19 +181,23 @@ async function updateApp() {
 
 	editAppDialog.loading = true
 
-	let response = await AppsController.UpdateApp({
-		id: app.Id,
-		name: editAppDialogName,
-		description: editAppDialogDescription,
-		webLink: editAppDialogWebLink,
-		googlePlayLink: editAppDialogGooglePlayLink,
-		microsoftStoreLink: editAppDialogMicrosoftStoreLink
-	})
+	try {
+		let response = await axios({
+			method: 'put',
+			url: `/api/app/${app.Id}`,
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			},
+			data: {
+				name: editAppDialogName,
+				description: editAppDialogDescription,
+				webLink: editAppDialogWebLink,
+				googlePlayLink: editAppDialogGooglePlayLink,
+				microsoftStoreLink: editAppDialogMicrosoftStoreLink
+			}
+		})
 
-	editAppDialog.loading = false
-
-	if (response.status == 200) {
-		let responseData = (response as ApiResponse<App>).data
+		let responseData = response.data
 
 		app.Name = responseData.Name
 		app.Description = responseData.Description
@@ -206,8 +209,8 @@ async function updateApp() {
 		description.innerText = responseData.Description
 
 		editAppDialog.visible = false
-	} else {
-		let errors = (response as ApiErrorResponse).errors
+	} catch (error) {
+		let errors = error.response.data.errors
 
 		for (let error of errors) {
 			let errorCode = error.code
@@ -242,6 +245,8 @@ async function updateApp() {
 			}
 		}
 	}
+
+	editAppDialog.loading = false
 }
 
 function showPublishAppDialog() {
@@ -259,16 +264,22 @@ function hidePublishAppDialog() {
 async function publishUnpublishApp() {
 	publishAppDialog.loading = true
 
-	let response = await AppsController.UpdateApp({
-		id: app.Id,
-		published: !app.Published
-	})
+	try {
+		let response = await axios({
+			method: 'put',
+			url: `/api/app/${app.Id}`,
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			},
+			data: {
+				published: !app.Published
+			}
+		})
 
-	if (response.status == 200) {
-		let responseData = (response as ApiResponse<App>).data
+		let responseData = response.data
 		app.Published = responseData.Published
 		publishedToggle.checked = responseData.Published
-	}
+	} catch (error) { }
 
 	publishAppDialog.loading = false
 	publishAppDialog.visible = false

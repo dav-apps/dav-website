@@ -109,33 +109,34 @@ async function main() {
 	setEventListeners()
 
 	let csrfToken = document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
-	let getUsersResponse = await axios({
-		method: 'get',
-		url: '/api/users',
-		headers: {
-			"X-CSRF-TOKEN": csrfToken
-		}
-	})
 
-	if (getUsersResponse.status == 200) {
+	try {
+		let getUsersResponse = await axios({
+			method: 'get',
+			url: '/api/users',
+			headers: {
+				"X-CSRF-TOKEN": csrfToken
+			}
+		})
+
 		processUsers(getUsersResponse.data)
-	} else {
+	} catch (error) {
 		// Redirect to the Dev page
 		navigateBack()
 		return
 	}
 
-	let getUserActivitiesResponse = await axios({
-		method: 'get',
-		url: '/api/user_activities',
-		headers: {
-			"X-CSRF-TOKEN": csrfToken
-		}
-	})
+	try {
+		let getUserActivitiesResponse = await axios({
+			method: 'get',
+			url: '/api/user_activities',
+			headers: {
+				"X-CSRF-TOKEN": csrfToken
+			}
+		})
 
-	if (getUserActivitiesResponse.status == 200) {
 		processUserActivities(getUserActivitiesResponse.data)
-	} else {
+	} catch (error) {
 		// Redirect to the Dev page
 		navigateBack()
 		return
