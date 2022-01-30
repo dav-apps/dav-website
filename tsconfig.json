@@ -7,7 +7,6 @@
 		"allowSyntheticDefaultImports": true
 	},
 	"include": [
-		"*.ts",
-		"websocket/*.ts"
+		"*.ts"
 	]
 }

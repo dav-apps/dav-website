@@ -3,7 +3,6 @@ import ejs from 'ejs'
 import path from 'path'
 import url from 'url'
 import dotenv from 'dotenv'
-import { Server } from 'socket.io'
 import CryptoJS from 'crypto-js'
 import { DateTime } from 'luxon'
 import {
@@ -29,7 +28,6 @@ import {
 	GetAppUsersResponseData,
 	GetAppUserActivitiesResponseData
 } from 'dav-js'
-import * as websocket from './websocket.js'
 import { CsrfToken, CsrfTokenContext } from './src/types.js'
 import { getLocale } from './src/locales.js'
 
@@ -39,7 +37,6 @@ const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 
 export class App {
 	public express
-	public io
 	private initialized: boolean = false
 	private auth: Auth
 	private csrfTokenStore: {
@@ -48,9 +45,7 @@ export class App {
 
 	constructor() {
 		this.express = express()
-		this.io = new Server()
 		this.mountRoutes()
-		this.initWebsocketServer()
 	}
 
 	private mountRoutes() {
@@ -436,29 +431,6 @@ export class App {
 		//#endregion
 
 		this.express.use('/', router)
-	}
-
-	private initWebsocketServer() {
-		// Get the base urls from the environment variables
-		const baseUrl = process.env.BASE_URL
-		var baseUrls = []
-
-		if (baseUrl != null) {
-			baseUrls = baseUrl.split(',')
-		}
-
-		this.io.on('connection', (socket) => {
-			// Check if the request has the referer header
-			let refererHeader = socket.handshake.headers.referer
-
-			// Check if the base urls contain the referer
-			if (!refererHeader || baseUrls.findIndex(baseUrl => refererHeader.startsWith(baseUrl)) == -1) {
-				// Close the connection
-				socket.disconnect()
-			} else {
-				websocket.init(socket)
-			}
-		})
 	}
 
 	private checkReferer(req: any, res: any) {
