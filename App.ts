@@ -114,6 +114,19 @@ export class App {
 			res.clearCookie("accessToken").redirect("/")
 		})
 
+		router.get('/contact', async (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+
+			res.render("contact-page/contact-page", {
+				lang: locale.lang,
+				locale: locale.contactPage,
+				navbarLocale: locale.navbarComponent,
+				footerLocale: locale.footerComponent,
+				user
+			})
+		})
+
 		router.get('/pricing', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])

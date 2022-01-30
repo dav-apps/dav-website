@@ -13,8 +13,10 @@ function main() {
 	navbar = document.getElementById("navbar") as HTMLElement
 	navbarContainer = document.getElementById('navbar-container') as HTMLDivElement
 
-	setSize()
-	onScroll()
+	setTimeout(() => {
+		setSize()
+		onScroll()
+	}, 10)
 }
 
 function setSize() {
