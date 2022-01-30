@@ -123,7 +123,8 @@ export class App {
 				locale: locale.pricingPage,
 				navbarLocale: locale.navbarComponent,
 				pricingLocale: locale.misc.pricing,
-				user
+				user,
+				isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
 			})
 		})
 

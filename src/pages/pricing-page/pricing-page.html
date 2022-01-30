@@ -21,7 +21,7 @@
 		<div class="container navbar-margin pt-4">
 			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
 
-			<div id="plans-table-container" class="d-flex justify-content-center mt-3 d-none">
+			<div id="plans-table-container" class="d-flex justify-content-center mt-3 <%= isMobile ? 'd-none' : '' %>">
 				<table id="plans-table">
 					<thead>
 						<tr>
@@ -75,7 +75,7 @@
 				</table>
 			</div>
 
-			<div id="plans-table-mobile-container" class="d-flex flex-column justify-content-center mt-3">
+			<div id="plans-table-mobile-container" class="d-flex flex-column justify-content-center mt-3 <%= isMobile ? '' : 'd-none' %>">
 				<table id="plans-table-mobile-free">
 					<thead>
 						<tr>
