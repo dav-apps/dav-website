@@ -49,6 +49,9 @@ async function login() {
 		await axios({
 			method: 'post',
 			url: '/login',
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			},
 			data: {
 				email,
 				password

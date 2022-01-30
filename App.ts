@@ -88,24 +88,28 @@ export class App {
 		router.get('/login', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.LoginPage)
 
 			res.render("login-page/login-page", {
 				lang: locale.lang,
 				locale: locale.loginPage,
 				navbarLocale: locale.navbarComponent,
-				user
+				user,
+				csrfToken
 			})
 		})
 
 		router.get('/signup', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.SignupPage)
 
 			res.render("signup-page/signup-page", {
 				lang: locale.lang,
 				locale: locale.signupPage,
 				navbarLocale: locale.navbarComponent,
-				user
+				user,
+				csrfToken
 			})
 		})
 
@@ -327,7 +331,10 @@ export class App {
 		})
 
 		router.post('/login', async (req, res) => {
-			if (!this.checkReferer(req, res)) {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.LoginPage)
+			) {
 				res.status(403).end()
 				return
 			}
@@ -357,7 +364,10 @@ export class App {
 		})
 
 		router.post('/signup', async (req, res) => {
-			if (!this.checkReferer(req, res)) {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.SignupPage)
+			) {
 				res.status(403).end()
 				return
 			}
