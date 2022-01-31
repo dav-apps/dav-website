@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { MDCSnackbar } from '@material/snackbar'
 import 'dav-ui-components'
 import {
 	Button,
@@ -9,11 +10,16 @@ import {
 } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { showElement, hideElement } from '../../utils'
+import { getLocale } from '../../locales'
 
 let generalSidenavItem: SidenavItem
 let plansSidenavItem: SidenavItem
 let generalContainer: HTMLDivElement
 let plansContainer: HTMLDivElement
+let snackbarLabel: HTMLDivElement
+
+let locale = getLocale().userPage
+let snackbar: MDCSnackbar
 
 //#region General page variables
 let errorMessageBarGeneral: MessageBar
@@ -40,6 +46,7 @@ async function main() {
 	plansSidenavItem = document.getElementById("plans-sidenav-item") as SidenavItem
 	generalContainer = document.getElementById("general-container") as HTMLDivElement
 	plansContainer = document.getElementById("plans-container") as HTMLDivElement
+	snackbarLabel = document.getElementById("snackbar-label") as HTMLDivElement
 
 	errorMessageBarGeneral = document.getElementById("error-message-bar-general") as MessageBar
 	successMessageBarGeneral = document.getElementById("success-message-bar-general") as MessageBar
@@ -54,6 +61,7 @@ async function main() {
 	passwordTextfield = document.getElementById("password-textfield") as Textfield
 	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
 
+	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
 	initialFirstName = firstNameTextfield.value
 
 	setEventListeners()
@@ -101,7 +109,8 @@ function setEventListeners() {
 				}
 			})
 
-			// TODO: Show success message
+			// Show success message
+			showSnackbar(locale.messages.firstNameUpdateMessage)
 
 			initialFirstName = firstName
 			hideElement(firstNameSaveButton)
@@ -127,4 +136,9 @@ function displayPage() {
 		hideElement(plansContainer)
 		showElement(generalContainer)
 	}
+}
+
+function showSnackbar(message: string) {
+	snackbarLabel.innerText = message
+	snackbar.open()
 }
