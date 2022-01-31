@@ -168,6 +168,18 @@ export class App {
 			})
 		})
 
+		router.get('/user', async (req, res) => {
+			let locale = getLocale(req.acceptsLanguages()[0])
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+
+			res.render("user-page/user-page", {
+				lang: locale.lang,
+				locale: locale.userPage,
+				navbarLocale: locale.navbarComponent,
+				user
+			})
+		})
+
 		router.get('/dev', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let accessToken = this.getRequestCookies(req)["accessToken"]
