@@ -8,5 +8,6 @@ export interface CsrfToken {
 export enum CsrfTokenContext {
 	LoginPage,
 	SignupPage,
+	UserPage,
 	DevPages
 }

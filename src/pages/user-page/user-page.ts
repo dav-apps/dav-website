@@ -1,3 +1,4 @@
+import axios from 'axios'
 import 'dav-ui-components'
 import {
 	Button,
@@ -22,10 +23,14 @@ let profileImage: HTMLImageElement
 let uploadProfileImageButton: Button
 let firstNameTextfield: Textfield
 let firstNameSaveButton: HTMLButtonElement
+let firstNameProgressRing: ProgressRing
 let emailTextfield: Textfield
 let emailSaveButton: HTMLButtonElement
 let passwordTextfield: Textfield
 let passwordConfirmationTextfield: Textfield
+
+let firstName = ""
+let initialFirstName = ""
 //#endregion
 
 window.addEventListener("load", main)
@@ -43,10 +48,13 @@ async function main() {
 	uploadProfileImageButton = document.getElementById("upload-profile-image-button") as Button
 	firstNameTextfield = document.getElementById("first-name-textfield") as Textfield
 	firstNameSaveButton = document.getElementById("first-name-save-button") as HTMLButtonElement
+	firstNameProgressRing = document.getElementById("first-name-progress-ring") as ProgressRing
 	emailTextfield = document.getElementById("email-textfield") as Textfield
 	emailSaveButton = document.getElementById("email-save-button") as HTMLButtonElement
 	passwordTextfield = document.getElementById("password-textfield") as Textfield
 	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
+
+	initialFirstName = firstNameTextfield.value
 
 	setEventListeners()
 	displayPage()
@@ -62,6 +70,51 @@ function setEventListeners() {
 	plansSidenavItem.addEventListener('click', () => {
 		window.location.href = "/user#plans"
 	})
+
+	//#region General page event listeners
+	firstNameTextfield.addEventListener('change', (event: Event) => {
+		firstName = (event as CustomEvent).detail.value
+
+		if (firstName == initialFirstName) {
+			// Hide the save button
+			hideElement(firstNameSaveButton)
+		} else {
+			// Show the save button
+			showElement(firstNameSaveButton)
+		}
+	})
+
+	firstNameSaveButton.addEventListener('click', async () => {
+		showElement(firstNameProgressRing)
+		firstNameTextfield.disabled = true
+		firstNameSaveButton.disabled = true
+
+		try {
+			await axios({
+				method: 'put',
+				url: '/api/user',
+				headers: {
+					"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				},
+				data: {
+					firstName: firstName
+				}
+			})
+
+			// TODO: Show success message
+
+			initialFirstName = firstName
+			hideElement(firstNameSaveButton)
+		} catch (error) {
+			// TODO: Show error message
+			console.log(error.response.data)
+		}
+
+		hideElement(firstNameProgressRing)
+		firstNameTextfield.disabled = false
+		firstNameSaveButton.disabled = false
+	})
+	//#endregion
 }
 
 function displayPage() {

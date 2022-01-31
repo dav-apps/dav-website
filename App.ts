@@ -58,6 +58,7 @@ export class App {
 		router.use(express.static(path.join(__dirname, 'src/pages')))
 		router.use(express.json())
 
+		//#region Public endpoints
 		router.get('/', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
@@ -171,12 +172,14 @@ export class App {
 		router.get('/user', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages()[0])
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.UserPage)
 
 			res.render("user-page/user-page", {
 				lang: locale.lang,
 				locale: locale.userPage,
 				navbarLocale: locale.navbarComponent,
-				user
+				user,
+				csrfToken
 			})
 		})
 
@@ -257,6 +260,7 @@ export class App {
 				apps: response.status == 200 ? (response as ApiResponse<DavApp[]>).data : []
 			})
 		})
+		//#endregion
 
 		//#region API endpoints
 		router.get('/api/users', async (req, res) => {
@@ -445,6 +449,30 @@ export class App {
 			}
 		})
 
+		router.put('/api/user', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await UsersController.UpdateUser({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				firstName: req.body.firstName
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<User>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
+			}
+		})
+
 		router.put('/api/app/:id', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
@@ -455,22 +483,15 @@ export class App {
 			}
 			this.init()
 
-			let name = req.body.name
-			let description = req.body.description
-			let webLink = req.body.webLink
-			let googlePlayLink = req.body.googlePlayLink
-			let microsoftStoreLink = req.body.microsoftStoreLink
-			let published = req.body.published
-
 			let response = await AppsController.UpdateApp({
 				accessToken: this.getRequestCookies(req)["accessToken"],
 				id: +req.params.id,
-				name,
-				description,
-				webLink,
-				googlePlayLink,
-				microsoftStoreLink,
-				published
+				name: req.body.name,
+				description: req.body.description,
+				webLink: req.body.webLink,
+				googlePlayLink: req.body.googlePlayLink,
+				microsoftStoreLink: req.body.microsoftStoreLink,
+				published: req.body.published
 			})
 
 			if (response.status == 200) {

@@ -6,6 +6,7 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="env" content="<%= process.env.ENV %>">
+		<meta name="csrf-token" content="<%= csrfToken %>">
 
 		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" href="../../styles.scss">
@@ -97,6 +98,7 @@
 									</button>
 
 									<dav-progress-ring
+										id="first-name-progress-ring"
 										class="d-none"
 										style="margin: 33px 0 0 14px; width: 16px; height: 16px">
 									</dav-progress-ring>
