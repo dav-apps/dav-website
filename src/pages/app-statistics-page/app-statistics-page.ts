@@ -64,8 +64,9 @@ async function main() {
 			labels: [],
 			datasets: [
 				{ label: locale.daily, data: [], borderColor: 'rgb(255, 99, 132)', backgroundColor: 'rgb(255, 99, 132)' },
-				{ label: locale.monthly, data: [], borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgb(54, 162, 235)' },
-				{ label: locale.yearly, data: [], borderColor: 'rgb(255, 205, 86)', backgroundColor: 'rgb(255, 205, 86)' }
+				{ label: locale.weekly, data: [], borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgb(54, 162, 235)' },
+				{ label: locale.monthly, data: [], borderColor: 'rgb(255, 205, 86)', backgroundColor: 'rgb(255, 205, 86)' },
+				{ label: locale.yearly, data: [], borderColor: 'rgb(111, 205, 205)', backgroundColor: 'rgb(111, 205, 205)', hidden: true }
 			]
 		}
 	})
