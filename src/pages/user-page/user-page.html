@@ -110,6 +110,7 @@
 								<div class="mt-4 d-flex">
 									<dav-textfield
 										id="email-textfield"
+										value="<%= user.Email %>"
 										label="<%= locale.general.emailTextfieldLabel %>"
 										placeholder="<%= locale.general.emailTextfieldPlaceholder %>"
 										type="email"
@@ -124,6 +125,7 @@
 									</button>
 
 									<dav-progress-ring
+										id="email-progress-ring"
 										class="d-none"
 										style="margin: 33px 0 0 14px; width: 16px; height: 16px">
 									</dav-progress-ring>

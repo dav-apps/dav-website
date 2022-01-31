@@ -32,11 +32,12 @@ let firstNameSaveButton: HTMLButtonElement
 let firstNameProgressRing: ProgressRing
 let emailTextfield: Textfield
 let emailSaveButton: HTMLButtonElement
+let emailProgressRing: ProgressRing
 let passwordTextfield: Textfield
 let passwordConfirmationTextfield: Textfield
 
-let firstName = ""
 let initialFirstName = ""
+let initialEmail = ""
 //#endregion
 
 window.addEventListener("load", main)
@@ -58,11 +59,13 @@ async function main() {
 	firstNameProgressRing = document.getElementById("first-name-progress-ring") as ProgressRing
 	emailTextfield = document.getElementById("email-textfield") as Textfield
 	emailSaveButton = document.getElementById("email-save-button") as HTMLButtonElement
+	emailProgressRing = document.getElementById("email-progress-ring") as ProgressRing
 	passwordTextfield = document.getElementById("password-textfield") as Textfield
 	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
 
 	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
 	initialFirstName = firstNameTextfield.value
+	initialEmail = emailTextfield.value
 
 	setEventListeners()
 	displayPage()
@@ -80,10 +83,8 @@ function setEventListeners() {
 	})
 
 	//#region General page event listeners
-	firstNameTextfield.addEventListener('change', (event: Event) => {
-		firstName = (event as CustomEvent).detail.value
-
-		if (firstName == initialFirstName) {
+	firstNameTextfield.addEventListener('change', () => {
+		if (firstNameTextfield.value == initialFirstName) {
 			// Hide the save button
 			hideElement(firstNameSaveButton)
 		} else {
@@ -93,6 +94,8 @@ function setEventListeners() {
 	})
 
 	firstNameSaveButton.addEventListener('click', async () => {
+		let firstName = firstNameTextfield.value
+
 		showElement(firstNameProgressRing)
 		firstNameTextfield.disabled = true
 		firstNameSaveButton.disabled = true
@@ -105,7 +108,7 @@ function setEventListeners() {
 					"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 				},
 				data: {
-					firstName: firstName
+					firstName
 				}
 			})
 
@@ -122,6 +125,48 @@ function setEventListeners() {
 		hideElement(firstNameProgressRing)
 		firstNameTextfield.disabled = false
 		firstNameSaveButton.disabled = false
+	})
+
+	emailTextfield.addEventListener('change', () => {
+		if (emailTextfield.value == initialEmail) {
+			// Hide the save button
+			hideElement(emailSaveButton)
+		} else {
+			// Show the save button
+			showElement(emailSaveButton)
+		}
+	})
+
+	emailSaveButton.addEventListener('click', async () => {
+		showElement(emailProgressRing)
+		emailTextfield.disabled = true
+		emailSaveButton.disabled = true
+
+		try {
+			await axios({
+				method: 'put',
+				url: '/api/user',
+				headers: {
+					"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				},
+				data: {
+					email: emailTextfield.value
+				}
+			})
+
+			// Show success message
+			showGeneralSuccessMessage(locale.messages.emailUpdateMessage)
+
+			emailTextfield.value = initialEmail
+			hideElement(emailSaveButton)
+		} catch (error) {
+			// TODO: Show error message
+			console.log(error.response.data)
+		}
+
+		hideElement(emailProgressRing)
+		emailTextfield.disabled = false
+		emailSaveButton.disabled = false
 	})
 	//#endregion
 }
@@ -141,4 +186,9 @@ function displayPage() {
 function showSnackbar(message: string) {
 	snackbarLabel.innerText = message
 	snackbar.open()
+}
+
+function showGeneralSuccessMessage(message: string) {
+	successMessageBarGeneral.innerText = message
+	showElement(successMessageBarGeneral)
 }
