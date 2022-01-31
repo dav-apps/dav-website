@@ -31,28 +31,25 @@
 
 							<div class="card-button-container">
 								<% if (app.WebLink) { %>
-									<% var webLink = app.WebLink %>
 									<a class="btn card-button text-dark mx-2"
 										target="blank"
-										href="<%= webLink %>">
+										href="<%= app.WebLink %>">
 										<i class="fas fa-globe"></i>
 									</a>
 								<% } %>
-	
+
 								<% if (app.GooglePlayLink) { %>
-									<% var playLink = app.GooglePlayLink %>
 									<a class="btn card-button text-dark mx-2"
 										target="blank"
-										href="<%= playLink %>">
+										href="<%= app.GooglePlayLink %>">
 										<i class="fab fa-android"></i>
 									</a>
 								<% } %>
-	
+
 								<% if (app.MicrosoftStoreLink) { %>
-									<% microsoftStoreLink = app.MicrosoftStoreLink %>
 									<a class="btn card-button text-dark mx-2"
 										target="blank"
-										href="<%= microsoftStoreLink %>">
+										href="<%= app.MicrosoftStoreLink %>">
 										<i class="fab fa-windows"></i>
 									</a>
 								<% } %>
