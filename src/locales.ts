@@ -346,6 +346,9 @@ const enDefaults = {
 			firstNameTooLong: "The name is too long",
 			emailInvalid: "Your new email is invalid",
 			emailTaken: "This email address is already in use",
+			passwordMissing: "Please enter a password",
+			passwordConfirmationMissing: "Please enter your password again",
+			passwordConfirmationNotMatching: "Your password doesn't match the password confirmation",
 			passwordTooShort: "Your new password is too short",
 			passwordTooLong: "Your new password is too long",
 			emailAlreadyConfirmed: "Your email address is already confirmed"
@@ -879,6 +882,9 @@ const deDefaults = {
 			firstNameTooLong: "Der Name ist zu lang",
 			emailInvalid: "Deine neue Email-Adresse ist ungültig",
 			emailTaken: "Diese Email-Adresse wird bereits verwendet",
+			passwordMissing: "Bitte gib ein Passwort ein",
+			passwordConfirmationMissing: "Bitte gib dein Password nochmal ein",
+			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein",
 			passwordTooShort: "Dein neues Passwort ist zu kurz",
 			passwordTooLong: "Dein neues Passwort ist zu lang",
 			emailAlreadyConfirmed: "Deine Email-Adresse ist bereits bestätigt"

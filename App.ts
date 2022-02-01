@@ -462,7 +462,8 @@ export class App {
 			let response = await UsersController.UpdateUser({
 				accessToken: this.getRequestCookies(req)["accessToken"],
 				firstName: req.body.firstName,
-				email: req.body.email
+				email: req.body.email,
+				password: req.body.password
 			})
 
 			if (response.status == 200) {
