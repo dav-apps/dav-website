@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="user-page.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+		<link rel="stylesheet" href="/node_modules/cropperjs/dist/cropper.min.css">
 
 		<script type="module" src="user-page.ts" defer async></script>
 	</head>
@@ -185,5 +186,16 @@
 				</aside>
 			</div>
 		</dav-sidenav-container>
+
+		<dav-dialog
+			id="profile-image-dialog"
+			header="<%= locale.general.profileImageDialog.header %>"
+			primaryButtonText="<%= locale.save %>"
+			defaultButtonText="<%= locale.cancel %>">
+
+			<div class="mb-3" style="max-height: 400px;">
+				<img id="profile-image-dialog-image" style="max-width: 100%">
+			</div>
+		</dav-dialog>
 	</body>
 </html>

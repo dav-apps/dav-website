@@ -57,6 +57,7 @@ export class App {
 
 		router.use(express.static(path.join(__dirname, 'src/pages')))
 		router.use(express.json())
+		router.use(express.raw({ type: "image/*" }))
 
 		//#region Public endpoints
 		router.get('/', async (req, res) => {
@@ -464,6 +465,31 @@ export class App {
 				firstName: req.body.firstName,
 				email: req.body.email,
 				password: req.body.password
+			})
+
+			if (response.status == 200) {
+				response = response as ApiResponse<User>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
+			}
+		})
+
+		router.put('/api/user/profile_image', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await UsersController.SetProfileImageOfUser({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				data: req.body,
+				type: req.headers['content-type']
 			})
 
 			if (response.status == 200) {

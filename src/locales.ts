@@ -289,7 +289,10 @@ const enDefaults = {
 			passwordTextfieldLabel: "New Password",
 			passwordTextfieldPlaceholder: "Your new password",
 			passwordConfirmationTextfieldLabel: "Password confirmation",
-			passwordConfirmationTextfieldPlaceholder: "Repeat your new password"
+			passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
+			profileImageDialog: {
+				header: "Crop your profile image"
+			}
 		},
 		plans: {
 			title: "Plans",
@@ -825,7 +828,10 @@ const deDefaults = {
 			passwordTextfieldLabel: "Neues Passwort",
 			passwordTextfieldPlaceholder: "Dein neues Passwort",
 			passwordConfirmationTextfieldLabel: "Passwortbestätigung",
-			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort"
+			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort",
+			profileImageDialog: {
+				header: "Profilbild zuschneiden"
+			}
 		},
 		plans: {
 			title: "Abos",

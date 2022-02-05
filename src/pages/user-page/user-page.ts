@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { MDCSnackbar } from '@material/snackbar'
+import Cropper from 'cropperjs'
 import 'dav-ui-components'
 import {
 	Button,
+	Dialog,
 	MessageBar,
 	ProgressRing,
 	SidenavItem,
@@ -11,6 +13,8 @@ import {
 import '../../components/navbar-component/navbar-component'
 import { showElement, hideElement } from '../../utils'
 import { getLocale } from '../../locales'
+
+const maxProfileImageFileSize = 2000000
 
 let generalSidenavItem: SidenavItem
 let plansSidenavItem: SidenavItem
@@ -27,6 +31,8 @@ let successMessageBarGeneral: MessageBar
 let profileImageProgressRing: ProgressRing
 let profileImage: HTMLImageElement
 let uploadProfileImageButton: Button
+let profileImageDialog: Dialog
+let profileImageDialogImage: HTMLImageElement
 let firstNameTextfield: Textfield
 let firstNameSaveButton: HTMLButtonElement
 let firstNameProgressRing: ProgressRing
@@ -38,6 +44,8 @@ let passwordConfirmationTextfield: Textfield
 let passwordSaveButton: Button
 let passwordProgressRing: ProgressRing
 
+let profileImageCropper: Cropper
+let initialProfileImageSrc: string
 let initialFirstName = ""
 let initialEmail = ""
 //#endregion
@@ -56,6 +64,8 @@ async function main() {
 	profileImageProgressRing = document.getElementById("profile-image-progress-ring") as ProgressRing
 	profileImage = document.getElementById("profile-image") as HTMLImageElement
 	uploadProfileImageButton = document.getElementById("upload-profile-image-button") as Button
+	profileImageDialog = document.getElementById("profile-image-dialog") as Dialog
+	profileImageDialogImage = document.getElementById("profile-image-dialog-image") as HTMLImageElement
 	firstNameTextfield = document.getElementById("first-name-textfield") as Textfield
 	firstNameSaveButton = document.getElementById("first-name-save-button") as HTMLButtonElement
 	firstNameProgressRing = document.getElementById("first-name-progress-ring") as ProgressRing
@@ -68,6 +78,7 @@ async function main() {
 	passwordProgressRing = document.getElementById("password-progress-ring") as ProgressRing
 
 	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
+	initialProfileImageSrc = profileImage.src
 	initialFirstName = firstNameTextfield.value
 	initialEmail = emailTextfield.value
 
@@ -87,6 +98,11 @@ function setEventListeners() {
 	})
 
 	//#region General page event listeners
+	uploadProfileImageButton.addEventListener('click', uploadProfileImageButtonClick)
+	profileImageDialog.addEventListener('dismiss', hideProfileImageDialog)
+	profileImageDialog.addEventListener('primaryButtonClick', profileImageDialogPrimaryButtonClick)
+	profileImageDialog.addEventListener('defaultButtonClick', hideProfileImageDialog)
+	profileImageDialogImage.addEventListener('load', profileImageDialogImageLoad)
 	firstNameTextfield.addEventListener('change', firstNameTextfieldChange)
 	firstNameSaveButton.addEventListener('click', firstNameSaveButtonClick)
 	emailTextfield.addEventListener('change', emailTextfieldChange)
@@ -110,6 +126,89 @@ function displayPage() {
 }
 
 //#region General page event listeners
+function uploadProfileImageButtonClick() {
+	let input = document.createElement("input")
+	input.setAttribute("type", "file")
+	input.setAttribute("accept", "image/png, image/jpeg")
+
+	input.addEventListener('change', () => {
+		if (input.files.length == 0) return
+
+		let file = input.files.item(0)
+		let blob = new Blob([file], { type: file.type })
+
+		profileImageDialogImage.src = URL.createObjectURL(blob)
+	})
+
+	input.click()
+}
+
+function profileImageDialogImageLoad() {
+	profileImageCropper = new Cropper(profileImageDialogImage, {
+		aspectRatio: 1,
+		autoCropArea: 1,
+		viewMode: 2
+	})
+
+	profileImageDialog.visible = true
+}
+
+function hideProfileImageDialog() {
+	profileImageDialog.visible = false
+}
+
+async function profileImageDialogPrimaryButtonClick() {
+	profileImageDialog.visible = false
+
+	let canvas = profileImageCropper.getCroppedCanvas()
+	let blob = await new Promise<Blob>((r: Function) => {
+		canvas.toBlob((blob: Blob) => r(blob), "image/jpeg", 0.8)
+	})
+	profileImageCropper.destroy()
+
+	if (blob.size > maxProfileImageFileSize) {
+		showGeneralErrorMessage(locale.errors.profileImageFileTooLarge)
+		return
+	}
+
+	uploadProfileImageButton.disabled = true
+	showElement(profileImageProgressRing)
+	profileImage.src = canvas.toDataURL("image/png")
+	profileImage.style.opacity = "0.4"
+
+	// Read the blob
+	let readFilePromise: Promise<ProgressEvent> = new Promise((resolve) => {
+		let fileReader = new FileReader()
+		fileReader.onloadend = resolve
+		fileReader.readAsArrayBuffer(blob)
+	})
+	let readFileResult: ProgressEvent = await readFilePromise
+	let data = readFileResult.currentTarget["result"]
+
+	// Send the file content to the server
+	try {
+		await axios({
+			method: 'put',
+			url: '/api/user/profile_image',
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+				"Content-Type": blob.type
+			},
+			data
+		})
+
+		showSnackbar(locale.messages.profileImageUpdateMessage)
+	} catch (error) {
+		// TODO: Show error message
+		console.log(error.response.data)
+		profileImage.src = initialProfileImageSrc
+	}
+
+	uploadProfileImageButton.disabled = false
+	hideElement(profileImageProgressRing)
+	profileImage.style.opacity = "1"
+}
+
 function firstNameTextfieldChange() {
 	if (firstNameTextfield.value == initialFirstName) {
 		// Hide the save button
@@ -260,4 +359,9 @@ function showSnackbar(message: string) {
 function showGeneralSuccessMessage(message: string) {
 	successMessageBarGeneral.innerText = message
 	showElement(successMessageBarGeneral)
+}
+
+function showGeneralErrorMessage(message: string) {
+	errorMessageBarGeneral.innerText = message
+	showElement(errorMessageBarGeneral)
 }
