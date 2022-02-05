@@ -138,10 +138,6 @@ function navigateToStatisticsPage() {
 }
 
 function showEditAppDialog() {
-	editAppDialog.header = locale.editAppDialog.header
-	editAppDialog.primaryButtonText = locale.save
-	editAppDialog.defaultButtonText = locale.cancel
-
 	editAppDialogName = app.Name
 	editAppDialogNameTextfield.value = app.Name
 	editAppDialogDescription = app.Description
