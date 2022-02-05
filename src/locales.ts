@@ -1070,7 +1070,7 @@ export var deCH = {
 
 export function getLocale(lang?: string) {
 	if (lang == null) {
-		lang = navigator.language.toLowerCase()
+		lang = navigator?.language?.toLowerCase()
 	} else {
 		lang = lang.toLowerCase()
 	}
