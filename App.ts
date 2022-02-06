@@ -18,6 +18,7 @@ import {
 	UserActivitiesController,
 	AppUsersController,
 	AppUserActivitiesController,
+	CheckoutSessionsController,
 	ApiResponse,
 	ApiErrorResponse,
 	SessionResponseData,
@@ -26,7 +27,8 @@ import {
 	GetUsersResponseData,
 	GetUserActivitiesResponseData,
 	GetAppUsersResponseData,
-	GetAppUserActivitiesResponseData
+	GetAppUserActivitiesResponseData,
+	CreateCheckoutSessionResponseData
 } from 'dav-js'
 import { CsrfToken, CsrfTokenContext } from './src/types.js'
 import { getLocale } from './src/locales.js'
@@ -496,6 +498,32 @@ export class App {
 
 			if (response.status == 200) {
 				response = response as ApiResponse<User>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
+			}
+		})
+
+		router.post('/api/checkout_session', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await CheckoutSessionsController.CreateCheckoutSession({
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				plan: req.body.plan,
+				successUrl: req.body.successUrl,
+				cancelUrl: req.body.cancelUrl
+			})
+
+			if (response.status == 201) {
+				response = response as ApiResponse<CreateCheckoutSessionResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				response = response as ApiErrorResponse

@@ -64,20 +64,20 @@ let plansTableProButtonProgressRing: ProgressRing
 let plansTableMobileFreeButtonProgressRing: ProgressRing
 let plansTableMobilePlusButtonProgressRing: ProgressRing
 let plansTableMobileProButtonProgressRing: ProgressRing
-let plansTableFreeCurrentPlanButton: Button
-let plansTableFreeDowngradeButton: Button
-let plansTablePlusUpgradeButton: Button
-let plansTablePlusCurrentPlanButton: Button
-let plansTablePlusDowngradeButton: Button
-let plansTableProUpgradeButton: Button
-let plansTableProCurrentPlanButton: Button
-let plansTableMobileFreeCurrentPlanButton: Button
-let plansTableMobileFreeDowngradeButton: Button
-let plansTableMobilePlusUpgradeButton: Button
-let plansTableMobilePlusCurrentPlanButton: Button
-let plansTableMobilePlusDowngradeButton: Button
-let plansTableMobileProUpgradeButton: Button
-let plansTableMobileProCurrentPlanButton: Button
+let plansTableFreeCurrentPlanButton: HTMLButtonElement
+let plansTableFreeDowngradeButton: HTMLButtonElement
+let plansTablePlusUpgradeButton: HTMLButtonElement
+let plansTablePlusCurrentPlanButton: HTMLButtonElement
+let plansTablePlusDowngradeButton: HTMLButtonElement
+let plansTableProUpgradeButton: HTMLButtonElement
+let plansTableProCurrentPlanButton: HTMLButtonElement
+let plansTableMobileFreeCurrentPlanButton: HTMLButtonElement
+let plansTableMobileFreeDowngradeButton: HTMLButtonElement
+let plansTableMobilePlusUpgradeButton: HTMLButtonElement
+let plansTableMobilePlusCurrentPlanButton: HTMLButtonElement
+let plansTableMobilePlusDowngradeButton: HTMLButtonElement
+let plansTableMobileProUpgradeButton: HTMLButtonElement
+let plansTableMobileProCurrentPlanButton: HTMLButtonElement
 //#endregion
 
 window.addEventListener("resize", setSize)
@@ -120,20 +120,20 @@ async function main() {
 	plansTableMobileFreeButtonProgressRing = document.getElementById("plans-table-mobile-free-button-progress-ring") as ProgressRing
 	plansTableMobilePlusButtonProgressRing = document.getElementById("plans-table-mobile-plus-button-progress-ring") as ProgressRing
 	plansTableMobileProButtonProgressRing = document.getElementById("plans-table-mobile-pro-button-progress-ring") as ProgressRing
-	plansTableFreeCurrentPlanButton = document.getElementById("plans-table-free-current-plan-button") as Button
-	plansTableFreeDowngradeButton = document.getElementById("plans-table-free-downgrade-button") as Button
-	plansTablePlusUpgradeButton = document.getElementById("plans-table-plus-upgrade-button") as Button
-	plansTablePlusCurrentPlanButton = document.getElementById("plans-table-plus-current-plan-button") as Button
-	plansTablePlusDowngradeButton = document.getElementById("plans-table-plus-downgrade-button") as Button
-	plansTableProUpgradeButton = document.getElementById("plans-table-pro-upgrade-button") as Button
-	plansTableProCurrentPlanButton = document.getElementById("plans-table-pro-current-plan-button") as Button
-	plansTableMobileFreeCurrentPlanButton = document.getElementById("plans-table-mobile-free-current-plan-button") as Button
-	plansTableMobileFreeDowngradeButton = document.getElementById("plans-table-mobile-free-downgrade-button") as Button
-	plansTableMobilePlusUpgradeButton = document.getElementById("plans-table-mobile-plus-upgrade-button") as Button
-	plansTableMobilePlusCurrentPlanButton = document.getElementById("plans-table-mobile-plus-current-plan-button") as Button
-	plansTableMobilePlusDowngradeButton = document.getElementById("plans-table-mobile-plus-downgrade-button") as Button
-	plansTableMobileProUpgradeButton = document.getElementById("plans-table-mobile-pro-upgrade-button") as Button
-	plansTableMobileProCurrentPlanButton = document.getElementById("plans-table-mobile-pro-current-plan-button") as Button
+	plansTableFreeCurrentPlanButton = document.getElementById("plans-table-free-current-plan-button") as HTMLButtonElement
+	plansTableFreeDowngradeButton = document.getElementById("plans-table-free-downgrade-button") as HTMLButtonElement
+	plansTablePlusUpgradeButton = document.getElementById("plans-table-plus-upgrade-button") as HTMLButtonElement
+	plansTablePlusCurrentPlanButton = document.getElementById("plans-table-plus-current-plan-button") as HTMLButtonElement
+	plansTablePlusDowngradeButton = document.getElementById("plans-table-plus-downgrade-button") as HTMLButtonElement
+	plansTableProUpgradeButton = document.getElementById("plans-table-pro-upgrade-button") as HTMLButtonElement
+	plansTableProCurrentPlanButton = document.getElementById("plans-table-pro-current-plan-button") as HTMLButtonElement
+	plansTableMobileFreeCurrentPlanButton = document.getElementById("plans-table-mobile-free-current-plan-button") as HTMLButtonElement
+	plansTableMobileFreeDowngradeButton = document.getElementById("plans-table-mobile-free-downgrade-button") as HTMLButtonElement
+	plansTableMobilePlusUpgradeButton = document.getElementById("plans-table-mobile-plus-upgrade-button") as HTMLButtonElement
+	plansTableMobilePlusCurrentPlanButton = document.getElementById("plans-table-mobile-plus-current-plan-button") as HTMLButtonElement
+	plansTableMobilePlusDowngradeButton = document.getElementById("plans-table-mobile-plus-downgrade-button") as HTMLButtonElement
+	plansTableMobileProUpgradeButton = document.getElementById("plans-table-mobile-pro-upgrade-button") as HTMLButtonElement
+	plansTableMobileProCurrentPlanButton = document.getElementById("plans-table-mobile-pro-current-plan-button") as HTMLButtonElement
 
 	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
 	initialProfileImageSrc = profileImage.src
@@ -173,6 +173,13 @@ function setEventListeners() {
 	passwordConfirmationTextfield.addEventListener('enter', passwordSaveButtonClick)
 	passwordSaveButton.addEventListener('click', passwordSaveButtonClick)
 	//#endregion
+
+	//#region Plans page event listeners
+	plansTablePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
+	plansTableMobilePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
+	plansTableProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
+	plansTableMobileProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
+	//#endregion
 }
 
 function setSize() {
@@ -193,7 +200,9 @@ function setSize() {
 }
 
 function displayPage() {
-	if (window.location.hash == "#plans") {
+	let hash = window.location.hash.split('?')[0]
+
+	if (hash == "#plans") {
 		// Show the plans page
 		hideElement(generalContainer)
 		showElement(plansContainer)
@@ -435,6 +444,63 @@ async function passwordSaveButtonClick() {
 	passwordConfirmationTextfield.disabled = false
 	passwordSaveButton.disabled = false
 	hideElement(passwordProgressRing)
+}
+//#endregion
+
+//#region Plans page event listeners
+async function plansTablePlusUpgradeButtonClick() {
+	showElement(plansTablePlusButtonProgressRing)
+	showElement(plansTableMobilePlusButtonProgressRing)
+	plansTablePlusUpgradeButton.disabled = true
+	plansTableMobilePlusUpgradeButton.disabled = true
+
+	try {
+		let response = await createCheckoutSession(1)
+		window.location.href = response.data.sessionUrl
+		return
+	} catch (error) {
+		// TODO: Show error message
+	}
+
+	hideElement(plansTablePlusButtonProgressRing)
+	hideElement(plansTableMobilePlusButtonProgressRing)
+	plansTablePlusUpgradeButton.disabled = false
+	plansTableMobilePlusUpgradeButton.disabled = false
+}
+
+async function plansTableProUpgradeButtonClick() {
+	showElement(plansTableProButtonProgressRing)
+	showElement(plansTableMobileProButtonProgressRing)
+	plansTableProUpgradeButton.disabled = true
+	plansTableMobileProUpgradeButton.disabled = true
+
+	try {
+		let response = await createCheckoutSession(2)
+		window.location.href = response.data.sessionUrl
+		return
+	} catch (error) {
+		// TODO: Show error message
+	}
+
+	hideElement(plansTableProButtonProgressRing)
+	hideElement(plansTableMobileProButtonProgressRing)
+	plansTableProUpgradeButton.disabled = false
+	plansTableMobileProUpgradeButton.disabled = false
+}
+
+async function createCheckoutSession(plan: number): Promise<any> {
+	return await axios({
+		method: 'post',
+		url: '/api/checkout_session',
+		headers: {
+			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+		},
+		data: {
+			plan,
+			successUrl: window.location.href,
+			cancelUrl: window.location.href
+		}
+	})
 }
 //#endregion
 
