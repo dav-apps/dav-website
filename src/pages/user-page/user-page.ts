@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { MDCSnackbar } from '@material/snackbar'
 import Cropper from 'cropperjs'
+import { ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
 import {
 	Button,
@@ -110,7 +111,7 @@ function setEventListeners() {
 	emailTextfield.addEventListener('enter', emailSaveButtonClick)
 	emailSaveButton.addEventListener('click', emailSaveButtonClick)
 	passwordTextfield.addEventListener('change', passwordTextfieldChange)
-	passwordConfirmationTextfield.addEventListener('change', passwordConfirmationTextfieldChange)
+	passwordConfirmationTextfield.addEventListener('change', passwordTextfieldChange)
 	passwordConfirmationTextfield.addEventListener('enter', passwordSaveButtonClick)
 	passwordSaveButton.addEventListener('click', passwordSaveButtonClick)
 	//#endregion
@@ -202,8 +203,8 @@ async function profileImageDialogPrimaryButtonClick() {
 
 		showSnackbar(locale.messages.profileImageUpdateMessage)
 	} catch (error) {
-		// TODO: Show error message
-		console.log(error.response.data)
+		// Show error message
+		showGeneralErrorMessage(getErrorMessage(error.response.data.errors[0].code))
 		profileImage.src = initialProfileImageSrc
 	}
 
@@ -213,6 +214,8 @@ async function profileImageDialogPrimaryButtonClick() {
 }
 
 function firstNameTextfieldChange() {
+	firstNameTextfield.errorMessage = ""
+
 	if (firstNameTextfield.value == initialFirstName) {
 		// Hide the save button
 		hideElement(firstNameSaveButton)
@@ -252,8 +255,8 @@ async function firstNameSaveButtonClick() {
 		let userNavLink = document.getElementById("user-nav-link") as HTMLAnchorElement
 		if (userNavLink != null) userNavLink.innerText = firstName
 	} catch (error) {
-		// TODO: Show error message
-		console.log(error.response.data)
+		// Show error message
+		firstNameTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
 	}
 
 	hideElement(firstNameProgressRing)
@@ -262,6 +265,8 @@ async function firstNameSaveButtonClick() {
 }
 
 function emailTextfieldChange() {
+	emailTextfield.errorMessage = ""
+
 	if (emailTextfield.value == initialEmail) {
 		// Hide the save button
 		hideElement(emailSaveButton)
@@ -297,8 +302,8 @@ async function emailSaveButtonClick() {
 		emailTextfield.value = initialEmail
 		hideElement(emailSaveButton)
 	} catch (error) {
-		// TODO: Show error message
-		console.log(error.response.data)
+		// Show error message
+		emailTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
 	}
 
 	hideElement(emailProgressRing)
@@ -307,11 +312,6 @@ async function emailSaveButtonClick() {
 }
 
 function passwordTextfieldChange() {
-	passwordTextfield.errorMessage = ""
-	passwordConfirmationTextfield.errorMessage = ""
-}
-
-function passwordConfirmationTextfieldChange() {
 	passwordTextfield.errorMessage = ""
 	passwordConfirmationTextfield.errorMessage = ""
 }
@@ -351,8 +351,9 @@ async function passwordSaveButtonClick() {
 		passwordTextfield.value = ""
 		passwordConfirmationTextfield.value = ""
 	} catch (error) {
-		// TODO: Show error message
-		console.log(error.response.data)
+		// Show error message
+		passwordTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+		passwordConfirmationTextfield.value = ""
 	}
 
 	passwordTextfield.disabled = false
@@ -375,4 +376,27 @@ function showGeneralSuccessMessage(message: string) {
 function showGeneralErrorMessage(message: string) {
 	errorMessageBarGeneral.innerText = message
 	showElement(errorMessageBarGeneral)
+}
+
+function getErrorMessage(errorCode: number): string {
+	switch (errorCode) {
+		case ErrorCodes.ImageFileTooLarge:
+			return locale.errors.profileImageFileTooLarge
+		case ErrorCodes.FirstNameTooShort:
+			return locale.errors.firstNameTooShort
+		case ErrorCodes.FirstNameTooLong:
+			return locale.errors.firstNameTooLong
+		case ErrorCodes.EmailInvalid:
+			return locale.errors.emailInvalid
+		case ErrorCodes.EmailAlreadyInUse:
+			return locale.errors.emailTaken
+		case ErrorCodes.PasswordTooShort:
+			return locale.errors.passwordTooShort
+		case ErrorCodes.PasswordTooLong:
+			return locale.errors.passwordTooLong
+		case ErrorCodes.UserIsAlreadyConfirmed:
+			return locale.errors.emailAlreadyConfirmed
+		default:
+			return locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString())
+	}
 }
