@@ -104,11 +104,14 @@ function setEventListeners() {
 	profileImageDialog.addEventListener('defaultButtonClick', hideProfileImageDialog)
 	profileImageDialogImage.addEventListener('load', profileImageDialogImageLoad)
 	firstNameTextfield.addEventListener('change', firstNameTextfieldChange)
+	firstNameTextfield.addEventListener('enter', firstNameSaveButtonClick)
 	firstNameSaveButton.addEventListener('click', firstNameSaveButtonClick)
 	emailTextfield.addEventListener('change', emailTextfieldChange)
+	emailTextfield.addEventListener('enter', emailSaveButtonClick)
 	emailSaveButton.addEventListener('click', emailSaveButtonClick)
 	passwordTextfield.addEventListener('change', passwordTextfieldChange)
 	passwordConfirmationTextfield.addEventListener('change', passwordConfirmationTextfieldChange)
+	passwordConfirmationTextfield.addEventListener('enter', passwordSaveButtonClick)
 	passwordSaveButton.addEventListener('click', passwordSaveButtonClick)
 	//#endregion
 }
@@ -221,6 +224,7 @@ function firstNameTextfieldChange() {
 
 async function firstNameSaveButtonClick() {
 	let firstName = firstNameTextfield.value
+	if (firstName == initialFirstName) return
 
 	showElement(firstNameProgressRing)
 	firstNameTextfield.disabled = true
@@ -243,6 +247,10 @@ async function firstNameSaveButtonClick() {
 
 		initialFirstName = firstName
 		hideElement(firstNameSaveButton)
+
+		// Update the name on the navbar
+		let userNavLink = document.getElementById("user-nav-link") as HTMLAnchorElement
+		if (userNavLink != null) userNavLink.innerText = firstName
 	} catch (error) {
 		// TODO: Show error message
 		console.log(error.response.data)
@@ -264,6 +272,9 @@ function emailTextfieldChange() {
 }
 
 async function emailSaveButtonClick() {
+	let email = emailTextfield.value
+	if (email == initialEmail) return
+
 	showElement(emailProgressRing)
 	emailTextfield.disabled = true
 	emailSaveButton.disabled = true
@@ -276,7 +287,7 @@ async function emailSaveButtonClick() {
 				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 			},
 			data: {
-				email: emailTextfield.value
+				email
 			}
 		})
 
