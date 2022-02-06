@@ -37,3 +37,19 @@ form {
 #first-name-save-button, #email-save-button {
 	margin-top: 30px;
 }
+
+#plans-table {
+	max-width: 800px;
+}
+
+th {
+	min-width: 140px;
+}
+
+td {
+	height: 48px;
+}
+
+th:not(first-child), td:not(:first-child) {
+	text-align: center;
+}

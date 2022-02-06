@@ -51,6 +51,16 @@ let initialFirstName = ""
 let initialEmail = ""
 //#endregion
 
+//#region Plans page variables
+let plansTableContainer: HTMLDivElement
+let plansTable: HTMLTableElement
+let plansTableMobileContainer: HTMLDivElement
+let plansTableMobileFree: HTMLTableElement
+let plansTableMobilePlus: HTMLTableElement
+let plansTableMobilePro: HTMLTableElement
+//#endregion
+
+window.addEventListener("resize", setSize)
 window.addEventListener("load", main)
 
 async function main() {
@@ -78,12 +88,20 @@ async function main() {
 	passwordSaveButton = document.getElementById("password-save-button") as Button
 	passwordProgressRing = document.getElementById("password-progress-ring") as ProgressRing
 
+	plansTableContainer = document.getElementById("plans-table-container") as HTMLDivElement
+	plansTable = document.getElementById("plans-table") as HTMLTableElement
+	plansTableMobileContainer = document.getElementById("plans-table-mobile-container") as HTMLDivElement
+	plansTableMobileFree = document.getElementById("plans-table-mobile-free") as HTMLTableElement
+	plansTableMobilePlus = document.getElementById("plans-table-mobile-plus") as HTMLTableElement
+	plansTableMobilePro = document.getElementById("plans-table-mobile-pro") as HTMLTableElement
+
 	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
 	initialProfileImageSrc = profileImage.src
 	initialFirstName = firstNameTextfield.value
 	initialEmail = emailTextfield.value
 
 	setEventListeners()
+	setSize()
 	displayPage()
 }
 
@@ -115,6 +133,23 @@ function setEventListeners() {
 	passwordConfirmationTextfield.addEventListener('enter', passwordSaveButtonClick)
 	passwordSaveButton.addEventListener('click', passwordSaveButtonClick)
 	//#endregion
+}
+
+function setSize() {
+	let width = window.innerWidth
+	let tableFontSize = width < 1000 ? `${1.05}rem` : `${1.15}rem`
+	plansTable.style.fontSize = tableFontSize
+	plansTableMobileFree.style.fontSize = tableFontSize
+	plansTableMobilePlus.style.fontSize = tableFontSize
+	plansTableMobilePro.style.fontSize = tableFontSize
+
+	if (width < 768) {
+		showElement(plansTableMobileContainer)
+		hideElement(plansTableContainer)
+	} else {
+		hideElement(plansTableMobileContainer)
+		showElement(plansTableContainer)
+	}
 }
 
 function displayPage() {

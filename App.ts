@@ -179,8 +179,10 @@ export class App {
 				lang: locale.lang,
 				locale: locale.userPage,
 				navbarLocale: locale.navbarComponent,
+				pricingLocale: locale.misc.pricing,
 				user,
-				csrfToken
+				csrfToken,
+				isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
 			})
 		})
 
