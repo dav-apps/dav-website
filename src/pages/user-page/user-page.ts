@@ -58,6 +58,26 @@ let plansTableMobileContainer: HTMLDivElement
 let plansTableMobileFree: HTMLTableElement
 let plansTableMobilePlus: HTMLTableElement
 let plansTableMobilePro: HTMLTableElement
+let plansTableFreeButtonProgressRing: ProgressRing
+let plansTablePlusButtonProgressRing: ProgressRing
+let plansTableProButtonProgressRing: ProgressRing
+let plansTableMobileFreeButtonProgressRing: ProgressRing
+let plansTableMobilePlusButtonProgressRing: ProgressRing
+let plansTableMobileProButtonProgressRing: ProgressRing
+let plansTableFreeCurrentPlanButton: Button
+let plansTableFreeDowngradeButton: Button
+let plansTablePlusUpgradeButton: Button
+let plansTablePlusCurrentPlanButton: Button
+let plansTablePlusDowngradeButton: Button
+let plansTableProUpgradeButton: Button
+let plansTableProCurrentPlanButton: Button
+let plansTableMobileFreeCurrentPlanButton: Button
+let plansTableMobileFreeDowngradeButton: Button
+let plansTableMobilePlusUpgradeButton: Button
+let plansTableMobilePlusCurrentPlanButton: Button
+let plansTableMobilePlusDowngradeButton: Button
+let plansTableMobileProUpgradeButton: Button
+let plansTableMobileProCurrentPlanButton: Button
 //#endregion
 
 window.addEventListener("resize", setSize)
@@ -94,6 +114,26 @@ async function main() {
 	plansTableMobileFree = document.getElementById("plans-table-mobile-free") as HTMLTableElement
 	plansTableMobilePlus = document.getElementById("plans-table-mobile-plus") as HTMLTableElement
 	plansTableMobilePro = document.getElementById("plans-table-mobile-pro") as HTMLTableElement
+	plansTableFreeButtonProgressRing = document.getElementById("plans-table-free-button-progress-ring") as ProgressRing
+	plansTablePlusButtonProgressRing = document.getElementById("plans-table-plus-button-progress-ring") as ProgressRing
+	plansTableProButtonProgressRing = document.getElementById("plans-table-pro-button-progress-ring") as ProgressRing
+	plansTableMobileFreeButtonProgressRing = document.getElementById("plans-table-mobile-free-button-progress-ring") as ProgressRing
+	plansTableMobilePlusButtonProgressRing = document.getElementById("plans-table-mobile-plus-button-progress-ring") as ProgressRing
+	plansTableMobileProButtonProgressRing = document.getElementById("plans-table-mobile-pro-button-progress-ring") as ProgressRing
+	plansTableFreeCurrentPlanButton = document.getElementById("plans-table-free-current-plan-button") as Button
+	plansTableFreeDowngradeButton = document.getElementById("plans-table-free-downgrade-button") as Button
+	plansTablePlusUpgradeButton = document.getElementById("plans-table-plus-upgrade-button") as Button
+	plansTablePlusCurrentPlanButton = document.getElementById("plans-table-plus-current-plan-button") as Button
+	plansTablePlusDowngradeButton = document.getElementById("plans-table-plus-downgrade-button") as Button
+	plansTableProUpgradeButton = document.getElementById("plans-table-pro-upgrade-button") as Button
+	plansTableProCurrentPlanButton = document.getElementById("plans-table-pro-current-plan-button") as Button
+	plansTableMobileFreeCurrentPlanButton = document.getElementById("plans-table-mobile-free-current-plan-button") as Button
+	plansTableMobileFreeDowngradeButton = document.getElementById("plans-table-mobile-free-downgrade-button") as Button
+	plansTableMobilePlusUpgradeButton = document.getElementById("plans-table-mobile-plus-upgrade-button") as Button
+	plansTableMobilePlusCurrentPlanButton = document.getElementById("plans-table-mobile-plus-current-plan-button") as Button
+	plansTableMobilePlusDowngradeButton = document.getElementById("plans-table-mobile-plus-downgrade-button") as Button
+	plansTableMobileProUpgradeButton = document.getElementById("plans-table-mobile-pro-upgrade-button") as Button
+	plansTableMobileProCurrentPlanButton = document.getElementById("plans-table-mobile-pro-current-plan-button") as Button
 
 	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
 	initialProfileImageSrc = profileImage.src

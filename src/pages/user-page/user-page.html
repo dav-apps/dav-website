@@ -266,11 +266,13 @@
 										<td class="pt-3">
 											<div class="d-flex justify-content-center">
 												<dav-progress-ring
+													id="plans-table-free-button-progress-ring"
 													style="margin: 8px 14px 0px 0px"
 													class="d-none">
 												</dav-progress-ring>
 
 												<button
+													id="plans-table-free-current-plan-button"
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
@@ -278,6 +280,7 @@
 												</button>
 
 												<button
+													id="plans-table-free-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.downgrade %>
@@ -287,17 +290,20 @@
 										<td class="pt-3">
 											<div class="d-flex justify-content-center">
 												<dav-progress-ring
+													id="plans-table-plus-button-progress-ring"
 													style="margin: 8px 14px 0px 0px"
 													class="d-none">
 												</dav-progress-ring>
 
 												<button
+													id="plans-table-plus-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.upgrade %>
 												</button>
 
 												<button
+													id="plans-table-plus-current-plan-button"
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
@@ -305,6 +311,7 @@
 												</button>
 
 												<button
+													id="plans-table-plus-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.downgrade %>
@@ -314,17 +321,20 @@
 										<td class="pt-3">
 											<div class="d-flex justify-content-center">
 												<dav-progress-ring
+													id="plans-table-pro-button-progress-ring"
 													style="margin: 8px 14px 0px 0px"
 													class="d-none">
 												</dav-progress-ring>
 
 												<button
+													id="plans-table-pro-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.upgrade %>
 												</button>
 
 												<button
+													id="plans-table-pro-current-plan-button"
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
@@ -363,11 +373,13 @@
 										<td></td>
 										<td class="d-flex justify-content-center pt-3">
 											<dav-progress-ring
+												id="plans-table-mobile-free-button-progress-ring"
 												style="margin: 8px 14px 0px 0px"
 												class="d-none">
 											</dav-progress-ring>
 
 											<button
+												id="plans-table-mobile-free-current-plan-button"
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
@@ -375,6 +387,7 @@
 											</button>
 
 											<button
+												id="plans-table-mobile-free-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.downgrade %>
@@ -428,17 +441,20 @@
 										<td></td>
 										<td class="d-flex justify-content-center pt-3">
 											<dav-progress-ring
+												id="plans-table-mobile-plus-button-progress-ring"
 												style="margin: 8px 14px 0px 0px"
 												class="d-none">
 											</dav-progress-ring>
 
 											<button
+												id="plans-table-mobile-plus-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.upgrade %>
 											</button>
 
 											<button
+												id="plans-table-mobile-plus-current-plan-button"
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
@@ -446,6 +462,7 @@
 											</button>
 
 											<button
+												id="plans-table-mobile-plus-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.downgrade %>
@@ -499,17 +516,20 @@
 										<td></td>
 										<td class="d-flex justify-content-center pt-3">
 											<dav-progress-ring
+												id="plans-table-mobile-pro-button-progress-ring"
 												style="margin: 8px 14px 0px 0px"
 												class="d-none">
 											</dav-progress-ring>
 
 											<button
+												id="plans-table-mobile-pro-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.upgrade %>
 											</button>
 
 											<button
+												id="plans-table-mobile-pro-current-plan-button"
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
@@ -520,8 +540,6 @@
 								</tbody>
 							</table>
 						</div>
-
-
 					</div>
 				</div>
 			</div>
