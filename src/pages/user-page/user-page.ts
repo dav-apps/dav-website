@@ -24,6 +24,7 @@ let plansContainer: HTMLDivElement
 let snackbarLabel: HTMLDivElement
 
 let locale = getLocale().userPage
+let pricingLocale = getLocale().misc.pricing
 let snackbar: MDCSnackbar
 
 //#region General page variables
@@ -52,8 +53,12 @@ let initialEmail = ""
 //#endregion
 
 //#region Plans page variables
+let errorMessageBarPlans: MessageBar
+let successMessageBarPlans: MessageBar
 let paymentMethodButton: Button
 let paymentMethodButtonProgressRing: ProgressRing
+let subscriptionCardHeader: HTMLHeadingElement
+let subscriptionCardPeriodEndDate: HTMLParagraphElement
 let cancelContinueSubscriptionButton: Button
 let cancelContinueSubscriptionButtonProgressRing: ProgressRing
 let plansTableContainer: HTMLDivElement
@@ -112,8 +117,12 @@ async function main() {
 	passwordSaveButton = document.getElementById("password-save-button") as Button
 	passwordProgressRing = document.getElementById("password-progress-ring") as ProgressRing
 
+	errorMessageBarPlans = document.getElementById("error-message-bar-plans") as MessageBar
+	successMessageBarPlans = document.getElementById("success-message-bar-plans") as MessageBar
 	paymentMethodButton = document.getElementById("payment-method-button") as Button
 	paymentMethodButtonProgressRing = document.getElementById("payment-method-button-progress-ring") as ProgressRing
+	subscriptionCardHeader = document.getElementById("subscription-card-header") as HTMLHeadingElement
+	subscriptionCardPeriodEndDate = document.getElementById("subscription-card-period-end-date") as HTMLParagraphElement
 	cancelContinueSubscriptionButton = document.getElementById("cancel-continue-subscription-button") as Button
 	cancelContinueSubscriptionButtonProgressRing = document.getElementById("cancel-continue-subscription-button-progress-ring") as ProgressRing
 	plansTableContainer = document.getElementById("plans-table-container") as HTMLDivElement
@@ -184,6 +193,7 @@ function setEventListeners() {
 
 	//#region Plans page event listeners
 	paymentMethodButton.addEventListener('click', paymentMethodButtonClick)
+	cancelContinueSubscriptionButton.addEventListener('click', cancelContinueSubscriptionButtonClick)
 	plansTablePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableMobilePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
@@ -471,6 +481,37 @@ async function paymentMethodButtonClick() {
 	hideElement(paymentMethodButtonProgressRing)
 }
 
+async function cancelContinueSubscriptionButtonClick() {
+	cancelContinueSubscriptionButton.disabled = true
+	showElement(cancelContinueSubscriptionButtonProgressRing)
+
+	try {
+		let response = await axios({
+			method: 'put',
+			url: '/api/subscription/cancel',
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			}
+		})
+
+		// Update the UI & show success message
+		if (response.data.cancelAtPeriodEnd) {
+			subscriptionCardHeader.innerText = pricingLocale.subscriptionEnd
+			cancelContinueSubscriptionButton.innerText = pricingLocale.continueSubscription
+			showPlansSuccessMessage(pricingLocale.cancelSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+		} else {
+			subscriptionCardHeader.innerText = pricingLocale.nextPayment
+			cancelContinueSubscriptionButton.innerText = pricingLocale.cancelSubscription
+			showPlansSuccessMessage(pricingLocale.continueSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+		}
+	} catch (error) {
+		// TODO: Show error message
+	}
+
+	cancelContinueSubscriptionButton.disabled = false
+	hideElement(cancelContinueSubscriptionButtonProgressRing)
+}
+
 async function plansTablePlusUpgradeButtonClick() {
 	showElement(plansTablePlusButtonProgressRing)
 	showElement(plansTableMobilePlusButtonProgressRing)
@@ -516,7 +557,8 @@ async function createSubscriptionCheckoutSession(plan: number): Promise<any> {
 		method: 'post',
 		url: '/api/checkout_session',
 		headers: {
-			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+			'Content-Type': 'application/json'
 		},
 		data: {
 			plan,
@@ -531,7 +573,8 @@ async function createSetupCheckoutSession(): Promise<any> {
 		method: 'post',
 		url: '/api/checkout_session',
 		headers: {
-			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+			'Content-Type': 'application/json'
 		},
 		data: {
 			mode: "setup",
@@ -555,6 +598,11 @@ function showGeneralSuccessMessage(message: string) {
 function showGeneralErrorMessage(message: string) {
 	errorMessageBarGeneral.innerText = message
 	showElement(errorMessageBarGeneral)
+}
+
+function showPlansSuccessMessage(message: string) {
+	successMessageBarPlans.innerText = message
+	showElement(successMessageBarPlans)
 }
 
 function getErrorMessage(errorCode: number): string {

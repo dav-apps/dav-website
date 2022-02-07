@@ -244,10 +244,10 @@
 									style="display: inline-block; margin: 0px 15px">
 
 									<div class="card-body">
-										<h5 class="fw-light">
+										<h5 id="subscription-card-header" class="fw-light">
 											<%= user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd %>
 										</h5>
-										<p><%= periodEndDate %></p>
+										<p id="subscription-card-period-end-date"><%= periodEndDate %></p>
 
 										<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
 											<dav-progress-ring

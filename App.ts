@@ -557,6 +557,37 @@ export class App {
 			}
 		})
 
+		router.put('/api/subscription/cancel', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
+			let subscriptions = await stripe.subscriptions.list({ customer: user.StripeCustomerId })
+			
+			if (subscriptions.data.length == 0) {
+				res.status(412).end()
+				return
+			}
+
+			let subscription = subscriptions.data[0]
+
+			// Cancel or continue the subscription
+			await stripe.subscriptions.update(subscription.id, {
+				cancel_at_period_end: !subscription.cancel_at_period_end
+			})
+
+			res.status(200).send({
+				cancelAtPeriodEnd: !subscription.cancel_at_period_end
+			})
+		})
+
 		router.put('/api/app/:id', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
