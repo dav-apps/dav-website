@@ -32,7 +32,7 @@ import {
 	CreateCheckoutSessionResponseData
 } from 'dav-js'
 import { CsrfToken, CsrfTokenContext } from './src/types.js'
-import { getLocale } from './src/locales.js'
+import { supportedLocales, getLocale } from './src/locales.js'
 
 dotenv.config()
 
@@ -64,7 +64,7 @@ export class App {
 
 		//#region Public endpoints
 		router.get('/', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			if (user != null) {
@@ -87,7 +87,7 @@ export class App {
 		})
 
 		router.get('/login', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.LoginPage)
 
@@ -101,7 +101,7 @@ export class App {
 		})
 
 		router.get('/signup', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.SignupPage)
 
@@ -120,7 +120,7 @@ export class App {
 		})
 
 		router.get('/contact', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("contact-page/contact-page", {
@@ -133,7 +133,7 @@ export class App {
 		})
 
 		router.get('/privacy', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("privacy-page/privacy-page", {
@@ -146,7 +146,7 @@ export class App {
 		})
 
 		router.get('/pocketlib/terms', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("pocketlib-terms-page/pocketlib-terms-page", {
@@ -159,7 +159,7 @@ export class App {
 		})
 
 		router.get('/pricing', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("pricing-page/pricing-page", {
@@ -174,15 +174,14 @@ export class App {
 		})
 
 		router.get('/user', async (req, res) => {
-			let lang = req.acceptsLanguages()[0]
-			let locale = getLocale(lang)
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.UserPage)
 			let card = null
 			let periodEndDate = null
 
 			if (user.PeriodEnd != null) {
-				periodEndDate = DateTime.fromJSDate(user.PeriodEnd).setLocale(lang).toFormat('DDD')
+				periodEndDate = DateTime.fromJSDate(user.PeriodEnd).setLocale(locale.lang).toFormat('DDD')
 			}
 
 			if (req.query.plan == "1") {
@@ -195,7 +194,7 @@ export class App {
 				// Get the stripe customer and payment method
 				let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
 				let paymentMethods = await stripe.customers.listPaymentMethods(user.StripeCustomerId, { limit: 1, type: "card" })
-				
+
 				if (paymentMethods.data.length > 0) {
 					card = paymentMethods.data[0].card
 				}
@@ -215,7 +214,7 @@ export class App {
 		})
 
 		router.get('/dev', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let user = await this.getUser(accessToken)
 			let dev = await this.getDev(accessToken)
@@ -234,7 +233,7 @@ export class App {
 		})
 
 		router.get('/dev/statistics', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
@@ -248,7 +247,7 @@ export class App {
 		})
 
 		router.get('/dev/:appId', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
@@ -262,7 +261,7 @@ export class App {
 		})
 
 		router.get('/dev/:appId/statistics', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
@@ -280,7 +279,7 @@ export class App {
 
 			// Get the apps
 			let response = await AppsController.GetApps()
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
 			res.render("apps-page/apps-page", {

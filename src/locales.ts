@@ -1074,6 +1074,16 @@ export var deCH = {
 }
 //#endregion
 
+export const supportedLocales = [
+	enDefaults.lang,
+	enUS.lang,
+	enGB.lang,
+	deDefaults.lang,
+	deDE.lang,
+	deAT.lang,
+	deCH.lang
+]
+
 export function getLocale(lang?: string) {
 	if (lang == null) {
 		lang = navigator?.language?.toLowerCase()
