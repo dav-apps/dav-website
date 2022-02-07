@@ -221,11 +221,19 @@
 											<%= card.exp_year %>
 										</p>
 
-										<dav-button
-											id="payment-method-button"
-											style="float: right; margin-bottom: 16px">
-											<%= pricingLocale.edit %>
-										</dav-button>
+										<div class="d-flex" style="float: right">
+											<dav-progress-ring
+												id="payment-method-button-progress-ring"
+												style="margin: 8px 14px 0px 0px"
+												class="d-none">
+											</dav-progress-ring>
+
+											<dav-button
+												id="payment-method-button"
+												style="float: right; margin-bottom: 16px">
+												<%= pricingLocale.edit %>
+											</dav-button>
+										</div>
 									</div>
 								</div>
 								<% } %>

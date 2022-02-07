@@ -542,6 +542,7 @@ export class App {
 
 			let response = await CheckoutSessionsController.CreateCheckoutSession({
 				accessToken: this.getRequestCookies(req)["accessToken"],
+				mode: req.body.mode,
 				plan: req.body.plan,
 				successUrl: req.body.successUrl,
 				cancelUrl: req.body.cancelUrl

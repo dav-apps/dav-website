@@ -53,6 +53,7 @@ let initialEmail = ""
 
 //#region Plans page variables
 let paymentMethodButton: Button
+let paymentMethodButtonProgressRing: ProgressRing
 let cancelContinueSubscriptionButton: Button
 let cancelContinueSubscriptionButtonProgressRing: ProgressRing
 let plansTableContainer: HTMLDivElement
@@ -112,6 +113,7 @@ async function main() {
 	passwordProgressRing = document.getElementById("password-progress-ring") as ProgressRing
 
 	paymentMethodButton = document.getElementById("payment-method-button") as Button
+	paymentMethodButtonProgressRing = document.getElementById("payment-method-button-progress-ring") as ProgressRing
 	cancelContinueSubscriptionButton = document.getElementById("cancel-continue-subscription-button") as Button
 	cancelContinueSubscriptionButtonProgressRing = document.getElementById("cancel-continue-subscription-button-progress-ring") as ProgressRing
 	plansTableContainer = document.getElementById("plans-table-container") as HTMLDivElement
@@ -181,6 +183,7 @@ function setEventListeners() {
 	//#endregion
 
 	//#region Plans page event listeners
+	paymentMethodButton.addEventListener('click', paymentMethodButtonClick)
 	plansTablePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableMobilePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
@@ -452,6 +455,22 @@ async function passwordSaveButtonClick() {
 //#endregion
 
 //#region Plans page event listeners
+async function paymentMethodButtonClick() {
+	paymentMethodButton.disabled = true
+	showElement(paymentMethodButtonProgressRing)
+
+	try {
+		let response = await createSetupCheckoutSession()
+		window.location.href = response.data.sessionUrl
+		return
+	} catch (error) {
+		// TODO: Show error message
+	}
+
+	paymentMethodButton.disabled = false
+	hideElement(paymentMethodButtonProgressRing)
+}
+
 async function plansTablePlusUpgradeButtonClick() {
 	showElement(plansTablePlusButtonProgressRing)
 	showElement(plansTableMobilePlusButtonProgressRing)
@@ -459,7 +478,7 @@ async function plansTablePlusUpgradeButtonClick() {
 	plansTableMobilePlusUpgradeButton.disabled = true
 
 	try {
-		let response = await createCheckoutSession(1)
+		let response = await createSubscriptionCheckoutSession(1)
 		window.location.href = response.data.sessionUrl
 		return
 	} catch (error) {
@@ -479,7 +498,7 @@ async function plansTableProUpgradeButtonClick() {
 	plansTableMobileProUpgradeButton.disabled = true
 
 	try {
-		let response = await createCheckoutSession(2)
+		let response = await createSubscriptionCheckoutSession(2)
 		window.location.href = response.data.sessionUrl
 		return
 	} catch (error) {
@@ -492,7 +511,7 @@ async function plansTableProUpgradeButtonClick() {
 	plansTableMobileProUpgradeButton.disabled = false
 }
 
-async function createCheckoutSession(plan: number): Promise<any> {
+async function createSubscriptionCheckoutSession(plan: number): Promise<any> {
 	return await axios({
 		method: 'post',
 		url: '/api/checkout_session',
@@ -502,6 +521,21 @@ async function createCheckoutSession(plan: number): Promise<any> {
 		data: {
 			plan,
 			successUrl: `${window.location.origin}/user?plan=${plan}#plans`,
+			cancelUrl: window.location.href
+		}
+	})
+}
+
+async function createSetupCheckoutSession(): Promise<any> {
+	return await axios({
+		method: 'post',
+		url: '/api/checkout_session',
+		headers: {
+			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+		},
+		data: {
+			mode: "setup",
+			successUrl: window.location.href,
 			cancelUrl: window.location.href
 		}
 	})
