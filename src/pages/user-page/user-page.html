@@ -200,7 +200,63 @@
 					<div class="d-flex flex-column align-items-center pb-4">
 						<div style="width: 80%">
 							<!-- Cards for payment method and subscription status -->
-							<!-- TODO -->
+							<div class="d-flex flex-wrap">
+								<% if (card != null) { %>
+								<div
+									class="card shadow-sm"
+									style="display: inline-block; margin: 0px 15px">
+									
+									<div class="card-body">
+										<h5 class="fw-light mb-3"><%= pricingLocale.paymentMethodCardHeader %></h5>
+
+										<div class="d-flex">
+											<i class="ms-Icon ms-Icon--PaymentCard me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
+											<p style="margin-bottom: 0px;">**** **** **** <%= card.last4 %></p>
+										</div>
+
+										<p style="margin-bottom: 8px">
+											<%= pricingLocale.cardExpires %>
+											<%= card.exp_month < 10 ? `0${card.exp_month}` : card.exp_month.toString() %>
+											/
+											<%= card.exp_year %>
+										</p>
+
+										<dav-button
+											id="payment-method-button"
+											style="float: right; margin-bottom: 16px">
+											<%= pricingLocale.edit %>
+										</dav-button>
+									</div>
+								</div>
+								<% } %>
+
+								<% if (periodEndDate != null) { %>
+								<div
+									class="card shadow-sm"
+									style="display: inline-block; margin: 0px 15px">
+
+									<div class="card-body">
+										<h5 class="fw-light">
+											<%= user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd %>
+										</h5>
+										<p><%= periodEndDate %></p>
+
+										<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
+											<dav-progress-ring
+												id="cancel-continue-subscription-button-progress-ring"
+												style="margin: 8px 14px 0px 0px"
+												class="d-none">
+											</dav-progress-ring>
+
+											<dav-button
+												id="cancel-continue-subscription-button">
+												<%= user.SubscriptionStatus == 0 ? pricingLocale.cancelSubscription : pricingLocale.continueSubscription %>
+											</dav-button>
+										</div>
+									</div>
+								</div>
+								<% } %>
+							</div>
 						</div>
 
 						<!-- Plans overview -->

@@ -52,6 +52,9 @@ let initialEmail = ""
 //#endregion
 
 //#region Plans page variables
+let paymentMethodButton: Button
+let cancelContinueSubscriptionButton: Button
+let cancelContinueSubscriptionButtonProgressRing: ProgressRing
 let plansTableContainer: HTMLDivElement
 let plansTable: HTMLTableElement
 let plansTableMobileContainer: HTMLDivElement
@@ -108,6 +111,9 @@ async function main() {
 	passwordSaveButton = document.getElementById("password-save-button") as Button
 	passwordProgressRing = document.getElementById("password-progress-ring") as ProgressRing
 
+	paymentMethodButton = document.getElementById("payment-method-button") as Button
+	cancelContinueSubscriptionButton = document.getElementById("cancel-continue-subscription-button") as Button
+	cancelContinueSubscriptionButtonProgressRing = document.getElementById("cancel-continue-subscription-button-progress-ring") as ProgressRing
 	plansTableContainer = document.getElementById("plans-table-container") as HTMLDivElement
 	plansTable = document.getElementById("plans-table") as HTMLTableElement
 	plansTableMobileContainer = document.getElementById("plans-table-mobile-container") as HTMLDivElement
@@ -200,9 +206,7 @@ function setSize() {
 }
 
 function displayPage() {
-	let hash = window.location.hash.split('?')[0]
-
-	if (hash == "#plans") {
+	if (window.location.hash == "#plans") {
 		// Show the plans page
 		hideElement(generalContainer)
 		showElement(plansContainer)
@@ -497,7 +501,7 @@ async function createCheckoutSession(plan: number): Promise<any> {
 		},
 		data: {
 			plan,
-			successUrl: window.location.href,
+			successUrl: `${window.location.origin}/user?plan=${plan}#plans`,
 			cancelUrl: window.location.href
 		}
 	})

@@ -5,6 +5,7 @@ import url from 'url'
 import dotenv from 'dotenv'
 import CryptoJS from 'crypto-js'
 import { DateTime } from 'luxon'
+import Stripe from 'stripe'
 import {
 	Dav,
 	Auth,
@@ -173,9 +174,32 @@ export class App {
 		})
 
 		router.get('/user', async (req, res) => {
-			let locale = getLocale(req.acceptsLanguages()[0])
+			let lang = req.acceptsLanguages()[0]
+			let locale = getLocale(lang)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.UserPage)
+			let card = null
+			let periodEndDate = null
+
+			if (user.PeriodEnd != null) {
+				periodEndDate = DateTime.fromJSDate(user.PeriodEnd).setLocale(lang).toFormat('DDD')
+			}
+
+			if (req.query.plan == "1") {
+				user.Plan = 1
+			} else if (req.query.plan == "2") {
+				user.Plan = 2
+			}
+
+			if (user.StripeCustomerId) {
+				// Get the stripe customer and payment method
+				let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
+				let paymentMethods = await stripe.customers.listPaymentMethods(user.StripeCustomerId, { limit: 1, type: "card" })
+				
+				if (paymentMethods.data.length > 0) {
+					card = paymentMethods.data[0].card
+				}
+			}
 
 			res.render("user-page/user-page", {
 				lang: locale.lang,
@@ -184,7 +208,9 @@ export class App {
 				pricingLocale: locale.misc.pricing,
 				user,
 				csrfToken,
-				isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
+				isMobile: req.headers["sec-ch-ua-mobile"] == "?1",
+				card,
+				periodEndDate
 			})
 		})
 
