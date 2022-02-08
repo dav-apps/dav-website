@@ -20,6 +20,7 @@ import {
 	AppUsersController,
 	AppUserActivitiesController,
 	CheckoutSessionsController,
+	CustomerPortalSessionsController,
 	ApiResponse,
 	ApiErrorResponse,
 	SessionResponseData,
@@ -29,7 +30,8 @@ import {
 	GetUserActivitiesResponseData,
 	GetAppUsersResponseData,
 	GetAppUserActivitiesResponseData,
-	CreateCheckoutSessionResponseData
+	CreateCheckoutSessionResponseData,
+	CreateCustomerPortalSessionResponseData
 } from 'dav-js'
 import { CsrfToken, CsrfTokenContext } from './src/types.js'
 import { supportedLocales, getLocale } from './src/locales.js'
@@ -557,6 +559,29 @@ export class App {
 			}
 		})
 
+		router.post('/api/customer_portal_session', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await CustomerPortalSessionsController.CreateCustomerPortalSession({
+				accessToken: this.getRequestCookies(req)["accessToken"]
+			})
+
+			if (response.status == 201) {
+				response = response as ApiResponse<CreateCustomerPortalSessionResponseData>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
+			}
+		})
+
 		router.put('/api/subscription/cancel', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
@@ -568,9 +593,15 @@ export class App {
 			this.init()
 
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+
+			if (user == null) {
+				res.status(412).end()
+				return
+			}
+
 			let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
 			let subscriptions = await stripe.subscriptions.list({ customer: user.StripeCustomerId })
-			
+
 			if (subscriptions.data.length == 0) {
 				res.status(412).end()
 				return

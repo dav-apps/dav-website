@@ -192,8 +192,12 @@ function setEventListeners() {
 	//#endregion
 
 	//#region Plans page event listeners
-	paymentMethodButton.addEventListener('click', paymentMethodButtonClick)
-	cancelContinueSubscriptionButton.addEventListener('click', cancelContinueSubscriptionButtonClick)
+	if (paymentMethodButton != null) {
+		paymentMethodButton.addEventListener('click', paymentMethodButtonClick)
+	}
+	if (cancelContinueSubscriptionButton != null) {
+		cancelContinueSubscriptionButton.addEventListener('click', cancelContinueSubscriptionButtonClick)
+	}
 	plansTablePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableMobilePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
@@ -470,7 +474,14 @@ async function paymentMethodButtonClick() {
 	showElement(paymentMethodButtonProgressRing)
 
 	try {
-		let response = await createSetupCheckoutSession()
+		let response = await axios({
+			method: 'post',
+			url: '/api/customer_portal_session',
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			}
+		})
+
 		window.location.href = response.data.sessionUrl
 		return
 	} catch (error) {
@@ -519,7 +530,7 @@ async function plansTablePlusUpgradeButtonClick() {
 	plansTableMobilePlusUpgradeButton.disabled = true
 
 	try {
-		let response = await createSubscriptionCheckoutSession(1)
+		let response = await createCheckoutSession(1)
 		window.location.href = response.data.sessionUrl
 		return
 	} catch (error) {
@@ -539,7 +550,7 @@ async function plansTableProUpgradeButtonClick() {
 	plansTableMobileProUpgradeButton.disabled = true
 
 	try {
-		let response = await createSubscriptionCheckoutSession(2)
+		let response = await createCheckoutSession(2)
 		window.location.href = response.data.sessionUrl
 		return
 	} catch (error) {
@@ -552,7 +563,7 @@ async function plansTableProUpgradeButtonClick() {
 	plansTableMobileProUpgradeButton.disabled = false
 }
 
-async function createSubscriptionCheckoutSession(plan: number): Promise<any> {
+async function createCheckoutSession(plan: number): Promise<any> {
 	return await axios({
 		method: 'post',
 		url: '/api/checkout_session',
@@ -563,22 +574,6 @@ async function createSubscriptionCheckoutSession(plan: number): Promise<any> {
 		data: {
 			plan,
 			successUrl: `${window.location.origin}/user?plan=${plan}#plans`,
-			cancelUrl: window.location.href
-		}
-	})
-}
-
-async function createSetupCheckoutSession(): Promise<any> {
-	return await axios({
-		method: 'post',
-		url: '/api/checkout_session',
-		headers: {
-			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
-			'Content-Type': 'application/json'
-		},
-		data: {
-			mode: "setup",
-			successUrl: window.location.href,
 			cancelUrl: window.location.href
 		}
 	})
