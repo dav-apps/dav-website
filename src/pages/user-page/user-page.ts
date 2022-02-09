@@ -55,8 +55,10 @@ let initialEmail = ""
 //#region Plans page variables
 let errorMessageBarPlans: MessageBar
 let successMessageBarPlans: MessageBar
+let paymentMethodCard: HTMLDivElement
 let paymentMethodButton: Button
 let paymentMethodButtonProgressRing: ProgressRing
+let subscriptionCard: HTMLDivElement
 let subscriptionCardHeader: HTMLHeadingElement
 let subscriptionCardPeriodEndDate: HTMLParagraphElement
 let cancelContinueSubscriptionButton: Button
@@ -119,8 +121,10 @@ async function main() {
 
 	errorMessageBarPlans = document.getElementById("error-message-bar-plans") as MessageBar
 	successMessageBarPlans = document.getElementById("success-message-bar-plans") as MessageBar
+	paymentMethodCard = document.getElementById("payment-method-card") as HTMLDivElement
 	paymentMethodButton = document.getElementById("payment-method-button") as Button
 	paymentMethodButtonProgressRing = document.getElementById("payment-method-button-progress-ring") as ProgressRing
+	subscriptionCard = document.getElementById("subscription-card") as HTMLDivElement
 	subscriptionCardHeader = document.getElementById("subscription-card-header") as HTMLHeadingElement
 	subscriptionCardPeriodEndDate = document.getElementById("subscription-card-period-end-date") as HTMLParagraphElement
 	cancelContinueSubscriptionButton = document.getElementById("cancel-continue-subscription-button") as Button
@@ -212,6 +216,14 @@ function setSize() {
 	plansTableMobileFree.style.fontSize = tableFontSize
 	plansTableMobilePlus.style.fontSize = tableFontSize
 	plansTableMobilePro.style.fontSize = tableFontSize
+
+	if (width < 706) {
+		paymentMethodCard.classList.add("mb-3")
+		subscriptionCard.classList.add("mt-3")
+	} else {
+		paymentMethodCard.classList.remove("mb-3")
+		subscriptionCard.classList.remove("mt-3")
+	}
 
 	if (width < 768) {
 		showElement(plansTableMobileContainer)
@@ -510,10 +522,30 @@ async function cancelContinueSubscriptionButtonClick() {
 			subscriptionCardHeader.innerText = pricingLocale.subscriptionEnd
 			cancelContinueSubscriptionButton.innerText = pricingLocale.continueSubscription
 			showPlansSuccessMessage(pricingLocale.cancelSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+
+			// Disable the buttons in the plans tables
+			plansTableFreeDowngradeButton.disabled = true
+			plansTablePlusUpgradeButton.disabled = true
+			plansTablePlusDowngradeButton.disabled = true
+			plansTableProUpgradeButton.disabled = true
+			plansTableMobileFreeDowngradeButton.disabled = true
+			plansTableMobilePlusUpgradeButton.disabled = true
+			plansTableMobilePlusDowngradeButton.disabled = true
+			plansTableMobileProUpgradeButton.disabled = true
 		} else {
 			subscriptionCardHeader.innerText = pricingLocale.nextPayment
 			cancelContinueSubscriptionButton.innerText = pricingLocale.cancelSubscription
 			showPlansSuccessMessage(pricingLocale.continueSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+
+			// Enable the buttons in the plans tables
+			plansTableFreeDowngradeButton.disabled = false
+			plansTablePlusUpgradeButton.disabled = false
+			plansTablePlusDowngradeButton.disabled = false
+			plansTableProUpgradeButton.disabled = false
+			plansTableMobileFreeDowngradeButton.disabled = false
+			plansTableMobilePlusUpgradeButton.disabled = false
+			plansTableMobilePlusDowngradeButton.disabled = false
+			plansTableMobileProUpgradeButton.disabled = false
 		}
 	} catch (error) {
 		// TODO: Show error message

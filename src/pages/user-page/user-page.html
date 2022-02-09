@@ -196,16 +196,17 @@
 							</dav-message-bar>
 						</div>
 					</div>
-					
+
 					<div class="d-flex flex-column align-items-center pb-4">
 						<div style="width: 80%">
 							<!-- Cards for payment method and subscription status -->
-							<div class="d-flex flex-wrap">
+							<div class="d-flex flex-wrap justify-content-center">
 								<% if (card != null) { %>
 								<div
+									id="payment-method-card"
 									class="card shadow-sm"
 									style="display: inline-block; margin: 0px 15px">
-									
+
 									<div class="card-body">
 										<h5 class="fw-light mb-3"><%= pricingLocale.paymentMethodCardHeader %></h5>
 
@@ -240,6 +241,7 @@
 
 								<% if (periodEndDate != null) { %>
 								<div
+									id="subscription-card"
 									class="card shadow-sm"
 									style="display: inline-block; margin: 0px 15px">
 
@@ -343,12 +345,22 @@
 													<%= pricingLocale.currentPlan %>
 												</button>
 
+												<% if (user.SubscriptionStatus == 0) { %>
 												<button
 													id="plans-table-free-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.downgrade %>
 												</button>
+												<% } else { %>
+												<button
+													id="plans-table-free-downgrade-button"
+													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
+													type="button"
+													disabled>
+													<%= pricingLocale.downgrade %>
+												</button>
+												<% } %>
 											</div>
 										</td>
 										<td class="pt-3">
@@ -359,12 +371,22 @@
 													class="d-none">
 												</dav-progress-ring>
 
+												<% if (user.SubscriptionStatus == 0) { %>
 												<button
 													id="plans-table-plus-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.upgrade %>
 												</button>
+												<% } else { %>
+												<button
+													id="plans-table-plus-upgrade-button"
+													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+													type="button"
+													disabled>
+													<%= pricingLocale.upgrade %>
+												</button>
+												<% } %>
 
 												<button
 													id="plans-table-plus-current-plan-button"
@@ -374,12 +396,22 @@
 													<%= pricingLocale.currentPlan %>
 												</button>
 
+												<% if (user.SubscriptionStatus == 0) { %>
 												<button
 													id="plans-table-plus-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.downgrade %>
 												</button>
+												<% } else { %>
+												<button
+													id="plans-table-plus-downgrade-button"
+													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
+													type="button"
+													disabled>
+													<%= pricingLocale.downgrade %>
+												</button>
+												<% } %>
 											</div>
 										</td>
 										<td class="pt-3">
@@ -390,12 +422,22 @@
 													class="d-none">
 												</dav-progress-ring>
 
+												<% if (user.SubscriptionStatus == 0) { %>
 												<button
 													id="plans-table-pro-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 													type="button">
 													<%= pricingLocale.upgrade %>
 												</button>
+												<% } else { %>
+												<button
+													id="plans-table-pro-upgrade-button"
+													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
+													type="button"
+													disabled>
+													<%= pricingLocale.upgrade %>
+												</button>
+												<% } %>
 
 												<button
 													id="plans-table-pro-current-plan-button"
@@ -450,12 +492,22 @@
 												<%= pricingLocale.currentPlan %>
 											</button>
 
+											<% if (user.SubscriptionStatus == 0) { %>
 											<button
 												id="plans-table-mobile-free-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.downgrade %>
 											</button>
+											<% } else { %>
+											<button
+												id="plans-table-mobile-free-downgrade-button"
+												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
+												type="button"
+												disabled>
+												<%= pricingLocale.downgrade %>
+											</button>
+											<% } %>
 										</td>
 									</tr>
 								</tbody>
@@ -510,12 +562,22 @@
 												class="d-none">
 											</dav-progress-ring>
 
+											<% if (user.SubscriptionStatus == 0) { %>
 											<button
 												id="plans-table-mobile-plus-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.upgrade %>
 											</button>
+											<% } else { %>
+											<button
+												id="plans-table-mobile-plus-upgrade-button"
+												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+												type="button"
+												disabled>
+												<%= pricingLocale.upgrade %>
+											</button>
+											<% } %>
 
 											<button
 												id="plans-table-mobile-plus-current-plan-button"
@@ -525,12 +587,22 @@
 												<%= pricingLocale.currentPlan %>
 											</button>
 
+											<% if (user.SubscriptionStatus == 0) { %>
 											<button
 												id="plans-table-mobile-plus-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.downgrade %>
 											</button>
+											<% } else { %>
+											<button
+												id="plans-table-mobile-plus-downgrade-button"
+												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
+												type="button"
+												disabled>
+												<%= pricingLocale.downgrade %>
+											</button>
+											<% } %>
 										</td>
 									</tr>
 								</tbody>
@@ -585,12 +657,22 @@
 												class="d-none">
 											</dav-progress-ring>
 
+											<% if (user.SubscriptionStatus == 0) { %>
 											<button
 												id="plans-table-mobile-pro-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 												type="button">
 												<%= pricingLocale.upgrade %>
 											</button>
+											<% } else { %>
+											<button
+												id="plans-table-mobile-pro-upgrade-button"
+												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
+												type="button"
+												disabled>
+												<%= pricingLocale.upgrade %>
+											</button>
+											<% } %>
 
 											<button
 												id="plans-table-mobile-pro-current-plan-button"
