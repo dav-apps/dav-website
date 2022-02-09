@@ -201,7 +201,7 @@
 						<div style="width: 80%">
 							<!-- Cards for payment method and subscription status -->
 							<div class="d-flex flex-wrap justify-content-center">
-								<% if (card != null) { %>
+								<% if (card != null && user.Plan > 0) { %>
 								<div
 									id="payment-method-card"
 									class="card shadow-sm"
@@ -239,7 +239,7 @@
 								</div>
 								<% } %>
 
-								<% if (periodEndDate != null) { %>
+								<% if (periodEndDate != null && user.Plan > 0) { %>
 								<div
 									id="subscription-card"
 									class="card shadow-sm"
@@ -706,6 +706,18 @@
 			<div class="mb-3" style="max-height: 400px;">
 				<img id="profile-image-dialog-image" style="max-width: 100%">
 			</div>
+		</dav-dialog>
+
+		<dav-dialog
+			id="change-plan-dialog"
+			header="<%= locale.plans.changePlanDialog.upgradeProHeader %>"
+			primaryButtonText="<%= locale.continue %>"
+			defaultButtontext="<%= locale.cancel %>">
+			<p id="change-plan-dialog-description"
+				class="fw-light"
+				style="max-width: 300px; font-size: 17px">
+				<%= locale.plans.changePlanDialog.upgradeProDescription %>
+			</p>
 		</dav-dialog>
 	</body>
 </html>

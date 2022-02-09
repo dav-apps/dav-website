@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { MDCSnackbar } from '@material/snackbar'
 import Cropper from 'cropperjs'
-import { ErrorCodes } from 'dav-js'
+import { ErrorCodes, PromiseHolder } from 'dav-js'
 import 'dav-ui-components'
 import {
 	Button,
@@ -89,6 +89,10 @@ let plansTableMobilePlusCurrentPlanButton: HTMLButtonElement
 let plansTableMobilePlusDowngradeButton: HTMLButtonElement
 let plansTableMobileProUpgradeButton: HTMLButtonElement
 let plansTableMobileProCurrentPlanButton: HTMLButtonElement
+let changePlanDialog: Dialog
+let changePlanDialogDescription: HTMLParagraphElement
+
+let changePlanDialogPrimaryButtonClickPromiseHolder: PromiseHolder<boolean> = new PromiseHolder()
 //#endregion
 
 window.addEventListener("resize", setSize)
@@ -155,6 +159,8 @@ async function main() {
 	plansTableMobilePlusDowngradeButton = document.getElementById("plans-table-mobile-plus-downgrade-button") as HTMLButtonElement
 	plansTableMobileProUpgradeButton = document.getElementById("plans-table-mobile-pro-upgrade-button") as HTMLButtonElement
 	plansTableMobileProCurrentPlanButton = document.getElementById("plans-table-mobile-pro-current-plan-button") as HTMLButtonElement
+	changePlanDialog = document.getElementById("change-plan-dialog") as Dialog
+	changePlanDialogDescription = document.getElementById("change-plan-dialog-description") as HTMLParagraphElement
 
 	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
 	initialProfileImageSrc = profileImage.src
@@ -179,9 +185,9 @@ function setEventListeners() {
 
 	//#region General page event listeners
 	uploadProfileImageButton.addEventListener('click', uploadProfileImageButtonClick)
-	profileImageDialog.addEventListener('dismiss', hideProfileImageDialog)
+	profileImageDialog.addEventListener('dismiss', () => profileImageDialog.visible = false)
 	profileImageDialog.addEventListener('primaryButtonClick', profileImageDialogPrimaryButtonClick)
-	profileImageDialog.addEventListener('defaultButtonClick', hideProfileImageDialog)
+	profileImageDialog.addEventListener('defaultButtonClick', () => profileImageDialog.visible = false)
 	profileImageDialogImage.addEventListener('load', profileImageDialogImageLoad)
 	firstNameTextfield.addEventListener('change', firstNameTextfieldChange)
 	firstNameTextfield.addEventListener('enter', firstNameSaveButtonClick)
@@ -208,6 +214,9 @@ function setEventListeners() {
 	plansTableMobilePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
 	plansTableMobileProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
+	changePlanDialog.addEventListener('dismiss', () => hideChangePlanDialog(false))
+	changePlanDialog.addEventListener('primaryButtonClick', () => hideChangePlanDialog(true))
+	changePlanDialog.addEventListener('defaultButtonClick', () => hideChangePlanDialog(false))
 	//#endregion
 }
 
@@ -274,10 +283,6 @@ function profileImageDialogImageLoad() {
 	})
 
 	profileImageDialog.visible = true
-}
-
-function hideProfileImageDialog() {
-	profileImageDialog.visible = false
 }
 
 async function profileImageDialogPrimaryButtonClick() {
@@ -552,8 +557,10 @@ async function plansTableFreeDowngradeButtonClick() {
 	setPaymentMethodButtonDisabled(true)
 	setCancelContinueSubscriptionButtonDisabled(true)
 	disablePlansTableButtons()
-	showElement(plansTableFreeButtonProgressRing)
-	showElement(plansTableMobileFreeButtonProgressRing)
+	showElement(
+		plansTableFreeButtonProgressRing,
+		plansTableMobileFreeButtonProgressRing
+	)
 
 	try {
 		let response = await axios({
@@ -587,15 +594,18 @@ async function plansTableFreeDowngradeButtonClick() {
 	setPaymentMethodButtonDisabled(false)
 	setCancelContinueSubscriptionButtonDisabled(false)
 	disablePlansTableButtons()
-	hideElement(plansTableFreeButtonProgressRing)
-	hideElement(plansTableMobileFreeButtonProgressRing)
+	hideElement(
+		plansTableFreeButtonProgressRing,
+		plansTableMobileFreeButtonProgressRing
+	)
 }
 
 async function plansTablePlusUpgradeButtonClick() {
-	showElement(plansTablePlusButtonProgressRing)
-	showElement(plansTableMobilePlusButtonProgressRing)
-	plansTablePlusUpgradeButton.disabled = true
-	plansTableMobilePlusUpgradeButton.disabled = true
+	showElement(
+		plansTablePlusButtonProgressRing,
+		plansTableMobilePlusButtonProgressRing
+	)
+	disablePlansTableButtons()
 
 	try {
 		let response = await createCheckoutSession(1)
@@ -605,30 +615,94 @@ async function plansTablePlusUpgradeButtonClick() {
 		// TODO: Show error message
 	}
 
-	hideElement(plansTablePlusButtonProgressRing)
-	hideElement(plansTableMobilePlusButtonProgressRing)
-	plansTablePlusUpgradeButton.disabled = false
-	plansTableMobilePlusUpgradeButton.disabled = false
+	hideElement(
+		plansTablePlusButtonProgressRing,
+		plansTableMobilePlusButtonProgressRing
+	)
+	enablePlansTableButtons()
 }
 
 async function plansTableProUpgradeButtonClick() {
-	showElement(plansTableProButtonProgressRing)
-	showElement(plansTableMobileProButtonProgressRing)
-	plansTableProUpgradeButton.disabled = true
-	plansTableMobileProUpgradeButton.disabled = true
+	// Check if the user is on the free plan
+	if (!plansTableFreeCurrentPlanButton.classList.contains("d-none")) {
+		showElement(
+			plansTableProButtonProgressRing,
+			plansTableMobileProButtonProgressRing
+		)
+		disablePlansTableButtons()
 
-	try {
-		let response = await createCheckoutSession(2)
-		window.location.href = response.data.sessionUrl
-		return
-	} catch (error) {
-		// TODO: Show error message
+		try {
+			let response = await createCheckoutSession(2)
+			window.location.href = response.data.sessionUrl
+			return
+		} catch (error) {
+			// TODO: Show error message
+		}
+	} else {
+		// Show dialog for upgrading to Pro
+		changePlanDialog.header = locale.plans.changePlanDialog.upgradeProHeader
+		changePlanDialogDescription.innerText = locale.plans.changePlanDialog.upgradeProDescription
+		changePlanDialog.visible = true
+
+		changePlanDialogPrimaryButtonClickPromiseHolder.Setup()
+		let result = await changePlanDialogPrimaryButtonClickPromiseHolder.AwaitResult()
+		
+		if (result) {
+			showElement(
+				plansTableProButtonProgressRing,
+				plansTableMobileProButtonProgressRing
+			)
+			disablePlansTableButtons()
+
+			try {
+				let response = await axios({
+					method: 'put',
+					url: '/api/subscription',
+					headers: {
+						"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+						'Content-Type': 'application/json'
+					},
+					data: {
+						plan: 2
+					}
+				})
+
+				if (response.data.plan == 2) {
+					// Update the UI
+					hideElement(
+						plansTablePlusUpgradeButton,
+						plansTableMobilePlusUpgradeButton,
+						plansTablePlusCurrentPlanButton,
+						plansTableMobilePlusCurrentPlanButton,
+						plansTableProUpgradeButton,
+						plansTableMobileProUpgradeButton,
+					)
+					showElement(
+						plansTablePlusDowngradeButton,
+						plansTableMobilePlusDowngradeButton,
+						plansTableProCurrentPlanButton,
+						plansTableMobileProCurrentPlanButton
+					)
+
+					// Show success message
+					showPlansSuccessMessage(locale.plans.changePlanSuccessMessage)
+				}
+			} catch (error) {
+				// TODO: Show error message
+			}
+		}
 	}
 
-	hideElement(plansTableProButtonProgressRing)
-	hideElement(plansTableMobileProButtonProgressRing)
-	plansTableProUpgradeButton.disabled = false
-	plansTableMobileProUpgradeButton.disabled = false
+	hideElement(
+		plansTableProButtonProgressRing,
+		plansTableMobileProButtonProgressRing
+	)
+	enablePlansTableButtons()
+}
+
+function hideChangePlanDialog(result: boolean) {
+	changePlanDialogPrimaryButtonClickPromiseHolder.Resolve(result)
+	changePlanDialog.visible = false
 }
 
 async function createCheckoutSession(plan: number): Promise<any> {

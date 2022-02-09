@@ -379,8 +379,8 @@ const enDefaults = {
 		},
 		save: "Save",
 		edit: "Edit",
-		cancel: "Cancel",
-		loginRequiredMessage: "You need to log in to access this page"
+		continue: "Continue",
+		cancel: "Cancel"
 	},
 	devPage: {
 		title: "Developer Dashboard",
@@ -911,8 +911,8 @@ const deDefaults = {
 		},
 		save: "Speichern",
 		edit: "Bearbeiten",
-		cancel: "Abbrechen",
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können"
+		continue: "Weiter",
+		cancel: "Abbrechen"
 	},
 	devPage: {
 		title: "Entwickler-Dashboard",
