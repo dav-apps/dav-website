@@ -220,11 +220,11 @@ function setSize() {
 	plansTableMobilePro.style.fontSize = tableFontSize
 
 	if (width < 706) {
-		paymentMethodCard.classList.add("mb-3")
-		subscriptionCard.classList.add("mt-3")
+		if (paymentMethodCard != null) paymentMethodCard.classList.add("mb-3")
+		if (subscriptionCard != null) subscriptionCard.classList.add("mt-3")
 	} else {
-		paymentMethodCard.classList.remove("mb-3")
-		subscriptionCard.classList.remove("mt-3")
+		if (paymentMethodCard != null) paymentMethodCard.classList.remove("mb-3")
+		if (subscriptionCard != null) subscriptionCard.classList.remove("mt-3")
 	}
 
 	if (width < 768) {
@@ -484,7 +484,8 @@ async function passwordSaveButtonClick() {
 
 //#region Plans page event listeners
 async function paymentMethodButtonClick() {
-	paymentMethodButton.disabled = true
+	setPaymentMethodButtonDisabled(true)
+	setCancelContinueSubscriptionButtonDisabled(true)
 	showElement(paymentMethodButtonProgressRing)
 
 	try {
@@ -502,13 +503,14 @@ async function paymentMethodButtonClick() {
 		// TODO: Show error message
 	}
 
-	paymentMethodButton.disabled = false
+	setPaymentMethodButtonDisabled(false)
+	setCancelContinueSubscriptionButtonDisabled(false)
 	hideElement(paymentMethodButtonProgressRing)
 }
 
 async function cancelContinueSubscriptionButtonClick() {
-	paymentMethodButton.disabled = true
-	cancelContinueSubscriptionButton.disabled = true
+	setPaymentMethodButtonDisabled(true)
+	setCancelContinueSubscriptionButtonDisabled(true)
 	disablePlansTableButtons()
 	showElement(cancelContinueSubscriptionButtonProgressRing)
 
@@ -541,14 +543,14 @@ async function cancelContinueSubscriptionButtonClick() {
 		// TODO: Show error message
 	}
 
-	paymentMethodButton.disabled = false
-	cancelContinueSubscriptionButton.disabled = false
+	setPaymentMethodButtonDisabled(false)
+	setCancelContinueSubscriptionButtonDisabled(false)
 	hideElement(cancelContinueSubscriptionButtonProgressRing)
 }
 
 async function plansTableFreeDowngradeButtonClick() {
-	paymentMethodButton.disabled = true
-	cancelContinueSubscriptionButton.disabled = true
+	setPaymentMethodButtonDisabled(true)
+	setCancelContinueSubscriptionButtonDisabled(true)
 	disablePlansTableButtons()
 	showElement(plansTableFreeButtonProgressRing)
 	showElement(plansTableMobileFreeButtonProgressRing)
@@ -582,8 +584,8 @@ async function plansTableFreeDowngradeButtonClick() {
 		// TODO: Show error message
 	}
 
-	paymentMethodButton.disabled = false
-	cancelContinueSubscriptionButton.disabled = false
+	setPaymentMethodButtonDisabled(false)
+	setCancelContinueSubscriptionButtonDisabled(false)
 	disablePlansTableButtons()
 	hideElement(plansTableFreeButtonProgressRing)
 	hideElement(plansTableMobileFreeButtonProgressRing)
@@ -645,6 +647,18 @@ async function createCheckoutSession(plan: number): Promise<any> {
 	})
 }
 //#endregion
+
+function setPaymentMethodButtonDisabled(value: boolean) {
+	if (paymentMethodButton != null) {
+		paymentMethodButton.disabled = value
+	}
+}
+
+function setCancelContinueSubscriptionButtonDisabled(value: boolean) {
+	if (cancelContinueSubscriptionButton != null) {
+		cancelContinueSubscriptionButton.disabled = value
+	}
+}
 
 function enablePlansTableButtons() {
 	plansTableFreeDowngradeButton.disabled = false

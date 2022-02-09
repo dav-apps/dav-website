@@ -18,6 +18,8 @@ function getUpmostParentWithSingleChild(element: HTMLElement) {
 
 export function hideElement(...elements: HTMLElement[]) {
 	for (let element of elements) {
+		if (element == null) continue
+
 		let parent = getUpmostParentWithSingleChild(element)
 		parent.classList.add("d-none")
 	}
@@ -25,6 +27,8 @@ export function hideElement(...elements: HTMLElement[]) {
 
 export function showElement(...elements: HTMLElement[]) {
 	for (let element of elements) {
+		if (element == null) continue
+
 		let parent = getUpmostParentWithSingleChild(element)
 		parent.classList.remove("d-none")
 	}
