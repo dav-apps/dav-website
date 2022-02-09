@@ -212,6 +212,8 @@ function setEventListeners() {
 	plansTableMobileFreeDowngradeButton.addEventListener('click', plansTableFreeDowngradeButtonClick)
 	plansTablePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableMobilePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
+	plansTablePlusDowngradeButton.addEventListener('click', plansTablePlusDowngradeButtonClick)
+	plansTableMobilePlusDowngradeButton.addEventListener('click', plansTablePlusDowngradeButtonClick)
 	plansTableProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
 	plansTableMobileProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
 	changePlanDialog.addEventListener('dismiss', () => hideChangePlanDialog(false))
@@ -613,6 +615,66 @@ async function plansTablePlusUpgradeButtonClick() {
 		return
 	} catch (error) {
 		// TODO: Show error message
+	}
+
+	hideElement(
+		plansTablePlusButtonProgressRing,
+		plansTableMobilePlusButtonProgressRing
+	)
+	enablePlansTableButtons()
+}
+
+async function plansTablePlusDowngradeButtonClick() {
+	changePlanDialog.header = locale.plans.changePlanDialog.downgradePlusHeader
+	changePlanDialogDescription.innerText = locale.plans.changePlanDialog.downgradePlusDescription
+	changePlanDialog.visible = true
+
+	changePlanDialogPrimaryButtonClickPromiseHolder.Setup()
+	let result = await changePlanDialogPrimaryButtonClickPromiseHolder.AwaitResult()
+
+	if (result) {
+		showElement(
+			plansTablePlusButtonProgressRing,
+			plansTableMobilePlusButtonProgressRing
+		)
+		disablePlansTableButtons()
+
+		try {
+			let response = await axios({
+				method: 'put',
+				url: '/api/subscription',
+				headers: {
+					"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+					'Content-Type': 'application/json'
+				},
+				data: {
+					plan: 1
+				}
+			})
+
+			if (response.data.plan == 1) {
+				// Update the UI
+				hideElement(
+					plansTablePlusDowngradeButton,
+					plansTableMobilePlusDowngradeButton,
+					plansTablePlusUpgradeButton,
+					plansTableMobilePlusUpgradeButton,
+					plansTableProCurrentPlanButton,
+					plansTableMobileProCurrentPlanButton
+				)
+				showElement(
+					plansTablePlusCurrentPlanButton,
+					plansTableMobilePlusCurrentPlanButton,
+					plansTableProUpgradeButton,
+					plansTableMobileProUpgradeButton,
+				)
+
+				// Show success message
+				showPlansSuccessMessage(locale.plans.changePlanSuccessMessage)
+			}
+		} catch (error) {
+			// TODO: Show error message
+		}
 	}
 
 	hideElement(

@@ -625,16 +625,23 @@ export class App {
 					})
 				}
 			} else {
-				// Update the existing subscription
 				let subscription = subscriptions.data[0]
 
-				await stripe.subscriptions.update(subscription.id, {
-					items: [{
-						id: subscription.items.data[0].id,
-						plan: plan == 1 ? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID : process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
-					}],
-					cancel_at_period_end: false
-				})
+				if (plan == 0) {
+					// Cancel the subscription
+					await stripe.subscriptions.update(subscription.id, {
+						cancel_at_period_end: true
+					})
+				} else {
+					// Update the existing subscription
+					await stripe.subscriptions.update(subscription.id, {
+						items: [{
+							id: subscription.items.data[0].id,
+							plan: plan == 1 ? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID : process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
+						}],
+						cancel_at_period_end: false
+					})
+				}
 			}
 
 			res.status(200).send({
