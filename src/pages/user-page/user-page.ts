@@ -202,6 +202,8 @@ function setEventListeners() {
 	if (cancelContinueSubscriptionButton != null) {
 		cancelContinueSubscriptionButton.addEventListener('click', cancelContinueSubscriptionButtonClick)
 	}
+	plansTableFreeDowngradeButton.addEventListener('click', plansTableFreeDowngradeButtonClick)
+	plansTableMobileFreeDowngradeButton.addEventListener('click', plansTableFreeDowngradeButtonClick)
 	plansTablePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableMobilePlusUpgradeButton.addEventListener('click', plansTablePlusUpgradeButtonClick)
 	plansTableProUpgradeButton.addEventListener('click', plansTableProUpgradeButtonClick)
@@ -505,7 +507,9 @@ async function paymentMethodButtonClick() {
 }
 
 async function cancelContinueSubscriptionButtonClick() {
+	paymentMethodButton.disabled = true
 	cancelContinueSubscriptionButton.disabled = true
+	disablePlansTableButtons()
 	showElement(cancelContinueSubscriptionButtonProgressRing)
 
 	try {
@@ -524,35 +528,65 @@ async function cancelContinueSubscriptionButtonClick() {
 			showPlansSuccessMessage(locale.plans.cancelSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
 
 			// Disable the buttons in the plans tables
-			plansTableFreeDowngradeButton.disabled = true
-			plansTablePlusUpgradeButton.disabled = true
-			plansTablePlusDowngradeButton.disabled = true
-			plansTableProUpgradeButton.disabled = true
-			plansTableMobileFreeDowngradeButton.disabled = true
-			plansTableMobilePlusUpgradeButton.disabled = true
-			plansTableMobilePlusDowngradeButton.disabled = true
-			plansTableMobileProUpgradeButton.disabled = true
+			disablePlansTableButtons()
 		} else {
 			subscriptionCardHeader.innerText = locale.plans.nextPayment
 			cancelContinueSubscriptionButton.innerText = locale.plans.cancelSubscription
 			showPlansSuccessMessage(locale.plans.continueSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
 
 			// Enable the buttons in the plans tables
-			plansTableFreeDowngradeButton.disabled = false
-			plansTablePlusUpgradeButton.disabled = false
-			plansTablePlusDowngradeButton.disabled = false
-			plansTableProUpgradeButton.disabled = false
-			plansTableMobileFreeDowngradeButton.disabled = false
-			plansTableMobilePlusUpgradeButton.disabled = false
-			plansTableMobilePlusDowngradeButton.disabled = false
-			plansTableMobileProUpgradeButton.disabled = false
+			enablePlansTableButtons()
 		}
 	} catch (error) {
 		// TODO: Show error message
 	}
 
+	paymentMethodButton.disabled = false
 	cancelContinueSubscriptionButton.disabled = false
 	hideElement(cancelContinueSubscriptionButtonProgressRing)
+}
+
+async function plansTableFreeDowngradeButtonClick() {
+	paymentMethodButton.disabled = true
+	cancelContinueSubscriptionButton.disabled = true
+	disablePlansTableButtons()
+	showElement(plansTableFreeButtonProgressRing)
+	showElement(plansTableMobileFreeButtonProgressRing)
+
+	try {
+		let response = await axios({
+			method: 'put',
+			url: '/api/subscription/cancel',
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			}
+		})
+
+		// Update the UI & show success message
+		if (response.data.cancelAtPeriodEnd) {
+			subscriptionCardHeader.innerText = locale.plans.subscriptionEnd
+			cancelContinueSubscriptionButton.innerText = locale.plans.continueSubscription
+			showPlansSuccessMessage(locale.plans.cancelSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+
+			// Disable the buttons in the plans tables
+			disablePlansTableButtons()
+		} else {
+			subscriptionCardHeader.innerText = locale.plans.nextPayment
+			cancelContinueSubscriptionButton.innerText = locale.plans.cancelSubscription
+			showPlansSuccessMessage(locale.plans.continueSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+
+			// Enable the buttons in the plans tables
+			enablePlansTableButtons()
+		}
+	} catch (error) {
+		// TODO: Show error message
+	}
+
+	paymentMethodButton.disabled = false
+	cancelContinueSubscriptionButton.disabled = false
+	disablePlansTableButtons()
+	hideElement(plansTableFreeButtonProgressRing)
+	hideElement(plansTableMobileFreeButtonProgressRing)
 }
 
 async function plansTablePlusUpgradeButtonClick() {
@@ -611,6 +645,28 @@ async function createCheckoutSession(plan: number): Promise<any> {
 	})
 }
 //#endregion
+
+function enablePlansTableButtons() {
+	plansTableFreeDowngradeButton.disabled = false
+	plansTablePlusUpgradeButton.disabled = false
+	plansTablePlusDowngradeButton.disabled = false
+	plansTableProUpgradeButton.disabled = false
+	plansTableMobileFreeDowngradeButton.disabled = false
+	plansTableMobilePlusUpgradeButton.disabled = false
+	plansTableMobilePlusDowngradeButton.disabled = false
+	plansTableMobileProUpgradeButton.disabled = false
+}
+
+function disablePlansTableButtons() {
+	plansTableFreeDowngradeButton.disabled = true
+	plansTablePlusUpgradeButton.disabled = true
+	plansTablePlusDowngradeButton.disabled = true
+	plansTableProUpgradeButton.disabled = true
+	plansTableMobileFreeDowngradeButton.disabled = true
+	plansTableMobilePlusUpgradeButton.disabled = true
+	plansTableMobilePlusDowngradeButton.disabled = true
+	plansTableMobileProUpgradeButton.disabled = true
+}
 
 function showSnackbar(message: string) {
 	snackbarLabel.innerText = message

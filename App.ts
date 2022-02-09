@@ -582,6 +582,66 @@ export class App {
 			}
 		})
 
+		router.put('/api/subscription', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let plan = req.body.plan
+			
+			if (plan != 0 && plan != 1 && plan != 2) {
+				res.status(400).end()
+				return
+			}
+
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+
+			if (user == null) {
+				res.status(412).end()
+				return
+			}
+
+			let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
+			let subscriptions = await stripe.subscriptions.list({ customer: user.StripeCustomerId })
+
+			if (subscriptions.data.length == 0) {
+				if (plan == 0) {
+					res.status(200).send({
+						plan
+					})
+					return
+				} else {
+					// Create a new subscription
+					await stripe.subscriptions.create({
+						customer: user.StripeCustomerId,
+						items: [{
+							plan: plan == 1 ? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID : process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
+						}]
+					})
+				}
+			} else {
+				// Update the existing subscription
+				let subscription = subscriptions.data[0]
+
+				await stripe.subscriptions.update(subscription.id, {
+					items: [{
+						id: subscription.items.data[0].id,
+						plan: plan == 1 ? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID : process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
+					}],
+					cancel_at_period_end: false
+				})
+			}
+
+			res.status(200).send({
+				plan
+			})
+		})
+
 		router.put('/api/subscription/cancel', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
