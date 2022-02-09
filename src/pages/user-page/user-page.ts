@@ -519,9 +519,9 @@ async function cancelContinueSubscriptionButtonClick() {
 
 		// Update the UI & show success message
 		if (response.data.cancelAtPeriodEnd) {
-			subscriptionCardHeader.innerText = pricingLocale.subscriptionEnd
-			cancelContinueSubscriptionButton.innerText = pricingLocale.continueSubscription
-			showPlansSuccessMessage(pricingLocale.cancelSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+			subscriptionCardHeader.innerText = locale.plans.subscriptionEnd
+			cancelContinueSubscriptionButton.innerText = locale.plans.continueSubscription
+			showPlansSuccessMessage(locale.plans.cancelSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
 
 			// Disable the buttons in the plans tables
 			plansTableFreeDowngradeButton.disabled = true
@@ -533,9 +533,9 @@ async function cancelContinueSubscriptionButtonClick() {
 			plansTableMobilePlusDowngradeButton.disabled = true
 			plansTableMobileProUpgradeButton.disabled = true
 		} else {
-			subscriptionCardHeader.innerText = pricingLocale.nextPayment
-			cancelContinueSubscriptionButton.innerText = pricingLocale.cancelSubscription
-			showPlansSuccessMessage(pricingLocale.continueSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
+			subscriptionCardHeader.innerText = locale.plans.nextPayment
+			cancelContinueSubscriptionButton.innerText = locale.plans.cancelSubscription
+			showPlansSuccessMessage(locale.plans.continueSubscriptionSuccessMessage.replace('{0}', subscriptionCardPeriodEndDate.innerText))
 
 			// Enable the buttons in the plans tables
 			plansTableFreeDowngradeButton.disabled = false

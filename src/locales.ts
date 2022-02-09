@@ -296,8 +296,29 @@ const enDefaults = {
 		},
 		plans: {
 			title: "Plans",
-			confirmEmailText: "Confirm your email address to get more free storage.",
-			confirmEmailLink: "Send confirmation email"
+			currentPlan: "Current plan",
+			upgrade: "Upgrade",
+			downgrade: "Downgrade",
+			changePlanSuccessMessage: "Your plan has been successfully changed",
+			paymentMethodCardHeader: "Your payment method",
+			cardExpires: "Expires",
+			edit: "Edit",
+			nextPayment: "Next payment",
+			subscriptionEnd: "Subscription end",
+			continueSubscription: "Continue subscription",
+			cancelSubscription: "Cancel subscription",
+			continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
+			cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
+			changePlanDialog: {
+				upgradePlusHeader: "Upgrade to Plus",
+				upgradePlusDescription: "Do you want to upgrade to dav Plus for 3 € per month?",
+				upgradeProHeader: "Upgrade to Pro",
+				upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
+				downgradePlusHeader: "Downgrade to Plus",
+				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
+				downgradeFreeHeader: "Downgrade to Free",
+				downgradeFreeDescription: "Do you want to end your subscription?"
+			}
 		},
 		apps: {
 			title: "Your Apps",
@@ -486,35 +507,7 @@ const enDefaults = {
 				hotkeyFeature: "Assign hotkeys to sounds",
 				outputDeviceFeature: "Set the output device for each playing sound individually",
 				playlistDownloadFeature: "Download entire YouTube playlists"
-			},
-			signup: "Sign up",
-			currentPlan: "Current plan",
-			upgrade: "Upgrade",
-			downgrade: "Downgrade",
-			cancel: "Cancel",
-			unexpectedError: "Unexpected error ({0})",
-			changePlanSuccessMessage: "Your plan has been successfully changed",
-			paymentMethodCardHeader: "Your payment method",
-			cardExpires: "Expires",
-			edit: "Edit",
-			changePaymentMethodSuccessMessage: "Your payment method has been successfully updated",
-			nextPayment: "Next payment",
-			subscriptionEnd: "Subscription end",
-			continueSubscription: "Continue subscription",
-			cancelSubscription: "Cancel subscription",
-			continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
-			cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
-			changePlanDialog: {
-				upgradePlusHeader: "Upgrade to Plus",
-				upgradePlusDescription: "Do you want to upgrade to dav Plus for 3 € per month?",
-				upgradeProHeader: "Upgrade to Pro",
-				upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
-				downgradePlusHeader: "Downgrade to Plus",
-				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
-				downgradeFreeHeader: "Downgrade to Free",
-				downgradeFreeDescription: "Do you want to end your subscription?"
-			},
-			continue: "Continue"
+			}
 		}
 	}
 }
@@ -835,8 +828,29 @@ const deDefaults = {
 		},
 		plans: {
 			title: "Abos",
-			confirmEmailText: "Bestätige deine Email-Adresse, um mehr kostenlosen Speicherplatz zu bekommen.",
-			confirmEmailLink: "Bestätigungsemail senden"
+			currentPlan: "Aktuelles Abo",
+			upgrade: "Upgrade",
+			downgrade: "Downgrade",
+			changePlanSuccessMessage: "Dein Abo wurde erfolgreich geändert",
+			paymentMethodCardHeader: "Deine Zahlungsmethode",
+			cardExpires: "Ablaufdatum:",
+			edit: "Bearbeiten",
+			nextPayment: "Nächste Zahlung",
+			subscriptionEnd: "Ende deines Abos",
+			continueSubscription: "Abo fortführen",
+			cancelSubscription: "Abo beenden",
+			continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
+			cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
+			changePlanDialog: {
+				upgradePlusHeader: "Wechsel auf Plus",
+				upgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
+				upgradeProHeader: "Wechsel auf Pro",
+				upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
+				downgradePlusHeader: "Wechsel auf Plus",
+				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
+				downgradeFreeHeader: "Wechsel auf Free",
+				downgradeFreeDescription: "Möchtest du dein Abo beenden?"
+			}
 		},
 		apps: {
 			title: "Deine Apps",
@@ -1025,35 +1039,7 @@ const deDefaults = {
 				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu",
 				outputDeviceFeature: "Lege das Ausgabegerät für jeden Sound individuell fest",
 				playlistDownloadFeature: "Lade komplette YouTube-Playlisten herunter"
-			},
-			signup: "Registrieren",
-			currentPlan: "Aktuelles Abo",
-			upgrade: "Upgrade",
-			downgrade: "Downgrade",
-			cancel: "Abbrechen",
-			unexpectedError: "Unerwarteter Fehler ({0})",
-			changePlanSuccessMessage: "Dein Abo wurde erfolgreich geändert",
-			paymentMethodCardHeader: "Deine Zahlungsmethode",
-			cardExpires: "Ablaufdatum:",
-			edit: "Bearbeiten",
-			changePaymentMethodSuccessMessage: "Deine Zahlungsmethode wurde erfolgreich aktualisiert",
-			nextPayment: "Nächste Zahlung",
-			subscriptionEnd: "Ende deines Abos",
-			continueSubscription: "Abo fortführen",
-			cancelSubscription: "Abo beenden",
-			continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
-			cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
-			changePlanDialog: {
-				upgradePlusHeader: "Wechsel auf Plus",
-				upgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
-				upgradeProHeader: "Wechsel auf Pro",
-				upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
-				downgradePlusHeader: "Wechsel auf Plus",
-				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
-				downgradeFreeHeader: "Wechsel auf Free",
-				downgradeFreeDescription: "Möchtest du dein Abo beenden?"
-			},
-			continue: "Weiter"
+			}
 		}
 	}
 }

@@ -208,7 +208,7 @@
 									style="display: inline-block; margin: 0px 15px">
 
 									<div class="card-body">
-										<h5 class="fw-light mb-3"><%= pricingLocale.paymentMethodCardHeader %></h5>
+										<h5 class="fw-light mb-3"><%= locale.plans.paymentMethodCardHeader %></h5>
 
 										<div class="d-flex">
 											<i class="ms-Icon ms-Icon--PaymentCard me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
@@ -216,7 +216,7 @@
 										</div>
 
 										<p style="margin-bottom: 8px">
-											<%= pricingLocale.cardExpires %>
+											<%= locale.plans.cardExpires %>
 											<%= card.exp_month < 10 ? `0${card.exp_month}` : card.exp_month.toString() %>
 											/
 											<%= card.exp_year %>
@@ -232,7 +232,7 @@
 											<dav-button
 												id="payment-method-button"
 												style="float: right; margin-bottom: 16px">
-												<%= pricingLocale.edit %>
+												<%= locale.plans.edit %>
 											</dav-button>
 										</div>
 									</div>
@@ -247,7 +247,7 @@
 
 									<div class="card-body">
 										<h5 id="subscription-card-header" class="fw-light">
-											<%= user.SubscriptionStatus == 0 ? pricingLocale.nextPayment : pricingLocale.subscriptionEnd %>
+											<%= user.SubscriptionStatus == 0 ? locale.plans.nextPayment : locale.plans.subscriptionEnd %>
 										</h5>
 										<p id="subscription-card-period-end-date"><%= periodEndDate %></p>
 
@@ -260,7 +260,7 @@
 
 											<dav-button
 												id="cancel-continue-subscription-button">
-												<%= user.SubscriptionStatus == 0 ? pricingLocale.cancelSubscription : pricingLocale.continueSubscription %>
+												<%= user.SubscriptionStatus == 0 ? locale.plans.cancelSubscription : locale.plans.continueSubscription %>
 											</dav-button>
 										</div>
 									</div>
@@ -342,7 +342,7 @@
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
-													<%= pricingLocale.currentPlan %>
+													<%= locale.plans.currentPlan %>
 												</button>
 
 												<% if (user.SubscriptionStatus == 0) { %>
@@ -350,7 +350,7 @@
 													id="plans-table-free-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 													type="button">
-													<%= pricingLocale.downgrade %>
+													<%= locale.plans.downgrade %>
 												</button>
 												<% } else { %>
 												<button
@@ -358,7 +358,7 @@
 													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
-													<%= pricingLocale.downgrade %>
+													<%= locale.plans.downgrade %>
 												</button>
 												<% } %>
 											</div>
@@ -376,7 +376,7 @@
 													id="plans-table-plus-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button">
-													<%= pricingLocale.upgrade %>
+													<%= locale.plans.upgrade %>
 												</button>
 												<% } else { %>
 												<button
@@ -384,7 +384,7 @@
 													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
-													<%= pricingLocale.upgrade %>
+													<%= locale.plans.upgrade %>
 												</button>
 												<% } %>
 
@@ -393,7 +393,7 @@
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
-													<%= pricingLocale.currentPlan %>
+													<%= locale.plans.currentPlan %>
 												</button>
 
 												<% if (user.SubscriptionStatus == 0) { %>
@@ -401,7 +401,7 @@
 													id="plans-table-plus-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button">
-													<%= pricingLocale.downgrade %>
+													<%= locale.plans.downgrade %>
 												</button>
 												<% } else { %>
 												<button
@@ -409,7 +409,7 @@
 													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
-													<%= pricingLocale.downgrade %>
+													<%= locale.plans.downgrade %>
 												</button>
 												<% } %>
 											</div>
@@ -427,7 +427,7 @@
 													id="plans-table-pro-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 													type="button">
-													<%= pricingLocale.upgrade %>
+													<%= locale.plans.upgrade %>
 												</button>
 												<% } else { %>
 												<button
@@ -435,7 +435,7 @@
 													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
-													<%= pricingLocale.upgrade %>
+													<%= locale.plans.upgrade %>
 												</button>
 												<% } %>
 
@@ -444,7 +444,7 @@
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button"
 													disabled>
-													<%= pricingLocale.currentPlan %>
+													<%= locale.plans.currentPlan %>
 												</button>
 											</div>
 										</td>
@@ -489,7 +489,7 @@
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
-												<%= pricingLocale.currentPlan %>
+												<%= locale.plans.currentPlan %>
 											</button>
 
 											<% if (user.SubscriptionStatus == 0) { %>
@@ -497,7 +497,7 @@
 												id="plans-table-mobile-free-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 												type="button">
-												<%= pricingLocale.downgrade %>
+												<%= locale.plans.downgrade %>
 											</button>
 											<% } else { %>
 											<button
@@ -505,7 +505,7 @@
 												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
-												<%= pricingLocale.downgrade %>
+												<%= locale.plans.downgrade %>
 											</button>
 											<% } %>
 										</td>
@@ -567,7 +567,7 @@
 												id="plans-table-mobile-plus-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button">
-												<%= pricingLocale.upgrade %>
+												<%= locale.plans.upgrade %>
 											</button>
 											<% } else { %>
 											<button
@@ -575,7 +575,7 @@
 												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
-												<%= pricingLocale.upgrade %>
+												<%= locale.plans.upgrade %>
 											</button>
 											<% } %>
 
@@ -584,7 +584,7 @@
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
-												<%= pricingLocale.currentPlan %>
+												<%= locale.plans.currentPlan %>
 											</button>
 
 											<% if (user.SubscriptionStatus == 0) { %>
@@ -592,7 +592,7 @@
 												id="plans-table-mobile-plus-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button">
-												<%= pricingLocale.downgrade %>
+												<%= locale.plans.downgrade %>
 											</button>
 											<% } else { %>
 											<button
@@ -600,7 +600,7 @@
 												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
-												<%= pricingLocale.downgrade %>
+												<%= locale.plans.downgrade %>
 											</button>
 											<% } %>
 										</td>
@@ -662,7 +662,7 @@
 												id="plans-table-mobile-pro-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 												type="button">
-												<%= pricingLocale.upgrade %>
+												<%= locale.plans.upgrade %>
 											</button>
 											<% } else { %>
 											<button
@@ -670,7 +670,7 @@
 												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
-												<%= pricingLocale.upgrade %>
+												<%= locale.plans.upgrade %>
 											</button>
 											<% } %>
 
@@ -679,7 +679,7 @@
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button"
 												disabled>
-												<%= pricingLocale.currentPlan %>
+												<%= locale.plans.currentPlan %>
 											</button>
 										</td>
 									</tr>
