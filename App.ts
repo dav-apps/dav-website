@@ -439,7 +439,7 @@ export class App {
 				response = response as ApiResponse<SessionResponseData>
 				res
 					.status(response.status)
-					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true })
+					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
 					.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
@@ -473,7 +473,7 @@ export class App {
 				response = response as ApiResponse<SignupResponseData>
 				res
 					.status(response.status)
-					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true })
+					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
 					.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
