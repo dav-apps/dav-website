@@ -24,7 +24,6 @@ let plansContainer: HTMLDivElement
 let snackbarLabel: HTMLDivElement
 
 let locale = getLocale().userPage
-let pricingLocale = getLocale().misc.pricing
 let snackbar: MDCSnackbar
 
 //#region General page variables
@@ -75,6 +74,12 @@ let plansTableProButtonProgressRing: ProgressRing
 let plansTableMobileFreeButtonProgressRing: ProgressRing
 let plansTableMobilePlusButtonProgressRing: ProgressRing
 let plansTableMobileProButtonProgressRing: ProgressRing
+let plansTableFreeButtonContainer: HTMLDivElement
+let plansTablePlusButtonContainer: HTMLDivElement
+let plansTableProButtonContainer: HTMLDivElement
+let plansTableMobileFreeButtonContainer: HTMLTableCellElement
+let plansTableMobilePlusButtonContainer: HTMLTableCellElement
+let plansTableMobileProButtonContainer: HTMLTableCellElement
 let plansTableFreeCurrentPlanButton: HTMLButtonElement
 let plansTableFreeDowngradeButton: HTMLButtonElement
 let plansTablePlusUpgradeButton: HTMLButtonElement
@@ -145,6 +150,12 @@ async function main() {
 	plansTableMobileFreeButtonProgressRing = document.getElementById("plans-table-mobile-free-button-progress-ring") as ProgressRing
 	plansTableMobilePlusButtonProgressRing = document.getElementById("plans-table-mobile-plus-button-progress-ring") as ProgressRing
 	plansTableMobileProButtonProgressRing = document.getElementById("plans-table-mobile-pro-button-progress-ring") as ProgressRing
+	plansTableFreeButtonContainer = document.getElementById("plans-table-free-button-container") as HTMLDivElement
+	plansTablePlusButtonContainer = document.getElementById("plans-table-plus-button-container") as HTMLDivElement
+	plansTableProButtonContainer = document.getElementById("plans-table-pro-button-container") as HTMLDivElement
+	plansTableMobileFreeButtonContainer = document.getElementById("plans-table-mobile-free-button-container") as HTMLTableCellElement
+	plansTableMobilePlusButtonContainer = document.getElementById("plans-table-mobile-plus-button-container") as HTMLTableCellElement
+	plansTableMobileProButtonContainer = document.getElementById("plans-table-mobile-pro-button-container") as HTMLTableCellElement
 	plansTableFreeCurrentPlanButton = document.getElementById("plans-table-free-current-plan-button") as HTMLButtonElement
 	plansTableFreeDowngradeButton = document.getElementById("plans-table-free-downgrade-button") as HTMLButtonElement
 	plansTablePlusUpgradeButton = document.getElementById("plans-table-plus-upgrade-button") as HTMLButtonElement
@@ -257,6 +268,14 @@ function displayPage() {
 		hideElement(plansContainer)
 		showElement(generalContainer)
 	}
+
+	// Hide the message bars
+	hideElement(
+		successMessageBarGeneral,
+		errorMessageBarGeneral,
+		successMessageBarPlans,
+		errorMessageBarPlans
+	)
 }
 
 //#region General page event listeners
@@ -558,11 +577,8 @@ async function cancelContinueSubscriptionButtonClick() {
 async function plansTableFreeDowngradeButtonClick() {
 	setPaymentMethodButtonDisabled(true)
 	setCancelContinueSubscriptionButtonDisabled(true)
+	showFreeButtonProgressRing()
 	disablePlansTableButtons()
-	showElement(
-		plansTableFreeButtonProgressRing,
-		plansTableMobileFreeButtonProgressRing
-	)
 
 	try {
 		let response = await axios({
@@ -595,18 +611,12 @@ async function plansTableFreeDowngradeButtonClick() {
 
 	setPaymentMethodButtonDisabled(false)
 	setCancelContinueSubscriptionButtonDisabled(false)
+	hideFreeButtonProgressRing()
 	disablePlansTableButtons()
-	hideElement(
-		plansTableFreeButtonProgressRing,
-		plansTableMobileFreeButtonProgressRing
-	)
 }
 
 async function plansTablePlusUpgradeButtonClick() {
-	showElement(
-		plansTablePlusButtonProgressRing,
-		plansTableMobilePlusButtonProgressRing
-	)
+	showPlusButtonProgressRing()
 	disablePlansTableButtons()
 
 	try {
@@ -617,10 +627,7 @@ async function plansTablePlusUpgradeButtonClick() {
 		// TODO: Show error message
 	}
 
-	hideElement(
-		plansTablePlusButtonProgressRing,
-		plansTableMobilePlusButtonProgressRing
-	)
+	hidePlusButtonProgressRing()
 	enablePlansTableButtons()
 }
 
@@ -633,10 +640,7 @@ async function plansTablePlusDowngradeButtonClick() {
 	let result = await changePlanDialogPrimaryButtonClickPromiseHolder.AwaitResult()
 
 	if (result) {
-		showElement(
-			plansTablePlusButtonProgressRing,
-			plansTableMobilePlusButtonProgressRing
-		)
+		showPlusButtonProgressRing()
 		disablePlansTableButtons()
 
 		try {
@@ -677,20 +681,14 @@ async function plansTablePlusDowngradeButtonClick() {
 		}
 	}
 
-	hideElement(
-		plansTablePlusButtonProgressRing,
-		plansTableMobilePlusButtonProgressRing
-	)
+	hidePlusButtonProgressRing()
 	enablePlansTableButtons()
 }
 
 async function plansTableProUpgradeButtonClick() {
 	// Check if the user is on the free plan
 	if (!plansTableFreeCurrentPlanButton.classList.contains("d-none")) {
-		showElement(
-			plansTableProButtonProgressRing,
-			plansTableMobileProButtonProgressRing
-		)
+		showProButtonProgressRing()
 		disablePlansTableButtons()
 
 		try {
@@ -708,12 +706,9 @@ async function plansTableProUpgradeButtonClick() {
 
 		changePlanDialogPrimaryButtonClickPromiseHolder.Setup()
 		let result = await changePlanDialogPrimaryButtonClickPromiseHolder.AwaitResult()
-		
+
 		if (result) {
-			showElement(
-				plansTableProButtonProgressRing,
-				plansTableMobileProButtonProgressRing
-			)
+			showProButtonProgressRing()
 			disablePlansTableButtons()
 
 			try {
@@ -755,10 +750,7 @@ async function plansTableProUpgradeButtonClick() {
 		}
 	}
 
-	hideElement(
-		plansTableProButtonProgressRing,
-		plansTableMobileProButtonProgressRing
-	)
+	hideProButtonProgressRing()
 	enablePlansTableButtons()
 }
 
@@ -816,6 +808,66 @@ function disablePlansTableButtons() {
 	plansTableMobilePlusUpgradeButton.disabled = true
 	plansTableMobilePlusDowngradeButton.disabled = true
 	plansTableMobileProUpgradeButton.disabled = true
+}
+
+function showFreeButtonProgressRing() {
+	showElement(
+		plansTableFreeButtonProgressRing,
+		plansTableMobileFreeButtonProgressRing
+	)
+
+	plansTableFreeButtonContainer.style.marginLeft = "-30px"
+	plansTableMobileFreeButtonContainer.style.marginLeft = "-30px"
+}
+
+function hideFreeButtonProgressRing() {
+	hideElement(
+		plansTableFreeButtonProgressRing,
+		plansTableMobileFreeButtonProgressRing
+	)
+
+	plansTableFreeButtonContainer.style.marginLeft = "0px"
+	plansTableMobileFreeButtonContainer.style.marginLeft = "0px"
+}
+
+function showPlusButtonProgressRing() {
+	showElement(
+		plansTablePlusButtonProgressRing,
+		plansTableMobilePlusButtonProgressRing
+	)
+
+	plansTablePlusButtonContainer.style.marginLeft = "-30px"
+	plansTableMobilePlusButtonContainer.style.marginLeft = "-30px"
+}
+
+function hidePlusButtonProgressRing() {
+	hideElement(
+		plansTablePlusButtonProgressRing,
+		plansTableMobilePlusButtonProgressRing
+	)
+
+	plansTablePlusButtonContainer.style.marginLeft = "0px"
+	plansTableMobilePlusButtonContainer.style.marginLeft = "0px"
+}
+
+function showProButtonProgressRing() {
+	showElement(
+		plansTableProButtonProgressRing,
+		plansTableMobileProButtonProgressRing
+	)
+
+	plansTableProButtonContainer.style.marginLeft = "-30px"
+	plansTableMobileProButtonContainer.style.marginLeft = "-30px"
+}
+
+function hideProButtonProgressRing() {
+	hideElement(
+		plansTableProButtonProgressRing,
+		plansTableMobileProButtonProgressRing
+	)
+
+	plansTableProButtonContainer.style.marginLeft = "0px"
+	plansTableMobileProButtonContainer.style.marginLeft = "0px"
 }
 
 function showSnackbar(message: string) {
