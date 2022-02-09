@@ -22,6 +22,7 @@ let plansSidenavItem: SidenavItem
 let generalContainer: HTMLDivElement
 let plansContainer: HTMLDivElement
 let snackbarLabel: HTMLDivElement
+let expiredSessionDialog: Dialog
 
 let locale = getLocale().userPage
 let snackbar: MDCSnackbar
@@ -109,6 +110,7 @@ async function main() {
 	generalContainer = document.getElementById("general-container") as HTMLDivElement
 	plansContainer = document.getElementById("plans-container") as HTMLDivElement
 	snackbarLabel = document.getElementById("snackbar-label") as HTMLDivElement
+	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
 
 	errorMessageBarGeneral = document.getElementById("error-message-bar-general") as MessageBar
 	successMessageBarGeneral = document.getElementById("success-message-bar-general") as MessageBar
@@ -184,6 +186,7 @@ async function main() {
 }
 
 function setEventListeners() {
+	//#region General event listeners
 	window.addEventListener('hashchange', displayPage)
 
 	generalSidenavItem.addEventListener('click', () => {
@@ -193,6 +196,9 @@ function setEventListeners() {
 	plansSidenavItem.addEventListener('click', () => {
 		window.location.href = "/user#plans"
 	})
+
+	expiredSessionDialog.addEventListener('primaryButtonClick', () => window.location.reload())
+	//#endregion
 
 	//#region General page event listeners
 	uploadProfileImageButton.addEventListener('click', uploadProfileImageButtonClick)
@@ -349,8 +355,10 @@ async function profileImageDialogPrimaryButtonClick() {
 		showSnackbar(locale.messages.profileImageUpdateMessage)
 	} catch (error) {
 		// Show error message
-		showGeneralErrorMessage(getErrorMessage(error.response.data.errors[0].code))
-		profileImage.src = initialProfileImageSrc
+		if (!handleExpiredSessionError(error)) {
+			showGeneralErrorMessage(getErrorMessage(error.response.data.errors[0].code))
+			profileImage.src = initialProfileImageSrc
+		}
 	}
 
 	uploadProfileImageButton.disabled = false
@@ -401,7 +409,9 @@ async function firstNameSaveButtonClick() {
 		if (userNavLink != null) userNavLink.innerText = firstName
 	} catch (error) {
 		// Show error message
-		firstNameTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+		if (!handleExpiredSessionError(error)) {
+			firstNameTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+		}
 	}
 
 	hideElement(firstNameProgressRing)
@@ -448,7 +458,9 @@ async function emailSaveButtonClick() {
 		hideElement(emailSaveButton)
 	} catch (error) {
 		// Show error message
-		emailTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+		if (!handleExpiredSessionError(error)) {
+			emailTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+		}
 	}
 
 	hideElement(emailProgressRing)
@@ -497,8 +509,10 @@ async function passwordSaveButtonClick() {
 		passwordConfirmationTextfield.value = ""
 	} catch (error) {
 		// Show error message
-		passwordTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
-		passwordConfirmationTextfield.value = ""
+		if (!handleExpiredSessionError(error)) {
+			passwordTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+			passwordConfirmationTextfield.value = ""
+		}
 	}
 
 	passwordTextfield.disabled = false
@@ -526,7 +540,10 @@ async function paymentMethodButtonClick() {
 		window.location.href = response.data.sessionUrl
 		return
 	} catch (error) {
-		// TODO: Show error message
+		// Show error message
+		if (!handleExpiredSessionError(error)) {
+			showPlansErrorMessage(locale.errors.unexpectedErrorLong)
+		}
 	}
 
 	setPaymentMethodButtonDisabled(false)
@@ -566,7 +583,10 @@ async function cancelContinueSubscriptionButtonClick() {
 			enablePlansTableButtons()
 		}
 	} catch (error) {
-		// TODO: Show error message
+		// Show error message
+		if (!handleExpiredSessionError(error)) {
+			showPlansErrorMessage(locale.errors.unexpectedErrorLong)
+		}
 	}
 
 	setPaymentMethodButtonDisabled(false)
@@ -606,7 +626,10 @@ async function plansTableFreeDowngradeButtonClick() {
 			enablePlansTableButtons()
 		}
 	} catch (error) {
-		// TODO: Show error message
+		// Show error message
+		if (!handleExpiredSessionError(error)) {
+			showPlansErrorMessage(locale.errors.unexpectedErrorLong)
+		}
 	}
 
 	setPaymentMethodButtonDisabled(false)
@@ -624,7 +647,10 @@ async function plansTablePlusUpgradeButtonClick() {
 		window.location.href = response.data.sessionUrl
 		return
 	} catch (error) {
-		// TODO: Show error message
+		// Show error message
+		if (!handleExpiredSessionError(error)) {
+			showPlansErrorMessage(locale.errors.unexpectedErrorLong)
+		}
 	}
 
 	hidePlusButtonProgressRing()
@@ -677,7 +703,10 @@ async function plansTablePlusDowngradeButtonClick() {
 				showPlansSuccessMessage(locale.plans.changePlanSuccessMessage)
 			}
 		} catch (error) {
-			// TODO: Show error message
+			// Show error message
+			if (!handleExpiredSessionError(error)) {
+				showPlansErrorMessage(locale.errors.unexpectedErrorLong)
+			}
 		}
 	}
 
@@ -696,7 +725,10 @@ async function plansTableProUpgradeButtonClick() {
 			window.location.href = response.data.sessionUrl
 			return
 		} catch (error) {
-			// TODO: Show error message
+			// Show error message
+			if (!handleExpiredSessionError(error)) {
+				showPlansErrorMessage(locale.errors.unexpectedErrorLong)
+			}
 		}
 	} else {
 		// Show dialog for upgrading to Pro
@@ -745,7 +777,10 @@ async function plansTableProUpgradeButtonClick() {
 					showPlansSuccessMessage(locale.plans.changePlanSuccessMessage)
 				}
 			} catch (error) {
-				// TODO: Show error message
+				// Show error message
+				if (!handleExpiredSessionError(error)) {
+					showPlansErrorMessage(locale.errors.unexpectedErrorLong)
+				}
 			}
 		}
 	}
@@ -888,6 +923,23 @@ function showGeneralErrorMessage(message: string) {
 function showPlansSuccessMessage(message: string) {
 	successMessageBarPlans.innerText = message
 	showElement(successMessageBarPlans)
+}
+
+function showPlansErrorMessage(message: string) {
+	errorMessageBarPlans.innerText = message
+	showElement(errorMessageBarPlans)
+}
+
+function handleExpiredSessionError(error): boolean {
+	if (
+		error.response.status == 403
+		&& error.response.data.length == 0
+	) {
+		expiredSessionDialog.visible = true
+		return true
+	}
+
+	return false
 }
 
 function getErrorMessage(errorCode: number): string {

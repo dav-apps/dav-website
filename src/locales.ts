@@ -290,6 +290,11 @@ const enDefaults = {
 			passwordTextfieldPlaceholder: "Your new password",
 			passwordConfirmationTextfieldLabel: "Password confirmation",
 			passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
+			expiredSessionDialog: {
+				header: "Your session expired",
+				description: "Please reload the page and try it again.",
+				reload: "Reload page"
+			},
 			profileImageDialog: {
 				header: "Crop your profile image"
 			}
@@ -822,6 +827,11 @@ const deDefaults = {
 			passwordTextfieldPlaceholder: "Dein neues Passwort",
 			passwordConfirmationTextfieldLabel: "Passwortbestätigung",
 			passwordConfirmationTextfieldPlaceholder: "Wiederhole dein Passwort",
+			expiredSessionDialog: {
+				header: "Deine Sitzung ist abgelaufen",
+				description: "Bitte lade die Seite neu und versuche es nochmal.",
+				reload: "Seite neu laden"
+			},
 			profileImageDialog: {
 				header: "Profilbild zuschneiden"
 			}

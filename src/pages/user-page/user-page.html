@@ -698,6 +698,16 @@
 		</aside>
 
 		<dav-dialog
+			id="expired-session-dialog"
+			header="<%= locale.general.expiredSessionDialog.header %>"
+			primaryButtonText="<%= locale.general.expiredSessionDialog.reload %>">
+			<p class="fw-light"
+				style="max-width: 300px; font-size: 16px">
+				<%= locale.general.expiredSessionDialog.description %>
+			</p>
+		</dav-dialog>
+
+		<dav-dialog
 			id="profile-image-dialog"
 			header="<%= locale.general.profileImageDialog.header %>"
 			primaryButtonText="<%= locale.save %>"
@@ -715,7 +725,7 @@
 			defaultButtontext="<%= locale.cancel %>">
 			<p id="change-plan-dialog-description"
 				class="fw-light"
-				style="max-width: 300px; font-size: 17px">
+				style="max-width: 300px; font-size: 16px">
 				<%= locale.plans.changePlanDialog.upgradeProDescription %>
 			</p>
 		</dav-dialog>
