@@ -189,10 +189,11 @@
 							</dav-message-bar>
 						</div>
 
-						<div class="mb-4 d-none">
+						<div class="mb-4 <%= showUpgradeSuccessMessage ? '' : 'd-none' %>">
 							<dav-message-bar
 								id="success-message-bar-plans"
 								type="success">
+								<%= showUpgradeSuccessMessage ? locale.plans.changePlanSuccessMessage : '' %>
 							</dav-message-bar>
 						</div>
 					</div>

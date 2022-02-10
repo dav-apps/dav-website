@@ -181,6 +181,7 @@ export class App {
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.UserPage)
 			let card = null
 			let periodEndDate = null
+			let showUpgradeSuccessMessage = false
 
 			if (user.PeriodEnd != null) {
 				periodEndDate = DateTime.fromJSDate(user.PeriodEnd).setLocale(locale.lang).toFormat('DDD')
@@ -188,8 +189,10 @@ export class App {
 
 			if (req.query.plan == "1") {
 				user.Plan = 1
+				showUpgradeSuccessMessage = true
 			} else if (req.query.plan == "2") {
 				user.Plan = 2
+				showUpgradeSuccessMessage = true
 			}
 
 			if (user.StripeCustomerId) {
@@ -211,7 +214,8 @@ export class App {
 				csrfToken,
 				isMobile: req.headers["sec-ch-ua-mobile"] == "?1",
 				card,
-				periodEndDate
+				periodEndDate,
+				showUpgradeSuccessMessage
 			})
 		})
 

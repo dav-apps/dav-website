@@ -182,12 +182,12 @@ async function main() {
 
 	setEventListeners()
 	setSize()
-	displayPage()
+	displayPage(true)
 }
 
 function setEventListeners() {
 	//#region General event listeners
-	window.addEventListener('hashchange', displayPage)
+	window.addEventListener('hashchange', () => displayPage())
 
 	generalSidenavItem.addEventListener('click', () => {
 		window.location.href = "/user#general"
@@ -264,7 +264,7 @@ function setSize() {
 	}
 }
 
-function displayPage() {
+function displayPage(initial: boolean = false) {
 	if (window.location.hash == "#plans") {
 		// Show the plans page
 		hideElement(generalContainer)
@@ -275,13 +275,15 @@ function displayPage() {
 		showElement(generalContainer)
 	}
 
-	// Hide the message bars
-	hideElement(
-		successMessageBarGeneral,
-		errorMessageBarGeneral,
-		successMessageBarPlans,
-		errorMessageBarPlans
-	)
+	if (!initial) {
+		// Hide the message bars
+		hideElement(
+			successMessageBarGeneral,
+			errorMessageBarGeneral,
+			successMessageBarPlans,
+			errorMessageBarPlans
+		)
+	}
 }
 
 //#region General page event listeners
