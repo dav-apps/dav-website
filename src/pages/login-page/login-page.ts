@@ -17,10 +17,13 @@ let emailTextfield: Textfield
 let passwordTextfield: Textfield
 let loginButton: Button
 let loginProgressRing: ProgressRing
+let forgotPasswordLink: HTMLAnchorElement
+let forgotPasswordLinkMobile: HTMLAnchorElement
 
 let email: string = ""
 let password: string = ""
 
+window.addEventListener("resize", setSize)
 window.addEventListener("load", main)
 
 function main() {
@@ -29,8 +32,11 @@ function main() {
 	passwordTextfield = document.getElementById('password-textfield') as Textfield
 	loginButton = document.getElementById('login-button') as Button
 	loginProgressRing = document.getElementById('login-progress-ring') as ProgressRing
+	forgotPasswordLink = document.getElementById('forgot-password-link') as HTMLAnchorElement
+	forgotPasswordLinkMobile = document.getElementById('forgot-password-link-mobile') as HTMLAnchorElement
 
 	setEventListeners()
+	setSize()
 }
 
 function setEventListeners() {
@@ -46,6 +52,16 @@ function setEventListeners() {
 
 	passwordTextfield.addEventListener('enter', login)
 	loginButton.addEventListener('click', login)
+}
+
+function setSize() {
+	if (window.innerWidth < 360) {
+		hideElement(forgotPasswordLink)
+		showElement(forgotPasswordLinkMobile)
+	} else {
+		hideElement(forgotPasswordLinkMobile)
+		showElement(forgotPasswordLink)
+	}
 }
 
 async function login() {

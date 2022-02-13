@@ -11,6 +11,7 @@
 		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
+		<link rel="stylesheet" href="login-page.scss">
 
 		<script type="module" src="login-page.ts" defer async></script>
 	</head>
@@ -59,25 +60,42 @@
 							type="password"
 							autocomplete="current-password">
 						</dav-textfield>
+					</div>
+				</div>
 
-						<div class="d-flex flex-row">
-							<div class="d-flex mt-3">
-								<dav-button
-									id="login-button"
-									type="accent">
-									<%= locale.login %>
-								</dav-button>
-							</div>
+				<div class="row mt-3">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
+						<div class="d-flex">
+							<dav-button
+								id="login-button"
+								type="accent">
+								<%= locale.login %>
+							</dav-button>
 
 							<dav-progress-ring
 								id="login-progress-ring"
 								class="d-none"
-								style="width: 16px; height: 16px; margin: 22px 0 0 14px">
+								style="width: 16px; height: 16px; margin: 6px 0 0 14px">
 							</dav-progress-ring>
-						</div>
 
-						<!-- TODO: Forgot password link -->
+							<a id="forgot-password-link"
+								class="text-center ms-auto d-none"
+								style="padding-top: 4px"
+								href="/password-reset"
+								tabindex="-1">
+								<%= locale.forgotPassword %>
+							</a>
+						</div>
 					</div>
+				</div>
+
+				<div class="d-flex justify-content-center mt-3 d-none">
+					<a id="forgot-password-link-mobile"
+						class="text-center"
+						href="/password-reset"
+						tabindex="-1">
+						<%= locale.forgotPassword %>
+					</a>
 				</div>
 			</form>
 		</div>
