@@ -4,7 +4,12 @@ import { Button, Textfield, MessageBar, ProgressRing } from 'dav-ui-components'
 import { ErrorCodes } from 'dav-js'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
-import { showElement, hideElement } from '../../utils'
+import {
+	showElement,
+	hideElement,
+	getUserAgentModel,
+	getUserAgentPlatform
+} from '../../utils'
 
 let locale = getLocale().signupPage
 let errorMessageBar: MessageBar
@@ -56,8 +61,9 @@ async function signup() {
 			data: {
 				firstName,
 				email,
-				password
-				// TODO: Device info
+				password,
+				deviceName: await getUserAgentModel(),
+				deviceOs: await getUserAgentPlatform()
 			}
 		})
 	} catch (error) {

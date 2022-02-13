@@ -435,8 +435,8 @@ export class App {
 				password: req.body.password,
 				appId: +process.env.APP_ID,
 				apiKey: process.env.API_KEY,
-				deviceName: "",
-				deviceOs: ""
+				deviceName: req.body.deviceName,
+				deviceOs: req.body.deviceOs
 			})
 
 			if (response.status == 201) {
@@ -469,8 +469,8 @@ export class App {
 				password: req.body.password,
 				appId: +process.env.APP_ID,
 				apiKey: process.env.API_KEY,
-				deviceName: "",
-				deviceOs: ""
+				deviceName: req.body.deviceName,
+				deviceOs: req.body.deviceOs
 			})
 
 			if (response.status == 201) {
