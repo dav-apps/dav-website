@@ -1,6 +1,6 @@
 import axios from 'axios'
 import 'dav-ui-components'
-import { Button, Textfield, MessageBar } from 'dav-ui-components'
+import { Button, Textfield, MessageBar, ProgressRing } from 'dav-ui-components'
 import { ErrorCodes } from 'dav-js'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
@@ -13,6 +13,7 @@ let emailTextfield: Textfield
 let passwordTextfield: Textfield
 let passwordConfirmationTextfield: Textfield
 let signupButton: Button
+let signupProgressRing: ProgressRing
 
 let firstName = ""
 let email = ""
@@ -28,6 +29,7 @@ function main() {
 	passwordTextfield = document.getElementById("password-textfield") as Textfield
 	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
 	signupButton = document.getElementById("signup-button") as Button
+	signupProgressRing = document.getElementById("signup-progress-ring") as ProgressRing
 
 	setEventListeners()
 }
@@ -41,6 +43,7 @@ async function signup() {
 	}
 
 	hideError()
+	showElement(signupProgressRing)
 	signupButton.toggleAttribute("disabled")
 
 	try {
@@ -59,6 +62,7 @@ async function signup() {
 		})
 	} catch (error) {
 		showError(error.response.data)
+		hideElement(signupProgressRing)
 		signupButton.toggleAttribute("disabled")
 		return
 	}

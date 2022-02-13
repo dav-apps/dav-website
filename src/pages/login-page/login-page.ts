@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
-import { Button, Textfield, MessageBar } from 'dav-ui-components'
+import { Button, Textfield, MessageBar, ProgressRing } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import { showElement, hideElement } from '../../utils'
@@ -11,6 +11,7 @@ let errorMessageBar: MessageBar
 let emailTextfield: Textfield
 let passwordTextfield: Textfield
 let loginButton: Button
+let loginProgressRing: ProgressRing
 
 let email: string = ""
 let password: string = ""
@@ -22,6 +23,7 @@ function main() {
 	emailTextfield = document.getElementById('email-textfield') as Textfield
 	passwordTextfield = document.getElementById('password-textfield') as Textfield
 	loginButton = document.getElementById('login-button') as Button
+	loginProgressRing = document.getElementById('login-progress-ring') as ProgressRing
 
 	setEventListeners()
 }
@@ -43,6 +45,7 @@ function setEventListeners() {
 
 async function login() {
 	hideError()
+	showElement(loginProgressRing)
 	loginButton.toggleAttribute("disabled")
 
 	try {
@@ -60,6 +63,7 @@ async function login() {
 		})
 	} catch (error) {
 		showError(error.response.data)
+		hideElement(loginProgressRing)
 		loginButton.toggleAttribute("disabled")
 		return
 	}
