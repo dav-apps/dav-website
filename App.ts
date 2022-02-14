@@ -149,11 +149,26 @@ export class App {
 		router.get('/forgot-password', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.ForgotPasswordPage)
 
 			res.render("forgot-password-page/forgot-password-page", {
 				lang: locale.lang,
 				locale: locale.forgotPasswordPage,
+				navbarLocale: locale.navbarComponent,
+				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
+				user,
+				csrfToken
+			})
+		})
+
+		router.get('/reset-password', async (req, res) => {
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
+
+			res.render("password-reset-page/password-reset-page", {
+				lang: locale.lang,
+				locale: locale.passwordResetPage,
 				navbarLocale: locale.navbarComponent,
 				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
 				user,
@@ -627,7 +642,7 @@ export class App {
 		router.post('/api/send_password_reset_email', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.PasswordResetPage)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.ForgotPasswordPage)
 			) {
 				res.status(403).end()
 				return

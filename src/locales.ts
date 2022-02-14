@@ -232,7 +232,7 @@ const enDefaults = {
 			unexpectedErrorShort: "Unexpected error ({0})"
 		}
 	},
-	resetPasswordPage: {
+	passwordResetPage: {
 		title: "Create a new password",
 		passwordTextfieldLabel: "Password",
 		passwordTextfieldPlaceholder: "Choose a new password",
@@ -769,7 +769,7 @@ const deDefaults = {
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})"
 		}
 	},
-	resetPasswordPage: {
+	passwordResetPage: {
 		title: "Neues Passwort erstellen",
 		passwordTextfieldLabel: "Passwort",
 		passwordTextfieldPlaceholder: "Wähle ein neues Passwort",

@@ -10,5 +10,6 @@ export enum CsrfTokenContext {
 	SignupPage,
 	UserPage,
 	DevPages,
+	ForgotPasswordPage,
 	PasswordResetPage
 }
