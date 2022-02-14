@@ -153,6 +153,7 @@ export class App {
 				lang: locale.lang,
 				locale: locale.forgotPasswordPage,
 				navbarLocale: locale.navbarComponent,
+				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
 				user,
 				csrfToken
 			})
@@ -345,6 +346,7 @@ export class App {
 				locale: locale.userPage,
 				navbarLocale: locale.navbarComponent,
 				pricingLocale: locale.misc.pricing,
+				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
 				user,
 				csrfToken,
 				isMobile: req.headers["sec-ch-ua-mobile"] == "?1",

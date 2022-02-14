@@ -63,3 +63,15 @@ export async function getUserAgentPlatform(): Promise<string> {
 		return null
 	}
 }
+
+export function handleExpiredSessionError(error, expiredSessionDialog): boolean {
+	if (
+		error.response.status == 403
+		&& error.response.data.length == 0
+	) {
+		expiredSessionDialog.visible = true
+		return true
+	}
+
+	return false
+}

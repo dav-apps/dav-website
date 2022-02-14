@@ -1,15 +1,16 @@
 import axios from 'axios'
 import { ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
-import { Button, ProgressRing, Textfield } from 'dav-ui-components'
+import { Button, Dialog, ProgressRing, Textfield } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
-import { hideElement, showElement } from '../../utils'
+import { hideElement, showElement, handleExpiredSessionError } from '../../utils'
 
 let locale = getLocale().forgotPasswordPage
 let emailTextfield: Textfield
 let sendButton: Button
 let sendButtonProgressRing: ProgressRing
+let expiredSessionDialog: Dialog
 
 window.addEventListener("load", main)
 
@@ -17,6 +18,7 @@ function main() {
 	emailTextfield = document.getElementById("email-textfield") as Textfield
 	sendButton = document.getElementById("send-button") as Button
 	sendButtonProgressRing = document.getElementById("send-button-progress-ring") as ProgressRing
+	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
 
 	setEventListeners()
 }
@@ -25,6 +27,7 @@ function setEventListeners() {
 	emailTextfield.addEventListener("change", emailTextfieldChange)
 	emailTextfield.addEventListener("enter", sendButtonClick)
 	sendButton.addEventListener("click", sendButtonClick)
+	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
 }
 
 function emailTextfieldChange() {
@@ -58,9 +61,12 @@ async function sendButtonClick() {
 		})
 	} catch (error) {
 		hideElement(sendButtonProgressRing)
-		emailTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
 		emailTextfield.disabled = false
 		sendButton.disabled = false
+
+		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
+			emailTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+		}
 		return
 	}
 
