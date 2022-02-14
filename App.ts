@@ -68,13 +68,16 @@ export class App {
 		router.get('/', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let message = req.query.message
 
 			if (user != null) {
 				res.render("user-start-page/user-start-page", {
 					lang: locale.lang,
 					locale: locale.userStartPage,
 					navbarLocale: locale.navbarComponent,
-					user
+					passwordResetPageLocale: locale.passwordResetPage,
+					user,
+					message
 				})
 			} else {
 				res.render("start-page/start-page", {
@@ -82,7 +85,9 @@ export class App {
 					locale: locale.startPage,
 					navbarLocale: locale.navbarComponent,
 					footerLocale: locale.footerComponent,
+					passwordResetPageLocale: locale.passwordResetPage,
 					user: null,
+					message,
 					isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
 				})
 			}

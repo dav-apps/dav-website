@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="../apps-page/apps-page.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/all.min.css">
+		<% if (message != null) { %><link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"><% } %>
 
 		<script type="module" src="start-page.ts" defer async></script>
 	</head>
@@ -21,7 +22,14 @@
 
 		<div>
 			<div id="start-header" class="d-flex">
-				<!-- TODO Error & Success messages -->
+				<!-- Success message -->
+				<div id="success-message-container" class="<%= message == null ? 'd-none' : '' %>">
+					<dav-message-bar type="success">
+						<% if (message == "passwordReset") { %>
+							<%= passwordResetPageLocale.successMessage %>
+						<% } %>
+					</dav-message-bar>
+				</div>
 
 				<div id="start-header-message" class="acrylic align-self-center">
 					<p><%= locale.title %></p>

@@ -24,6 +24,16 @@
 	font-size: 20px;
 }
 
+#success-message-container {
+	width: 300px;
+	position: absolute;
+	right: 0;
+	left: 0;
+	margin-right: auto;
+	margin-left: auto;
+	top: 100px;
+}
+
 .app-container {
 	margin: 0;
 	background-color: #efefef;
