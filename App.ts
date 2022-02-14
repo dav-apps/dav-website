@@ -144,14 +144,14 @@ export class App {
 			res.clearCookie("accessToken").redirect("/")
 		})
 
-		router.get('/password-reset', async (req, res) => {
+		router.get('/forgot-password', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
-			res.render("password-reset-page/password-reset-page", {
+			res.render("forgot-password-page/forgot-password-page", {
 				lang: locale.lang,
-				locale: locale.passwordResetPage,
+				locale: locale.forgotPasswordPage,
 				navbarLocale: locale.navbarComponent,
 				user,
 				csrfToken

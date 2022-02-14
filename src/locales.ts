@@ -220,7 +220,7 @@ const enDefaults = {
 			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		}
 	},
-	passwordResetPage: {
+	forgotPasswordPage: {
 		title: "Reset your password",
 		description: "Enter the email address of your account and we will send you a link to reset your password.",
 		emailTextfieldLabel: "Email",
@@ -757,7 +757,7 @@ const deDefaults = {
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}
 	},
-	passwordResetPage: {
+	forgotPasswordPage: {
 		title: "Passwort zurücksetzen",
 		description: "Gib die Email-Adresse deines Accounts ein und wir senden dir einen Link, um dein Passwort zurückzusetzen.",
 		emailTextfieldLabel: "Email",
