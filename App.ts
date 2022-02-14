@@ -120,6 +120,7 @@ export class App {
 				lang: locale.lang,
 				locale: locale.loginPage,
 				navbarLocale: locale.navbarComponent,
+				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
 				user,
 				csrfToken
 			})
@@ -134,6 +135,7 @@ export class App {
 				lang: locale.lang,
 				locale: locale.signupPage,
 				navbarLocale: locale.navbarComponent,
+				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
 				user,
 				csrfToken
 			})

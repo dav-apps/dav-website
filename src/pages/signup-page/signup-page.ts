@@ -1,6 +1,12 @@
 import axios from 'axios'
 import 'dav-ui-components'
-import { Button, Textfield, MessageBar, ProgressRing } from 'dav-ui-components'
+import {
+	Button,
+	Textfield,
+	MessageBar,
+	ProgressRing,
+	Dialog
+} from 'dav-ui-components'
 import { ErrorCodes } from 'dav-js'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
@@ -8,7 +14,8 @@ import {
 	showElement,
 	hideElement,
 	getUserAgentModel,
-	getUserAgentPlatform
+	getUserAgentPlatform,
+	handleExpiredSessionError
 } from '../../utils'
 
 let locale = getLocale().signupPage
@@ -19,6 +26,7 @@ let passwordTextfield: Textfield
 let passwordConfirmationTextfield: Textfield
 let signupButton: Button
 let signupProgressRing: ProgressRing
+let expiredSessionDialog: Dialog
 
 let firstName = ""
 let email = ""
@@ -35,8 +43,35 @@ function main() {
 	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
 	signupButton = document.getElementById("signup-button") as Button
 	signupProgressRing = document.getElementById("signup-progress-ring") as ProgressRing
+	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
 
 	setEventListeners()
+}
+
+function setEventListeners() {
+	firstNameTextfield.addEventListener("change", (event: Event) => {
+		firstName = (event as CustomEvent).detail.value
+		hideError()
+	})
+	
+	emailTextfield.addEventListener("change", (event: Event) => {
+		email = (event as CustomEvent).detail.value
+		hideError()
+	})
+	
+	passwordTextfield.addEventListener("change", (event: Event) => {
+		password = (event as CustomEvent).detail.value
+		hideError()
+	})
+	
+	passwordConfirmationTextfield.addEventListener("change", (event: Event) => {
+		passwordConfirmation = (event as CustomEvent).detail.value
+		hideError()
+	})
+
+	passwordConfirmationTextfield.addEventListener("enter", signup)
+	signupButton.addEventListener("click", signup)
+	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
 }
 
 async function signup() {
@@ -67,38 +102,16 @@ async function signup() {
 			}
 		})
 	} catch (error) {
-		showError(error.response.data)
 		hideElement(signupProgressRing)
 		signupButton.toggleAttribute("disabled")
+
+		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
+			showError(error.response.data)
+		}
 		return
 	}
 
 	window.location.href = "/"
-}
-
-function setEventListeners() {
-	firstNameTextfield.addEventListener("change", (event: Event) => {
-		firstName = (event as CustomEvent).detail.value
-		hideError()
-	})
-	
-	emailTextfield.addEventListener("change", (event: Event) => {
-		email = (event as CustomEvent).detail.value
-		hideError()
-	})
-	
-	passwordTextfield.addEventListener("change", (event: Event) => {
-		password = (event as CustomEvent).detail.value
-		hideError()
-	})
-	
-	passwordConfirmationTextfield.addEventListener("change", (event: Event) => {
-		passwordConfirmation = (event as CustomEvent).detail.value
-		hideError()
-	})
-
-	passwordConfirmationTextfield.addEventListener("enter", signup)
-	signupButton.addEventListener("click", signup)
 }
 
 function showError(errors: { code: number, message: string }[]) {

@@ -1,14 +1,21 @@
 import axios from 'axios'
 import { ErrorCodes } from 'dav-js'
 import 'dav-ui-components'
-import { Button, Textfield, MessageBar, ProgressRing } from 'dav-ui-components'
+import {
+	Button,
+	Dialog,
+	Textfield,
+	MessageBar,
+	ProgressRing
+} from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import {
 	showElement,
 	hideElement,
 	getUserAgentModel,
-	getUserAgentPlatform
+	getUserAgentPlatform,
+	handleExpiredSessionError
 } from '../../utils'
 
 let locale = getLocale().loginPage
@@ -19,6 +26,7 @@ let loginButton: Button
 let loginButtonProgressRing: ProgressRing
 let forgotPasswordLink: HTMLAnchorElement
 let forgotPasswordLinkMobile: HTMLAnchorElement
+let expiredSessionDialog: Dialog
 
 let email: string = ""
 let password: string = ""
@@ -34,24 +42,26 @@ function main() {
 	loginButtonProgressRing = document.getElementById('login-button-progress-ring') as ProgressRing
 	forgotPasswordLink = document.getElementById('forgot-password-link') as HTMLAnchorElement
 	forgotPasswordLinkMobile = document.getElementById('forgot-password-link-mobile') as HTMLAnchorElement
+	expiredSessionDialog = document.getElementById('expired-session-dialog') as Dialog
 
 	setEventListeners()
 	setSize()
 }
 
 function setEventListeners() {
-	emailTextfield.addEventListener('change', (event: Event) => {
+	emailTextfield.addEventListener("change", (event: Event) => {
 		email = (event as CustomEvent).detail.value
 		hideError()
 	})
 
-	passwordTextfield.addEventListener('change', (event: Event) => {
+	passwordTextfield.addEventListener("change", (event: Event) => {
 		password = (event as CustomEvent).detail.value
 		hideError()
 	})
 
-	passwordTextfield.addEventListener('enter', login)
-	loginButton.addEventListener('click', login)
+	passwordTextfield.addEventListener("enter", login)
+	loginButton.addEventListener("click", login)
+	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
 }
 
 function setSize() {
@@ -84,9 +94,12 @@ async function login() {
 			}
 		})
 	} catch (error) {
-		showError(error.response.data)
 		hideElement(loginButtonProgressRing)
 		loginButton.toggleAttribute("disabled")
+
+		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
+			showError(error.response.data)
+		}
 		return
 	}
 
