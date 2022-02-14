@@ -226,7 +226,6 @@ const enDefaults = {
 		emailTextfieldLabel: "Email",
 		emailTextfieldPlaceholder: "Your email address",
 		send: "Send",
-		successMessage: "You will receive an email with instructions to reset your password",
 		errors: {
 			emailInvalid: "Please enter a valid email address",
 			userNotFound: "There is no user with this email address",
@@ -244,13 +243,6 @@ const enDefaults = {
 		errors: {
 			unexpectedErrorLong: "An unexpected error occured. Please try it again."
 		}
-	},
-	emailLinkPage: {
-		confirmUserMessage: "Your email address has been successfully confirmed",
-		saveNewPasswordMessage: "You new password has been saved",
-		saveNewEmailMessage: "Your new email address has been saved",
-		resetNewEmailMessage: "Your email address has been reset. You can now log in again with your old email address.",
-		errorMessage: "An unexpected error occured. Please try it again."
 	},
 	purchasePage: {
 		loginTitle: "Log in to dav",
@@ -513,6 +505,14 @@ const enDefaults = {
 				outputDeviceFeature: "Set the output device for each playing sound individually",
 				playlistDownloadFeature: "Download entire YouTube playlists"
 			}
+		},
+		messages: {
+			passwordResetMessage: "You will receive an email with instructions to reset your password",
+			confirmUserMessage: "Your email address has been successfully confirmed",
+			saveNewPasswordMessage: "You new password has been saved",
+			saveNewEmailMessage: "Your new email address has been saved",
+			resetNewEmailMessage: "Your email address has been reset. You can now log in again with your old email address.",
+			errorMessage: "An unexpected error occured. Please try it again."
 		}
 	}
 }
@@ -763,7 +763,6 @@ const deDefaults = {
 		emailTextfieldLabel: "Email",
 		emailTextfieldPlaceholder: "Deine Email-Adresse",
 		send: "Senden",
-		successMessage: "Du bekommst eine Email mit Anweisungen, um dein Passwort zurückzusetzen.",
 		errors: {
 			emailInvalid: "Bitte gib eine gültige Email-Adresse ein",
 			userNotFound: "Es gibt keinen Nutzer mit dieser Email-Adresse",
@@ -781,13 +780,6 @@ const deDefaults = {
 		errors: {
 			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}
-	},
-	emailLinkPage: {
-		confirmUserMessage: "Deine Email-Adresse wurde erfolgreich verifiziert",
-		saveNewPasswordMessage: "Dein neues Passwort wurde gespeichert",
-		saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
-		resetNewEmailMessage: "Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
-		errorMessage: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 	},
 	purchasePage: {
 		loginTitle: "Bei dav anmelden",
@@ -1050,6 +1042,14 @@ const deDefaults = {
 				outputDeviceFeature: "Lege das Ausgabegerät für jeden Sound individuell fest",
 				playlistDownloadFeature: "Lade komplette YouTube-Playlisten herunter"
 			}
+		},
+		messages: {
+			passwordResetMessage: "Du bekommst eine Email mit Anweisungen, um dein Passwort zurückzusetzen.",
+			confirmUserMessage: "Deine Email-Adresse wurde erfolgreich verifiziert",
+			saveNewPasswordMessage: "Dein neues Passwort wurde gespeichert",
+			saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
+			resetNewEmailMessage: "Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
+			errorMessage: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}
 	}
 }

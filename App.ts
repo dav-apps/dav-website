@@ -31,7 +31,8 @@ import {
 	GetAppUsersResponseData,
 	GetAppUserActivitiesResponseData,
 	CreateCheckoutSessionResponseData,
-	CreateCustomerPortalSessionResponseData
+	CreateCustomerPortalSessionResponseData,
+	isSuccessStatusCode
 } from 'dav-js'
 import { CsrfToken, CsrfTokenContext } from './src/types.js'
 import { supportedLocales, getLocale } from './src/locales.js'
@@ -70,14 +71,31 @@ export class App {
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let message = req.query.message
 
+			let errorMessageText = null
+			let successMessageText = null
+
+			if (message == "passwordReset") {
+				successMessageText = locale.misc.messages.passwordResetMessage
+			} else if (message == "confirmUser") {
+				successMessageText = locale.misc.messages.confirmUserMessage
+			} else if (message == "changeEmail") {
+				successMessageText = locale.misc.messages.saveNewEmailMessage
+			} else if (message == "changePassword") {
+				successMessageText = locale.misc.messages.saveNewPasswordMessage
+			} else if (message == "resetEmail") {
+				successMessageText = locale.misc.messages.resetNewEmailMessage
+			} else if (message == "error") {
+				errorMessageText = locale.misc.messages.errorMessage
+			}
+
 			if (user != null) {
 				res.render("user-start-page/user-start-page", {
 					lang: locale.lang,
 					locale: locale.userStartPage,
 					navbarLocale: locale.navbarComponent,
-					passwordResetPageLocale: locale.passwordResetPage,
 					user,
-					message
+					errorMessageText,
+					successMessageText
 				})
 			} else {
 				res.render("start-page/start-page", {
@@ -85,10 +103,10 @@ export class App {
 					locale: locale.startPage,
 					navbarLocale: locale.navbarComponent,
 					footerLocale: locale.footerComponent,
-					passwordResetPageLocale: locale.passwordResetPage,
 					user: null,
-					message,
-					isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
+					isMobile: req.headers["sec-ch-ua-mobile"] == "?1",
+					errorMessageText,
+					successMessageText
 				})
 			}
 		})
@@ -138,6 +156,104 @@ export class App {
 				user,
 				csrfToken
 			})
+		})
+
+		router.get('/email-link', async (req, res) => {
+			let type = req.query.type
+
+			if (type == null) {
+				res.redirect("/?message=error")
+				return
+			}
+
+			let userId = +req.query.userId
+			let passwordConfirmationToken = req.query.passwordConfirmationToken as string
+			let emailConfirmationToken = req.query.emailConfirmationToken as string
+
+			switch (type) {
+				case "confirmUser":
+					// Check if user id and email confirmation token are present
+					if (
+						!isNaN(userId)
+						&& userId > 0
+						&& emailConfirmationToken != null
+						&& emailConfirmationToken.length >= 2
+					) {
+						let response = await UsersController.ConfirmUser({
+							auth: this.auth,
+							id: userId,
+							emailConfirmationToken
+						})
+
+						if (isSuccessStatusCode(response.status)) {
+							res.redirect("/?message=confirmUser")
+							return
+						}
+					}
+					break
+				case "changeEmail":
+					// Check if user id and email confirmation token are present
+					if (
+						!isNaN(userId)
+						&& userId > 0
+						&& emailConfirmationToken != null
+						&& emailConfirmationToken.length >= 2
+					) {
+						let response = await UsersController.SaveNewEmail({
+							auth: this.auth,
+							id: userId,
+							emailConfirmationToken
+						})
+
+						if (isSuccessStatusCode(response.status)) {
+							res.redirect("/?message=changeEmail")
+							return
+						}
+					}
+					break
+				case "changePassword":
+					// Check if user id and password confirmation token are present
+					if (
+						!isNaN(userId)
+						&& userId > 0
+						&& emailConfirmationToken != null
+						&& emailConfirmationToken.length >= 2
+					) {
+						let response = await UsersController.SaveNewPassword({
+							auth: this.auth,
+							id: userId,
+							passwordConfirmationToken
+						})
+
+						if (isSuccessStatusCode(response.status)) {
+							res.redirect("/?message=changePassword")
+							return
+						}
+					}
+					break
+				case "resetEmail":
+					// Check if user id and email confirmation token are present
+					if (
+						!isNaN(userId)
+						&& userId > 0
+						&& emailConfirmationToken != null
+						&& passwordConfirmationToken.length >= 2
+					) {
+						let response = await UsersController.ResetEmail({
+							auth: this.auth,
+							id: userId,
+							emailConfirmationToken
+						})
+
+						if (isSuccessStatusCode(response.status)) {
+							res.redirect("/?message=resetEmail")
+							return
+						}
+					}
+					break
+			}
+
+			res.redirect("/?message=error")
 		})
 
 		router.get('/contact', async (req, res) => {

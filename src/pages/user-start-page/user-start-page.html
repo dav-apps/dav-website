@@ -12,7 +12,7 @@
 		<link rel="stylesheet" href="../apps-page/apps-page.scss">
 		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/all.min.css">
-		<% if (message != null) { %><link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"><% } %>
+		<% if (successMessageText != null || errorMessageText != null) { %><link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"><% } %>
 
 		<script type="module" src="user-start-page.ts" defer async></script>
 	</head>
@@ -25,14 +25,21 @@
 					<%= locale.loggedInTitle %>
 				</h1>
 
+				<!-- Error message -->
+				<div
+					class="mx-auto <%= user.Apps.length == 0 ? 'mb-4' : 'mb-2' %> <%= errorMessageText == null ? 'd-none' : '' %>"
+					style="width: 300px">
+					<dav-message-bar type="danger">
+						<%= errorMessageText %>
+					</dav-message-bar>
+				</div>
+
 				<!-- Success message -->
 				<div
-					class="mx-auto <%= user.Apps.length == 0 ? 'mb-4' : 'mb-2' %> <%= message == null ? 'd-none' : '' %>"
+					class="mx-auto <%= user.Apps.length == 0 ? 'mb-4' : 'mb-2' %> <%= successMessageText == null ? 'd-none' : '' %>"
 					style="width: 300px">
 					<dav-message-bar type="success">
-						<% if (message == "passwordReset") { %>
-							<%= passwordResetPageLocale.successMessage %>
-						<% } %>
+						<%= successMessageText %>
 					</dav-message-bar>
 				</div>
 
