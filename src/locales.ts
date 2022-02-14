@@ -228,7 +228,7 @@ const enDefaults = {
 		send: "Send",
 		successMessage: "You will receive an email with instructions to reset your password",
 		errors: {
-			emailInvalid: "This email address is invalid",
+			emailInvalid: "Please enter a valid email address",
 			userNotFound: "There is no user with this email address",
 			unexpectedErrorShort: "Unexpected error ({0})"
 		}
@@ -765,7 +765,7 @@ const deDefaults = {
 		send: "Senden",
 		successMessage: "Du bekommst eine Email mit Anweisungen, um dein Passwort zurückzusetzen.",
 		errors: {
-			emailInvalid: "Diese Email-Adresse ist ungültig",
+			emailInvalid: "Bitte gib eine gültige Email-Adresse ein",
 			userNotFound: "Es gibt keinen Nutzer mit dieser Email-Adresse",
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})"
 		}

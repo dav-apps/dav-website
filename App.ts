@@ -124,7 +124,7 @@ export class App {
 		router.get('/password-reset', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			let csrfToken = this.addCsrfToken(CsrfTokenContext.SignupPage)
+			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
 			res.render("password-reset-page/password-reset-page", {
 				lang: locale.lang,
@@ -496,6 +496,29 @@ export class App {
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send(response.errors)
+			}
+		})
+
+		router.post('/api/send_password_reset_email', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.PasswordResetPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await UsersController.SendPasswordResetEmail({
+				auth: this.auth,
+				email: req.body.email
+			})
+
+			if (response.status == 200) {
+				res.status(response.status).end()
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
