@@ -59,6 +59,8 @@ async function sendButtonClick() {
 				email: emailTextfield.value
 			}
 		})
+
+		window.location.href = "/?message=passwordReset"
 	} catch (error) {
 		hideElement(sendButtonProgressRing)
 		emailTextfield.disabled = false
@@ -67,10 +69,7 @@ async function sendButtonClick() {
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			emailTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
 		}
-		return
 	}
-
-	window.location.href = "/?message=passwordReset"
 }
 
 function getErrorMessage(code: number): string {

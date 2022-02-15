@@ -166,6 +166,19 @@ export class App {
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
+			let userId = +req.query.userId
+			let passwordConfirmationToken = req.query.passwordConfirmationToken
+
+			if (
+				isNaN(userId)
+				|| userId <= 0
+				|| passwordConfirmationToken == null
+				|| passwordConfirmationToken.length < 3
+			) {
+				res.redirect("/?message=error")
+				return
+			}
+
 			res.render("password-reset-page/password-reset-page", {
 				lang: locale.lang,
 				locale: locale.passwordResetPage,
@@ -655,6 +668,31 @@ export class App {
 			})
 
 			if (response.status == 200) {
+				res.status(response.status).end()
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
+			}
+		})
+
+		router.post('/api/set_password', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.PasswordResetPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await UsersController.SetPassword({
+				auth: this.auth,
+				id: req.body.id,
+				password: req.body.password,
+				passwordConfirmationToken: req.body.passwordConfirmationToken
+			})
+
+			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
 			} else {
 				response = response as ApiErrorResponse

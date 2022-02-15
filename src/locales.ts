@@ -239,9 +239,11 @@ const enDefaults = {
 		passwordConfirmationTextfieldLabel: "Password confirmation",
 		passwordConfirmationTextfieldPlaceholder: "Repeat your new password",
 		save: "Save",
-		successMessage: "Your new password has been saved",
 		errors: {
-			unexpectedErrorLong: "An unexpected error occured. Please try it again."
+			passwordMissing: "Please enter your new password",
+			passwordTooShort: "Your password is too short",
+			passwordTooLong: "Your password is too long",
+			passwordConfirmationNotMatching: "Your password doesn't match the password confirmation"
 		}
 	},
 	purchasePage: {
@@ -776,9 +778,11 @@ const deDefaults = {
 		passwordConfirmationTextfieldLabel: "Passwortbestätigung",
 		passwordConfirmationTextfieldPlaceholder: "Wiederhole dein neues Passwort",
 		save: "Speichern",
-		successMessage: "Dein neues Passwort wurde gespeichert",
 		errors: {
-			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+			passwordMissing: "Bitte gib dein neues Passwort ein",
+			passwordTooShort: "Dein Passwort ist zu kurz",
+			passwordTooLong: "Dein Passwort ist zu lang",
+			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein"
 		}
 	},
 	purchasePage: {
