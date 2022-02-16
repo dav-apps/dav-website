@@ -27,6 +27,7 @@ let passwordTextfield: Textfield
 let passwordConfirmationTextfield: Textfield
 let signupButton: Button
 let signupProgressRing: ProgressRing
+let loginButton: Button
 let expiredSessionDialog: Dialog
 
 let websiteSignup = true
@@ -49,6 +50,7 @@ function main() {
 	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
 	signupButton = document.getElementById("signup-button") as Button
 	signupProgressRing = document.getElementById("signup-progress-ring") as ProgressRing
+	loginButton = document.getElementById("login-button") as Button
 	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
 
 	let queryString = new URLSearchParams(window.location.search)
@@ -95,6 +97,7 @@ function setEventListeners() {
 
 	passwordConfirmationTextfield.addEventListener("enter", signup)
 	signupButton.addEventListener("click", signup)
+	loginButton.addEventListener("click", loginButtonClick)
 	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
 }
 
@@ -141,6 +144,12 @@ async function signup() {
 			showError(error.response.data)
 		}
 	}
+}
+
+function loginButtonClick() {
+	if (websiteSignup) return
+
+	window.location.href = `/login?appId=${appId}&apiKey=${apiKey}&redirectUrl=${redirectUrl}`
 }
 
 function showError(errors: { code: number, message: string }[]) {

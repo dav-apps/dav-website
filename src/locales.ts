@@ -205,6 +205,7 @@ const enDefaults = {
 		passwordConfirmationTextfieldLabel: "Password confirmation",
 		passwordConfirmationTextFieldPlaceholder: "Repeat your password",
 		signup: "Sign up",
+		login: "Log in",
 		errors: {
 			firstNameMissing: "Please enter your name",
 			emailMissing: "Please enter your email",
@@ -744,6 +745,7 @@ const deDefaults = {
 		passwordConfirmationTextfieldLabel: "Passwortbestätigung",
 		passwordConfirmationTextFieldPlaceholder: "Wiederhole dein Passwort",
 		signup: "Registrieren",
+		login: "Anmelden",
 		errors: {
 			firstNameMissing: "Bitte gib deinen Namen ein",
 			emailMissing: "Bitte gib deine Email-Adresse ein",

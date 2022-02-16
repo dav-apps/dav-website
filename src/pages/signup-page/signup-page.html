@@ -84,21 +84,29 @@
 							type="password"
 							autocomplete="new-password">
 						</dav-textfield>
+					</div>
+				</div>
 
+				<div class="row mt-3">
+					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<div class="d-flex flex-row">
-							<div class="d-flex mt-3">
-								<dav-button
-									id="signup-button"
-									type="accent">
-									<%= locale.signup %>
-								</dav-button>
-							</div>
+							<dav-button
+								id="signup-button"
+								type="accent">
+								<%= locale.signup %>
+							</dav-button>
 
 							<dav-progress-ring
 								id="signup-progress-ring"
 								class="d-none"
-								style="width: 16px; height: 16px; margin: 22px 0 0 14px">
+								style="width: 16px; height: 16px; margin: 6px 0 0 14px">
 							</dav-progress-ring>
+
+							<dav-button
+								id="login-button"
+								class="ms-auto <%= websiteSignup ? 'd-none' : '' %>">
+								<%= locale.login %>
+							</dav-button>
 						</div>
 					</div>
 				</div>
