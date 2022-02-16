@@ -16,7 +16,7 @@
 		<script type="module" src="login-page.ts" defer async></script>
 	</head>
 	<body dir="ltr">
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<% if (websiteLogin) { %><include src="src/components/navbar-component/navbar-component.html"></include><% } %>
 
 		<div class="container d-flex flex-column align-items-center" style="margin-top: 100px">
 			<img

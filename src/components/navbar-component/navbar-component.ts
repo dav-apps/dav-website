@@ -20,6 +20,8 @@ function main() {
 }
 
 function setSize() {
+	if (navbar == null || navbarContainer == null) return
+
 	if (window.innerWidth < 576) {
 		navbar.classList.remove("pb-0")
 		navbarContainer.classList.remove("pt-0")
@@ -32,6 +34,8 @@ function setSize() {
 }
 
 function onScroll() {
+	if (navbar == null || navbarContainer == null) return
+
 	if (window.innerWidth < 576 || (window.scrollY > 80 && !navbarBackgroundVisible)) {
 		navbar.classList.add("acrylic", "light", "shadow")
 		navbarBackgroundVisible = true

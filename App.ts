@@ -157,7 +157,8 @@ export class App {
 				navbarLocale: locale.navbarComponent,
 				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
 				user,
-				csrfToken
+				csrfToken,
+				websiteLogin
 			})
 		})
 
@@ -199,7 +200,8 @@ export class App {
 				navbarLocale: locale.navbarComponent,
 				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
 				user,
-				csrfToken
+				csrfToken,
+				websiteSignup
 			})
 		})
 
@@ -542,7 +544,7 @@ export class App {
 				accessToken: this.getRequestCookies(req)["accessToken"]
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<GetUsersResponseData>
 				res.status(response.status).send(response.data)
 			} else {
@@ -566,7 +568,7 @@ export class App {
 				start: DateTime.now().startOf("day").minus({ months: 6 }).toSeconds()
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<GetUserActivitiesResponseData>
 				res.status(response.status).send(response.data)
 			} else {
@@ -590,7 +592,7 @@ export class App {
 				id: +req.params.id
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<DavApp>
 				res.status(response.status).send(response.data)
 			} else {
@@ -614,7 +616,7 @@ export class App {
 				id: +req.params.id
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<GetAppUsersResponseData>
 				res.status(response.status).send(response.data)
 			} else {
@@ -638,7 +640,7 @@ export class App {
 				id: +req.params.id
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<GetAppUserActivitiesResponseData>
 				res.status(response.status).send(response.data)
 			} else {
@@ -668,7 +670,7 @@ export class App {
 				deviceOs: req.body.deviceOs
 			})
 
-			if (response.status == 201) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<SessionResponseData>
 				res
 					.status(response.status)
@@ -702,7 +704,7 @@ export class App {
 				deviceOs: req.body.deviceOs
 			})
 
-			if (response.status == 201) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<SignupResponseData>
 				res
 					.status(response.status)
@@ -729,7 +731,7 @@ export class App {
 				email: req.body.email
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
 			} else {
 				response = response as ApiErrorResponse
@@ -779,7 +781,7 @@ export class App {
 				password: req.body.password
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<User>
 				res.status(response.status).send(response.data)
 			} else {
@@ -804,7 +806,7 @@ export class App {
 				type: req.headers['content-type']
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<User>
 				res.status(response.status).send(response.data)
 			} else {
@@ -831,7 +833,7 @@ export class App {
 				cancelUrl: req.body.cancelUrl
 			})
 
-			if (response.status == 201) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<CreateCheckoutSessionResponseData>
 				res.status(response.status).send(response.data)
 			} else {
@@ -854,7 +856,7 @@ export class App {
 				accessToken: this.getRequestCookies(req)["accessToken"]
 			})
 
-			if (response.status == 201) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<CreateCustomerPortalSessionResponseData>
 				res.status(response.status).send(response.data)
 			} else {
@@ -988,7 +990,7 @@ export class App {
 				published: req.body.published
 			})
 
-			if (response.status == 200) {
+			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<DavApp>
 				res.status(response.status).send(response.data)
 			} else {
@@ -1051,7 +1053,7 @@ export class App {
 		if (accessToken == null) return null
 
 		let getUserResponse = await UsersController.GetUser({ accessToken })
-		if (getUserResponse.status != 200) return null
+		if (!isSuccessStatusCode(getUserResponse.status)) return null
 
 		return (getUserResponse as ApiResponse<User>).data
 	}
@@ -1060,7 +1062,7 @@ export class App {
 		if (accessToken == null) return null
 
 		let getDevResponse = await DevsController.GetDev({ accessToken })
-		if (getDevResponse.status != 200) return null
+		if (!isSuccessStatusCode(getDevResponse.status)) return null
 
 		return (getDevResponse as ApiResponse<GetDevResponseData>).data
 	}
