@@ -10,6 +10,7 @@ import {
 import { ErrorCodes } from 'dav-js'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
+import { devEnvironment, prodEnvironment } from '../../environments'
 import {
 	showElement,
 	hideElement,
@@ -28,6 +29,11 @@ let signupButton: Button
 let signupProgressRing: ProgressRing
 let expiredSessionDialog: Dialog
 
+let websiteSignup = true
+let appId = 0
+let apiKey = null
+let redirectUrl = null
+
 let firstName = ""
 let email = ""
 let password = ""
@@ -44,6 +50,24 @@ function main() {
 	signupButton = document.getElementById("signup-button") as Button
 	signupProgressRing = document.getElementById("signup-progress-ring") as ProgressRing
 	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
+
+	let queryString = new URLSearchParams(window.location.search)
+	appId = +queryString.get("appId")
+	apiKey = queryString.get("apiKey")
+	redirectUrl = queryString.get("redirectUrl")
+
+	websiteSignup = appId == 0 && apiKey == null && redirectUrl == null
+
+	if (websiteSignup) {
+		// Set the appId and apiKey
+		if (document.querySelector(`meta[name="env"]`).getAttribute("content") == "production") {
+			appId = prodEnvironment.appId
+			apiKey = prodEnvironment.apiKey
+		} else {
+			appId = devEnvironment.appId
+			apiKey = devEnvironment.apiKey
+		}
+	}
 
 	setEventListeners()
 }
@@ -87,7 +111,7 @@ async function signup() {
 	signupButton.toggleAttribute("disabled")
 
 	try {
-		await axios({
+		let response = await axios({
 			method: 'post',
 			url: '/api/signup',
 			headers: {
@@ -97,10 +121,18 @@ async function signup() {
 				firstName,
 				email,
 				password,
+				appId,
+				apiKey,
 				deviceName: await getUserAgentModel(),
 				deviceOs: await getUserAgentPlatform()
 			}
 		})
+
+		if (websiteSignup) {
+			window.location.href = "/"
+		} else {
+			window.location.href = `${redirectUrl}?accessToken=${response.data.accessToken}`
+		}
 	} catch (error) {
 		hideElement(signupProgressRing)
 		signupButton.toggleAttribute("disabled")
@@ -108,10 +140,7 @@ async function signup() {
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			showError(error.response.data)
 		}
-		return
 	}
-
-	window.location.href = "/"
 }
 
 function showError(errors: { code: number, message: string }[]) {

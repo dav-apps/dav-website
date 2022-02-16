@@ -31,9 +31,9 @@ let expiredSessionDialog: Dialog
 
 let websiteLogin = true
 let appId = 0
-let apiKey = ""
-let redirectUrl = ""
-let redirect = ""
+let apiKey = null
+let redirectUrl = null
+let redirect = null
 
 let email: string = ""
 let password: string = ""

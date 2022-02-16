@@ -166,6 +166,33 @@ export class App {
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.SignupPage)
 
+			let appId = +req.query.appId
+			let apiKey = req.query.apiKey as string
+			let redirectUrl = req.query.redirectUrl as string
+
+			if (redirectUrl) redirectUrl = decodeURIComponent(redirectUrl).trim()
+
+			let websiteSignup = isNaN(appId) && apiKey == null && redirectUrl == null
+
+			if (websiteSignup && user != null) {
+				res.redirect("/")
+				return
+			}
+
+			if (!websiteSignup) {
+				if (
+					isNaN(appId)
+					|| appId <= 0
+					|| apiKey == null
+					|| apiKey.length < 2
+					|| redirectUrl == null
+					|| redirectUrl.length < 2
+				) {
+					res.redirect("/?message=error")
+					return
+				}
+			}
+
 			res.render("signup-page/signup-page", {
 				lang: locale.lang,
 				locale: locale.signupPage,
