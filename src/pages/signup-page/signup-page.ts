@@ -89,7 +89,7 @@ async function signup() {
 	try {
 		await axios({
 			method: 'post',
-			url: '/signup',
+			url: '/api/signup',
 			headers: {
 				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 			},

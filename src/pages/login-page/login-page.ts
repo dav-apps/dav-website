@@ -10,6 +10,7 @@ import {
 } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
+import { devEnvironment, prodEnvironment } from '../../environments'
 import {
 	showElement,
 	hideElement,
@@ -28,6 +29,12 @@ let forgotPasswordLink: HTMLAnchorElement
 let forgotPasswordLinkMobile: HTMLAnchorElement
 let expiredSessionDialog: Dialog
 
+let websiteLogin = true
+let appId = 0
+let apiKey = ""
+let redirectUrl = ""
+let redirect = ""
+
 let email: string = ""
 let password: string = ""
 
@@ -43,6 +50,25 @@ function main() {
 	forgotPasswordLink = document.getElementById('forgot-password-link') as HTMLAnchorElement
 	forgotPasswordLinkMobile = document.getElementById('forgot-password-link-mobile') as HTMLAnchorElement
 	expiredSessionDialog = document.getElementById('expired-session-dialog') as Dialog
+
+	let queryString = new URLSearchParams(window.location.search)
+	appId = +queryString.get("appId")
+	apiKey = queryString.get("apiKey")
+	redirectUrl = queryString.get("redirectUrl")
+	redirect = queryString.get("redirect")
+
+	websiteLogin = appId == 0 && apiKey == null && redirectUrl == null
+
+	if (websiteLogin) {
+		// Set the appId and apiKey
+		if (document.querySelector(`meta[name="env"]`).getAttribute("content") == "production") {
+			appId = prodEnvironment.appId
+			apiKey = prodEnvironment.apiKey
+		} else {
+			appId = devEnvironment.appId
+			apiKey = devEnvironment.apiKey
+		}
+	}
 
 	setEventListeners()
 	setSize()
@@ -80,19 +106,31 @@ async function login() {
 	loginButton.toggleAttribute("disabled")
 
 	try {
-		await axios({
+		let response = await axios({
 			method: 'post',
-			url: '/login',
+			url: '/api/login',
 			headers: {
 				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 			},
 			data: {
 				email,
 				password,
+				appId,
+				apiKey,
 				deviceName: await getUserAgentModel(),
 				deviceOs: await getUserAgentPlatform()
 			}
 		})
+
+		if (websiteLogin) {
+			if (redirect != null) {
+				window.location.href = redirect
+			} else {
+				window.location.href = "/"
+			}
+		} else {
+			window.location.href = `${redirectUrl}?accessToken=${response.data.accessToken}`
+		}
 	} catch (error) {
 		hideElement(loginButtonProgressRing)
 		loginButton.toggleAttribute("disabled")
@@ -100,10 +138,7 @@ async function login() {
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			showError(error.response.data)
 		}
-		return
 	}
-
-	window.location.href = "/"
 }
 
 function showError(errors: {code: number, message: string}[]) {

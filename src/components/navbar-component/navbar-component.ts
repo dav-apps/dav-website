@@ -16,7 +16,7 @@ function main() {
 	setTimeout(() => {
 		setSize()
 		onScroll()
-	}, 10)
+	}, 30)
 }
 
 function setSize() {

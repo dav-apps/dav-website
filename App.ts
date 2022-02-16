@@ -116,6 +116,41 @@ export class App {
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.LoginPage)
 
+			let appId = +req.query.appId
+			let apiKey = req.query.apiKey as string
+			let redirectUrl = req.query.redirectUrl as string
+			let redirect = req.query.redirect as string
+
+			if (redirectUrl) redirectUrl = decodeURIComponent(redirectUrl).trim()
+			if (redirect) redirect = decodeURIComponent(redirect).trim()
+
+			let websiteLogin = isNaN(appId) && apiKey == null && redirectUrl == null
+
+			if (websiteLogin) {
+				if (user != null) {
+					if (redirect != null) {
+						res.redirect(redirect)
+					} else {
+						res.redirect("/")
+					}
+
+					return
+				}
+			} else {
+				// Check if appId, apiKey and redirectUrl are present and valid
+				if (
+					isNaN(appId)
+					|| appId <= 0
+					|| apiKey == null
+					|| apiKey.length < 2
+					|| redirectUrl == null
+					|| redirectUrl.length < 2
+				) {
+					res.redirect("/?message=error")
+					return
+				}
+			}
+
 			res.render("login-page/login-page", {
 				lang: locale.lang,
 				locale: locale.loginPage,
@@ -585,7 +620,7 @@ export class App {
 			}
 		})
 
-		router.post('/login', async (req, res) => {
+		router.post('/api/login', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
 				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.LoginPage)
@@ -618,7 +653,7 @@ export class App {
 			}
 		})
 
-		router.post('/signup', async (req, res) => {
+		router.post('/api/signup', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
 				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.SignupPage)
