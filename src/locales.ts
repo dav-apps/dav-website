@@ -1,12 +1,6 @@
 //#region en
 const enDefaults = {
 	lang: "en",
-	appComponent: {
-		footer: {
-			contact: "Contact",
-			privacy: "Privacy Policy"
-		}
-	},
 	startPage: {
 		title: "dav is a modern platform of connected apps and services",
 		pocketlibDescription: `
@@ -34,7 +28,7 @@ const enDefaults = {
 		`
 	},
 	userStartPage: {
-		loggedInTitle: "Your Apps",
+		title: "Your Apps",
 		welcomeTitle: "Hi, {0}",
 		welcomeMessage: "You're not using any app right now. Check out the All Apps page to find your first app!",
 		welcomeButton: "Find apps"
@@ -190,8 +184,7 @@ const enDefaults = {
 			loginFailed: "Login failed",
 			emailMissing: "Please enter your email",
 			passwordMissing: "Please enter your password",
-			unexpectedErrorShort: "Unexpected error ({0})",
-			unexpectedErrorLong: "An unexpected error occured. Please try it again."
+			unexpectedErrorShort: "Unexpected error ({0})"
 		}
 	},
 	signupPage: {
@@ -217,8 +210,7 @@ const enDefaults = {
 			passwordTooLong: "Your password is too long",
 			emailInvalid: "Your email is invalid",
 			emailTaken: "This email address is already in use",
-			unexpectedErrorShort: "Unexpected error ({0})",
-			unexpectedErrorLong: "An unexpected error occured. Please try it again."
+			unexpectedErrorShort: "Unexpected error ({0})"
 		}
 	},
 	forgotPasswordPage: {
@@ -247,31 +239,10 @@ const enDefaults = {
 			passwordConfirmationNotMatching: "Your password doesn't match the password confirmation"
 		}
 	},
-	purchasePage: {
-		loginTitle: "Log in to dav",
-		passwordTextfieldLabel: "Password",
-		passwordTextfieldPlaceholder: "Your password",
-		login: "Log in",
-		forgotPassword: "Forgot password?",
-		errors: {
-			loginFailed: "Login failed",
-			passwordMissing: "Please enter your password",
-			unexpectedError: "Unexpected error ({0})",
-			unexpectedErrorLong: "An unexpected error occured. Please try it again."
-		},
-		profileImageAlt: "Your profile image",
-		paymentMethodCardHeader: "Your payment method",
-		cardExpires: "Expires",
-		addPaymentMethod: "Add payment method",
-		pay: "Pay {0}",
-		edit: "Edit"
-	},
 	userPage: {
 		sideNav: {
 			general: "General",
-			plans: "Plans",
-			apps: "Apps",
-			provider: "Provider"
+			plans: "Plans"
 		},
 		general: {
 			title: "General Settings",
@@ -310,52 +281,14 @@ const enDefaults = {
 				upgradeProHeader: "Upgrade to Pro",
 				upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
 				downgradePlusHeader: "Downgrade to Plus",
-				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?",
-				downgradeFreeHeader: "Downgrade to Free",
-				downgradeFreeDescription: "Do you want to end your subscription?"
-			}
-		},
-		apps: {
-			title: "Your Apps",
-			totalStorageUsed: "{0} GB of {1} GB used",
-			appStorageUsed: "This app uses {0} GB"
-		},
-		provider: {
-			title: "Become a provider",
-			subTitle: "Distribute your digital content on dav platforms and earn money",
-			supportedApps: "Supported apps",
-			setupExplanation: "To become a provider, we need to collect some information about you.",
-			startSetup: "Start setup",
-			dashboardTitle: "Provider Dashboard",
-			aboutYou: "About you",
-			editDetails: "Edit details",
-			yourPayoutAccount: "Your payout account",
-			noAccountProvided: "No bank account provided",
-			nextPayout: "Next payout",
-			missingInformationWarningText: "To activate payouts, we need more information from you.",
-			missingInformationWarningLink: "Edit details",
-			missingBankAccountWarningText: "Don't forget to provide a bank account so that we can transfer your payouts.",
-			startStripeSetupDialog: {
-				header: "Provider setup",
-				text1: "Please specify the country you live in.<br>(Please contact us if your country is not listed.)",
-				text2: "For the setup you will be redirected to a page of <a href='https://stripe.com' target='blank'>Stripe</a>."
-			},
-			bankAccountDialog: {
-				header: "Set bank account"
-			},
-			countries: {
-				de: "Germany",
-				at: "Austria",
-				us: "United States"
+				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?"
 			}
 		},
 		messages: {
 			profileImageUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
 			firstNameUpdateMessage: "Your name has been updated successfully",
 			emailUpdateMessage: "You will receive an email to confirm your new email address",
-			passwordUpdateMessage: "You will receive an email to confirm your new password",
-			sendConfirmationEmailMessage: "A new confirmation email has been sent",
-			bankAccountUpdateMessage: "Your bank account has been updated successfully"
+			passwordUpdateMessage: "You will receive an email to confirm your new password"
 		},
 		errors: {
 			unexpectedErrorShort: "Unexpected error ({0})",
@@ -373,18 +306,12 @@ const enDefaults = {
 			emailAlreadyConfirmed: "Your email address is already confirmed"
 		},
 		save: "Save",
-		edit: "Edit",
 		continue: "Continue",
 		cancel: "Cancel"
 	},
 	devPage: {
 		title: "Developer Dashboard",
-		statistics: "Statistics",
-		loginRequiredMessage: "You need to log in to access this page",
-		accessNotAllowedMessage: "You can't access this page",
-		unexpectedErrorShort: "Unexpected error ({0})",
-		save: "Save",
-		cancel: "Cancel"
+		statistics: "Statistics"
 	},
 	appPage: {
 		statistics: "Statistics",
@@ -421,21 +348,16 @@ const enDefaults = {
 			confirm: "Confirm"
 		},
 		save: "Save",
-		cancel: "Cancel",
-		loginRequiredMessage: "You need to log in to access this page",
-		accessNotAllowedMessage: "You can't access this page"
+		cancel: "Cancel"
 	},
 	statisticsPage: {
 		title: "General statistics",
-		loginRequiredMessage: "You need to log in to access this page",
-		accessNotAllowedMessage: "You can't access this page",
 		numberOfUsers: "Number of users",
 		plans: "Plans",
 		confirmations: "Email confirmations",
 		confirmed: "Confirmed",
 		unconfirmed: "Unconfirmed",
 		activeUsers: "Active users",
-		currentlyActiveUsers: "Currently active users",
 		daily: "Daily",
 		weekly: "Weekly",
 		monthly: "Monthly",
@@ -444,11 +366,8 @@ const enDefaults = {
 	},
 	appStatisticsPage: {
 		title: "Statistics of {0}",
-		loginRequiredMessage: "You need to log in to access this page",
-		accessNotAllowedMessage: "You can't access this page",
 		numberOfUsers: "Number of users",
 		activeUsers: "Active users",
-		currentlyActiveUsers: "Currently active users",
 		daily: "Daily",
 		weekly: "Weekly",
 		monthly: "Monthly",
@@ -467,22 +386,7 @@ const enDefaults = {
 		contact: "Contact",
 		privacy: "Privacy Policy"
 	},
-	paymentFormComponent: {
-		header: "Credit or debit card",
-		save: "Save",
-		unexpectedError: "Unexpected error ({0})"
-	},
-	bankAccountFormComponent: {
-		name: "Name",
-		unexpectedError: "An unexpected error occured. Please try it again later.",
-		unexpectedErrorWithCode: "Unexpected error ({0})"
-	},
 	misc: {
-		paymentFormDialog: {
-			header: "Enter payment information",
-			save: "Save",
-			cancel: "Cancel"
-		},
 		expiredSessionDialog: {
 			header: "Your session expired",
 			description: "Please reload the page and try it again.",
@@ -512,8 +416,8 @@ const enDefaults = {
 		messages: {
 			passwordResetMessage: "You will receive an email with instructions to reset your password",
 			confirmUserMessage: "Your email address has been successfully confirmed",
-			saveNewPasswordMessage: "You new password has been saved",
 			saveNewEmailMessage: "Your new email address has been saved",
+			saveNewPasswordMessage: "You new password has been saved",
 			resetNewEmailMessage: "Your email address has been reset. You can now log in again with your old email address.",
 			errorMessage: "An unexpected error occured. Please try it again."
 		}
@@ -534,12 +438,6 @@ export var enGB = {
 //#region de
 const deDefaults = {
 	lang: "de",
-	appComponent: {
-		footer: {
-			contact: "Kontakt",
-			privacy: "Datenschutzerklärung"
-		}
-	},
 	startPage: {
 		title: "dav ist eine moderne Plattform für vernetzte Apps und Dienste",
 		pocketlibDescription: `
@@ -567,7 +465,7 @@ const deDefaults = {
 		`
 	},
 	userStartPage: {
-		loggedInTitle: "Deine Apps",
+		title: "Deine Apps",
 		welcomeTitle: "Hi, {0}",
 		welcomeMessage: "Im Moment benutzt du keine App. Sieh dir alle Apps an, um deine erste App zu finden!",
 		welcomeButton: "Apps finden"
@@ -731,7 +629,6 @@ const deDefaults = {
 			emailMissing: "Bitte gib deine Email-Adresse ein",
 			passwordMissing: "Bitte gib dein Passwort ein",
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
-			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}
 	},
 	signupPage: {
@@ -757,8 +654,7 @@ const deDefaults = {
 			passwordTooLong: "Dein Passwort ist zu lang",
 			emailInvalid: "Deine Email-Adresse ist ungültig",
 			emailTaken: "Diese Email-Adresse wird bereits verwendet",
-			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
-			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+			unexpectedErrorShort: "Unerwarteter Fehler ({0})"
 		}
 	},
 	forgotPasswordPage: {
@@ -787,31 +683,10 @@ const deDefaults = {
 			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein"
 		}
 	},
-	purchasePage: {
-		loginTitle: "Bei dav anmelden",
-		passwordTextfieldLabel: "Passwort",
-		passwordTextfieldPlaceholder: "Dein Passwort",
-		login: "Anmelden",
-		forgotPassword: "Passwort vergessen?",
-		errors: {
-			loginFailed: "Anmeldung fehlgeschlagen",
-			passwordMissing: "Bitte gib dein Passwort ein",
-			unexpectedError: "Unerwarteter Fehler ({0})",
-			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
-		},
-		profileImageAlt: "Dein Profilbild",
-		paymentMethodCardHeader: "Deine Zahlungsmethode",
-		cardExpires: "Ablaufdatum:",
-		addPaymentMethod: "Zahlungsmethode hinzufügen",
-		pay: "{0} bezahlen",
-		edit: "Bearbeiten"
-	},
 	userPage: {
 		sideNav: {
 			general: "Allgemein",
-			plans: "Abos",
-			apps: "Apps",
-			provider: "Anbieter"
+			plans: "Abos"
 		},
 		general: {
 			title: "Allgemeine Einstellungen",
@@ -850,52 +725,14 @@ const deDefaults = {
 				upgradeProHeader: "Wechsel auf Pro",
 				upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
 				downgradePlusHeader: "Wechsel auf Plus",
-				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
-				downgradeFreeHeader: "Wechsel auf Free",
-				downgradeFreeDescription: "Möchtest du dein Abo beenden?"
-			}
-		},
-		apps: {
-			title: "Deine Apps",
-			totalStorageUsed: "{0} GB von {1} GB verwendet",
-			appStorageUsed: "Diese App verwendet {0} GB"
-		},
-		provider: {
-			title: "Werde ein Anbieter",
-			subTitle: "Vertreibe deine digitalen Inhalte auf Plattformen von dav und verdiene Geld",
-			supportedApps: "Unterstützte Apps",
-			setupExplanation: "Um ein Anbieter zu werden, müssen wir einige Informationen über dich sammeln.",
-			startSetup: "Einrichtung beginnen",
-			dashboardTitle: "Anbieter-Dashboard",
-			aboutYou: "Über dich",
-			editDetails: "Daten bearbeiten",
-			yourPayoutAccount: "Dein Auszahlungskonto",
-			noAccountProvided: "Kein Bankkonto angegeben",
-			nextPayout: "Nächste Auszahlung",
-			missingInformationWarningText: "Um Auszahlungen zu aktivieren, brauchen wir noch weitere Informationen von dir.",
-			missingInformationWarningLink: "Informationen bearbeiten",
-			missingBankAccountWarningText: "Denk daran, ein Bankkonto anzugeben, damit wir deine Auszahlungen überweisen können.",
-			startStripeSetupDialog: {
-				header: "Anbieter-Einrichtung",
-				text1: "Bitte gebe das Land an, in dem du lebst.<br>(Bitte kontaktiere uns, wenn dein Land nicht aufgeführt ist.)",
-				text2: "Du wirst zur Einrichtung auf eine Seite von <a href='https://stripe.com' target='blank'>Stripe</a> weitergeleitet."
-			},
-			bankAccountDialog: {
-				header: "Bankkonto festlegen"
-			},
-			countries: {
-				de: "Deutschland",
-				at: "Österreich",
-				us: "Vereinigte Staaten"
+				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?"
 			}
 		},
 		messages: {
 			profileImageUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
 			firstNameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
 			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
-			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts",
-			sendConfirmationEmailMessage: "Eine neue Bestätigungsemail wurde gesendet",
-			bankAccountUpdateMessage: "Dein Bankkonto wurde erfolgreich aktualisiert"
+			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts"
 		},
 		errors: {
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
@@ -913,18 +750,12 @@ const deDefaults = {
 			emailAlreadyConfirmed: "Deine Email-Adresse ist bereits bestätigt"
 		},
 		save: "Speichern",
-		edit: "Bearbeiten",
 		continue: "Weiter",
 		cancel: "Abbrechen"
 	},
 	devPage: {
 		title: "Entwickler-Dashboard",
-		statistics: "Statistiken",
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
-		unexpectedErrorShort: "Unerwarteter Fehler ({0})",
-		save: "Speichern",
-		cancel: "Abbrechen"
+		statistics: "Statistiken"
 	},
 	appPage: {
 		statistics: "Statistiken",
@@ -961,21 +792,16 @@ const deDefaults = {
 			confirm: "Bestätigen"
 		},
 		save: "Speichern",
-		cancel: "Abbrechen",
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen"
+		cancel: "Abbrechen"
 	},
 	statisticsPage: {
 		title: "Allgemeine Statistiken",
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		numberOfUsers: "Anzahl Nutzer",
 		plans: "Abos",
 		confirmations: "Email-Bestätigungen",
 		confirmed: "Bestätigt",
 		unconfirmed: "Unbestätigt",
 		activeUsers: "Aktive Nutzer",
-		currentlyActiveUsers: "Aktuell aktive Nutzer",
 		daily: "Täglich",
 		weekly: "Wöchentlich",
 		monthly: "Monatlich",
@@ -984,11 +810,8 @@ const deDefaults = {
 	},
 	appStatisticsPage: {
 		title: "Statistiken von {0}",
-		loginRequiredMessage: "Du musst dich anmelden, um auf diese Seite zugreifen zu können",
-		accessNotAllowedMessage: "Du kannst nicht auf diese Seite zugreifen",
 		numberOfUsers: "Anzahl Nutzer",
 		activeUsers: "Aktive Nutzer",
-		currentlyActiveUsers: "Aktuell aktive Nutzer",
 		daily: "Täglich",
 		weekly: "Wöchentlich",
 		monthly: "Monatlich",
@@ -1007,22 +830,7 @@ const deDefaults = {
 		contact: "Kontakt",
 		privacy: "Datenschutzerklärung"
 	},
-	paymentFormComponent: {
-		header: "Kredit- oder Debitkarte",
-		save: "Speichern",
-		unexpectedError: "Unerwarteter Fehler ({0})"
-	},
-	bankAccountFormComponent: {
-		name: "Name",
-		unexpectedError: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
-		unexpectedErrorWithCode: "Unerwarteter Fehler ({0})"
-	},
 	misc: {
-		paymentFormDialog: {
-			header: "Zahlungsinformationen eingeben",
-			save: "Speichern",
-			cancel: "Abbrechen"
-		},
 		expiredSessionDialog: {
 			header: "Deine Sitzung ist abgelaufen",
 			description: "Bitte lade die Seite neu und versuche es nochmal.",
@@ -1052,8 +860,8 @@ const deDefaults = {
 		messages: {
 			passwordResetMessage: "Du bekommst eine Email mit Anweisungen, um dein Passwort zurückzusetzen.",
 			confirmUserMessage: "Deine Email-Adresse wurde erfolgreich verifiziert",
-			saveNewPasswordMessage: "Dein neues Passwort wurde gespeichert",
 			saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
+			saveNewPasswordMessage: "Dein neues Passwort wurde gespeichert",
 			resetNewEmailMessage: "Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
 			errorMessage: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}

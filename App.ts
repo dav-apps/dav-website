@@ -351,6 +351,23 @@ export class App {
 			res.redirect("/?message=error")
 		})
 
+		router.get('/apps', async (req, res) => {
+			this.init()
+
+			// Get the apps
+			let response = await AppsController.GetApps()
+			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
+			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+
+			res.render("apps-page/apps-page", {
+				lang: locale.lang,
+				locale: locale.appsPage,
+				navbarLocale: locale.navbarComponent,
+				user,
+				apps: response.status == 200 ? (response as ApiResponse<DavApp[]>).data : []
+			})
+		})
+
 		router.get('/contact', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
@@ -508,23 +525,6 @@ export class App {
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
 				user
-			})
-		})
-
-		router.get('/apps', async (req, res) => {
-			this.init()
-
-			// Get the apps
-			let response = await AppsController.GetApps()
-			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
-
-			res.render("apps-page/apps-page", {
-				lang: locale.lang,
-				locale: locale.appsPage,
-				navbarLocale: locale.navbarComponent,
-				user,
-				apps: response.status == 200 ? (response as ApiResponse<DavApp[]>).data : []
 			})
 		})
 		//#endregion
