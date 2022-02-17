@@ -179,6 +179,7 @@ const enDefaults = {
 		login: "Log in",
 		signup: "Sign up",
 		loginAs: "Log in as {0}",
+		profileImageOf: "Profile image of {0}",
 		forgotPassword: "Forgot password?",
 		errors: {
 			loginFailed: "Login failed",
@@ -623,6 +624,7 @@ const deDefaults = {
 		login: "Anmelden",
 		signup: "Registrieren",
 		loginAs: "Als {0} anmelden",
+		profileImageOf: "Profilbild von {0}",
 		forgotPassword: "Passwort vergessen?",
 		errors: {
 			loginFailed: "Anmeldung fehlgeschlagen",

@@ -105,6 +105,35 @@
 					</a>
 				</div>
 			</form>
+
+			<% if (user != null) { %>
+			<div
+				class="mx-auto"
+				style="width: 60%; border: 1px solid #eaeaea; margin-top: 56px; margin-bottom: 56px"></div>
+
+			<div id="login-as-button-container" class="d-flex align-items-center mx-auto">
+				<button id="login-as-button" class="list-group-item list-group-item-action shadow-sm">
+					<div class="d-flex">
+						<img
+							class="me-3 rounded"
+							src="<%= user.ProfileImage %>"
+							alt="<%= locale.profileImageOf.replace('{0}', user.FirstName) %>"
+							width="70"
+							height="70">
+
+						<h5 class="my-auto fw-light">
+							<%= locale.loginAs.replace('{0}', user.FirstName) %>
+						</h5>
+					</div>
+				</button>
+
+				<dav-progress-ring
+					id="login-as-button-progress-ring"
+					class="d-none"
+					style="width: 24px; height: 24px; margin-left: 20px;">
+				</dav-progress-ring>
+			</div>
+			<% } %>
 		</div>
 
 		<dav-dialog

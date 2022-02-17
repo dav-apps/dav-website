@@ -28,6 +28,9 @@ let loginButtonProgressRing: ProgressRing
 let signupButton: Button
 let forgotPasswordLink: HTMLAnchorElement
 let forgotPasswordLinkMobile: HTMLAnchorElement
+let loginAsButtonContainer: HTMLDivElement
+let loginAsButton: HTMLButtonElement
+let loginAsButtonProgressRing: ProgressRing
 let expiredSessionDialog: Dialog
 
 let websiteLogin = true
@@ -51,6 +54,9 @@ function main() {
 	signupButton = document.getElementById('signup-button') as Button
 	forgotPasswordLink = document.getElementById('forgot-password-link') as HTMLAnchorElement
 	forgotPasswordLinkMobile = document.getElementById('forgot-password-link-mobile') as HTMLAnchorElement
+	loginAsButtonContainer = document.getElementById('login-as-button-container') as HTMLDivElement
+	loginAsButton = document.getElementById('login-as-button') as HTMLButtonElement
+	loginAsButtonProgressRing = document.getElementById('login-as-button-progress-ring') as ProgressRing
 	expiredSessionDialog = document.getElementById('expired-session-dialog') as Dialog
 
 	let queryString = new URLSearchParams(window.location.search)
@@ -90,6 +96,7 @@ function setEventListeners() {
 	passwordTextfield.addEventListener("enter", login)
 	loginButton.addEventListener("click", login)
 	signupButton.addEventListener("click", signupButtonClick)
+	if (loginAsButton != null) loginAsButton.addEventListener("click", loginAsButtonClick)
 	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
 }
 
@@ -106,7 +113,11 @@ function setSize() {
 async function login() {
 	hideError()
 	showElement(loginButtonProgressRing)
-	loginButton.toggleAttribute("disabled")
+	loginButton.disabled = true
+	if (signupButton != null) signupButton.disabled = true
+	if (loginAsButton != null) loginAsButton.toggleAttribute("disabled")
+	emailTextfield.disabled = true
+	passwordTextfield.disabled = true
 
 	try {
 		let response = await axios({
@@ -136,7 +147,11 @@ async function login() {
 		}
 	} catch (error) {
 		hideElement(loginButtonProgressRing)
-		loginButton.toggleAttribute("disabled")
+		loginButton.disabled = false
+		if (signupButton != null) signupButton.disabled = false
+		if (loginAsButton != null) loginAsButton.toggleAttribute("disabled")
+		emailTextfield.disabled = false
+		passwordTextfield.disabled = false
 
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			showError(error.response.data)
@@ -148,6 +163,47 @@ function signupButtonClick() {
 	if (websiteLogin) return
 
 	window.location.href = `/signup?appId=${appId}&apiKey=${apiKey}&redirectUrl=${encodeURIComponent(redirectUrl)}`
+}
+
+async function loginAsButtonClick() {
+	hideError()
+	showElement(loginAsButtonProgressRing)
+	loginButton.disabled = true
+	if (signupButton != null) signupButton.disabled = true
+	loginAsButton.disabled = true
+	loginAsButtonContainer.style.paddingLeft = "44px"
+	emailTextfield.disabled = true
+	passwordTextfield.disabled = true
+
+	try {
+		let response = await axios({
+			method: 'post',
+			url: '/api/create_session_from_access_token',
+			headers: {
+				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+			},
+			data: {
+				appId,
+				apiKey,
+				deviceName: await getUserAgentModel(),
+				deviceOs: await getUserAgentPlatform()
+			}
+		})
+
+		window.location.href = `${redirectUrl}?accessToken=${response.data.accessToken}`
+	} catch (error) {
+		hideElement(loginAsButtonProgressRing)
+		loginButton.disabled = false
+		if (signupButton != null) signupButton.disabled = false
+		loginAsButton.disabled = false
+		loginAsButtonContainer.style.paddingLeft = "0"
+		emailTextfield.disabled = false
+		passwordTextfield.disabled = false
+
+		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
+			showError(error.response.data)
+		}
+	}
 }
 
 function showError(errors: {code: number, message: string}[]) {

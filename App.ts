@@ -682,6 +682,34 @@ export class App {
 			}
 		})
 
+		router.post('/api/create_session_from_access_token', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.LoginPage)
+			) {
+				res.status(403).end()
+				return
+			}
+			this.init()
+
+			let response = await SessionsController.CreateSessionFromAccessToken({
+				auth: this.auth,
+				accessToken: this.getRequestCookies(req)["accessToken"],
+				appId: req.body.appId,
+				apiKey: req.body.apiKey,
+				deviceName: req.body.deviceName,
+				deviceOs: req.body.deviceOs
+			})
+
+			if (isSuccessStatusCode(response.status)) {
+				response = response as ApiResponse<SessionResponseData>
+				res.status(response.status).send(response.data)
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send(response.errors)
+			}
+		})
+
 		router.post('/api/signup', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)

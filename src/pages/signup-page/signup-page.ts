@@ -111,7 +111,12 @@ async function signup() {
 
 	hideError()
 	showElement(signupProgressRing)
-	signupButton.toggleAttribute("disabled")
+	signupButton.disabled = true
+	if (loginButton != null) loginButton.disabled = true
+	firstNameTextfield.disabled = true
+	emailTextfield.disabled = true
+	passwordTextfield.disabled = true
+	passwordConfirmationTextfield.disabled = true
 
 	try {
 		let response = await axios({
@@ -138,7 +143,12 @@ async function signup() {
 		}
 	} catch (error) {
 		hideElement(signupProgressRing)
-		signupButton.toggleAttribute("disabled")
+		signupButton.disabled = false
+		if (loginButton != null) loginButton.disabled = false
+		firstNameTextfield.disabled = false
+		emailTextfield.disabled = false
+		passwordTextfield.disabled = false
+		passwordConfirmationTextfield.disabled = false
 
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			showError(error.response.data)
