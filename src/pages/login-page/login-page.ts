@@ -25,6 +25,7 @@ let emailTextfield: Textfield
 let passwordTextfield: Textfield
 let loginButton: Button
 let loginButtonProgressRing: ProgressRing
+let signupButton: Button
 let forgotPasswordLink: HTMLAnchorElement
 let forgotPasswordLinkMobile: HTMLAnchorElement
 let expiredSessionDialog: Dialog
@@ -47,6 +48,7 @@ function main() {
 	passwordTextfield = document.getElementById('password-textfield') as Textfield
 	loginButton = document.getElementById('login-button') as Button
 	loginButtonProgressRing = document.getElementById('login-button-progress-ring') as ProgressRing
+	signupButton = document.getElementById('signup-button') as Button
 	forgotPasswordLink = document.getElementById('forgot-password-link') as HTMLAnchorElement
 	forgotPasswordLinkMobile = document.getElementById('forgot-password-link-mobile') as HTMLAnchorElement
 	expiredSessionDialog = document.getElementById('expired-session-dialog') as Dialog
@@ -87,11 +89,12 @@ function setEventListeners() {
 
 	passwordTextfield.addEventListener("enter", login)
 	loginButton.addEventListener("click", login)
+	signupButton.addEventListener("click", signupButtonClick)
 	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
 }
 
 function setSize() {
-	if (window.innerWidth < 360) {
+	if (!websiteLogin || window.innerWidth < 360) {
 		hideElement(forgotPasswordLink)
 		showElement(forgotPasswordLinkMobile)
 	} else {
@@ -139,6 +142,12 @@ async function login() {
 			showError(error.response.data)
 		}
 	}
+}
+
+function signupButtonClick() {
+	if (websiteLogin) return
+
+	window.location.href = `/signup?appId=${appId}&apiKey=${apiKey}&redirectUrl=${encodeURIComponent(redirectUrl)}`
 }
 
 function showError(errors: {code: number, message: string}[]) {

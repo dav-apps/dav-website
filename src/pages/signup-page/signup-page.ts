@@ -149,7 +149,7 @@ async function signup() {
 function loginButtonClick() {
 	if (websiteSignup) return
 
-	window.location.href = `/login?appId=${appId}&apiKey=${apiKey}&redirectUrl=${redirectUrl}`
+	window.location.href = `/login?appId=${appId}&apiKey=${apiKey}&redirectUrl=${encodeURIComponent(redirectUrl)}`
 }
 
 function showError(errors: { code: number, message: string }[]) {

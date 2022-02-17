@@ -85,6 +85,12 @@
 								tabindex="-1">
 								<%= locale.forgotPassword %>
 							</a>
+
+							<dav-button
+								id="signup-button"
+								class="ms-auto <%= websiteLogin ? 'd-none' : '' %>">
+								<%= locale.signup %>
+							</dav-button>
 						</div>
 					</div>
 				</div>
@@ -93,6 +99,7 @@
 					<a id="forgot-password-link-mobile"
 						class="text-center"
 						href="/forgot-password"
+						target="<%= websiteLogin ? '' : 'blank' %>"
 						tabindex="-1">
 						<%= locale.forgotPassword %>
 					</a>
