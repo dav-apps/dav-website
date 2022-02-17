@@ -664,18 +664,24 @@ export class App {
 				auth: this.auth,
 				email: req.body.email,
 				password: req.body.password,
-				appId: +process.env.APP_ID,
-				apiKey: process.env.API_KEY,
+				appId: +req.body.appId,
+				apiKey: req.body.apiKey,
 				deviceName: req.body.deviceName,
 				deviceOs: req.body.deviceOs
 			})
 
 			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<SessionResponseData>
-				res
-					.status(response.status)
-					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
-					.send(response.data)
+				res.status(response.status)
+				console.log(response.data)
+
+				if (response.data.websiteAccessToken) {
+					res.cookie("accessToken", response.data.websiteAccessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+				} else {
+					res.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+				}
+
+				res.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send(response.errors)
@@ -726,18 +732,23 @@ export class App {
 				email: req.body.email,
 				firstName: req.body.firstName,
 				password: req.body.password,
-				appId: +process.env.APP_ID,
-				apiKey: process.env.API_KEY,
+				appId: +req.body.appId,
+				apiKey: req.body.apiKey,
 				deviceName: req.body.deviceName,
 				deviceOs: req.body.deviceOs
 			})
 
 			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<SignupResponseData>
-				res
-					.status(response.status)
-					.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
-					.send(response.data)
+				res.status(response.status)
+
+				if (response.data.websiteAccessToken) {
+					res.cookie("accessToken", response.data.websiteAccessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+				} else {
+					res.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+				}
+
+				res.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send(response.errors)
