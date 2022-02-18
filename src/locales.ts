@@ -168,7 +168,7 @@ const enDefaults = {
 		endText2: "Last update: December 3, 2020"
 	},
 	pricingPage: {
-		title: "Pricing"
+		title: "Our pricing"
 	},
 	loginPage: {
 		title: "Log in to dav",
@@ -277,8 +277,6 @@ const enDefaults = {
 			continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
 			cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
 			changePlanDialog: {
-				upgradePlusHeader: "Upgrade to Plus",
-				upgradePlusDescription: "Do you want to upgrade to dav Plus for 3 € per month?",
 				upgradeProHeader: "Upgrade to Pro",
 				upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
 				downgradePlusHeader: "Downgrade to Plus",
@@ -613,7 +611,7 @@ const deDefaults = {
 		endText2: "Letzte Aktualisierung: 3. Dezember 2020",
 	},
 	pricingPage: {
-		title: "Abos"
+		title: "Unsere Abos"
 	},
 	loginPage: {
 		title: "Bei dav anmelden",
@@ -722,8 +720,6 @@ const deDefaults = {
 			continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
 			cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
 			changePlanDialog: {
-				upgradePlusHeader: "Wechsel auf Plus",
-				upgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?",
 				upgradeProHeader: "Wechsel auf Pro",
 				upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
 				downgradePlusHeader: "Wechsel auf Plus",

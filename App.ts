@@ -430,6 +430,11 @@ export class App {
 			let periodEndDate = null
 			let showUpgradeSuccessMessage = false
 
+			if (user == null) {
+				res.redirect("/login?redirect=user")
+				return
+			}
+
 			if (user.PeriodEnd != null) {
 				periodEndDate = DateTime.fromJSDate(user.PeriodEnd).setLocale(locale.lang).toFormat('DDD')
 			}
@@ -473,8 +478,12 @@ export class App {
 			let user = await this.getUser(accessToken)
 			let dev = await this.getDev(accessToken)
 
-			if (user == null || dev == null) {
+			if (user == null) {
+				res.redirect("/login?redirect=dev")
+				return
+			} else if (dev == null) {
 				res.redirect("/")
+				return
 			}
 
 			res.render("dev-page/dev-page", {
@@ -488,8 +497,18 @@ export class App {
 
 		router.get('/dev/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let user = await this.getUser(accessToken)
+			let dev = await this.getDev(accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
+
+			if (user == null) {
+				res.redirect(`/login?redirect=${encodeURIComponent("dev/statistics")}`)
+				return
+			} else if (dev == null) {
+				res.redirect("/")
+				return
+			}
 
 			res.render("statistics-page/statistics-page", {
 				lang: locale.lang,
@@ -502,8 +521,18 @@ export class App {
 
 		router.get('/dev/:appId', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let user = await this.getUser(accessToken)
+			let dev = await this.getDev(accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
+
+			if (user == null) {
+				res.redirect(`/login?redirect=${encodeURIComponent(`dev/${req.params.appId}`)}`)
+				return
+			} else if (dev == null) {
+				res.redirect("/")
+				return
+			}
 
 			res.render("app-page/app-page", {
 				lang: locale.lang,
@@ -516,8 +545,18 @@ export class App {
 
 		router.get('/dev/:appId/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales) as string)
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let user = await this.getUser(accessToken)
+			let dev = await this.getDev(accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
+
+			if (user == null) {
+				res.redirect(`/login?redirect=${encodeURIComponent(`dev/${req.params.appId}/statistics`)}`)
+				return
+			} else if (dev == null) {
+				res.redirect("/")
+				return
+			}
 
 			res.render("app-statistics-page/app-statistics-page", {
 				lang: locale.lang,
