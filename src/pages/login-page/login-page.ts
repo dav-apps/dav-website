@@ -39,9 +39,6 @@ let apiKey = null
 let redirectUrl = null
 let redirect = null
 
-let email: string = ""
-let password: string = ""
-
 window.addEventListener("resize", setSize)
 window.addEventListener("load", main)
 
@@ -83,16 +80,8 @@ function main() {
 }
 
 function setEventListeners() {
-	emailTextfield.addEventListener("change", (event: Event) => {
-		email = (event as CustomEvent).detail.value
-		hideError()
-	})
-
-	passwordTextfield.addEventListener("change", (event: Event) => {
-		password = (event as CustomEvent).detail.value
-		hideError()
-	})
-
+	emailTextfield.addEventListener("change", () => hideErrors())
+	passwordTextfield.addEventListener("change", () => hideErrors())
 	passwordTextfield.addEventListener("enter", login)
 	loginButton.addEventListener("click", login)
 	signupButton.addEventListener("click", signupButtonClick)
@@ -111,7 +100,15 @@ function setSize() {
 }
 
 async function login() {
-	hideError()
+	if (emailTextfield.value.length == 0) {
+		emailTextfield.errorMessage = locale.errors.emailMissing
+		return
+	} else if (passwordTextfield.value.length == 0) {
+		passwordTextfield.errorMessage = locale.errors.passwordMissing
+		return
+	}
+
+	hideErrors()
 	showElement(loginButtonProgressRing)
 	loginButton.disabled = true
 	if (signupButton != null) signupButton.disabled = true
@@ -127,8 +124,8 @@ async function login() {
 				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 			},
 			data: {
-				email,
-				password,
+				email: emailTextfield.value,
+				password: passwordTextfield.value,
 				appId,
 				apiKey,
 				deviceName: await getUserAgentModel(),
@@ -166,7 +163,7 @@ function signupButtonClick() {
 }
 
 async function loginAsButtonClick() {
-	hideError()
+	hideErrors()
 	showElement(loginAsButtonProgressRing)
 	loginButton.disabled = true
 	if (signupButton != null) signupButton.disabled = true
@@ -208,7 +205,12 @@ async function loginAsButtonClick() {
 
 function showError(errors: {code: number, message: string}[]) {
 	let errorCode = errors[0].code
-	errorMessageBar.innerText = getLoginErrorMessage(errorCode)
+
+	if (errorCode == ErrorCodes.IncorrectPassword || errorCode == ErrorCodes.UserDoesNotExist) {
+		errorMessageBar.innerText = locale.errors.loginFailed
+	} else {
+		errorMessageBar.innerText = locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
+	}
 
 	if (errorCode != ErrorCodes.EmailMissing) {
 		passwordTextfield.value = ""
@@ -217,21 +219,8 @@ function showError(errors: {code: number, message: string}[]) {
 	showElement(errorMessageBar)
 }
 
-function hideError() {
+function hideErrors() {
+	emailTextfield.errorMessage = ""
+	passwordTextfield.errorMessage = ""
 	hideElement(errorMessageBar)
-}
-
-function getLoginErrorMessage(errorCode: number): string {
-	switch (errorCode) {
-		case ErrorCodes.IncorrectPassword:
-			return locale.errors.loginFailed
-		case ErrorCodes.EmailMissing:
-			return locale.errors.emailMissing
-		case ErrorCodes.PasswordMissing:
-			return locale.errors.passwordMissing
-		case ErrorCodes.UserDoesNotExist:
-			return locale.errors.loginFailed
-		default:
-			return locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
-	}
 }

@@ -35,11 +35,6 @@ let appId = 0
 let apiKey = null
 let redirectUrl = null
 
-let firstName = ""
-let email = ""
-let password = ""
-let passwordConfirmation = ""
-
 window.addEventListener("load", main)
 
 function main() {
@@ -75,26 +70,10 @@ function main() {
 }
 
 function setEventListeners() {
-	firstNameTextfield.addEventListener("change", (event: Event) => {
-		firstName = (event as CustomEvent).detail.value
-		hideError()
-	})
-	
-	emailTextfield.addEventListener("change", (event: Event) => {
-		email = (event as CustomEvent).detail.value
-		hideError()
-	})
-	
-	passwordTextfield.addEventListener("change", (event: Event) => {
-		password = (event as CustomEvent).detail.value
-		hideError()
-	})
-	
-	passwordConfirmationTextfield.addEventListener("change", (event: Event) => {
-		passwordConfirmation = (event as CustomEvent).detail.value
-		hideError()
-	})
-
+	firstNameTextfield.addEventListener("change", () => hideErrors())
+	emailTextfield.addEventListener("change", () => hideErrors())
+	passwordTextfield.addEventListener("change", () => hideErrors())
+	passwordConfirmationTextfield.addEventListener("change", () => hideErrors())
 	passwordConfirmationTextfield.addEventListener("enter", signup)
 	signupButton.addEventListener("click", signup)
 	loginButton.addEventListener("click", loginButtonClick)
@@ -102,14 +81,21 @@ function setEventListeners() {
 }
 
 async function signup() {
-	if (password != passwordConfirmation) {
-		errorMessageBar.innerText = locale.errors.passwordConfirmationNotMatching
-		passwordConfirmationTextfield.value = ""
-		showElement(errorMessageBar)
+	if (firstNameTextfield.value.length == 0) {
+		firstNameTextfield.errorMessage = locale.errors.firstNameMissing
+		return
+	} else if (emailTextfield.value.length == 0) {
+		emailTextfield.errorMessage = locale.errors.emailMissing
+		return
+	} else if (passwordTextfield.value.length == 0) {
+		passwordTextfield.errorMessage = locale.errors.passwordMissing
+		return
+	} else if (passwordTextfield.value != passwordConfirmationTextfield.value) {
+		passwordConfirmationTextfield.errorMessage = locale.errors.passwordConfirmationNotMatching
 		return
 	}
 
-	hideError()
+	hideErrors()
 	showElement(signupProgressRing)
 	signupButton.disabled = true
 	if (loginButton != null) loginButton.disabled = true
@@ -126,9 +112,9 @@ async function signup() {
 				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
 			},
 			data: {
-				firstName,
-				email,
-				password,
+				firstName: firstNameTextfield.value,
+				email: emailTextfield.value,
+				password: passwordTextfield.value,
 				appId,
 				apiKey,
 				deviceName: await getUserAgentModel(),
@@ -164,41 +150,41 @@ function loginButtonClick() {
 
 function showError(errors: { code: number, message: string }[]) {
 	let errorCode = errors[0].code
-	errorMessageBar.innerText = getSignupErrorMessage(errorCode)
 
-	if (errorCode == ErrorCodes.PasswordTooShort || errorCode == ErrorCodes.PasswordTooLong) {
-		passwordTextfield.value = ""
-		passwordConfirmationTextfield.value = ""
+	switch (errorCode) {
+		case ErrorCodes.FirstNameTooShort:
+			firstNameTextfield.errorMessage = locale.errors.firstNameTooShort
+			break
+		case ErrorCodes.PasswordTooShort:
+			passwordTextfield.errorMessage = locale.errors.passwordTooShort
+			break
+		case ErrorCodes.FirstNameTooLong:
+			firstNameTextfield.errorMessage = locale.errors.firstNameTooLong
+			break
+		case ErrorCodes.PasswordTooLong:
+			passwordTextfield.errorMessage = locale.errors.passwordTooLong
+			break
+		case ErrorCodes.EmailInvalid:
+			emailTextfield.errorMessage = locale.errors.emailInvalid
+			break
+		case ErrorCodes.EmailAlreadyInUse:
+			emailTextfield.errorMessage = locale.errors.emailTaken
+			break
+		default:
+			showErrorMessageBar(locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString()))
+			break
 	}
+}
 
+function showErrorMessageBar(message: string) {
+	errorMessageBar.innerText = message
 	showElement(errorMessageBar)
 }
 
-function hideError() {
+function hideErrors() {
+	firstNameTextfield.errorMessage = ""
+	emailTextfield.errorMessage = ""
+	passwordTextfield.errorMessage = ""
+	passwordConfirmationTextfield.errorMessage = ""
 	hideElement(errorMessageBar)
-}
-
-function getSignupErrorMessage(errorCode: number): string {
-	switch (errorCode) {
-		case ErrorCodes.FirstNameMissing:
-			return locale.errors.firstNameMissing
-		case ErrorCodes.EmailMissing:
-			return locale.errors.emailMissing
-		case ErrorCodes.PasswordMissing:
-			return locale.errors.passwordMissing
-		case ErrorCodes.FirstNameTooShort:
-			return locale.errors.firstNameTooShort
-		case ErrorCodes.PasswordTooShort:
-			return locale.errors.passwordTooShort
-		case ErrorCodes.FirstNameTooLong:
-			return locale.errors.firstNameTooLong
-		case ErrorCodes.PasswordTooLong:
-			return locale.errors.passwordTooLong
-		case ErrorCodes.EmailInvalid:
-			return locale.errors.emailInvalid
-		case ErrorCodes.EmailAlreadyInUse:
-			return locale.errors.emailTaken
-		default:
-			return locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString())
-	}
 }
