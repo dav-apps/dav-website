@@ -712,7 +712,6 @@ export class App {
 			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<SessionResponseData>
 				res.status(response.status)
-				console.log(response.data)
 
 				if (response.data.websiteAccessToken) {
 					res.cookie("accessToken", response.data.websiteAccessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
