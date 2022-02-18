@@ -1,5 +1,20 @@
 @use "@material/snackbar/mdc-snackbar";
 
+#sidenav {
+	z-index: 3;
+}
+
+#sidenav-button {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 28px;
+	border: none;
+	background-color: #f1f1f180;
+	font-size: 30px;
+}
+
 #container {
 	width: 100%;
 	height: 100vh;

@@ -22,7 +22,10 @@
 		<include src="src/components/navbar-component/navbar-component.html"></include>
 
 		<dav-sidenav-container>
-			<dav-sidenav>
+			<dav-sidenav
+				id="sidenav"
+				mode="<%= isMobile ? 'over' : 'side' %>">
+
 				<div style="height: 80px"></div>
 
 				<dav-sidenav-item
@@ -39,6 +42,10 @@
 			</dav-sidenav>
 
 			<div id="container">
+				<button id="sidenav-button" class="d-none">
+					<i class="fal fa-angle-right"></i>
+				</button>
+
 				<!-- General settings -->
 				<div id="general-container" class="page-container pt-4 d-none">
 					<h1 class="text-center fw-light mb-4"><%= locale.general.title %></h1>
@@ -176,7 +183,7 @@
 				</div>
 
 				<!-- Plans -->
-				<div id="plans-container" class="page-container pt-4 d-none">
+				<div id="plans-container" class="page-container pt-4 px-4 d-none">
 					<h1 class="text-center fw-light mb-4">
 						<%= locale.plans.title %>
 					</h1>

@@ -8,15 +8,19 @@ import {
 	Dialog,
 	MessageBar,
 	ProgressRing,
+	Sidenav,
 	SidenavItem,
 	Textfield
 } from 'dav-ui-components'
+import { SidenavMode } from 'dav-ui-components/src/types'
 import '../../components/navbar-component/navbar-component'
 import { showElement, hideElement, handleExpiredSessionError } from '../../utils'
 import { getLocale } from '../../locales'
 
 const maxProfileImageFileSize = 2000000
 
+let sidenav: Sidenav
+let sidenavButton: HTMLButtonElement
 let generalSidenavItem: SidenavItem
 let plansSidenavItem: SidenavItem
 let generalContainer: HTMLDivElement
@@ -105,6 +109,8 @@ window.addEventListener("resize", setSize)
 window.addEventListener("load", main)
 
 async function main() {
+	sidenav = document.getElementById("sidenav") as Sidenav
+	sidenavButton = document.getElementById("sidenav-button") as HTMLButtonElement
 	generalSidenavItem = document.getElementById("general-sidenav-item") as SidenavItem
 	plansSidenavItem = document.getElementById("plans-sidenav-item") as SidenavItem
 	generalContainer = document.getElementById("general-container") as HTMLDivElement
@@ -188,15 +194,10 @@ async function main() {
 function setEventListeners() {
 	//#region General event listeners
 	window.addEventListener('hashchange', () => displayPage())
-
-	generalSidenavItem.addEventListener('click', () => {
-		window.location.href = "/user#general"
-	})
-
-	plansSidenavItem.addEventListener('click', () => {
-		window.location.href = "/user#plans"
-	})
-
+	sidenav.addEventListener("dismiss", () => sidenav.open = false)
+	sidenavButton.addEventListener("click", sidenavButtonClick)
+	generalSidenavItem.addEventListener('click', () => window.location.href = "/user#general")
+	plansSidenavItem.addEventListener('click', () => window.location.href = "/user#plans")
 	expiredSessionDialog.addEventListener('primaryButtonClick', () => window.location.reload())
 	//#endregion
 
@@ -262,6 +263,16 @@ function setSize() {
 		hideElement(plansTableMobileContainer)
 		showElement(plansTableContainer)
 	}
+
+	if (width < 576) {
+		sidenav.mode = SidenavMode.over
+		sidenav.open = false
+		showElement(sidenavButton)
+	} else {
+		sidenav.mode = SidenavMode.side
+		sidenav.open = true
+		hideElement(sidenavButton)
+	}
 }
 
 function displayPage(initial: boolean = false) {
@@ -283,6 +294,16 @@ function displayPage(initial: boolean = false) {
 			successMessageBarPlans,
 			errorMessageBarPlans
 		)
+	}
+
+	if (window.innerWidth < 576) {
+		sidenav.open = false
+	}
+}
+
+function sidenavButtonClick() {
+	if (window.innerWidth < 576) {
+		sidenav.open = true
 	}
 }
 
