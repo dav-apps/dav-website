@@ -1,3 +1,5 @@
 {
-	"sortAttributesWithLists": false
+	"sortAttributesWithLists": false,
+	"collapseAttributeWhitespace": false,
+	"deduplicateAttributeValues": false
 }
