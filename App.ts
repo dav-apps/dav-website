@@ -311,8 +311,8 @@ export class App {
 					if (
 						!isNaN(userId)
 						&& userId > 0
-						&& emailConfirmationToken != null
-						&& emailConfirmationToken.length >= 2
+						&& passwordConfirmationToken != null
+						&& passwordConfirmationToken.length >= 2
 					) {
 						let response = await UsersController.SaveNewPassword({
 							auth: this.auth,
@@ -332,7 +332,7 @@ export class App {
 						!isNaN(userId)
 						&& userId > 0
 						&& emailConfirmationToken != null
-						&& passwordConfirmationToken.length >= 2
+						&& emailConfirmationToken.length >= 2
 					) {
 						let response = await UsersController.ResetEmail({
 							auth: this.auth,
