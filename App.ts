@@ -62,6 +62,7 @@ export class App {
 		this.express.set('views', path.join(__dirname, 'src/pages'))
 
 		router.use(express.static(path.join(__dirname, 'src/pages')))
+		router.use('/assets', express.static(path.join(__dirname, '../assets')))
 		router.use(express.json())
 		router.use(express.raw({ type: "image/*" }))
 
