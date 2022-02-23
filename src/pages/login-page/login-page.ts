@@ -135,7 +135,7 @@ async function login() {
 
 		if (websiteLogin) {
 			if (redirect != null) {
-				window.location.href = redirect
+				window.location.href = redirect + window.location.hash
 			} else {
 				window.location.href = "/"
 			}
