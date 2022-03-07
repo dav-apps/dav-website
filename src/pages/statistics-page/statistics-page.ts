@@ -17,7 +17,7 @@ import { Header } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 
-let locale = getLocale().statisticsPage
+let locale = getLocale(navigator.language).statisticsPage
 let header: Header
 let userChartCanvas: HTMLCanvasElement
 let totalUsersText: HTMLParagraphElement

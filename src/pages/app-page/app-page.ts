@@ -5,7 +5,7 @@ import { Button, Dialog, Header, Textarea, Textfield, Toggle } from 'dav-ui-comp
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 
-let locale = getLocale().appPage
+let locale = getLocale(navigator.language).appPage
 let header: Header
 let description: HTMLParagraphElement
 let statisticsButton: Button

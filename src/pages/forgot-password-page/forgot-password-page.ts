@@ -6,7 +6,7 @@ import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 import { hideElement, showElement, handleExpiredSessionError } from '../../utils'
 
-let locale = getLocale().forgotPasswordPage
+let locale = getLocale(navigator.language).forgotPasswordPage
 let emailTextfield: Textfield
 let sendButton: Button
 let sendButtonProgressRing: ProgressRing

@@ -28,7 +28,7 @@ let plansContainer: HTMLDivElement
 let snackbarLabel: HTMLDivElement
 let expiredSessionDialog: Dialog
 
-let locale = getLocale().userPage
+let locale = getLocale(navigator.language).userPage
 let snackbar: MDCSnackbar
 
 //#region General page variables

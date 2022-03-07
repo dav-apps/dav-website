@@ -19,7 +19,7 @@ import {
 	handleExpiredSessionError
 } from '../../utils'
 
-let locale = getLocale().loginPage
+let locale = getLocale(navigator.language).loginPage
 let errorMessageBar: MessageBar
 let emailTextfield: Textfield
 let passwordTextfield: Textfield

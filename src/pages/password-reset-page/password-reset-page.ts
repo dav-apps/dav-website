@@ -5,7 +5,7 @@ import "../../components/navbar-component/navbar-component"
 import { getLocale } from "../../locales"
 import { handleExpiredSessionError, hideElement, showElement } from "../../utils"
 
-let locale = getLocale().passwordResetPage
+let locale = getLocale(navigator.language).passwordResetPage
 let passwordTextfield: Textfield
 let passwordConfirmationTextfield: Textfield
 let saveButton: Button

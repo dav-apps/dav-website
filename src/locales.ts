@@ -892,9 +892,9 @@ export const supportedLocales = [
 	deCH.lang
 ]
 
-export function getLocale(lang?: string) {
-	if (lang == null) {
-		lang = navigator?.language?.toLowerCase()
+export function getLocale(lang: string | boolean) {
+	if (lang == null || typeof (lang) == "boolean") {
+		lang = enDefaults.lang
 	} else {
 		lang = lang.toLowerCase()
 	}
