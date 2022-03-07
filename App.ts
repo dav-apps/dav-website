@@ -12,6 +12,8 @@ import {
 	App as DavApp,
 	User,
 	Environment,
+	ErrorCodes,
+	isSuccessStatusCode,
 	AppsController,
 	SessionsController,
 	UsersController,
@@ -31,8 +33,7 @@ import {
 	GetAppUsersResponseData,
 	GetAppUserActivitiesResponseData,
 	CreateCheckoutSessionResponseData,
-	CreateCustomerPortalSessionResponseData,
-	isSuccessStatusCode
+	CreateCustomerPortalSessionResponseData
 } from 'dav-js'
 import { CsrfToken, CsrfTokenContext } from './src/types.js'
 import { supportedLocales, getLocale } from './src/locales.js'
@@ -40,6 +41,7 @@ import { supportedLocales, getLocale } from './src/locales.js'
 dotenv.config()
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const accessTokenCookieName = "accessToken"
 
 export class App {
 	public express
@@ -74,7 +76,8 @@ export class App {
 		//#region Public endpoints
 		router.get('/', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let message = req.query.message
 
 			let errorMessageText = null
@@ -94,12 +97,12 @@ export class App {
 				errorMessageText = locale.misc.messages.errorMessage
 			}
 
-			if (user != null) {
+			if (userResponse.user != null) {
 				res.render("user-start-page/user-start-page", {
 					lang: locale.lang,
 					locale: locale.userStartPage,
 					navbarLocale: locale.navbarComponent,
-					user,
+					user: userResponse.user,
 					errorMessageText,
 					successMessageText
 				})
@@ -119,7 +122,8 @@ export class App {
 
 		router.get('/login', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.LoginPage)
 
 			let appId = +req.query.appId
@@ -132,17 +136,15 @@ export class App {
 
 			let websiteLogin = isNaN(appId) && apiKey == null && redirectUrl == null
 
-			if (websiteLogin) {
-				if (user != null) {
-					if (redirect != null) {
-						res.redirect(redirect)
-					} else {
-						res.redirect("/")
-					}
-
-					return
+			if (websiteLogin && userResponse.user != null) {
+				if (redirect != null) {
+					res.redirect(redirect)
+				} else {
+					res.redirect("/")
 				}
-			} else {
+
+				return
+			} else if (!websiteLogin) {
 				// Check if appId, apiKey and redirectUrl are present and valid
 				if (
 					isNaN(appId)
@@ -162,7 +164,7 @@ export class App {
 				locale: locale.loginPage,
 				navbarLocale: locale.navbarComponent,
 				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
-				user,
+				user: userResponse.user,
 				csrfToken,
 				websiteLogin
 			})
@@ -170,7 +172,8 @@ export class App {
 
 		router.get('/signup', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.SignupPage)
 
 			let appId = +req.query.appId
@@ -181,12 +184,10 @@ export class App {
 
 			let websiteSignup = isNaN(appId) && apiKey == null && redirectUrl == null
 
-			if (websiteSignup && user != null) {
+			if (websiteSignup && userResponse.user != null) {
 				res.redirect("/")
 				return
-			}
-
-			if (!websiteSignup) {
+			} else if (!websiteSignup) {
 				if (
 					isNaN(appId)
 					|| appId <= 0
@@ -205,7 +206,7 @@ export class App {
 				locale: locale.signupPage,
 				navbarLocale: locale.navbarComponent,
 				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
-				user,
+				user: userResponse.user,
 				csrfToken,
 				websiteSignup
 			})
@@ -218,7 +219,8 @@ export class App {
 
 		router.get('/forgot-password', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.ForgotPasswordPage)
 
 			res.render("forgot-password-page/forgot-password-page", {
@@ -226,14 +228,15 @@ export class App {
 				locale: locale.forgotPasswordPage,
 				navbarLocale: locale.navbarComponent,
 				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
-				user,
+				user: userResponse.user,
 				csrfToken
 			})
 		})
 
 		router.get('/reset-password', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
 			let userId = +req.query.userId
@@ -254,7 +257,7 @@ export class App {
 				locale: locale.passwordResetPage,
 				navbarLocale: locale.navbarComponent,
 				sessionExpiredDialogLocale: locale.misc.expiredSessionDialog,
-				user,
+				user: userResponse.user,
 				csrfToken
 			})
 		})
@@ -361,59 +364,64 @@ export class App {
 			// Get the apps
 			let response = await AppsController.GetApps()
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 
 			res.render("apps-page/apps-page", {
 				lang: locale.lang,
 				locale: locale.appsPage,
 				navbarLocale: locale.navbarComponent,
-				user,
+				user: userResponse.user,
 				apps: response.status == 200 ? (response as ApiResponse<DavApp[]>).data : []
 			})
 		})
 
 		router.get('/contact', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 
 			res.render("contact-page/contact-page", {
 				lang: locale.lang,
 				locale: locale.contactPage,
 				navbarLocale: locale.navbarComponent,
 				footerLocale: locale.footerComponent,
-				user
+				user: userResponse.user
 			})
 		})
 
 		router.get('/privacy', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 
 			res.render("privacy-page/privacy-page", {
 				lang: locale.lang,
 				locale: locale.privacyPage,
 				navbarLocale: locale.navbarComponent,
 				footerLocale: locale.footerComponent,
-				user
+				user: userResponse.user
 			})
 		})
 
 		router.get('/pocketlib/terms', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 
 			res.render("pocketlib-terms-page/pocketlib-terms-page", {
 				lang: locale.lang,
 				locale: locale.pocketlibTermsPage,
 				navbarLocale: locale.navbarComponent,
 				footerLocale: locale.footerComponent,
-				user
+				user: userResponse.user
 			})
 		})
 
 		router.get('/pricing', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 
 			res.render("pricing-page/pricing-page", {
 				lang: locale.lang,
@@ -421,23 +429,26 @@ export class App {
 				navbarLocale: locale.navbarComponent,
 				footerLocale: locale.footerComponent,
 				pricingLocale: locale.misc.pricing,
-				user,
+				user: userResponse.user,
 				isMobile: req.headers["sec-ch-ua-mobile"] == "?1"
 			})
 		})
 
 		router.get('/user', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.UserPage)
 			let card = null
 			let periodEndDate = null
 			let showUpgradeSuccessMessage = false
 
-			if (user == null) {
+			if (userResponse.user == null) {
 				res.redirect("/login?redirect=user")
 				return
 			}
+
+			let user = userResponse.user
 
 			if (user.PeriodEnd != null) {
 				periodEndDate = DateTime.fromJSDate(user.PeriodEnd).setLocale(locale.lang).toFormat('DDD')
@@ -479,13 +490,14 @@ export class App {
 		router.get('/dev', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let user = await this.getUser(accessToken)
-			let dev = await this.getDev(accessToken)
+			let userResponse = await this.getUser(accessToken)
+			let devResponse = await this.getDev(userResponse.accessToken)
+			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
 
-			if (user == null) {
+			if (userResponse.user == null) {
 				res.redirect("/login?redirect=dev")
 				return
-			} else if (dev == null) {
+			} else if (devResponse.dev == null) {
 				res.redirect("/")
 				return
 			}
@@ -494,22 +506,23 @@ export class App {
 				lang: locale.lang,
 				locale: locale.devPage,
 				navbarLocale: locale.navbarComponent,
-				user,
-				dev
+				user: userResponse.user,
+				dev: devResponse.dev
 			})
 		})
 
 		router.get('/dev/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let user = await this.getUser(accessToken)
-			let dev = await this.getDev(accessToken)
+			let userResponse = await this.getUser(accessToken)
+			let devResponse = await this.getDev(userResponse.accessToken)
+			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
-			if (user == null) {
+			if (userResponse.user == null) {
 				res.redirect(`/login?redirect=${encodeURIComponent("dev/statistics")}`)
 				return
-			} else if (dev == null) {
+			} else if (devResponse.dev == null) {
 				res.redirect("/")
 				return
 			}
@@ -519,21 +532,22 @@ export class App {
 				locale: locale.statisticsPage,
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
-				user
+				user: userResponse.user
 			})
 		})
 
 		router.get('/dev/:appId', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let user = await this.getUser(accessToken)
-			let dev = await this.getDev(accessToken)
+			let userResponse = await this.getUser(accessToken)
+			let devResponse = await this.getDev(userResponse.accessToken)
+			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
-			if (user == null) {
+			if (userResponse.user == null) {
 				res.redirect(`/login?redirect=${encodeURIComponent(`dev/${req.params.appId}`)}`)
 				return
-			} else if (dev == null) {
+			} else if (devResponse.dev == null) {
 				res.redirect("/")
 				return
 			}
@@ -543,21 +557,22 @@ export class App {
 				locale: locale.appPage,
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
-				user
+				user: userResponse.user
 			})
 		})
 
 		router.get('/dev/:appId/statistics', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let user = await this.getUser(accessToken)
-			let dev = await this.getDev(accessToken)
+			let userResponse = await this.getUser(accessToken)
+			let devResponse = await this.getDev(userResponse.accessToken)
+			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
-			if (user == null) {
+			if (userResponse.user == null) {
 				res.redirect(`/login?redirect=${encodeURIComponent(`dev/${req.params.appId}/statistics`)}`)
 				return
-			} else if (dev == null) {
+			} else if (devResponse.dev == null) {
 				res.redirect("/")
 				return
 			}
@@ -567,7 +582,7 @@ export class App {
 				locale: locale.appStatisticsPage,
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
-				user
+				user: userResponse.user
 			})
 		})
 		//#endregion
@@ -948,7 +963,8 @@ export class App {
 				return
 			}
 
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let user = userResponse.user
 
 			if (user == null) {
 				res.status(412).end()
@@ -1007,7 +1023,8 @@ export class App {
 				return
 			}
 
-			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let user = userResponse.user
 
 			if (user == null) {
 				res.status(412).end()
@@ -1113,22 +1130,61 @@ export class App {
 		return parsedCookies
 	}
 
-	private async getUser(accessToken: string): Promise<User> {
-		if (accessToken == null) return null
+	private async getUser(accessToken: string): Promise<{ accessToken: string, user: User }> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				user: null
+			}
+		}
 
 		let getUserResponse = await UsersController.GetUser({ accessToken })
-		if (!isSuccessStatusCode(getUserResponse.status)) return null
 
-		return (getUserResponse as ApiResponse<User>).data
+		if (!isSuccessStatusCode(getUserResponse.status)) {
+			accessToken = await this.handleApiError(accessToken, getUserResponse as ApiErrorResponse)
+			return await this.getUser(accessToken)
+		}
+
+		return {
+			accessToken,
+			user: (getUserResponse as ApiResponse<User>).data
+		}
 	}
 
-	private async getDev(accessToken: string): Promise<GetDevResponseData> {
-		if (accessToken == null) return null
+	private async getDev(accessToken: string): Promise<{ accessToken: string, dev: GetDevResponseData }> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				dev: null
+			}
+		}
 
 		let getDevResponse = await DevsController.GetDev({ accessToken })
-		if (!isSuccessStatusCode(getDevResponse.status)) return null
 
-		return (getDevResponse as ApiResponse<GetDevResponseData>).data
+		if (!isSuccessStatusCode(getDevResponse.status)) {
+			accessToken = await this.handleApiError(accessToken, getDevResponse as ApiErrorResponse)
+			return await this.getDev(accessToken)
+		}
+
+		return {
+			accessToken,
+			dev: (getDevResponse as ApiResponse<GetDevResponseData>).data
+		}
+	}
+
+	private async handleApiError(accessToken: string, errorResponse: ApiErrorResponse): Promise<string> {
+		if (
+			errorResponse.errors.length == 0
+			|| errorResponse.errors[0].code != ErrorCodes.AccessTokenMustBeRenewed
+		) return null
+
+		let renewSessionResult = await SessionsController.RenewSession({ accessToken })
+
+		if (renewSessionResult.status == 200) {
+			return (renewSessionResult as ApiResponse<SessionResponseData>).data.accessToken
+		} else {
+			return null
+		}
 	}
 
 	private addCsrfToken(context: CsrfTokenContext): string {
