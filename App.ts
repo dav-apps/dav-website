@@ -66,6 +66,11 @@ export class App {
 		router.use(express.json())
 		router.use(express.raw({ type: "image/*" }))
 
+		router.use((req, res, next) => {
+			this.init()
+			next()
+		})
+
 		//#region Public endpoints
 		router.get('/', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
@@ -353,8 +358,6 @@ export class App {
 		})
 
 		router.get('/apps', async (req, res) => {
-			this.init()
-
 			// Get the apps
 			let response = await AppsController.GetApps()
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
@@ -578,7 +581,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await UsersController.GetUsers({
 				accessToken: this.getRequestCookies(req)["accessToken"]
@@ -601,7 +603,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await UserActivitiesController.GetUserActivities({
 				accessToken: this.getRequestCookies(req)["accessToken"],
@@ -625,7 +626,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await AppsController.GetApp({
 				accessToken: this.getRequestCookies(req)["accessToken"],
@@ -649,7 +649,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await AppUsersController.GetAppUsers({
 				accessToken: this.getRequestCookies(req)["accessToken"],
@@ -673,7 +672,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await AppUserActivitiesController.GetAppUserActivities({
 				accessToken: this.getRequestCookies(req)["accessToken"],
@@ -697,7 +695,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			// Do the API request
 			let response = await SessionsController.CreateSession({
@@ -735,7 +732,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await SessionsController.CreateSessionFromAccessToken({
 				auth: this.auth,
@@ -763,7 +759,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			// Do the API request
 			let response = await UsersController.Signup({
@@ -802,7 +797,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await UsersController.SendPasswordResetEmail({
 				auth: this.auth,
@@ -825,7 +819,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await UsersController.SetPassword({
 				auth: this.auth,
@@ -850,7 +843,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await UsersController.UpdateUser({
 				accessToken: this.getRequestCookies(req)["accessToken"],
@@ -876,7 +868,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await UsersController.SetProfileImageOfUser({
 				accessToken: this.getRequestCookies(req)["accessToken"],
@@ -901,7 +892,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await CheckoutSessionsController.CreateCheckoutSession({
 				accessToken: this.getRequestCookies(req)["accessToken"],
@@ -928,7 +918,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await CustomerPortalSessionsController.CreateCustomerPortalSession({
 				accessToken: this.getRequestCookies(req)["accessToken"]
@@ -951,7 +940,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let plan = req.body.plan
 			
@@ -1018,7 +1006,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let user = await this.getUser(this.getRequestCookies(req)["accessToken"])
 
@@ -1055,7 +1042,6 @@ export class App {
 				res.status(403).end()
 				return
 			}
-			this.init()
 
 			let response = await AppsController.UpdateApp({
 				accessToken: this.getRequestCookies(req)["accessToken"],
