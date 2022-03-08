@@ -151,7 +151,7 @@ async function login() {
 		passwordTextfield.disabled = false
 
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
-			showError(error.response.data)
+			showError(error.response.data.errors)
 		}
 	}
 }
@@ -198,7 +198,7 @@ async function loginAsButtonClick() {
 		passwordTextfield.disabled = false
 
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
-			showError(error.response.data)
+			showError(error.response.data.errors)
 		}
 	}
 }

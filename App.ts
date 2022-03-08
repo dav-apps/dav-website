@@ -597,16 +597,18 @@ export class App {
 				return
 			}
 
-			let response = await UsersController.GetUsers({
-				accessToken: this.getRequestCookies(req)["accessToken"]
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.getUsers(accessToken)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<GetUsersResponseData>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<GetUsersResponseData>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				let response = result.response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -619,17 +621,18 @@ export class App {
 				return
 			}
 
-			let response = await UserActivitiesController.GetUserActivities({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				start: DateTime.now().startOf("day").minus({ months: 6 }).toSeconds()
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.getUserActivities(accessToken)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<GetUserActivitiesResponseData>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<GetUserActivitiesResponseData>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				let response = result.response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -642,17 +645,18 @@ export class App {
 				return
 			}
 
-			let response = await AppsController.GetApp({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				id: +req.params.id
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.getApp(accessToken, req)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<DavApp>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<DavApp>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				let response = result.response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -665,17 +669,18 @@ export class App {
 				return
 			}
 
-			let response = await AppUsersController.GetAppUsers({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				id: +req.params.id
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.getAppUsers(accessToken, req)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<GetAppUsersResponseData>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<GetAppUsersResponseData>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				let response = result.response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -688,17 +693,18 @@ export class App {
 				return
 			}
 
-			let response = await AppUserActivitiesController.GetAppUserActivities({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				id: +req.params.id
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.getAppUserActivities(accessToken, req)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<GetAppUserActivitiesResponseData>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<GetAppUserActivitiesResponseData>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				let response = result.response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -735,7 +741,7 @@ export class App {
 				res.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -762,7 +768,7 @@ export class App {
 				res.status(response.status).send(response.data)
 			} else {
 				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -800,7 +806,7 @@ export class App {
 				res.send(response.data)
 			} else {
 				response = response as ApiErrorResponse
-				res.status(response.status).send(response.errors)
+				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
@@ -859,18 +865,17 @@ export class App {
 				return
 			}
 
-			let response = await UsersController.UpdateUser({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				firstName: req.body.firstName,
-				email: req.body.email,
-				password: req.body.password
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.updateUser(accessToken, req)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<User>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<User>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
+				let response = result.response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
@@ -884,17 +889,17 @@ export class App {
 				return
 			}
 
-			let response = await UsersController.SetProfileImageOfUser({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				data: req.body,
-				type: req.headers['content-type']
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.setProfileImageOfUser(accessToken, req)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<User>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<User>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
+				let response = result.response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
@@ -908,19 +913,17 @@ export class App {
 				return
 			}
 
-			let response = await CheckoutSessionsController.CreateCheckoutSession({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				mode: req.body.mode,
-				plan: req.body.plan,
-				successUrl: req.body.successUrl,
-				cancelUrl: req.body.cancelUrl
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.createCheckoutSession(accessToken, req)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<CreateCheckoutSessionResponseData>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<CreateCheckoutSessionResponseData>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
+				let response = result.response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
@@ -934,15 +937,17 @@ export class App {
 				return
 			}
 
-			let response = await CustomerPortalSessionsController.CreateCustomerPortalSession({
-				accessToken: this.getRequestCookies(req)["accessToken"]
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.createCustomerPortalSession(accessToken)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<CreateCustomerPortalSessionResponseData>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<CreateCustomerPortalSessionResponseData>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
+				let response = result.response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
@@ -963,7 +968,9 @@ export class App {
 				return
 			}
 
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let userResponse = await this.getUser(accessToken)
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let user = userResponse.user
 
 			if (user == null) {
@@ -1023,7 +1030,9 @@ export class App {
 				return
 			}
 
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let userResponse = await this.getUser(accessToken)
+			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
 			let user = userResponse.user
 
 			if (user == null) {
@@ -1060,22 +1069,17 @@ export class App {
 				return
 			}
 
-			let response = await AppsController.UpdateApp({
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				id: +req.params.id,
-				name: req.body.name,
-				description: req.body.description,
-				webLink: req.body.webLink,
-				googlePlayLink: req.body.googlePlayLink,
-				microsoftStoreLink: req.body.microsoftStoreLink,
-				published: req.body.published
-			})
+			let accessToken = this.getRequestCookies(req)["accessToken"]
+			let result = await this.updateApp(accessToken, req)
+			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<DavApp>
+			if (result.response == null) {
+				res.status(500).end()
+			} else if (isSuccessStatusCode(result.response.status)) {
+				let response = result.response as ApiResponse<DavApp>
 				res.status(response.status).send(response.data)
 			} else {
-				response = response as ApiErrorResponse
+				let response = result.response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
@@ -1169,6 +1173,366 @@ export class App {
 		return {
 			accessToken,
 			dev: (getDevResponse as ApiResponse<GetDevResponseData>).data
+		}
+	}
+
+	private async getUsers(accessToken: string): Promise<{
+		accessToken: string,
+		response: ApiResponse<GetUsersResponseData> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await UsersController.GetUsers({
+			accessToken
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.getUsers(newAccessToken)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<GetUsersResponseData>
+		}
+	}
+
+	private async getUserActivities(accessToken: string): Promise<{
+		accessToken: string,
+		response: ApiResponse<GetUserActivitiesResponseData> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await UserActivitiesController.GetUserActivities({
+			accessToken,
+			start: DateTime.now().startOf("day").minus({ months: 6 }).toSeconds()
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.getUserActivities(newAccessToken)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<GetUserActivitiesResponseData>
+		}
+	}
+
+	private async getApp(accessToken: string, req: any): Promise<{
+		accessToken: string,
+		response: ApiResponse<DavApp> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await AppsController.GetApp({
+			accessToken,
+			id: +req.params.id
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.getApp(newAccessToken, req)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<DavApp>
+		}
+	}
+
+	private async getAppUsers(accessToken: string, req: any): Promise<{
+		accessToken: string,
+		response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await AppUsersController.GetAppUsers({
+			accessToken,
+			id: +req.params.id
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.getAppUsers(newAccessToken, req)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<GetAppUsersResponseData>
+		}
+	}
+
+	private async getAppUserActivities(accessToken: string, req: any): Promise<{
+		accessToken: string,
+		response: ApiResponse<GetAppUserActivitiesResponseData> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await AppUserActivitiesController.GetAppUserActivities({
+			accessToken,
+			id: +req.params.id
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.getAppUserActivities(newAccessToken, req)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<GetAppUserActivitiesResponseData>
+		}
+	}
+
+	private async updateUser(accessToken: string, req: any): Promise<{
+		accessToken: string,
+		response: ApiResponse<User> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await UsersController.UpdateUser({
+			accessToken,
+			firstName: req.body.firstName,
+			email: req.body.email,
+			password: req.body.password
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.updateUser(newAccessToken, req)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<User>
+		}
+	}
+
+	private async setProfileImageOfUser(accessToken: string, req: any): Promise<{
+		accessToken: string,
+		response: ApiResponse<User> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await UsersController.SetProfileImageOfUser({
+			accessToken,
+			data: req.body,
+			type: req.headers['content-type']
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.setProfileImageOfUser(newAccessToken, req)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<User>
+		}
+	}
+
+	private async createCheckoutSession(accessToken: string, req: any): Promise<{
+		accessToken: string,
+		response: ApiResponse<CreateCheckoutSessionResponseData> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await CheckoutSessionsController.CreateCheckoutSession({
+			accessToken,
+			mode: req.body.mode,
+			plan: req.body.plan,
+			successUrl: req.body.successUrl,
+			cancelUrl: req.body.cancelUrl
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.createCheckoutSession(newAccessToken, req)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<CreateCheckoutSessionResponseData>
+		}
+	}
+
+	private async createCustomerPortalSession(accessToken: string): Promise<{
+		accessToken: string,
+		response: ApiResponse<CreateCustomerPortalSessionResponseData> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await CustomerPortalSessionsController.CreateCustomerPortalSession({
+			accessToken
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.createCustomerPortalSession(newAccessToken)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<CreateCustomerPortalSessionResponseData>
+		}
+	}
+
+	private async updateApp(accessToken: string, req: any): Promise<{
+		accessToken: string,
+		response: ApiResponse<DavApp> | ApiErrorResponse
+	}> {
+		if (accessToken == null) {
+			return {
+				accessToken: null,
+				response: null
+			}
+		}
+
+		let response = await AppsController.UpdateApp({
+			accessToken,
+			id: +req.params.id,
+			name: req.body.name,
+			description: req.body.description,
+			webLink: req.body.webLink,
+			googlePlayLink: req.body.googlePlayLink,
+			microsoftStoreLink: req.body.microsoftStoreLink,
+			published: req.body.published
+		})
+
+		if (!isSuccessStatusCode(response.status)) {
+			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+
+			if (newAccessToken == null) {
+				return {
+					accessToken,
+					response
+				}
+			} else {
+				return await this.updateApp(newAccessToken, req)
+			}
+		}
+
+		return {
+			accessToken,
+			response: response as ApiResponse<DavApp>
 		}
 	}
 
