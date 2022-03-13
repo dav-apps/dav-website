@@ -77,7 +77,7 @@ export class App {
 		router.get('/', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let message = req.query.message
 
 			let errorMessageText = null
@@ -123,7 +123,7 @@ export class App {
 		router.get('/login', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.LoginPage)
 
 			let appId = +req.query.appId
@@ -173,7 +173,7 @@ export class App {
 		router.get('/signup', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.SignupPage)
 
 			let appId = +req.query.appId
@@ -220,7 +220,7 @@ export class App {
 		router.get('/forgot-password', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.ForgotPasswordPage)
 
 			res.render("forgot-password-page/forgot-password-page", {
@@ -236,7 +236,7 @@ export class App {
 		router.get('/reset-password', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
 			let userId = +req.query.userId
@@ -365,7 +365,7 @@ export class App {
 			let response = await AppsController.GetApps()
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("apps-page/apps-page", {
 				lang: locale.lang,
@@ -379,7 +379,7 @@ export class App {
 		router.get('/contact', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("contact-page/contact-page", {
 				lang: locale.lang,
@@ -393,7 +393,7 @@ export class App {
 		router.get('/privacy', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("privacy-page/privacy-page", {
 				lang: locale.lang,
@@ -407,7 +407,7 @@ export class App {
 		router.get('/pocketlib/terms', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("pocketlib-terms-page/pocketlib-terms-page", {
 				lang: locale.lang,
@@ -421,7 +421,7 @@ export class App {
 		router.get('/pricing', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("pricing-page/pricing-page", {
 				lang: locale.lang,
@@ -437,7 +437,7 @@ export class App {
 		router.get('/user', async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.UserPage)
 			let card = null
 			let periodEndDate = null
@@ -492,7 +492,7 @@ export class App {
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
+			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
 
 			if (userResponse.user == null) {
 				res.redirect("/login?redirect=dev")
@@ -516,7 +516,7 @@ export class App {
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
+			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			if (userResponse.user == null) {
@@ -541,7 +541,7 @@ export class App {
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
+			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			if (userResponse.user == null) {
@@ -566,7 +566,7 @@ export class App {
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) res.cookie(accessTokenCookieName, devResponse.accessToken)
+			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			if (userResponse.user == null) {
@@ -599,7 +599,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.getUsers(accessToken)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -623,7 +623,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.getUserActivities(accessToken)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -647,7 +647,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.getApp(accessToken, req)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -671,7 +671,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.getAppUsers(accessToken, req)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -695,7 +695,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.getAppUserActivities(accessToken, req)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -733,9 +733,9 @@ export class App {
 				res.status(response.status)
 
 				if (response.data.websiteAccessToken) {
-					res.cookie("accessToken", response.data.websiteAccessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+					this.setAccessTokenCookie(res, response.data.websiteAccessToken)
 				} else {
-					res.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+					this.setAccessTokenCookie(res, response.data.accessToken)
 				}
 
 				res.send(response.data)
@@ -798,9 +798,9 @@ export class App {
 				res.status(response.status)
 
 				if (response.data.websiteAccessToken) {
-					res.cookie("accessToken", response.data.websiteAccessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+					this.setAccessTokenCookie(res, response.data.websiteAccessToken)
 				} else {
-					res.cookie("accessToken", response.data.accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+					this.setAccessTokenCookie(res, response.data.accessToken)
 				}
 
 				res.send(response.data)
@@ -867,7 +867,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.updateUser(accessToken, req)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -891,7 +891,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.setProfileImageOfUser(accessToken, req)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -915,7 +915,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.createCheckoutSession(accessToken, req)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -939,7 +939,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.createCustomerPortalSession(accessToken)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -970,7 +970,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let user = userResponse.user
 
 			if (user == null) {
@@ -1032,7 +1032,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
-			if (userResponse.accessToken) res.cookie(accessTokenCookieName, userResponse.accessToken)
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
 			let user = userResponse.user
 
 			if (user == null) {
@@ -1071,7 +1071,7 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.updateApp(accessToken, req)
-			if (result.accessToken) res.cookie(accessTokenCookieName, result.accessToken)
+			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
@@ -1549,6 +1549,10 @@ export class App {
 		} else {
 			return null
 		}
+	}
+
+	private setAccessTokenCookie(res: any, accessToken: string) {
+		res.cookie(accessTokenCookieName, accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
 	}
 
 	private addCsrfToken(context: CsrfTokenContext): string {
