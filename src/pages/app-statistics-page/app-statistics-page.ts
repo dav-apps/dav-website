@@ -198,12 +198,13 @@ function processUserActivities(
 	}
 ) {
 	// Save the days in a separate array with timestamps
-	let days: { date: DateTime, daily: number, monthly: number, yearly: number }[] = []
+	let days: { date: DateTime, daily: number, weekly: number, monthly: number, yearly: number }[] = []
 
 	for (let day of userActivities.days) {
 		days.push({
 			date: DateTime.fromJSDate(new Date(day.time)).setLocale(navigator.language).minus({ days: 1 }),
 			daily: day.countDaily,
+			weekly: day.countWeekly,
 			monthly: day.countMonthly,
 			yearly: day.countYearly
 		})
@@ -224,11 +225,13 @@ function processUserActivities(
 	activeUsersChart.data.datasets[0].data = []
 	activeUsersChart.data.datasets[1].data = []
 	activeUsersChart.data.datasets[2].data = []
+	activeUsersChart.data.datasets[3].data = []
 
 	for (let day of days) {
 		activeUsersChart.data.datasets[0].data.push(day.daily)
-		activeUsersChart.data.datasets[1].data.push(day.monthly)
-		activeUsersChart.data.datasets[2].data.push(day.yearly)
+		activeUsersChart.data.datasets[1].data.push(day.weekly)
+		activeUsersChart.data.datasets[2].data.push(day.monthly)
+		activeUsersChart.data.datasets[3].data.push(day.yearly)
 		activeUsersChart.data.labels.push(day.date.toFormat("DD"))
 	}
 
