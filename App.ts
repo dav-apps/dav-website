@@ -66,7 +66,7 @@ export class App {
 		router.use(express.static(path.join(__dirname, 'src/pages')))
 		router.use('/assets', express.static(path.join(__dirname, '../assets')))
 		router.use(express.json())
-		router.use(express.raw({ type: "image/*" }))
+		router.use(express.raw({ type: "image/*", limit: "2mb" }))
 
 		router.use((req, res, next) => {
 			this.init()
