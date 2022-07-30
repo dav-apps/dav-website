@@ -18,9 +18,9 @@ import {
 	SessionsController,
 	UsersController,
 	DevsController,
-	UserActivitiesController,
+	UserSnapshotsController,
 	AppUsersController,
-	AppUserActivitiesController,
+	AppUserSnapshotsController,
 	CheckoutSessionsController,
 	CustomerPortalSessionsController,
 	ApiResponse,
@@ -29,9 +29,9 @@ import {
 	SignupResponseData,
 	GetDevResponseData,
 	GetUsersResponseData,
-	GetUserActivitiesResponseData,
+	GetUserSnapshotsResponseData,
 	GetAppUsersResponseData,
-	GetAppUserActivitiesResponseData,
+	GetAppUserSnapshotsResponseData,
 	CreateCheckoutSessionResponseData,
 	CreateCustomerPortalSessionResponseData
 } from 'dav-js'
@@ -612,7 +612,7 @@ export class App {
 			}
 		})
 
-		router.get('/api/user_activities', async (req, res) => {
+		router.get('/api/user_snapshots', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
 				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
@@ -622,13 +622,13 @@ export class App {
 			}
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getUserActivities(accessToken)
+			let result = await this.getUserSnapshots(accessToken)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<GetUserActivitiesResponseData>
+				let response = result.response as ApiResponse<GetUserSnapshotsResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				let response = result.response as ApiErrorResponse
@@ -684,7 +684,7 @@ export class App {
 			}
 		})
 
-		router.get('/api/app/:id/user_activities', async (req, res) => {
+		router.get('/api/app/:id/user_snapshots', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
 				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
@@ -694,13 +694,13 @@ export class App {
 			}
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getAppUserActivities(accessToken, req)
+			let result = await this.getAppUserSnapshots(accessToken, req)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<GetAppUserActivitiesResponseData>
+				let response = result.response as ApiResponse<GetAppUserSnapshotsResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				let response = result.response as ApiErrorResponse
@@ -1210,9 +1210,9 @@ export class App {
 		}
 	}
 
-	private async getUserActivities(accessToken: string): Promise<{
+	private async getUserSnapshots(accessToken: string): Promise<{
 		accessToken: string,
-		response: ApiResponse<GetUserActivitiesResponseData> | ApiErrorResponse
+		response: ApiResponse<GetUserSnapshotsResponseData> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1221,7 +1221,7 @@ export class App {
 			}
 		}
 
-		let response = await UserActivitiesController.GetUserActivities({
+		let response = await UserSnapshotsController.GetUserSnapshots({
 			accessToken,
 			start: DateTime.now().startOf("day").minus({ months: 6 }).toSeconds()
 		})
@@ -1235,13 +1235,13 @@ export class App {
 					response
 				}
 			} else {
-				return await this.getUserActivities(newAccessToken)
+				return await this.getUserSnapshots(newAccessToken)
 			}
 		}
 
 		return {
 			accessToken,
-			response: response as ApiResponse<GetUserActivitiesResponseData>
+			response: response as ApiResponse<GetUserSnapshotsResponseData>
 		}
 	}
 
@@ -1315,9 +1315,9 @@ export class App {
 		}
 	}
 
-	private async getAppUserActivities(accessToken: string, req: any): Promise<{
+	private async getAppUserSnapshots(accessToken: string, req: any): Promise<{
 		accessToken: string,
-		response: ApiResponse<GetAppUserActivitiesResponseData> | ApiErrorResponse
+		response: ApiResponse<GetAppUserSnapshotsResponseData> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1326,7 +1326,7 @@ export class App {
 			}
 		}
 
-		let response = await AppUserActivitiesController.GetAppUserActivities({
+		let response = await AppUserSnapshotsController.GetAppUserSnapshots({
 			accessToken,
 			id: +req.params.id
 		})
@@ -1340,13 +1340,13 @@ export class App {
 					response
 				}
 			} else {
-				return await this.getAppUserActivities(newAccessToken, req)
+				return await this.getAppUserSnapshots(newAccessToken, req)
 			}
 		}
 
 		return {
 			accessToken,
-			response: response as ApiResponse<GetAppUserActivitiesResponseData>
+			response: response as ApiResponse<GetAppUserSnapshotsResponseData>
 		}
 	}
 

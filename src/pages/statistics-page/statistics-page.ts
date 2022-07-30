@@ -12,6 +12,7 @@ import {
 } from 'chart.js'
 import axios from 'axios'
 import { DateTime } from 'luxon'
+import { UserSnapshot } from 'dav-js'
 import 'dav-ui-components'
 import { Header } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
@@ -109,7 +110,8 @@ async function main() {
 
 	setEventListeners()
 
-	let csrfToken = document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+   let csrfToken = document.querySelector(`meta[name="csrf-token"]`)?.getAttribute("content")
+   if (csrfToken == null) return
 
 	try {
 		let getUsersResponse = await axios({
@@ -128,15 +130,15 @@ async function main() {
 	}
 
 	try {
-		let getUserActivitiesResponse = await axios({
+		let getUserSnapshotsResponse = await axios({
 			method: 'get',
-			url: '/api/user_activities',
+			url: '/api/user_snapshots',
 			headers: {
 				"X-CSRF-TOKEN": csrfToken
 			}
 		})
 
-		processUserActivities(getUserActivitiesResponse.data)
+		processUserSnapshots(getUserSnapshotsResponse.data)
 	} catch (error) {
 		// Redirect to the Dev page
 		navigateBack()
@@ -215,32 +217,26 @@ function processUsers(
 	userChart.update()
 }
 
-function processUserActivities(
-	userActivities: {
-		days: {
-			time: string,
-			countDaily: number,
-			countWeekly: number,
-			countMonthly: number,
-			countYearly: number
-		}[]
+function processUserSnapshots(
+	userSnapshots: {
+		snapshots: UserSnapshot[]
 	}
 ) {
 	// Save the days in a separate array with timestamps
-	let days: { date: DateTime, daily: number, weekly: number, monthly: number, yearly: number }[] = []
+	let snapshots: { date: DateTime, daily: number, weekly: number, monthly: number, yearly: number }[] = []
 
-	for (let day of userActivities.days) {
-		days.push({
-			date: DateTime.fromJSDate(new Date(day.time)).setLocale(navigator.language).minus({ days: 1 }),
-			daily: day.countDaily,
-			weekly: day.countWeekly,
-			monthly: day.countMonthly,
-			yearly: day.countYearly
+	for (let snapshot of userSnapshots.snapshots) {
+		snapshots.push({
+			date: DateTime.fromJSDate(new Date(snapshot.time)).setLocale(navigator.language).minus({ days: 1 }),
+			daily: snapshot.dailyActive,
+			weekly: snapshot.weeklyActive,
+         monthly: snapshot.monthlyActive,
+			yearly: snapshot.yearlyActive
 		})
 	}
 
 	// Sort the days by time
-	days.sort((a, b) => {
+	snapshots.sort((a, b) => {
 		if (a.date > b.date) {
 			return 1
 		} else if (a.date < b.date) {
@@ -256,12 +252,12 @@ function processUserActivities(
 	activeUsersChart.data.datasets[2].data = []
 	activeUsersChart.data.datasets[3].data = []
 
-	for (let day of days) {
-		activeUsersChart.data.datasets[0].data.push(day.daily)
-		activeUsersChart.data.datasets[1].data.push(day.weekly)
-		activeUsersChart.data.datasets[2].data.push(day.monthly)
-		activeUsersChart.data.datasets[3].data.push(day.yearly)
-		activeUsersChart.data.labels.push(day.date.toFormat("DD"))
+	for (let snapshot of snapshots) {
+		activeUsersChart.data.datasets[0].data.push(snapshot.daily)
+		activeUsersChart.data.datasets[1].data.push(snapshot.weekly)
+		activeUsersChart.data.datasets[2].data.push(snapshot.monthly)
+		activeUsersChart.data.datasets[3].data.push(snapshot.yearly)
+		activeUsersChart.data.labels?.push(snapshot.date.toFormat("DD"))
 	}
 
 	activeUsersChart.update()
