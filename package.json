@@ -19,7 +19,7 @@
 		"chart.js": "^3.7.1",
 		"cropperjs": "^1.5.12",
 		"crypto-js": "^4.1.1",
-		"dav-js": "git+https://github.com/dav-apps/dav-js.git#v2.5.1",
+		"dav-js": "git+https://github.com/dav-apps/dav-js.git#v2.6.1",
 		"dav-ui-components": "git+https://github.com/dav-apps/dav-ui-components.git#v0.9",
 		"ejs": "^3.1.6",
 		"express": "^4.17.3",
@@ -52,6 +52,7 @@
 		"<%"
 	],
 	"alias": {
-		"process": false
+		"process": false,
+      "buffer": false
 	}
 }
