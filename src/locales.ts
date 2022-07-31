@@ -351,21 +351,12 @@ const enDefaults = {
 	},
 	statisticsPage: {
 		title: "General statistics",
+		appTitle: "Statistics of {0}",
 		numberOfUsers: "Number of users",
 		plans: "Plans",
 		confirmations: "Email confirmations",
 		confirmed: "Confirmed",
 		unconfirmed: "Unconfirmed",
-		activeUsers: "Active users",
-		daily: "Daily",
-		weekly: "Weekly",
-		monthly: "Monthly",
-		yearly: "Yearly",
-		totalUsers: "Total users: {0}"
-	},
-	appStatisticsPage: {
-		title: "Statistics of {0}",
-		numberOfUsers: "Number of users",
 		activeUsers: "Active users",
 		daily: "Daily",
 		weekly: "Weekly",
@@ -794,6 +785,7 @@ const deDefaults = {
 	},
 	statisticsPage: {
 		title: "Allgemeine Statistiken",
+      appTitle: "Statistiken von {0}",
 		numberOfUsers: "Anzahl Nutzer",
 		plans: "Abos",
 		confirmations: "Email-Bestätigungen",
@@ -803,18 +795,7 @@ const deDefaults = {
 		daily: "Täglich",
 		weekly: "Wöchentlich",
 		monthly: "Monatlich",
-		yearly: "Jährlich",
-		totalUsers: "Nutzer insgesamt: {0}"
-	},
-	appStatisticsPage: {
-		title: "Statistiken von {0}",
-		numberOfUsers: "Anzahl Nutzer",
-		activeUsers: "Aktive Nutzer",
-		daily: "Täglich",
-		weekly: "Wöchentlich",
-		monthly: "Monatlich",
-		yearly: "Jährlich",
-		totalUsers: "Nutzer insgesamt: {0}"
+		yearly: "Jährlich"
 	},
 	navbarComponent: {
 		pricing: "Abos",

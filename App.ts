@@ -19,7 +19,6 @@ import {
 	UsersController,
 	DevsController,
 	UserSnapshotsController,
-	AppUsersController,
 	AppUserSnapshotsController,
 	CheckoutSessionsController,
 	CustomerPortalSessionsController,
@@ -28,9 +27,7 @@ import {
 	SessionResponseData,
 	SignupResponseData,
 	GetDevResponseData,
-	GetUsersResponseData,
 	GetUserSnapshotsResponseData,
-	GetAppUsersResponseData,
 	GetAppUserSnapshotsResponseData,
 	CreateCheckoutSessionResponseData,
 	CreateCustomerPortalSessionResponseData
@@ -579,7 +576,7 @@ export class App {
 
 			res.render("app-statistics-page/app-statistics-page", {
 				lang: locale.lang,
-				locale: locale.appStatisticsPage,
+				locale: locale.statisticsPage,
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
 				user: userResponse.user
@@ -588,30 +585,6 @@ export class App {
 		//#endregion
 
 		//#region API endpoints
-		router.get('/api/users', async (req, res) => {
-			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
-			) {
-				res.status(403).end()
-				return
-			}
-
-			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getUsers(accessToken)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
-
-			if (result.response == null) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<GetUsersResponseData>
-				res.status(response.status).send(response.data)
-			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
-			}
-		})
-
 		router.get('/api/user_snapshots', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)
@@ -653,30 +626,6 @@ export class App {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<DavApp>
-				res.status(response.status).send(response.data)
-			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
-			}
-		})
-
-		router.get('/api/app/:id/users', async (req, res) => {
-			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
-			) {
-				res.status(403).end()
-				return
-			}
-
-			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getAppUsers(accessToken, req)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
-
-			if (result.response == null) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<GetAppUsersResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				let response = result.response as ApiErrorResponse
@@ -1176,40 +1125,6 @@ export class App {
 		}
 	}
 
-	private async getUsers(accessToken: string): Promise<{
-		accessToken: string,
-		response: ApiResponse<GetUsersResponseData> | ApiErrorResponse
-	}> {
-		if (accessToken == null) {
-			return {
-				accessToken: null,
-				response: null
-			}
-		}
-
-		let response = await UsersController.GetUsers({
-			accessToken
-		})
-
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
-
-			if (newAccessToken == null) {
-				return {
-					accessToken,
-					response
-				}
-			} else {
-				return await this.getUsers(newAccessToken)
-			}
-		}
-
-		return {
-			accessToken,
-			response: response as ApiResponse<GetUsersResponseData>
-		}
-	}
-
 	private async getUserSnapshots(accessToken: string): Promise<{
 		accessToken: string,
 		response: ApiResponse<GetUserSnapshotsResponseData> | ApiErrorResponse
@@ -1277,41 +1192,6 @@ export class App {
 		return {
 			accessToken,
 			response: response as ApiResponse<DavApp>
-		}
-	}
-
-	private async getAppUsers(accessToken: string, req: any): Promise<{
-		accessToken: string,
-		response: ApiResponse<GetAppUsersResponseData> | ApiErrorResponse
-	}> {
-		if (accessToken == null) {
-			return {
-				accessToken: null,
-				response: null
-			}
-		}
-
-		let response = await AppUsersController.GetAppUsers({
-			accessToken,
-			id: +req.params.id
-		})
-
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
-
-			if (newAccessToken == null) {
-				return {
-					accessToken,
-					response
-				}
-			} else {
-				return await this.getAppUsers(newAccessToken, req)
-			}
-		}
-
-		return {
-			accessToken,
-			response: response as ApiResponse<GetAppUsersResponseData>
 		}
 	}
 
