@@ -33,16 +33,30 @@
 				<canvas id="user-chart"></canvas>
 			</div>
 
-			<p id="total-users-text"
-				class="mx-auto mt-3 mb-5 ps-4 fw-light">
-			</p>
-
-			<h2 class="text-center fw-light mb-3">
+			<h2 class="text-center fw-light mt-5 mb-3">
 				<%= locale.activeUsers %>
 			</h2>
 
 			<div id="active-users-chart-container" class="mx-auto mb-5">
 				<canvas id="active-users-chart"></canvas>
+			</div>
+
+         <div class="d-flex flex-wrap justify-content-center mb-5">
+				<div class="my-4 mx-auto">
+					<h3 class="text-center fw-light">
+						<%= locale.plans %>
+					</h3>
+
+					<canvas id="plans-chart"></canvas>
+				</div>
+
+				<div class="my-4 mx-auto">
+					<h3 class="text-center fw-light">
+						<%= locale.confirmations %>
+					</h3>
+
+					<canvas id="confirmations-chart"></canvas>
+				</div>
 			</div>
 		</div>
 	</body>

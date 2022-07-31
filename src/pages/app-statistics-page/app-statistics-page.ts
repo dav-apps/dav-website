@@ -1,10 +1,12 @@
 import {
 	Chart,
 	LineController,
+	PieController,
 	CategoryScale,
 	LinearScale,
 	PointElement,
 	LineElement,
+	ArcElement,
 	Legend,
 	Tooltip
 } from 'chart.js'
@@ -16,24 +18,29 @@ import { Header } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 
-let locale = getLocale(navigator.language).appStatisticsPage
+let locale = getLocale(navigator.language).statisticsPage
 let header: Header
 let userChartCanvas: HTMLCanvasElement
-let totalUsersText: HTMLParagraphElement
 let activeUsersChartCanvas: HTMLCanvasElement
+let plansChartCanvas: HTMLCanvasElement
+let confirmationsChartCanvas: HTMLCanvasElement
 
 Chart.register(
 	LineController,
+	PieController,
 	CategoryScale,
 	LinearScale,
 	PointElement,
 	LineElement,
+	ArcElement,
 	Legend,
 	Tooltip
 )
 
 let userChart: Chart
 let activeUsersChart: Chart
+let plansChart: Chart
+let confirmationsChart: Chart
 
 let app: App
 
@@ -42,19 +49,40 @@ window.addEventListener("load", main)
 async function main() {
 	header = document.getElementById("header") as Header
 	userChartCanvas = document.getElementById("user-chart") as HTMLCanvasElement
-	totalUsersText = document.getElementById("total-users-text") as HTMLParagraphElement
 	activeUsersChartCanvas = document.getElementById("active-users-chart") as HTMLCanvasElement
+	plansChartCanvas = document.getElementById("plans-chart") as HTMLCanvasElement
+	confirmationsChartCanvas = document.getElementById("confirmations-chart") as HTMLCanvasElement
 
 	userChart = new Chart(userChartCanvas, {
 		type: 'line',
 		data: {
 			labels: [],
-			datasets: [{
-				label: locale.numberOfUsers,
-				data: [],
-				borderColor: 'rgb(255, 99, 132)',
-				backgroundColor: 'rgb(255, 99, 132)'
-			}]
+			datasets: [
+				{
+					label: locale.numberOfUsers,
+					data: [],
+					borderColor: 'rgb(255, 99, 132)',
+					backgroundColor: 'rgb(255, 99, 132)'
+				},
+				{
+					label: "Free",
+					data: [],
+					borderColor: 'rgb(54, 162, 235)',
+					backgroundColor: 'rgb(54, 162, 235)'
+				},
+				{
+					label: "Plus",
+					data: [],
+					borderColor: 'rgb(255, 205, 86)',
+					backgroundColor: 'rgb(255, 205, 86)'
+				},
+				{
+					label: "Pro",
+					data: [],
+					borderColor: 'rgb(111, 205, 205)',
+					backgroundColor: 'rgb(111, 205, 205)'
+				}
+			]
 		}
 	})
 
@@ -71,11 +99,40 @@ async function main() {
 		}
 	})
 
+	plansChart = new Chart(plansChartCanvas, {
+		type: 'pie',
+		data: {
+			labels: ["Free", "Plus", "Pro"],
+			datasets: [{
+				data: [0, 0, 0],
+				backgroundColor: [
+					'rgb(255, 99, 132)',
+					'rgb(54, 162, 235)',
+					'rgb(255, 205, 86)'
+				]
+			}]
+		}
+	})
+
+	confirmationsChart = new Chart(confirmationsChartCanvas, {
+		type: 'pie',
+		data: {
+			labels: [locale.confirmed, locale.unconfirmed],
+			datasets: [{
+				data: [0, 0],
+				backgroundColor: [
+					'rgb(255, 99, 132)',
+					'rgb(54, 162, 235)'
+				]
+			}]
+		}
+	})
+
 	// Get the app id
 	let urlPathParts = window.location.pathname.split('/')
 	let appId = +urlPathParts[2]
-   let csrfToken = document.querySelector(`meta[name="csrf-token"]`)?.getAttribute("content")
-   if (csrfToken == null) return
+	let csrfToken = document.querySelector(`meta[name="csrf-token"]`)?.getAttribute("content")
+	if (csrfToken == null) return
 
 	// Get the app
 	try {
@@ -94,24 +151,8 @@ async function main() {
 		return
 	}
 
-	header.header = locale.title.replace('{0}', app.Name)
+	header.header = locale.appTitle.replace('{0}', app.Name)
 	setEventListeners()
-
-	try {
-		let getAppUsersResponse = await axios({
-			method: 'get',
-			url: `/api/app/${appId}/users`,
-			headers: {
-				"X-CSRF-TOKEN": csrfToken
-			}
-		})
-
-		processUsers(getAppUsersResponse.data)
-	} catch (error) {
-		// Redirect to the app page
-		window.location.href = `/dev/${appId}`
-		return
-	}
 
 	try {
 		let getAppUserSnapshotsResponse = await axios({
@@ -139,61 +180,24 @@ function navigateBack() {
 	window.location.href = `/dev/${app.Id}`
 }
 
-function processUsers(
-	appUsersResponseData: {
-		appUsers: {
-			userId: number,
-			createdAt: string
-		}[]
-	}
-) {
-	totalUsersText.innerText = locale.totalUsers.replace('{0}', appUsersResponseData.appUsers.length.toString())
-
-	let currentDate = DateTime.now().startOf("month").minus({ months: 5 }).setLocale(navigator.language)
-	let start = currentDate
-	let months: Map<string, number> = new Map()
-
-	// Get the last 6 months
-	for (let i = 0; i < 6; i++) {
-		months.set(currentDate.toFormat("MMMM yyyy"), 0)
-		currentDate = currentDate.plus({ months: 1 })
-	}
-
-	for (let appUser of appUsersResponseData.appUsers) {
-		// Add the cumulative user count
-		let startedUsing = DateTime.fromJSDate(new Date(appUser.createdAt)).startOf('month').setLocale(navigator.language)
-		let startedUsingMonth = startedUsing.toFormat("MMMM yyyy")
-		let startedUsingBeforeStart = start > startedUsing
-
-		let startedUsingMonthFound = false
-		for (let month of months.entries()) {
-			if (startedUsingMonthFound || startedUsingBeforeStart) {
-				months.set(month[0], month[1] + 1)
-			} else if (startedUsingMonth == month[0]) {
-				startedUsingMonthFound = true
-				months.set(month[0], month[1] + 1)
-			}
-		}
-	}
-
-	userChart.data.labels = []
-	userChart.data.datasets[0].data = []
-
-	for (let month of months.entries()) {
-		userChart.data.labels.push(month[0])
-		userChart.data.datasets[0].data.push(month[1])
-	}
-
-	userChart.update()
-}
-
 function processUserSnapshots(
 	userSnapshots: {
 		snapshots: AppUserSnapshot[]
 	}
 ) {
 	// Save the days in a separate array with timestamps
-	let snapshots: { date: DateTime, daily: number, weekly: number, monthly: number, yearly: number }[] = []
+	let snapshots: {
+		date: DateTime,
+		daily: number,
+		weekly: number,
+		monthly: number,
+		yearly: number,
+		free: number,
+		plus: number,
+		pro: number,
+		confirmed: number,
+		unconfirmed: number
+	}[] = []
 
 	for (let snapshot of userSnapshots.snapshots) {
 		snapshots.push({
@@ -201,7 +205,12 @@ function processUserSnapshots(
 			daily: snapshot.dailyActive,
 			weekly: snapshot.weeklyActive,
 			monthly: snapshot.monthlyActive,
-			yearly: snapshot.yearlyActive
+			yearly: snapshot.yearlyActive,
+			free: snapshot.freePlan,
+			plus: snapshot.plusPlan,
+			pro: snapshot.proPlan,
+			confirmed: snapshot.emailConfirmed,
+			unconfirmed: snapshot.emailUnconfirmed
 		})
 	}
 
@@ -216,6 +225,20 @@ function processUserSnapshots(
 		}
 	})
 
+	// Show the number of users on the users line chart
+	userChart.data.datasets[0].data = []
+	userChart.data.datasets[1].data = []
+	userChart.data.datasets[2].data = []
+	userChart.data.datasets[3].data = []
+
+	for (let snapshot of snapshots) {
+		userChart.data.datasets[0].data.push(snapshot.free + snapshot.plus + snapshot.pro)
+		userChart.data.datasets[1].data.push(snapshot.free)
+		userChart.data.datasets[2].data.push(snapshot.plus)
+		userChart.data.datasets[3].data.push(snapshot.pro)
+		userChart.data.labels?.push(snapshot.date.toFormat("DD"))
+	}
+
 	// Show the days on the active users line chart
 	activeUsersChart.data.datasets[0].data = []
 	activeUsersChart.data.datasets[1].data = []
@@ -225,10 +248,24 @@ function processUserSnapshots(
 	for (let snapshot of snapshots) {
 		activeUsersChart.data.datasets[0].data.push(snapshot.daily)
 		activeUsersChart.data.datasets[1].data.push(snapshot.weekly)
-      activeUsersChart.data.datasets[2].data.push(snapshot.monthly)
+		activeUsersChart.data.datasets[2].data.push(snapshot.monthly)
 		activeUsersChart.data.datasets[3].data.push(snapshot.yearly)
 		activeUsersChart.data.labels?.push(snapshot.date.toFormat("DD"))
 	}
 
+	if (snapshots.length > 0) {
+		// Show the distribution of plans on the pie chart
+		plansChart.data.datasets[0].data[0] = snapshots[snapshots.length - 1].free
+		plansChart.data.datasets[0].data[1] = snapshots[snapshots.length - 1].plus
+		plansChart.data.datasets[0].data[2] = snapshots[snapshots.length - 1].pro
+
+		// Show the distribution of confirmed users on the pie chart
+		confirmationsChart.data.datasets[0].data[0] = snapshots[snapshots.length - 1].confirmed
+		confirmationsChart.data.datasets[0].data[1] = snapshots[snapshots.length - 1].unconfirmed
+	}
+
+	userChart.update()
 	activeUsersChart.update()
+	plansChart.update()
+	confirmationsChart.update()
 }
