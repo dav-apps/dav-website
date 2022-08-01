@@ -1432,7 +1432,7 @@ export class App {
 	}
 
 	private setAccessTokenCookie(res: any, accessToken: string) {
-		res.cookie(accessTokenCookieName, accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 90 })
+		res.cookie(accessTokenCookieName, accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
 	}
 
 	private addCsrfToken(context: CsrfTokenContext): string {
