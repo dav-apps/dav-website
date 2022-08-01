@@ -14,12 +14,13 @@ import axios from 'axios'
 import { DateTime } from 'luxon'
 import { UserSnapshot } from 'dav-js'
 import 'dav-ui-components'
-import { Header } from 'dav-ui-components'
+import { Header, Dropdown, DropdownOptionType } from 'dav-ui-components'
 import '../../components/navbar-component/navbar-component'
 import { getLocale } from '../../locales'
 
 let locale = getLocale(navigator.language).statisticsPage
 let header: Header
+let timeframeDropdown: Dropdown
 let userChartCanvas: HTMLCanvasElement
 let activeUsersChartCanvas: HTMLCanvasElement
 let plansChartCanvas: HTMLCanvasElement
@@ -41,11 +42,13 @@ let userChart: Chart
 let activeUsersChart: Chart
 let plansChart: Chart
 let confirmationsChart: Chart
+let csrfToken: string
 
 window.addEventListener("load", main)
 
 async function main() {
 	header = document.getElementById("header") as Header
+	timeframeDropdown = document.getElementById("timeframe-dropdown") as Dropdown
 	userChartCanvas = document.getElementById("user-chart") as HTMLCanvasElement
 	activeUsersChartCanvas = document.getElementById("active-users-chart") as HTMLCanvasElement
 	plansChartCanvas = document.getElementById("plans-chart") as HTMLCanvasElement
@@ -126,35 +129,70 @@ async function main() {
 		}
 	})
 
-	setEventListeners()
-
-	let csrfToken = document.querySelector(`meta[name="csrf-token"]`)?.getAttribute("content")
+	// Get the CSRF token
+	csrfToken = document.querySelector(`meta[name="csrf-token"]`)?.getAttribute("content") ?? ""
 	if (csrfToken == null) return
 
+	setupTimeframeDropdown()
+	setEventListeners()
+	await loadUserSnapshots()
+}
+
+function setEventListeners() {
+	header.addEventListener("backButtonClick", navigateBack)
+	timeframeDropdown.addEventListener("change", timeframeDropdownSelectionChanged)
+}
+
+function navigateBack() {
+	// Redirect to the Dev page
+	window.location.href = "/dev"
+}
+
+function setupTimeframeDropdown() {
+	timeframeDropdown.options.push(
+		{
+			key: "1",
+			value: `1 ${locale.month}`,
+			type: DropdownOptionType.option
+		},
+		{
+			key: "3",
+			value: `3 ${locale.months}`,
+			type: DropdownOptionType.option
+		},
+		{
+			key: "6",
+			value: `6 ${locale.months}`,
+			type: DropdownOptionType.option
+		}
+	)
+
+	timeframeDropdown.selectedKey = "3"
+}
+
+async function timeframeDropdownSelectionChanged() {
+	await loadUserSnapshots()
+}
+
+async function loadUserSnapshots() {
 	try {
 		let getUserSnapshotsResponse = await axios({
 			method: 'get',
 			url: '/api/user_snapshots',
 			headers: {
 				"X-CSRF-TOKEN": csrfToken
+			},
+			params: {
+				months: timeframeDropdown.selectedKey
 			}
 		})
 
 		processUserSnapshots(getUserSnapshotsResponse.data)
-	} catch (error) {
+	} catch(error) {
 		// Redirect to the Dev page
 		navigateBack()
 		return
 	}
-}
-
-function setEventListeners() {
-	header.addEventListener("backButtonClick", navigateBack)
-}
-
-function navigateBack() {
-	// Redirect to the Dev page
-	window.location.href = "/dev"
 }
 
 function processUserSnapshots(
@@ -203,31 +241,33 @@ function processUserSnapshots(
 	})
 
 	// Show the number of users on the users line chart
+	userChart.data.labels = []
 	userChart.data.datasets[0].data = []
 	userChart.data.datasets[1].data = []
 	userChart.data.datasets[2].data = []
 	userChart.data.datasets[3].data = []
 
 	for (let snapshot of snapshots) {
+		userChart.data.labels.push(snapshot.date.toFormat("DD"))
 		userChart.data.datasets[0].data.push(snapshot.free + snapshot.plus + snapshot.pro)
 		userChart.data.datasets[1].data.push(snapshot.free)
 		userChart.data.datasets[2].data.push(snapshot.plus)
 		userChart.data.datasets[3].data.push(snapshot.pro)
-		userChart.data.labels?.push(snapshot.date.toFormat("DD"))
 	}
 
 	// Show the days on the active users line chart
+	activeUsersChart.data.labels = []
 	activeUsersChart.data.datasets[0].data = []
 	activeUsersChart.data.datasets[1].data = []
 	activeUsersChart.data.datasets[2].data = []
 	activeUsersChart.data.datasets[3].data = []
 
 	for (let snapshot of snapshots) {
+		activeUsersChart.data.labels.push(snapshot.date.toFormat("DD"))
 		activeUsersChart.data.datasets[0].data.push(snapshot.daily)
 		activeUsersChart.data.datasets[1].data.push(snapshot.weekly)
 		activeUsersChart.data.datasets[2].data.push(snapshot.monthly)
 		activeUsersChart.data.datasets[3].data.push(snapshot.yearly)
-		activeUsersChart.data.labels?.push(snapshot.date.toFormat("DD"))
 	}
 
 	if (snapshots.length > 0) {

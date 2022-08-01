@@ -595,7 +595,7 @@ export class App {
 			}
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getUserSnapshots(accessToken)
+			let result = await this.getUserSnapshots(accessToken, req.query.months ? +req.query.months : 1)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
@@ -643,7 +643,7 @@ export class App {
 			}
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getAppUserSnapshots(accessToken, req)
+			let result = await this.getAppUserSnapshots(accessToken, +req.params.id, req.query.months ? +req.query.months : 1)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null) {
@@ -1125,7 +1125,7 @@ export class App {
 		}
 	}
 
-	private async getUserSnapshots(accessToken: string): Promise<{
+	private async getUserSnapshots(accessToken: string, months: number): Promise<{
 		accessToken: string,
 		response: ApiResponse<GetUserSnapshotsResponseData> | ApiErrorResponse
 	}> {
@@ -1138,7 +1138,7 @@ export class App {
 
 		let response = await UserSnapshotsController.GetUserSnapshots({
 			accessToken,
-			start: DateTime.now().startOf("day").minus({ months: 6 }).toSeconds()
+			start: DateTime.now().startOf("day").minus({ months }).toSeconds()
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
@@ -1150,7 +1150,7 @@ export class App {
 					response
 				}
 			} else {
-				return await this.getUserSnapshots(newAccessToken)
+				return await this.getUserSnapshots(newAccessToken, months)
 			}
 		}
 
@@ -1195,7 +1195,7 @@ export class App {
 		}
 	}
 
-	private async getAppUserSnapshots(accessToken: string, req: any): Promise<{
+	private async getAppUserSnapshots(accessToken: string, appId: number, months: number): Promise<{
 		accessToken: string,
 		response: ApiResponse<GetAppUserSnapshotsResponseData> | ApiErrorResponse
 	}> {
@@ -1208,7 +1208,7 @@ export class App {
 
 		let response = await AppUserSnapshotsController.GetAppUserSnapshots({
 			accessToken,
-			id: +req.params.id
+			id: appId
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
@@ -1220,7 +1220,7 @@ export class App {
 					response
 				}
 			} else {
-				return await this.getAppUserSnapshots(newAccessToken, req)
+				return await this.getAppUserSnapshots(newAccessToken, appId, months)
 			}
 		}
 

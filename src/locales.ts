@@ -362,7 +362,8 @@ const enDefaults = {
 		weekly: "Weekly",
 		monthly: "Monthly",
 		yearly: "Yearly",
-		totalUsers: "Total users: {0}"
+		month: "month",
+		months: "months"
 	},
 	navbarComponent: {
 		pricing: "Pricing",
@@ -795,7 +796,9 @@ const deDefaults = {
 		daily: "Täglich",
 		weekly: "Wöchentlich",
 		monthly: "Monatlich",
-		yearly: "Jährlich"
+		yearly: "Jährlich",
+		month: "Monat",
+		months: "Monate"
 	},
 	navbarComponent: {
 		pricing: "Abos",
