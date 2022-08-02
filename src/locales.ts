@@ -247,6 +247,8 @@ const enDefaults = {
 		},
 		general: {
 			title: "General Settings",
+			emailNotConfirmed: "Your email address is not confirmed.",
+			sendConfirmationEmail: "Send confirmation email",
 			profileImageAlt: "Your profile image",
 			uploadProfileImage: "Upload profile image",
 			firstNameTextfieldLabel: "Your first name",
@@ -682,6 +684,8 @@ const deDefaults = {
 		},
 		general: {
 			title: "Allgemeine Einstellungen",
+			emailNotConfirmed: "Deine Email-Adresse ist nicht bestätigt.",
+			sendConfirmationEmail: "Bestätigungsemail senden",
 			profileImageAlt: "Dein Profilbild",
 			uploadProfileImage: "Profilbild hochladen",
 			firstNameTextfieldLabel: "Dein Vorname",

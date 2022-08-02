@@ -30,10 +30,12 @@ let expiredSessionDialog: Dialog
 
 let locale = getLocale(navigator.language).userPage
 let snackbar: MDCSnackbar
+let csrfToken: string
 
 //#region General page variables
 let errorMessageBarGeneral: MessageBar
 let successMessageBarGeneral: MessageBar
+let sendConfirmationEmailLink: HTMLAnchorElement
 let profileImageProgressRing: ProgressRing
 let profileImage: HTMLImageElement
 let uploadProfileImageButton: Button
@@ -120,6 +122,7 @@ async function main() {
 
 	errorMessageBarGeneral = document.getElementById("error-message-bar-general") as MessageBar
 	successMessageBarGeneral = document.getElementById("success-message-bar-general") as MessageBar
+	sendConfirmationEmailLink = document.getElementById("send-confirmation-email-link") as HTMLAnchorElement
 	profileImageProgressRing = document.getElementById("profile-image-progress-ring") as ProgressRing
 	profileImage = document.getElementById("profile-image") as HTMLImageElement
 	uploadProfileImageButton = document.getElementById("upload-profile-image-button") as Button
@@ -181,10 +184,14 @@ async function main() {
 	changePlanDialog = document.getElementById("change-plan-dialog") as Dialog
 	changePlanDialogDescription = document.getElementById("change-plan-dialog-description") as HTMLParagraphElement
 
-	snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'))
+	let snackbarElement = document.querySelector('.mdc-snackbar')
+	if (snackbarElement != null) snackbar = new MDCSnackbar(snackbarElement)
 	initialProfileImageSrc = profileImage.src
 	initialFirstName = firstNameTextfield.value
 	initialEmail = emailTextfield.value
+
+	// Get the CSRF token
+	csrfToken = document?.querySelector(`meta[name="csrf-token"]`)?.getAttribute("content") ?? ""
 
 	setEventListeners()
 	setSize()
@@ -202,6 +209,9 @@ function setEventListeners() {
 	//#endregion
 
 	//#region General page event listeners
+	if (sendConfirmationEmailLink != null) {
+		sendConfirmationEmailLink.addEventListener('click', sendConfirmationEmailLinkClick)
+	}
 	uploadProfileImageButton.addEventListener('click', uploadProfileImageButtonClick)
 	profileImageDialog.addEventListener('dismiss', () => profileImageDialog.visible = false)
 	profileImageDialog.addEventListener('primaryButtonClick', profileImageDialogPrimaryButtonClick)
@@ -308,15 +318,19 @@ function sidenavButtonClick() {
 }
 
 //#region General page event listeners
+async function sendConfirmationEmailLinkClick() {
+	
+}
+
 function uploadProfileImageButtonClick() {
 	let input = document.createElement("input")
 	input.setAttribute("type", "file")
 	input.setAttribute("accept", "image/png, image/jpeg")
 
 	input.addEventListener('change', () => {
-		if (input.files.length == 0) return
+		let file = input?.files?.item(0)
+		if (file == null) return
 
-		let file = input.files.item(0)
 		let blob = new Blob([file], { type: file.type })
 
 		profileImageDialogImage.src = URL.createObjectURL(blob)
@@ -340,7 +354,7 @@ async function profileImageDialogPrimaryButtonClick() {
 
 	let canvas = profileImageCropper.getCroppedCanvas()
 	let blob = await new Promise<Blob>((r: Function) => {
-		canvas.toBlob((blob: Blob) => r(blob), "image/jpeg", 0.8)
+		canvas.toBlob((blob: Blob | null) => r(blob), "image/jpeg", 0.8)
 	})
 	profileImageCropper.destroy()
 
@@ -361,6 +375,8 @@ async function profileImageDialogPrimaryButtonClick() {
 		fileReader.readAsArrayBuffer(blob)
 	})
 	let readFileResult: ProgressEvent = await readFilePromise
+	if (readFileResult == null || readFileResult.currentTarget == null) return
+
 	let data = readFileResult.currentTarget["result"]
 
 	// Send the file content to the server
@@ -369,7 +385,7 @@ async function profileImageDialogPrimaryButtonClick() {
 			method: 'put',
 			url: '/api/user/profile_image',
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+				"X-CSRF-TOKEN": csrfToken,
 				"Content-Type": blob.type
 			},
 			data
@@ -414,7 +430,7 @@ async function firstNameSaveButtonClick() {
 			method: 'put',
 			url: '/api/user',
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": csrfToken
 			},
 			data: {
 				firstName
@@ -467,7 +483,7 @@ async function emailSaveButtonClick() {
 			method: 'put',
 			url: '/api/user',
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": csrfToken
 			},
 			data: {
 				email
@@ -518,7 +534,7 @@ async function passwordSaveButtonClick() {
 			method: 'put',
 			url: '/api/user',
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": csrfToken
 			},
 			data: {
 				password: passwordTextfield.value
@@ -556,7 +572,7 @@ async function paymentMethodButtonClick() {
 			method: 'post',
 			url: '/api/customer_portal_session',
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": csrfToken
 			}
 		})
 
@@ -585,7 +601,7 @@ async function cancelContinueSubscriptionButtonClick() {
 			method: 'put',
 			url: '/api/subscription/cancel',
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": csrfToken
 			}
 		})
 
@@ -628,7 +644,7 @@ async function plansTableFreeDowngradeButtonClick() {
 			method: 'put',
 			url: '/api/subscription/cancel',
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": csrfToken
 			}
 		})
 
@@ -697,7 +713,7 @@ async function plansTablePlusDowngradeButtonClick() {
 				method: 'put',
 				url: '/api/subscription',
 				headers: {
-					"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+					"X-CSRF-TOKEN": csrfToken,
 					'Content-Type': 'application/json'
 				},
 				data: {
@@ -771,7 +787,7 @@ async function plansTableProUpgradeButtonClick() {
 					method: 'put',
 					url: '/api/subscription',
 					headers: {
-						"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+						"X-CSRF-TOKEN": csrfToken,
 						'Content-Type': 'application/json'
 					},
 					data: {
@@ -822,7 +838,7 @@ async function createCheckoutSession(plan: number): Promise<any> {
 		method: 'post',
 		url: '/api/checkout_session',
 		headers: {
-			"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+			"X-CSRF-TOKEN": csrfToken,
 			'Content-Type': 'application/json'
 		},
 		data: {

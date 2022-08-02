@@ -68,6 +68,19 @@
 								</dav-message-bar>
 							</div>
 
+							<% if (!user.Confirmed) { %>
+							<div class="mb-4">
+								<dav-message-bar
+									id="warning-message-bar-general"
+									type="warning">
+									<%= locale.general.emailNotConfirmed %><br>
+									<a id="send-confirmation-email-link" href="user#general">
+										<%= locale.general.sendConfirmationEmail %>
+									</a>
+								</dav-message-bar>
+							</div>
+							<% } %>
+
 							<!-- Profile image -->
 							<div class="mb-3">
 								<dav-progress-ring
