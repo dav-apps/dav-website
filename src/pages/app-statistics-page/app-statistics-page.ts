@@ -205,6 +205,9 @@ async function loadUserSnapshots() {
 			url: `/api/app/${app.Id}/user_snapshots`,
 			headers: {
 				"X-CSRF-TOKEN": csrfToken
+			},
+			params: {
+				months: timeframeDropdown.selectedKey
 			}
 		})
 

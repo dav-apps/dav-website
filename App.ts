@@ -1239,7 +1239,8 @@ export class App {
 
 		let response = await AppUserSnapshotsController.GetAppUserSnapshots({
 			accessToken,
-			id: appId
+			id: appId,
+			start: DateTime.now().startOf("day").minus({ months }).toSeconds()
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
