@@ -759,6 +759,37 @@ export class App {
 			}
 		})
 
+		router.post('/api/send_confirmation_email', async (req, res) => {
+			if (
+				!this.checkReferer(req, res)
+				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+			) {
+				res.status(403).end()
+				return
+			}
+
+			// Get the current user
+			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
+			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+
+			if (userResponse.user == null) {
+				res.status(404).end()
+				return
+			}
+
+			let response = await UsersController.SendConfirmationEmail({
+				auth: this.auth,
+				id: userResponse.user.Id
+			})
+
+			if (isSuccessStatusCode(response.status)) {
+				res.status(response.status).end()
+			} else {
+				response = response as ApiErrorResponse
+				res.status(response.status).send({ errors: response.errors })
+			}
+		})
+
 		router.post('/api/send_password_reset_email', async (req, res) => {
 			if (
 				!this.checkReferer(req, res)

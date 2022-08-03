@@ -286,6 +286,7 @@ const enDefaults = {
 			}
 		},
 		messages: {
+			sendConfirmationEmailMessage: "Confirmation email was sent successfully",
 			profileImageUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
 			firstNameUpdateMessage: "Your name has been updated successfully",
 			emailUpdateMessage: "You will receive an email to confirm your new email address",
@@ -723,6 +724,7 @@ const deDefaults = {
 			}
 		},
 		messages: {
+			sendConfirmationEmailMessage: "Bestätigungsemail wurde erfolgreich versendet",
 			profileImageUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
 			firstNameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
 			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",

@@ -35,6 +35,7 @@ let csrfToken: string
 //#region General page variables
 let errorMessageBarGeneral: MessageBar
 let successMessageBarGeneral: MessageBar
+let warningMessageBarGeneral: MessageBar
 let sendConfirmationEmailLink: HTMLAnchorElement
 let profileImageProgressRing: ProgressRing
 let profileImage: HTMLImageElement
@@ -122,6 +123,7 @@ async function main() {
 
 	errorMessageBarGeneral = document.getElementById("error-message-bar-general") as MessageBar
 	successMessageBarGeneral = document.getElementById("success-message-bar-general") as MessageBar
+	warningMessageBarGeneral = document.getElementById("warning-message-bar-general") as MessageBar
 	sendConfirmationEmailLink = document.getElementById("send-confirmation-email-link") as HTMLAnchorElement
 	profileImageProgressRing = document.getElementById("profile-image-progress-ring") as ProgressRing
 	profileImage = document.getElementById("profile-image") as HTMLImageElement
@@ -319,7 +321,26 @@ function sidenavButtonClick() {
 
 //#region General page event listeners
 async function sendConfirmationEmailLinkClick() {
-	
+	try {
+		await axios({
+			method: 'post',
+			url: '/api/send_confirmation_email',
+			headers: {
+				"X-CSRF-TOKEN": csrfToken
+			}
+		})
+
+		// Show snackbar with success message
+		showSnackbar(locale.messages.sendConfirmationEmailMessage)
+	} catch (error) {
+		// Show error message
+		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
+			showGeneralErrorMessage(getErrorMessage(error.response.data.errors[0].code))
+		}
+	}
+
+	// Hide the message bar
+	hideElement(warningMessageBarGeneral)
 }
 
 function uploadProfileImageButtonClick() {
