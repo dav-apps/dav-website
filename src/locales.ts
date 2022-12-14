@@ -402,9 +402,9 @@ const enDefaults = {
 			accessData: "Access your data on any device",
 			noAds: "No ads",
 			universalsoundboard: {
-				hotkeyFeature: "Assign hotkeys to sounds",
-				outputDeviceFeature: "Set the output device for each playing sound individually",
-				playlistDownloadFeature: "Download entire YouTube playlists"
+            outputDeviceFeature: "Change the output device",
+            soundRecorderFeature: "Get access to the sound recorder",
+				hotkeyFeature: "Assign hotkeys to sounds"
 			}
 		},
 		messages: {
@@ -840,9 +840,9 @@ const deDefaults = {
 			accessData: "Zugriff auf deine Daten von jedem Gerät",
 			noAds: "Keine Werbung",
 			universalsoundboard: {
-				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu",
-				outputDeviceFeature: "Lege das Ausgabegerät für jeden Sound individuell fest",
-				playlistDownloadFeature: "Lade komplette YouTube-Playlisten herunter"
+            outputDeviceFeature: "Ändere das Ausgabegerät",
+            soundRecorderFeature: "Bekomme Zugriff zum Sound-Recorder",
+				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu"
 			}
 		},
 		messages: {
