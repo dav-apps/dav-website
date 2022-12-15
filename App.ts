@@ -598,7 +598,7 @@ export class App {
 			let result = await this.getUserSnapshots(accessToken, req.query.months ? +req.query.months : 1)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<GetUserSnapshotsResponseData>
@@ -622,7 +622,7 @@ export class App {
 			let result = await this.getApp(accessToken, req)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<DavApp>
@@ -646,7 +646,7 @@ export class App {
 			let result = await this.getAppUserSnapshots(accessToken, +req.params.id, req.query.months ? +req.query.months : 1)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<GetAppUserSnapshotsResponseData>
@@ -688,6 +688,8 @@ export class App {
 				}
 
 				res.send(response.data)
+         } else if (response.status == -1) {
+            res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
@@ -715,6 +717,8 @@ export class App {
 			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<SessionResponseData>
 				res.status(response.status).send(response.data)
+         } else if (response.status == -1) {
+            res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
@@ -753,6 +757,8 @@ export class App {
 				}
 
 				res.send(response.data)
+         } else if (response.status == -1) {
+            res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
@@ -784,6 +790,8 @@ export class App {
 
 			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
+         } else if (response.status == -1) {
+            res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
@@ -806,6 +814,8 @@ export class App {
 
 			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
+         } else if (response.status == -1) {
+            res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
@@ -830,6 +840,8 @@ export class App {
 
 			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
+         } else if (response.status == -1) {
+            res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
@@ -849,7 +861,7 @@ export class App {
 			let result = await this.updateUser(accessToken, req)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<User>
@@ -873,7 +885,7 @@ export class App {
 			let result = await this.setProfileImageOfUser(accessToken, req)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<User>
@@ -897,7 +909,7 @@ export class App {
 			let result = await this.createCheckoutSession(accessToken, req)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<CreateCheckoutSessionResponseData>
@@ -921,7 +933,7 @@ export class App {
 			let result = await this.createCustomerPortalSession(accessToken)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<CreateCustomerPortalSessionResponseData>
@@ -1053,7 +1065,7 @@ export class App {
 			let result = await this.updateApp(accessToken, req)
 			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null) {
+			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
 				let response = result.response as ApiResponse<DavApp>
