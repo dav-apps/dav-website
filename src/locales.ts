@@ -184,8 +184,9 @@ const enDefaults = {
 		errors: {
 			loginFailed: "Login failed",
 			emailMissing: "Please enter your email",
-			passwordMissing: "Please enter your password",
-			unexpectedErrorShort: "Unexpected error ({0})"
+         passwordMissing: "Please enter your password",
+         unexpectedErrorShort: "Unexpected error ({0})",
+         unexpectedErrorLong: "An unexpected error occured. Please try it again later."
 		}
 	},
 	signupPage: {
@@ -211,7 +212,8 @@ const enDefaults = {
 			passwordTooLong: "Your password is too long",
 			emailInvalid: "Your email is invalid",
 			emailTaken: "This email address is already in use",
-			unexpectedErrorShort: "Unexpected error ({0})"
+         unexpectedErrorShort: "Unexpected error ({0})",
+         unexpectedErrorLong: "An unexpected error occured. Please try it again later."
 		}
 	},
 	forgotPasswordPage: {
@@ -624,6 +626,7 @@ const deDefaults = {
 			emailMissing: "Bitte gib deine Email-Adresse ein",
 			passwordMissing: "Bitte gib dein Passwort ein",
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+         unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
 		}
 	},
 	signupPage: {
@@ -649,7 +652,8 @@ const deDefaults = {
 			passwordTooLong: "Dein Passwort ist zu lang",
 			emailInvalid: "Deine Email-Adresse ist ungültig",
 			emailTaken: "Diese Email-Adresse wird bereits verwendet",
-			unexpectedErrorShort: "Unerwarteter Fehler ({0})"
+         unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+         unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
 		}
 	},
 	forgotPasswordPage: {

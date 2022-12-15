@@ -149,6 +149,11 @@ function loginButtonClick() {
 }
 
 function showError(errors: { code: number, message: string }[]) {
+   if (errors == null) {
+      showErrorMessageBar(locale.errors.unexpectedErrorLong)
+      return
+   }
+
 	let errorCode = errors[0].code
 
 	switch (errorCode) {

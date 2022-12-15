@@ -203,7 +203,13 @@ async function loginAsButtonClick() {
 	}
 }
 
-function showError(errors: {code: number, message: string}[]) {
+function showError(errors: { code: number, message: string }[]) {
+	if (errors == null) {
+		errorMessageBar.innerText = locale.errors.unexpectedErrorLong
+		showElement(errorMessageBar)
+		return
+	}
+
 	let errorCode = errors[0].code
 
 	if (errorCode == ErrorCodes.IncorrectPassword || errorCode == ErrorCodes.UserDoesNotExist) {
