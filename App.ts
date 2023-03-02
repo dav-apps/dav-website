@@ -1,11 +1,11 @@
-import express from 'express'
-import ejs from 'ejs'
-import path from 'path'
-import url from 'url'
-import dotenv from 'dotenv'
-import CryptoJS from 'crypto-js'
-import { DateTime } from 'luxon'
-import Stripe from 'stripe'
+import express from "express"
+import ejs from "ejs"
+import path from "path"
+import url from "url"
+import dotenv from "dotenv"
+import CryptoJS from "crypto-js"
+import { DateTime } from "luxon"
+import Stripe from "stripe"
 import {
 	Dav,
 	Auth,
@@ -31,9 +31,9 @@ import {
 	GetAppUserSnapshotsResponseData,
 	CreateCheckoutSessionResponseData,
 	CreateCustomerPortalSessionResponseData
-} from 'dav-js'
-import { CsrfToken, CsrfTokenContext } from './src/types.js'
-import { supportedLocales, getLocale } from './src/locales.js'
+} from "dav-js"
+import { CsrfToken, CsrfTokenContext } from "./src/types.js"
+import { supportedLocales, getLocale } from "./src/locales.js"
 
 dotenv.config()
 
@@ -57,11 +57,11 @@ export class App {
 		const router = express.Router()
 
 		this.express.set("view engine", "html")
-		this.express.engine('html', ejs.renderFile)
-		this.express.set('views', path.join(__dirname, 'src/pages'))
+		this.express.engine("html", ejs.renderFile)
+		this.express.set("views", path.join(__dirname, "src/pages"))
 
-		router.use(express.static(path.join(__dirname, 'src/pages')))
-		router.use('/assets', express.static(path.join(__dirname, '../assets')))
+		router.use(express.static(path.join(__dirname, "src/pages")))
+		router.use("/assets", express.static(path.join(__dirname, "../assets")))
 		router.use(express.json())
 		router.use(express.raw({ type: "image/*", limit: "2mb" }))
 
@@ -71,10 +71,13 @@ export class App {
 		})
 
 		//#region Public endpoints
-		router.get('/', async (req, res) => {
+		router.get("/", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let message = req.query.message
 
 			let errorMessageText = null
@@ -117,10 +120,13 @@ export class App {
 			}
 		})
 
-		router.get('/login', async (req, res) => {
+		router.get("/login", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.LoginPage)
 
 			let appId = +req.query.appId
@@ -131,7 +137,8 @@ export class App {
 			if (redirectUrl) redirectUrl = decodeURIComponent(redirectUrl).trim()
 			if (redirect) redirect = decodeURIComponent(redirect).trim()
 
-			let websiteLogin = isNaN(appId) && apiKey == null && redirectUrl == null
+			let websiteLogin =
+				isNaN(appId) && apiKey == null && redirectUrl == null
 
 			if (websiteLogin && userResponse.user != null) {
 				if (redirect != null) {
@@ -144,12 +151,12 @@ export class App {
 			} else if (!websiteLogin) {
 				// Check if appId, apiKey and redirectUrl are present and valid
 				if (
-					isNaN(appId)
-					|| appId <= 0
-					|| apiKey == null
-					|| apiKey.length < 2
-					|| redirectUrl == null
-					|| redirectUrl.length < 2
+					isNaN(appId) ||
+					appId <= 0 ||
+					apiKey == null ||
+					apiKey.length < 2 ||
+					redirectUrl == null ||
+					redirectUrl.length < 2
 				) {
 					res.redirect("/?message=error")
 					return
@@ -167,10 +174,13 @@ export class App {
 			})
 		})
 
-		router.get('/signup', async (req, res) => {
+		router.get("/signup", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.SignupPage)
 
 			let appId = +req.query.appId
@@ -179,19 +189,20 @@ export class App {
 
 			if (redirectUrl) redirectUrl = decodeURIComponent(redirectUrl).trim()
 
-			let websiteSignup = isNaN(appId) && apiKey == null && redirectUrl == null
+			let websiteSignup =
+				isNaN(appId) && apiKey == null && redirectUrl == null
 
 			if (websiteSignup && userResponse.user != null) {
 				res.redirect("/")
 				return
 			} else if (!websiteSignup) {
 				if (
-					isNaN(appId)
-					|| appId <= 0
-					|| apiKey == null
-					|| apiKey.length < 2
-					|| redirectUrl == null
-					|| redirectUrl.length < 2
+					isNaN(appId) ||
+					appId <= 0 ||
+					apiKey == null ||
+					apiKey.length < 2 ||
+					redirectUrl == null ||
+					redirectUrl.length < 2
 				) {
 					res.redirect("/?message=error")
 					return
@@ -209,15 +220,18 @@ export class App {
 			})
 		})
 
-		router.get('/logout', (req, res) => {
+		router.get("/logout", (req, res) => {
 			// Remove the accessToken cookie and redirect to the start page
 			res.clearCookie("accessToken").redirect("/")
 		})
 
-		router.get('/forgot-password', async (req, res) => {
+		router.get("/forgot-password", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.ForgotPasswordPage)
 
 			res.render("forgot-password-page/forgot-password-page", {
@@ -230,20 +244,23 @@ export class App {
 			})
 		})
 
-		router.get('/reset-password', async (req, res) => {
+		router.get("/reset-password", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
 			let userId = +req.query.userId
 			let passwordConfirmationToken = req.query.passwordConfirmationToken
 
 			if (
-				isNaN(userId)
-				|| userId <= 0
-				|| passwordConfirmationToken == null
-				|| passwordConfirmationToken.length < 3
+				isNaN(userId) ||
+				userId <= 0 ||
+				passwordConfirmationToken == null ||
+				passwordConfirmationToken.length < 3
 			) {
 				res.redirect("/?message=error")
 				return
@@ -259,7 +276,7 @@ export class App {
 			})
 		})
 
-		router.get('/email-link', async (req, res) => {
+		router.get("/email-link", async (req, res) => {
 			let type = req.query.type
 
 			if (type == null) {
@@ -268,17 +285,18 @@ export class App {
 			}
 
 			let userId = +req.query.userId
-			let passwordConfirmationToken = req.query.passwordConfirmationToken as string
+			let passwordConfirmationToken = req.query
+				.passwordConfirmationToken as string
 			let emailConfirmationToken = req.query.emailConfirmationToken as string
 
 			switch (type) {
 				case "confirmUser":
 					// Check if user id and email confirmation token are present
 					if (
-						!isNaN(userId)
-						&& userId > 0
-						&& emailConfirmationToken != null
-						&& emailConfirmationToken.length >= 2
+						!isNaN(userId) &&
+						userId > 0 &&
+						emailConfirmationToken != null &&
+						emailConfirmationToken.length >= 2
 					) {
 						let response = await UsersController.ConfirmUser({
 							auth: this.auth,
@@ -295,10 +313,10 @@ export class App {
 				case "changeEmail":
 					// Check if user id and email confirmation token are present
 					if (
-						!isNaN(userId)
-						&& userId > 0
-						&& emailConfirmationToken != null
-						&& emailConfirmationToken.length >= 2
+						!isNaN(userId) &&
+						userId > 0 &&
+						emailConfirmationToken != null &&
+						emailConfirmationToken.length >= 2
 					) {
 						let response = await UsersController.SaveNewEmail({
 							auth: this.auth,
@@ -315,10 +333,10 @@ export class App {
 				case "changePassword":
 					// Check if user id and password confirmation token are present
 					if (
-						!isNaN(userId)
-						&& userId > 0
-						&& passwordConfirmationToken != null
-						&& passwordConfirmationToken.length >= 2
+						!isNaN(userId) &&
+						userId > 0 &&
+						passwordConfirmationToken != null &&
+						passwordConfirmationToken.length >= 2
 					) {
 						let response = await UsersController.SaveNewPassword({
 							auth: this.auth,
@@ -335,10 +353,10 @@ export class App {
 				case "resetEmail":
 					// Check if user id and email confirmation token are present
 					if (
-						!isNaN(userId)
-						&& userId > 0
-						&& emailConfirmationToken != null
-						&& emailConfirmationToken.length >= 2
+						!isNaN(userId) &&
+						userId > 0 &&
+						emailConfirmationToken != null &&
+						emailConfirmationToken.length >= 2
 					) {
 						let response = await UsersController.ResetEmail({
 							auth: this.auth,
@@ -357,26 +375,35 @@ export class App {
 			res.redirect("/?message=error")
 		})
 
-		router.get('/apps', async (req, res) => {
+		router.get("/apps", async (req, res) => {
 			// Get the apps
 			let response = await AppsController.GetApps()
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("apps-page/apps-page", {
 				lang: locale.lang,
 				locale: locale.appsPage,
 				navbarLocale: locale.navbarComponent,
 				user: userResponse.user,
-				apps: response.status == 200 ? (response as ApiResponse<DavApp[]>).data : []
+				apps:
+					response.status == 200
+						? (response as ApiResponse<DavApp[]>).data
+						: []
 			})
 		})
 
-		router.get('/contact', async (req, res) => {
+		router.get("/contact", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("contact-page/contact-page", {
 				lang: locale.lang,
@@ -387,10 +414,13 @@ export class App {
 			})
 		})
 
-		router.get('/privacy', async (req, res) => {
+		router.get("/privacy", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("privacy-page/privacy-page", {
 				lang: locale.lang,
@@ -401,10 +431,13 @@ export class App {
 			})
 		})
 
-		router.get('/pocketlib/terms', async (req, res) => {
+		router.get("/pocketlib/terms", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("pocketlib-terms-page/pocketlib-terms-page", {
 				lang: locale.lang,
@@ -415,10 +448,13 @@ export class App {
 			})
 		})
 
-		router.get('/pricing', async (req, res) => {
+		router.get("/pricing", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			res.render("pricing-page/pricing-page", {
 				lang: locale.lang,
@@ -431,10 +467,13 @@ export class App {
 			})
 		})
 
-		router.get('/user', async (req, res) => {
+		router.get("/user", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.UserPage)
 			let card = null
 			let periodEndDate = null
@@ -448,7 +487,9 @@ export class App {
 			let user = userResponse.user
 
 			if (user.PeriodEnd != null) {
-				periodEndDate = DateTime.fromJSDate(user.PeriodEnd).setLocale(locale.lang).toFormat('DDD')
+				periodEndDate = DateTime.fromJSDate(user.PeriodEnd)
+					.setLocale(locale.lang)
+					.toFormat("DDD")
 			}
 
 			if (req.query.plan == "1") {
@@ -461,8 +502,13 @@ export class App {
 
 			if (user.StripeCustomerId) {
 				// Get the stripe customer and payment method
-				let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
-				let paymentMethods = await stripe.customers.listPaymentMethods(user.StripeCustomerId, { limit: 1, type: "card" })
+				let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+					apiVersion: null
+				})
+				let paymentMethods = await stripe.customers.listPaymentMethods(
+					user.StripeCustomerId,
+					{ limit: 1, type: "card" }
+				)
 
 				if (paymentMethods.data.length > 0) {
 					card = paymentMethods.data[0].card
@@ -484,12 +530,13 @@ export class App {
 			})
 		})
 
-		router.get('/dev', async (req, res) => {
+		router.get("/dev", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
+			if (devResponse.accessToken)
+				this.setAccessTokenCookie(res, devResponse.accessToken)
 
 			if (userResponse.user == null) {
 				res.redirect("/login?redirect=dev")
@@ -508,16 +555,19 @@ export class App {
 			})
 		})
 
-		router.get('/dev/statistics', async (req, res) => {
+		router.get("/dev/statistics", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
+			if (devResponse.accessToken)
+				this.setAccessTokenCookie(res, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			if (userResponse.user == null) {
-				res.redirect(`/login?redirect=${encodeURIComponent("dev/statistics")}`)
+				res.redirect(
+					`/login?redirect=${encodeURIComponent("dev/statistics")}`
+				)
 				return
 			} else if (devResponse.dev == null) {
 				res.redirect("/")
@@ -533,16 +583,21 @@ export class App {
 			})
 		})
 
-		router.get('/dev/:appId', async (req, res) => {
+		router.get("/dev/:appId", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
+			if (devResponse.accessToken)
+				this.setAccessTokenCookie(res, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			if (userResponse.user == null) {
-				res.redirect(`/login?redirect=${encodeURIComponent(`dev/${req.params.appId}`)}`)
+				res.redirect(
+					`/login?redirect=${encodeURIComponent(
+						`dev/${req.params.appId}`
+					)}`
+				)
 				return
 			} else if (devResponse.dev == null) {
 				res.redirect("/")
@@ -558,16 +613,21 @@ export class App {
 			})
 		})
 
-		router.get('/dev/:appId/statistics', async (req, res) => {
+		router.get("/dev/:appId/statistics", async (req, res) => {
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
 			let devResponse = await this.getDev(userResponse.accessToken)
-			if (devResponse.accessToken) this.setAccessTokenCookie(res, devResponse.accessToken)
+			if (devResponse.accessToken)
+				this.setAccessTokenCookie(res, devResponse.accessToken)
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.DevPages)
 
 			if (userResponse.user == null) {
-				res.redirect(`/login?redirect=${encodeURIComponent(`dev/${req.params.appId}/statistics`)}`)
+				res.redirect(
+					`/login?redirect=${encodeURIComponent(
+						`dev/${req.params.appId}/statistics`
+					)}`
+				)
 				return
 			} else if (devResponse.dev == null) {
 				res.redirect("/")
@@ -585,23 +645,31 @@ export class App {
 		//#endregion
 
 		//#region API endpoints
-		router.get('/api/user_snapshots', async (req, res) => {
+		router.get("/api/user_snapshots", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.DevPages
+				)
 			) {
 				res.status(403).end()
 				return
 			}
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getUserSnapshots(accessToken, req.query.months ? +req.query.months : 1)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			let result = await this.getUserSnapshots(
+				accessToken,
+				req.query.months ? +req.query.months : 1
+			)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<GetUserSnapshotsResponseData>
+				let response =
+					result.response as ApiResponse<GetUserSnapshotsResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				let response = result.response as ApiErrorResponse
@@ -609,10 +677,13 @@ export class App {
 			}
 		})
 
-		router.get('/api/app/:id', async (req, res) => {
+		router.get("/api/app/:id", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.DevPages
+				)
 			) {
 				res.status(403).end()
 				return
@@ -620,7 +691,8 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.getApp(accessToken, req)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -633,23 +705,32 @@ export class App {
 			}
 		})
 
-		router.get('/api/app/:id/user_snapshots', async (req, res) => {
+		router.get("/api/app/:id/user_snapshots", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.DevPages
+				)
 			) {
 				res.status(403).end()
 				return
 			}
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
-			let result = await this.getAppUserSnapshots(accessToken, +req.params.id, req.query.months ? +req.query.months : 1)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			let result = await this.getAppUserSnapshots(
+				accessToken,
+				+req.params.id,
+				req.query.months ? +req.query.months : 1
+			)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<GetAppUserSnapshotsResponseData>
+				let response =
+					result.response as ApiResponse<GetAppUserSnapshotsResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				let response = result.response as ApiErrorResponse
@@ -657,10 +738,13 @@ export class App {
 			}
 		})
 
-		router.post('/api/login', async (req, res) => {
+		router.post("/api/login", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.LoginPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.LoginPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -688,18 +772,21 @@ export class App {
 				}
 
 				res.send(response.data)
-         } else if (response.status == -1) {
-            res.status(500).end()
+			} else if (response.status == -1) {
+				res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
-		router.post('/api/create_session_from_access_token', async (req, res) => {
+		router.post("/api/create_session_from_access_token", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.LoginPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.LoginPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -717,18 +804,21 @@ export class App {
 			if (isSuccessStatusCode(response.status)) {
 				response = response as ApiResponse<SessionResponseData>
 				res.status(response.status).send(response.data)
-         } else if (response.status == -1) {
-            res.status(500).end()
+			} else if (response.status == -1) {
+				res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
-		router.post('/api/signup', async (req, res) => {
+		router.post("/api/signup", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.SignupPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.SignupPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -757,26 +847,32 @@ export class App {
 				}
 
 				res.send(response.data)
-         } else if (response.status == -1) {
-            res.status(500).end()
+			} else if (response.status == -1) {
+				res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
-		router.post('/api/send_confirmation_email', async (req, res) => {
+		router.post("/api/send_confirmation_email", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.UserPage
+				)
 			) {
 				res.status(403).end()
 				return
 			}
 
 			// Get the current user
-			let userResponse = await this.getUser(this.getRequestCookies(req)["accessToken"])
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			let userResponse = await this.getUser(
+				this.getRequestCookies(req)["accessToken"]
+			)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 
 			if (userResponse.user == null) {
 				res.status(404).end()
@@ -790,18 +886,21 @@ export class App {
 
 			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
-         } else if (response.status == -1) {
-            res.status(500).end()
+			} else if (response.status == -1) {
+				res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
-		router.post('/api/send_password_reset_email', async (req, res) => {
+		router.post("/api/send_password_reset_email", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.ForgotPasswordPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.ForgotPasswordPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -814,18 +913,21 @@ export class App {
 
 			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
-         } else if (response.status == -1) {
-            res.status(500).end()
+			} else if (response.status == -1) {
+				res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
-		router.post('/api/set_password', async (req, res) => {
+		router.post("/api/set_password", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.PasswordResetPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.PasswordResetPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -840,18 +942,21 @@ export class App {
 
 			if (isSuccessStatusCode(response.status)) {
 				res.status(response.status).end()
-         } else if (response.status == -1) {
-            res.status(500).end()
+			} else if (response.status == -1) {
+				res.status(500).end()
 			} else {
 				response = response as ApiErrorResponse
 				res.status(response.status).send({ errors: response.errors })
 			}
 		})
 
-		router.put('/api/user', async (req, res) => {
+		router.put("/api/user", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.UserPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -859,7 +964,8 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.updateUser(accessToken, req)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -872,10 +978,13 @@ export class App {
 			}
 		})
 
-		router.put('/api/user/profile_image', async (req, res) => {
+		router.put("/api/user/profile_image", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.UserPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -883,7 +992,8 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.setProfileImageOfUser(accessToken, req)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -896,10 +1006,13 @@ export class App {
 			}
 		})
 
-		router.post('/api/checkout_session', async (req, res) => {
+		router.post("/api/checkout_session", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.UserPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -907,12 +1020,14 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.createCheckoutSession(accessToken, req)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<CreateCheckoutSessionResponseData>
+				let response =
+					result.response as ApiResponse<CreateCheckoutSessionResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				let response = result.response as ApiErrorResponse
@@ -920,10 +1035,13 @@ export class App {
 			}
 		})
 
-		router.post('/api/customer_portal_session', async (req, res) => {
+		router.post("/api/customer_portal_session", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.UserPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -931,12 +1049,14 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.createCustomerPortalSession(accessToken)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<CreateCustomerPortalSessionResponseData>
+				let response =
+					result.response as ApiResponse<CreateCustomerPortalSessionResponseData>
 				res.status(response.status).send(response.data)
 			} else {
 				let response = result.response as ApiErrorResponse
@@ -944,17 +1064,20 @@ export class App {
 			}
 		})
 
-		router.put('/api/subscription', async (req, res) => {
+		router.put("/api/subscription", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.UserPage
+				)
 			) {
 				res.status(403).end()
 				return
 			}
 
 			let plan = req.body.plan
-			
+
 			if (plan != 0 && plan != 1 && plan != 2) {
 				res.status(400).end()
 				return
@@ -962,7 +1085,8 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let user = userResponse.user
 
 			if (user == null) {
@@ -970,8 +1094,12 @@ export class App {
 				return
 			}
 
-			let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
-			let subscriptions = await stripe.subscriptions.list({ customer: user.StripeCustomerId })
+			let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+				apiVersion: null
+			})
+			let subscriptions = await stripe.subscriptions.list({
+				customer: user.StripeCustomerId
+			})
 
 			if (subscriptions.data.length == 0) {
 				if (plan == 0) {
@@ -983,9 +1111,14 @@ export class App {
 					// Create a new subscription
 					await stripe.subscriptions.create({
 						customer: user.StripeCustomerId,
-						items: [{
-							plan: plan == 1 ? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID : process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
-						}]
+						items: [
+							{
+								plan:
+									plan == 1
+										? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID
+										: process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
+							}
+						]
 					})
 				}
 			} else {
@@ -999,10 +1132,15 @@ export class App {
 				} else {
 					// Update the existing subscription
 					await stripe.subscriptions.update(subscription.id, {
-						items: [{
-							id: subscription.items.data[0].id,
-							plan: plan == 1 ? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID : process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
-						}],
+						items: [
+							{
+								id: subscription.items.data[0].id,
+								plan:
+									plan == 1
+										? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID
+										: process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
+							}
+						],
 						cancel_at_period_end: false
 					})
 				}
@@ -1013,10 +1151,13 @@ export class App {
 			})
 		})
 
-		router.put('/api/subscription/cancel', async (req, res) => {
+		router.put("/api/subscription/cancel", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.UserPage)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.UserPage
+				)
 			) {
 				res.status(403).end()
 				return
@@ -1024,7 +1165,8 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
-			if (userResponse.accessToken) this.setAccessTokenCookie(res, userResponse.accessToken)
+			if (userResponse.accessToken)
+				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let user = userResponse.user
 
 			if (user == null) {
@@ -1032,8 +1174,12 @@ export class App {
 				return
 			}
 
-			let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: null })
-			let subscriptions = await stripe.subscriptions.list({ customer: user.StripeCustomerId })
+			let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+				apiVersion: null
+			})
+			let subscriptions = await stripe.subscriptions.list({
+				customer: user.StripeCustomerId
+			})
 
 			if (subscriptions.data.length == 0) {
 				res.status(412).end()
@@ -1052,10 +1198,13 @@ export class App {
 			})
 		})
 
-		router.put('/api/app/:id', async (req, res) => {
+		router.put("/api/app/:id", async (req, res) => {
 			if (
-				!this.checkReferer(req, res)
-				|| !this.checkCsrfToken(req.headers["x-csrf-token"] as string, CsrfTokenContext.DevPages)
+				!this.checkReferer(req, res) ||
+				!this.checkCsrfToken(
+					req.headers["x-csrf-token"] as string,
+					CsrfTokenContext.DevPages
+				)
 			) {
 				res.status(403).end()
 				return
@@ -1063,7 +1212,8 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.updateApp(accessToken, req)
-			if (result.accessToken) this.setAccessTokenCookie(res, result.accessToken)
+			if (result.accessToken)
+				this.setAccessTokenCookie(res, result.accessToken)
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -1077,7 +1227,7 @@ export class App {
 		})
 		//#endregion
 
-		this.express.use('/', router)
+		this.express.use("/", router)
 	}
 
 	private checkReferer(req: any, res: any) {
@@ -1086,14 +1236,17 @@ export class App {
 		var baseUrls = []
 
 		if (baseUrl != null) {
-			baseUrls = baseUrl.split(',')
+			baseUrls = baseUrl.split(",")
 		}
 
 		// Check if the request has the referer header
 		let refererHeader = req.headers.referer
 
 		// Check if the base urls contain the referer
-		if (!refererHeader || baseUrls.findIndex(baseUrl => refererHeader.startsWith(baseUrl)) == -1) {
+		if (
+			!refererHeader ||
+			baseUrls.findIndex(baseUrl => refererHeader.startsWith(baseUrl)) == -1
+		) {
 			res.sendStatus(403)
 			return false
 		}
@@ -1105,7 +1258,13 @@ export class App {
 		if (this.initialized) return
 		this.initialized = true
 
-		new Dav({ environment: process.env.ENV == "production" ? Environment.Production : Environment.Development, server: true })
+		new Dav({
+			environment:
+				process.env.ENV == "production"
+					? Environment.Production
+					: Environment.Development,
+			server: true
+		})
 		this.auth = new Auth({
 			apiKey: process.env.DAV_API_KEY,
 			secretKey: process.env.DAV_SECRET_KEY,
@@ -1115,18 +1274,20 @@ export class App {
 
 	private getRequestCookies(req) {
 		if (req.headers.cookie == null) return {}
-		const rawCookies = req.headers.cookie.split('; ')
+		const rawCookies = req.headers.cookie.split("; ")
 		const parsedCookies = {}
 
 		rawCookies.forEach(rawCookie => {
-			const parsedCookie = rawCookie.split('=')
+			const parsedCookie = rawCookie.split("=")
 			parsedCookies[parsedCookie[0]] = parsedCookie[1]
 		})
 
 		return parsedCookies
 	}
 
-	private async getUser(accessToken: string): Promise<{ accessToken: string, user: User }> {
+	private async getUser(
+		accessToken: string
+	): Promise<{ accessToken: string; user: User }> {
 		if (accessToken == null) {
 			return {
 				accessToken: null,
@@ -1137,7 +1298,10 @@ export class App {
 		let getUserResponse = await UsersController.GetUser({ accessToken })
 
 		if (!isSuccessStatusCode(getUserResponse.status)) {
-			accessToken = await this.handleApiError(accessToken, getUserResponse as ApiErrorResponse)
+			accessToken = await this.handleApiError(
+				accessToken,
+				getUserResponse as ApiErrorResponse
+			)
 			return await this.getUser(accessToken)
 		}
 
@@ -1147,7 +1311,9 @@ export class App {
 		}
 	}
 
-	private async getDev(accessToken: string): Promise<{ accessToken: string, dev: GetDevResponseData }> {
+	private async getDev(
+		accessToken: string
+	): Promise<{ accessToken: string; dev: GetDevResponseData }> {
 		if (accessToken == null) {
 			return {
 				accessToken: null,
@@ -1158,7 +1324,10 @@ export class App {
 		let getDevResponse = await DevsController.GetDev({ accessToken })
 
 		if (!isSuccessStatusCode(getDevResponse.status)) {
-			accessToken = await this.handleApiError(accessToken, getDevResponse as ApiErrorResponse)
+			accessToken = await this.handleApiError(
+				accessToken,
+				getDevResponse as ApiErrorResponse
+			)
 			return await this.getDev(accessToken)
 		}
 
@@ -1168,8 +1337,11 @@ export class App {
 		}
 	}
 
-	private async getUserSnapshots(accessToken: string, months: number): Promise<{
+	private async getUserSnapshots(
 		accessToken: string,
+		months: number
+	): Promise<{
+		accessToken: string
 		response: ApiResponse<GetUserSnapshotsResponseData> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
@@ -1185,7 +1357,10 @@ export class App {
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1203,8 +1378,11 @@ export class App {
 		}
 	}
 
-	private async getApp(accessToken: string, req: any): Promise<{
+	private async getApp(
 		accessToken: string,
+		req: any
+	): Promise<{
+		accessToken: string
 		response: ApiResponse<DavApp> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
@@ -1220,7 +1398,10 @@ export class App {
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1238,8 +1419,12 @@ export class App {
 		}
 	}
 
-	private async getAppUserSnapshots(accessToken: string, appId: number, months: number): Promise<{
+	private async getAppUserSnapshots(
 		accessToken: string,
+		appId: number,
+		months: number
+	): Promise<{
+		accessToken: string
 		response: ApiResponse<GetAppUserSnapshotsResponseData> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
@@ -1256,7 +1441,10 @@ export class App {
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1274,8 +1462,11 @@ export class App {
 		}
 	}
 
-	private async updateUser(accessToken: string, req: any): Promise<{
+	private async updateUser(
 		accessToken: string,
+		req: any
+	): Promise<{
+		accessToken: string
 		response: ApiResponse<User> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
@@ -1293,7 +1484,10 @@ export class App {
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1311,8 +1505,11 @@ export class App {
 		}
 	}
 
-	private async setProfileImageOfUser(accessToken: string, req: any): Promise<{
+	private async setProfileImageOfUser(
 		accessToken: string,
+		req: any
+	): Promise<{
+		accessToken: string
 		response: ApiResponse<User> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
@@ -1325,11 +1522,14 @@ export class App {
 		let response = await UsersController.SetProfileImageOfUser({
 			accessToken,
 			data: req.body,
-			type: req.headers['content-type']
+			type: req.headers["content-type"]
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1347,9 +1547,14 @@ export class App {
 		}
 	}
 
-	private async createCheckoutSession(accessToken: string, req: any): Promise<{
+	private async createCheckoutSession(
 		accessToken: string,
-		response: ApiResponse<CreateCheckoutSessionResponseData> | ApiErrorResponse
+		req: any
+	): Promise<{
+		accessToken: string
+		response:
+			| ApiResponse<CreateCheckoutSessionResponseData>
+			| ApiErrorResponse
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1367,7 +1572,10 @@ export class App {
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1386,8 +1594,10 @@ export class App {
 	}
 
 	private async createCustomerPortalSession(accessToken: string): Promise<{
-		accessToken: string,
-		response: ApiResponse<CreateCustomerPortalSessionResponseData> | ApiErrorResponse
+		accessToken: string
+		response:
+			| ApiResponse<CreateCustomerPortalSessionResponseData>
+			| ApiErrorResponse
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1396,12 +1606,16 @@ export class App {
 			}
 		}
 
-		let response = await CustomerPortalSessionsController.CreateCustomerPortalSession({
-			accessToken
-		})
+		let response =
+			await CustomerPortalSessionsController.CreateCustomerPortalSession({
+				accessToken
+			})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1415,12 +1629,16 @@ export class App {
 
 		return {
 			accessToken,
-			response: response as ApiResponse<CreateCustomerPortalSessionResponseData>
+			response:
+				response as ApiResponse<CreateCustomerPortalSessionResponseData>
 		}
 	}
 
-	private async updateApp(accessToken: string, req: any): Promise<{
+	private async updateApp(
 		accessToken: string,
+		req: any
+	): Promise<{
+		accessToken: string
 		response: ApiResponse<DavApp> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
@@ -1442,7 +1660,10 @@ export class App {
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(accessToken, response as ApiErrorResponse)
+			let newAccessToken = await this.handleApiError(
+				accessToken,
+				response as ApiErrorResponse
+			)
 
 			if (newAccessToken == null) {
 				return {
@@ -1460,23 +1681,34 @@ export class App {
 		}
 	}
 
-	private async handleApiError(accessToken: string, errorResponse: ApiErrorResponse): Promise<string> {
+	private async handleApiError(
+		accessToken: string,
+		errorResponse: ApiErrorResponse
+	): Promise<string> {
 		if (
-			errorResponse.errors.length == 0
-			|| errorResponse.errors[0].code != ErrorCodes.AccessTokenMustBeRenewed
-		) return null
+			errorResponse.errors.length == 0 ||
+			errorResponse.errors[0].code != ErrorCodes.AccessTokenMustBeRenewed
+		)
+			return null
 
-		let renewSessionResult = await SessionsController.RenewSession({ accessToken })
+		let renewSessionResult = await SessionsController.RenewSession({
+			accessToken
+		})
 
 		if (renewSessionResult.status == 200) {
-			return (renewSessionResult as ApiResponse<SessionResponseData>).data.accessToken
+			return (renewSessionResult as ApiResponse<SessionResponseData>).data
+				.accessToken
 		} else {
 			return null
 		}
 	}
 
 	private setAccessTokenCookie(res: any, accessToken: string) {
-		res.cookie(accessTokenCookieName, accessToken, { httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 365 })
+		res.cookie(accessTokenCookieName, accessToken, {
+			httpOnly: true,
+			secure: true,
+			maxAge: 1000 * 60 * 60 * 24 * 365
+		})
 	}
 
 	private addCsrfToken(context: CsrfTokenContext): string {
