@@ -30,7 +30,8 @@ const enDefaults = {
 	userStartPage: {
 		title: "Your Apps",
 		welcomeTitle: "Hi, {0}",
-		welcomeMessage: "You're not using any app right now. Check out the All Apps page to find your first app!",
+		welcomeMessage:
+			"You're not using any app right now. Check out the All Apps page to find your first app!",
 		welcomeButton: "Find apps"
 	},
 	appsPage: {
@@ -89,7 +90,8 @@ const enDefaults = {
 			`
 		},
 		endText1: `These rules apply to all our apps and websites, including web apps and our blog. If you have any questions you can always contact us at <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a>.`,
-		endText2: "We reserve the right to update this privacy policy in the future.",
+		endText2:
+			"We reserve the right to update this privacy policy in the future.",
 		endText3: "Last update: December 5, 2021"
 	},
 	pocketlibTermsPage: {
@@ -184,9 +186,10 @@ const enDefaults = {
 		errors: {
 			loginFailed: "Login failed",
 			emailMissing: "Please enter your email",
-         passwordMissing: "Please enter your password",
-         unexpectedErrorShort: "Unexpected error ({0})",
-         unexpectedErrorLong: "An unexpected error occured. Please try it again later."
+			passwordMissing: "Please enter your password",
+			unexpectedErrorShort: "Unexpected error ({0})",
+			unexpectedErrorLong:
+				"An unexpected error occured. Please try it again later."
 		}
 	},
 	signupPage: {
@@ -205,20 +208,23 @@ const enDefaults = {
 			firstNameMissing: "Please enter your name",
 			emailMissing: "Please enter your email",
 			passwordMissing: "Please enter a password",
-			passwordConfirmationNotMatching: "Your password doesn't match the password confirmation",
+			passwordConfirmationNotMatching:
+				"Your password doesn't match the password confirmation",
 			firstNameTooShort: "The name is too short",
 			passwordTooShort: "Your password is too short",
 			firstNameTooLong: "The name is too long",
 			passwordTooLong: "Your password is too long",
 			emailInvalid: "Your email is invalid",
 			emailTaken: "This email address is already in use",
-         unexpectedErrorShort: "Unexpected error ({0})",
-         unexpectedErrorLong: "An unexpected error occured. Please try it again later."
+			unexpectedErrorShort: "Unexpected error ({0})",
+			unexpectedErrorLong:
+				"An unexpected error occured. Please try it again later."
 		}
 	},
 	forgotPasswordPage: {
 		title: "Reset your password",
-		description: "Enter the email address of your account and we will send you a link to reset your password.",
+		description:
+			"Enter the email address of your account and we will send you a link to reset your password.",
 		emailTextfieldLabel: "Email",
 		emailTextfieldPlaceholder: "Your email address",
 		send: "Send",
@@ -239,7 +245,8 @@ const enDefaults = {
 			passwordMissing: "Please enter your new password",
 			passwordTooShort: "Your password is too short",
 			passwordTooLong: "Your password is too long",
-			passwordConfirmationNotMatching: "Your password doesn't match the password confirmation"
+			passwordConfirmationNotMatching:
+				"Your password doesn't match the password confirmation"
 		}
 	},
 	userPage: {
@@ -278,25 +285,34 @@ const enDefaults = {
 			subscriptionEnd: "Subscription end",
 			continueSubscription: "Continue subscription",
 			cancelSubscription: "Cancel subscription",
-			continueSubscriptionSuccessMessage: "Your subscription will be renewed after {0}",
-			cancelSubscriptionSuccessMessage: "Your subscription will not be renewed after {0}",
+			continueSubscriptionSuccessMessage:
+				"Your subscription will be renewed after {0}",
+			cancelSubscriptionSuccessMessage:
+				"Your subscription will not be renewed after {0}",
 			changePlanDialog: {
 				upgradeProHeader: "Upgrade to Pro",
-				upgradeProDescription: "Do you want to upgrade to dav Pro for 10 € per month?",
+				upgradeProDescription:
+					"Do you want to upgrade to dav Pro for 10 € per month?",
 				downgradePlusHeader: "Downgrade to Plus",
-				downgradePlusDescription: "Do you want to downgrade to dav Plus for 3 € per month?"
+				downgradePlusDescription:
+					"Do you want to downgrade to dav Plus for 3 € per month?"
 			}
 		},
 		messages: {
-			sendConfirmationEmailMessage: "Confirmation email was sent successfully",
-			profileImageUpdateMessage: "Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
+			sendConfirmationEmailMessage:
+				"Confirmation email was sent successfully",
+			profileImageUpdateMessage:
+				"Your profile image has been updated successfully. It may take some time to update across the site and all apps.",
 			firstNameUpdateMessage: "Your name has been updated successfully",
-			emailUpdateMessage: "You will receive an email to confirm your new email address",
-			passwordUpdateMessage: "You will receive an email to confirm your new password"
+			emailUpdateMessage:
+				"You will receive an email to confirm your new email address",
+			passwordUpdateMessage:
+				"You will receive an email to confirm your new password"
 		},
 		errors: {
 			unexpectedErrorShort: "Unexpected error ({0})",
-			unexpectedErrorLong: "An unexpected error occured. Please try it again later.",
+			unexpectedErrorLong:
+				"An unexpected error occured. Please try it again later.",
 			profileImageFileTooLarge: "The image file is too large",
 			firstNameTooShort: "The name is too short",
 			firstNameTooLong: "The name is too long",
@@ -304,7 +320,8 @@ const enDefaults = {
 			emailTaken: "This email address is already in use",
 			passwordMissing: "Please enter a password",
 			passwordConfirmationMissing: "Please enter your password again",
-			passwordConfirmationNotMatching: "Your password doesn't match the password confirmation",
+			passwordConfirmationNotMatching:
+				"Your password doesn't match the password confirmation",
 			passwordTooShort: "Your new password is too short",
 			passwordTooLong: "Your new password is too long",
 			emailAlreadyConfirmed: "Your email address is already confirmed"
@@ -332,9 +349,11 @@ const enDefaults = {
 			webLinkTextfieldLabel: "Web App",
 			webLinkTextfieldPlaceholder: "The link to your web app",
 			googlePlayLinkTextfieldLabel: "Google Play",
-			googlePlayLinkTextfieldPlaceholder: "Link to the Google Play Store entry",
+			googlePlayLinkTextfieldPlaceholder:
+				"Link to the Google Play Store entry",
 			microsoftStoreLinkTextfieldLabel: "Microsoft Store",
-			microsoftStoreLinkTextfieldPlaceholder: "Link to the Microsoft Store entry",
+			microsoftStoreLinkTextfieldPlaceholder:
+				"Link to the Microsoft Store entry",
 			errors: {
 				nameTooShort: "The name is too short",
 				descriptionTooShort: "The description is too short",
@@ -404,17 +423,20 @@ const enDefaults = {
 			accessData: "Access your data on any device",
 			noAds: "No ads",
 			universalsoundboard: {
-            outputDeviceFeature: "Change the output device",
-            soundRecorderFeature: "Get access to the sound recorder",
+				outputDeviceFeature: "Change the output device",
+				soundRecorderFeature: "Get access to the sound recorder",
 				hotkeyFeature: "Assign hotkeys to sounds"
 			}
 		},
 		messages: {
-			passwordResetMessage: "You will receive an email with instructions to reset your password",
-			confirmUserMessage: "Your email address has been successfully confirmed",
+			passwordResetMessage:
+				"You will receive an email with instructions to reset your password",
+			confirmUserMessage:
+				"Your email address has been successfully confirmed",
 			saveNewEmailMessage: "Your new email address has been saved",
 			saveNewPasswordMessage: "You new password has been saved",
-			resetNewEmailMessage: "Your email address has been reset. You can now log in again with your old email address.",
+			resetNewEmailMessage:
+				"Your email address has been reset. You can now log in again with your old email address.",
 			errorMessage: "An unexpected error occured. Please try it again."
 		}
 	}
@@ -463,7 +485,8 @@ const deDefaults = {
 	userStartPage: {
 		title: "Deine Apps",
 		welcomeTitle: "Hi, {0}",
-		welcomeMessage: "Im Moment benutzt du keine App. Sieh dir alle Apps an, um deine erste App zu finden!",
+		welcomeMessage:
+			"Im Moment benutzt du keine App. Sieh dir alle Apps an, um deine erste App zu finden!",
 		welcomeButton: "Apps finden"
 	},
 	appsPage: {
@@ -492,7 +515,7 @@ const deDefaults = {
 		},
 		section2: {
 			header: "Dienste von Dritten",
-			text: "Um unsere Dienste anbieten zu können, nutzen wir bestimmte Dienste von Dritten. Die Dienste, mit denen wir Daten teilen, sind im Folgenden aufgelistet.",
+			text: "Um unsere Dienste anbieten zu können, nutzen wir bestimmte Dienste von Dritten. Die Dienste, mit denen wir Daten teilen, sind im Folgenden aufgelistet."
 		},
 		section2a: {
 			header: "Simple Analytics",
@@ -522,7 +545,8 @@ const deDefaults = {
 			`
 		},
 		endText1: `Diese Regeln gelten für all unsere Apps und Webseiten, einschließlich Web-Apps und unseren Blog. Bei Fragen kannst du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
-		endText2: "Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu aktualisieren.",
+		endText2:
+			"Wir behalten uns das Recht vor, diese Datenschutzerklärung in Zukunft zu aktualisieren.",
 		endText3: "Letzte Aktualisierung: 5. Dezember 2021"
 	},
 	pocketlibTermsPage: {
@@ -605,7 +629,7 @@ const deDefaults = {
 			text7: "Deine Informationen als Anbieter sind in den Einstellungen deines Kontos auf dav einsehbar. Dort kannst Du auch ein Bankkonto für die monatliche Auszahlung angeben."
 		},
 		endText1: `Wir behalten uns das Recht vor, diese Bestimmungen in Zukunft zu aktualisieren. Bei Fragen kannst Du uns jederzeit über <a href="mailto:support@dav-apps.tech" class="text-dark">support@dav-apps.tech</a> kontaktieren.`,
-		endText2: "Letzte Aktualisierung: 3. Dezember 2020",
+		endText2: "Letzte Aktualisierung: 3. Dezember 2020"
 	},
 	pricingPage: {
 		title: "Unsere Abos"
@@ -626,7 +650,8 @@ const deDefaults = {
 			emailMissing: "Bitte gib deine Email-Adresse ein",
 			passwordMissing: "Bitte gib dein Passwort ein",
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
-         unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
+			unexpectedErrorLong:
+				"Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
 		}
 	},
 	signupPage: {
@@ -645,20 +670,23 @@ const deDefaults = {
 			firstNameMissing: "Bitte gib deinen Namen ein",
 			emailMissing: "Bitte gib deine Email-Adresse ein",
 			passwordMissing: "Bitte gib ein Passwort ein",
-			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein",
+			passwordConfirmationNotMatching:
+				"Dein Passwort stimmt nicht mit der Passwortbestätigung überein",
 			firstNameTooShort: "Der Name ist zu kurz",
 			passwordTooShort: "Dein Passwort ist zu kurz",
 			firstNameTooLong: "Der Name ist zu lang",
 			passwordTooLong: "Dein Passwort ist zu lang",
 			emailInvalid: "Deine Email-Adresse ist ungültig",
 			emailTaken: "Diese Email-Adresse wird bereits verwendet",
-         unexpectedErrorShort: "Unerwarteter Fehler ({0})",
-         unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
+			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
+			unexpectedErrorLong:
+				"Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal."
 		}
 	},
 	forgotPasswordPage: {
 		title: "Passwort zurücksetzen",
-		description: "Gib die Email-Adresse deines Accounts ein und wir senden dir einen Link, um dein Passwort zurückzusetzen.",
+		description:
+			"Gib die Email-Adresse deines Accounts ein und wir senden dir einen Link, um dein Passwort zurückzusetzen.",
 		emailTextfieldLabel: "Email",
 		emailTextfieldPlaceholder: "Deine Email-Adresse",
 		send: "Senden",
@@ -673,13 +701,15 @@ const deDefaults = {
 		passwordTextfieldLabel: "Passwort",
 		passwordTextfieldPlaceholder: "Wähle ein neues Passwort",
 		passwordConfirmationTextfieldLabel: "Passwortbestätigung",
-		passwordConfirmationTextfieldPlaceholder: "Wiederhole dein neues Passwort",
+		passwordConfirmationTextfieldPlaceholder:
+			"Wiederhole dein neues Passwort",
 		save: "Speichern",
 		errors: {
 			passwordMissing: "Bitte gib dein neues Passwort ein",
 			passwordTooShort: "Dein Passwort ist zu kurz",
 			passwordTooLong: "Dein Passwort ist zu lang",
-			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein"
+			passwordConfirmationNotMatching:
+				"Dein Passwort stimmt nicht mit der Passwortbestätigung überein"
 		}
 	},
 	userPage: {
@@ -718,25 +748,34 @@ const deDefaults = {
 			subscriptionEnd: "Ende deines Abos",
 			continueSubscription: "Abo fortführen",
 			cancelSubscription: "Abo beenden",
-			continueSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} weiter verlängert",
-			cancelSubscriptionSuccessMessage: "Dein Abo wird nach dem {0} nicht weiter verlängert",
+			continueSubscriptionSuccessMessage:
+				"Dein Abo wird nach dem {0} weiter verlängert",
+			cancelSubscriptionSuccessMessage:
+				"Dein Abo wird nach dem {0} nicht weiter verlängert",
 			changePlanDialog: {
 				upgradeProHeader: "Wechsel auf Pro",
-				upgradeProDescription: "Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
+				upgradeProDescription:
+					"Möchtest du auf dav Pro für 10 € pro Monat wechseln?",
 				downgradePlusHeader: "Wechsel auf Plus",
-				downgradePlusDescription: "Möchtest du auf dav Plus für 3 € pro Monat wechseln?"
+				downgradePlusDescription:
+					"Möchtest du auf dav Plus für 3 € pro Monat wechseln?"
 			}
 		},
 		messages: {
-			sendConfirmationEmailMessage: "Bestätigungsemail wurde erfolgreich versendet",
-			profileImageUpdateMessage: "Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
+			sendConfirmationEmailMessage:
+				"Bestätigungsemail wurde erfolgreich versendet",
+			profileImageUpdateMessage:
+				"Dein Profilbild wurde erfolgreich aktualisiert. Es kann einige Zeit dauern, bis das neue Profilbild in allen Apps angezeigt wird.",
 			firstNameUpdateMessage: "Dein Name wurde erfolgreich aktualisiert",
-			emailUpdateMessage: "Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
-			passwordUpdateMessage: "Du erhältst eine Email zur Bestätigung deines neuen Passworts"
+			emailUpdateMessage:
+				"Du erhältst eine Email zur Bestätigung deiner neuen Email-Adresse",
+			passwordUpdateMessage:
+				"Du erhältst eine Email zur Bestätigung deines neuen Passworts"
 		},
 		errors: {
 			unexpectedErrorShort: "Unerwarteter Fehler ({0})",
-			unexpectedErrorLong: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
+			unexpectedErrorLong:
+				"Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später nochmal.",
 			profileImageFileTooLarge: "Die Bilddatei ist zu groß",
 			firstNameTooShort: "Der Name ist zu kurz",
 			firstNameTooLong: "Der Name ist zu lang",
@@ -744,7 +783,8 @@ const deDefaults = {
 			emailTaken: "Diese Email-Adresse wird bereits verwendet",
 			passwordMissing: "Bitte gib ein Passwort ein",
 			passwordConfirmationMissing: "Bitte gib dein Password nochmal ein",
-			passwordConfirmationNotMatching: "Dein Passwort stimmt nicht mit der Passwortbestätigung überein",
+			passwordConfirmationNotMatching:
+				"Dein Passwort stimmt nicht mit der Passwortbestätigung überein",
 			passwordTooShort: "Dein neues Passwort ist zu kurz",
 			passwordTooLong: "Dein neues Passwort ist zu lang",
 			emailAlreadyConfirmed: "Deine Email-Adresse ist bereits bestätigt"
@@ -774,7 +814,8 @@ const deDefaults = {
 			googlePlayLinkTextfieldLabel: "Google Play",
 			googlePlayLinkTextfieldPlaceholder: "Link zum Google Play-Eintrag",
 			microsoftStoreLinkTextfieldLabel: "Microsoft Store",
-			microsoftStoreLinkTextfieldPlaceholder: "Link zum Microsoft Store-Eintrag",
+			microsoftStoreLinkTextfieldPlaceholder:
+				"Link zum Microsoft Store-Eintrag",
 			errors: {
 				nameTooShort: "Der Name ist zu kurz",
 				descriptionTooShort: "Die Beschreibung ist zu kurz",
@@ -787,8 +828,10 @@ const deDefaults = {
 		publishAppDialog: {
 			publishHeader: "App veröffentlichen",
 			unpublishHeader: "Veröffentlichung aufheben",
-			publishSubtext: "Bist du dir sicher, dass du diese App veröffentlichen willst?",
-			unpublishSubtext: "Bist du dir sicher, dass du die Veröffentlichung dieser App aufheben willst?",
+			publishSubtext:
+				"Bist du dir sicher, dass du diese App veröffentlichen willst?",
+			unpublishSubtext:
+				"Bist du dir sicher, dass du die Veröffentlichung dieser App aufheben willst?",
 			confirm: "Bestätigen"
 		},
 		save: "Speichern",
@@ -796,7 +839,7 @@ const deDefaults = {
 	},
 	statisticsPage: {
 		title: "Allgemeine Statistiken",
-      appTitle: "Statistiken von {0}",
+		appTitle: "Statistiken von {0}",
 		numberOfUsers: "Anzahl Nutzer",
 		plans: "Abos",
 		confirmations: "Email-Bestätigungen",
@@ -844,18 +887,22 @@ const deDefaults = {
 			accessData: "Zugriff auf deine Daten von jedem Gerät",
 			noAds: "Keine Werbung",
 			universalsoundboard: {
-            outputDeviceFeature: "Ändere das Ausgabegerät",
-            soundRecorderFeature: "Bekomme Zugriff zum Sound-Recorder",
+				outputDeviceFeature: "Ändere das Ausgabegerät",
+				soundRecorderFeature: "Bekomme Zugriff zum Sound-Recorder",
 				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu"
 			}
 		},
 		messages: {
-			passwordResetMessage: "Du bekommst eine Email mit Anweisungen, um dein Passwort zurückzusetzen.",
-			confirmUserMessage: "Deine Email-Adresse wurde erfolgreich verifiziert",
+			passwordResetMessage:
+				"Du bekommst eine Email mit Anweisungen, um dein Passwort zurückzusetzen.",
+			confirmUserMessage:
+				"Deine Email-Adresse wurde erfolgreich verifiziert",
 			saveNewEmailMessage: "Deine neue Email-Adresse wurde gespeichert",
 			saveNewPasswordMessage: "Dein neues Passwort wurde gespeichert",
-			resetNewEmailMessage: "Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
-			errorMessage: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
+			resetNewEmailMessage:
+				"Deine Email-Adresse wurde zurückgesetzt. Du kannst dich nun wieder mit deiner alten Email-Adresse anmelden.",
+			errorMessage:
+				"Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es nochmal."
 		}
 	}
 }
@@ -887,7 +934,7 @@ export const supportedLocales = [
 ]
 
 export function getLocale(lang: string | boolean) {
-	if (lang == null || typeof (lang) == "boolean") {
+	if (lang == null || typeof lang == "boolean") {
 		lang = enDefaults.lang
 	} else {
 		lang = lang.toLowerCase()

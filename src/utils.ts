@@ -4,7 +4,7 @@ function getUpmostParentWithSingleChild(element: HTMLElement) {
 
 	// Hide the parent if it only contains one element
 	while (true) {
-		currentElement = currentElement.parentElement
+		currentElement = currentElement.parentElement as HTMLElement
 
 		if (currentElement.childElementCount > 1) {
 			break
@@ -34,21 +34,27 @@ export function showElement(...elements: HTMLElement[]) {
 	}
 }
 
-export async function getUserAgentModel(): Promise<string> {
+export async function getUserAgentModel(): Promise<string | null> {
 	if (navigator["userAgentData"]) {
 		let userAgentData = navigator["userAgentData"]
 		let uaValues = await userAgentData.getHighEntropyValues(["model"])
 		let model = uaValues["model"]
 
-		if (model && model.length > 0) return model
-		return null
+		if (model && model.length > 0) {
+			return model
+		}
 	}
+
+	return null
 }
 
-export async function getUserAgentPlatform(): Promise<string> {
+export async function getUserAgentPlatform(): Promise<string | null> {
 	if (navigator["userAgentData"]) {
 		let userAgentData = navigator["userAgentData"]
-		let uaValues = await userAgentData.getHighEntropyValues(["platform", "platformVersion"])
+		let uaValues = await userAgentData.getHighEntropyValues([
+			"platform",
+			"platformVersion"
+		])
 		let platform = uaValues["platform"]
 		let platformVersion = uaValues["platformVersion"]
 
@@ -59,16 +65,16 @@ export async function getUserAgentPlatform(): Promise<string> {
 
 			return platform
 		}
-
-		return null
 	}
+
+	return null
 }
 
-export function handleExpiredSessionError(error, expiredSessionDialog): boolean {
-	if (
-		error.response.status == 403
-		&& error.response.data.length == 0
-	) {
+export function handleExpiredSessionError(
+	error,
+	expiredSessionDialog
+): boolean {
+	if (error.response.status == 403 && error.response.data.length == 0) {
 		expiredSessionDialog.visible = true
 		return true
 	}
