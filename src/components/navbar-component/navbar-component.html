@@ -1,15 +1,12 @@
-<link rel="stylesheet" href="/src/components/navbar-component/navbar-component.scss" />
+<link
+	rel="stylesheet"
+	href="/src/components/navbar-component/navbar-component.scss"
+/>
 
-<nav
-	id="navbar"
-	class="navbar navbar-expand-sm navbar-light fixed-top">
-
+<nav id="navbar" class="navbar navbar-expand-sm navbar-light fixed-top">
 	<div id="navbar-container" class="container pt-0">
 		<!-- Branding -->
-		<a class="navbar-brand ms-3"
-			href="/">
-			dav
-		</a>
+		<a class="navbar-brand ms-3" href="/"> dav </a>
 
 		<!-- Toggle button -->
 		<button
@@ -19,7 +16,8 @@
 			data-bs-target="#navbar-items-container"
 			aria-controls="navbar-items-container"
 			aria-expanded="false"
-			aria-label="Toggle navigation">
+			aria-label="Toggle navigation"
+		>
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
@@ -34,9 +32,7 @@
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/login">
-						<%= navbarLocale.login %>
-					</a>
+					<a class="nav-link" href="/login"><%= navbarLocale.login %></a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/signup">

@@ -1,4 +1,4 @@
-import 'bootstrap'
+import "bootstrap"
 
 let navbar: HTMLElement
 let navbarContainer: HTMLDivElement
@@ -11,7 +11,9 @@ window.addEventListener("load", main)
 
 function main() {
 	navbar = document.getElementById("navbar") as HTMLElement
-	navbarContainer = document.getElementById('navbar-container') as HTMLDivElement
+	navbarContainer = document.getElementById(
+		"navbar-container"
+	) as HTMLDivElement
 
 	setTimeout(() => {
 		setSize()
@@ -36,23 +38,29 @@ function setSize() {
 function onScroll() {
 	if (navbar == null || navbarContainer == null) return
 
-	if (window.innerWidth < 576 || (window.scrollY > 80 && !navbarBackgroundVisible)) {
+	if (
+		window.innerWidth < 576 ||
+		(window.scrollY > 80 && !navbarBackgroundVisible)
+	) {
 		navbar.classList.add("acrylic", "light", "shadow")
 		navbarBackgroundVisible = true
 	} else if (window.scrollY <= 80 && navbarBackgroundVisible) {
 		navbarBackgroundVisible = false
 
-		let animation = navbar.animate([
+		let animation = navbar.animate(
+			[
+				{
+					opacity: 1
+				},
+				{
+					opacity: 0
+				}
+			],
 			{
-				opacity: 1
-			},
-			{
-				opacity: 0
+				duration: 300,
+				pseudoElement: "::before"
 			}
-		], {
-			duration: 300,
-			pseudoElement: "::before"
-		})
+		)
 
 		navbar.classList.remove("shadow")
 		animation.onfinish = () => navbar.classList.remove("acrylic", "light")
