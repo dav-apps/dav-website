@@ -34,7 +34,7 @@
 	margin-left: 65px;
 }
 
-.icon-button{
+.icon-button {
 	padding: 0 !important;
 	height: 30px;
 	width: 30px;
@@ -45,11 +45,13 @@ form {
 	font-size: 18px;
 }
 
-#first-name-textfield, #email-textfield {
+#first-name-textfield,
+#email-textfield {
 	width: 200px;
 }
 
-#first-name-save-button, #email-save-button {
+#first-name-save-button,
+#email-save-button {
 	margin-top: 30px;
 }
 
@@ -70,6 +72,7 @@ td {
 	height: 48px;
 }
 
-th:not(first-child), td:not(:first-child) {
+th:not(first-child),
+td:not(:first-child) {
 	text-align: center;
 }

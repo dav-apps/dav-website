@@ -2,45 +2,63 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
-		<meta name="csrf-token" content="<%= csrfToken %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
+		<meta name="csrf-token" content="<%= csrfToken %>" />
 
-		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/fontawesome.min.css">
-		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/light.min.css">
-		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
-		<link rel="stylesheet" href="/node_modules/cropperjs/dist/cropper.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="user-page.scss">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/@fortawesome/fontawesome-pro/css/fontawesome.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/@fortawesome/fontawesome-pro/css/light.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/cropperjs/dist/cropper.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="user-page.scss" />
 
 		<script type="module" src="user-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body dir="ltr">
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<dav-sidenav-container>
-			<dav-sidenav
-				id="sidenav"
-				mode="<%= isMobile ? 'over' : 'side' %>">
-
+			<dav-sidenav id="sidenav" mode="<%= isMobile ? 'over' : 'side' %>">
 				<div style="height: 80px"></div>
 
 				<dav-sidenav-item
 					id="general-sidenav-item"
 					value="<%= locale.sideNav.general %>"
-					link="/user">
-				</dav-sidenav-item>
+					link="/user"
+				></dav-sidenav-item>
 
 				<dav-sidenav-item
 					id="plans-sidenav-item"
 					value="<%= locale.sideNav.plans %>"
-					link="/user#dev">
-				</dav-sidenav-item>
+					link="/user#dev"
+				></dav-sidenav-item>
 			</dav-sidenav>
 
 			<div id="container">
@@ -50,31 +68,37 @@
 
 				<!-- General settings -->
 				<div id="general-container" class="page-container pt-4 d-none">
-					<h1 class="text-center fw-light mb-4"><%= locale.general.title %></h1>
+					<h1 class="text-center fw-light mb-4">
+						<%= locale.general.title %>
+					</h1>
 
 					<div class="d-flex flex-column align-items-center">
 						<div id="message-bar-container-general">
 							<div class="mb-4 d-none">
 								<dav-message-bar
 									id="error-message-bar-general"
-									type="danger">
-								</dav-message-bar>
+									type="danger"
+								></dav-message-bar>
 							</div>
 
 							<div class="mb-4 d-none">
 								<dav-message-bar
 									id="success-message-bar-general"
-									type="success">
-								</dav-message-bar>
+									type="success"
+								></dav-message-bar>
 							</div>
 
 							<% if (!user.Confirmed) { %>
 							<div class="mb-4">
 								<dav-message-bar
 									id="warning-message-bar-general"
-									type="warning">
-									<%= locale.general.emailNotConfirmed %><br>
-									<a id="send-confirmation-email-link" href="user#general">
+									type="warning"
+								>
+									<%= locale.general.emailNotConfirmed %><br />
+									<a
+										id="send-confirmation-email-link"
+										href="user#general"
+									>
 										<%= locale.general.sendConfirmationEmail %>
 									</a>
 								</dav-message-bar>
@@ -85,8 +109,8 @@
 							<div class="mb-3">
 								<dav-progress-ring
 									id="profile-image-progress-ring"
-									class="d-none">
-								</dav-progress-ring>
+									class="d-none"
+								></dav-progress-ring>
 
 								<img
 									id="profile-image"
@@ -94,12 +118,11 @@
 									src="<%= user.ProfileImage %>"
 									alt="<%= locale.general.profileImageAlt %>"
 									height="150"
-									width="150">
+									width="150"
+								/>
 							</div>
 
-							<dav-button
-								id="upload-profile-image-button"
-								type="accent">
+							<dav-button id="upload-profile-image-button" type="accent">
 								<%= locale.general.uploadProfileImage %>
 							</dav-button>
 
@@ -111,21 +134,30 @@
 										value="<%= user.FirstName %>"
 										label="<%= locale.general.firstNameTextfieldLabel %>"
 										placeholder="<%= locale.general.firstNameTextfieldPlaceholder %>"
-										autocomplete="given-name">
-									</dav-textfield>
+										autocomplete="given-name"
+									></dav-textfield>
 
 									<button
 										id="first-name-save-button"
 										class="btn btn-sm ms-2 icon-button d-none"
-										type="button">
-										<i class="ms-Icon ms-Icon--Save" aria-hidden="true" style="font-size: 16px"></i>
+										type="button"
+									>
+										<i
+											class="ms-Icon ms-Icon--Save"
+											aria-hidden="true"
+											style="font-size: 16px"
+										></i>
 									</button>
 
 									<dav-progress-ring
 										id="first-name-progress-ring"
 										class="d-none"
-										style="margin: 33px 0 0 14px; width: 16px; height: 16px">
-									</dav-progress-ring>
+										style="
+											margin: 33px 0 0 14px;
+											width: 16px;
+											height: 16px;
+										"
+									></dav-progress-ring>
 								</div>
 							</form>
 
@@ -138,34 +170,46 @@
 										label="<%= locale.general.emailTextfieldLabel %>"
 										placeholder="<%= locale.general.emailTextfieldPlaceholder %>"
 										type="email"
-										autocomplete="email">
-									</dav-textfield>
+										autocomplete="email"
+									></dav-textfield>
 
 									<button
 										id="email-save-button"
 										class="btn btn-sm ms-2 icon-button d-none"
-										type="button">
-										<i class="ms-Icon ms-Icon--Save" aria-hidden="true" style="font-size: 16px"></i>
+										type="button"
+									>
+										<i
+											class="ms-Icon ms-Icon--Save"
+											aria-hidden="true"
+											style="font-size: 16px"
+										></i>
 									</button>
 
 									<dav-progress-ring
 										id="email-progress-ring"
 										class="d-none"
-										style="margin: 33px 0 0 14px; width: 16px; height: 16px">
-									</dav-progress-ring>
+										style="
+											margin: 33px 0 0 14px;
+											width: 16px;
+											height: 16px;
+										"
+									></dav-progress-ring>
 								</div>
 							</form>
 
 							<!-- Password -->
 							<form>
-								<div class="mt-4 d-flex flex-column" style="width: 200px">
+								<div
+									class="mt-4 d-flex flex-column"
+									style="width: 200px"
+								>
 									<dav-textfield
 										id="password-textfield"
 										label="<%= locale.general.passwordTextfieldLabel %>"
 										placeholder="<%= locale.general.passwordTextfieldPlaceholder %>"
 										type="password"
-										autocomplete="new-password">
-									</dav-textfield>
+										autocomplete="new-password"
+									></dav-textfield>
 
 									<div class="mt-3">
 										<dav-textfield
@@ -173,23 +217,28 @@
 											label="<%= locale.general.passwordConfirmationTextfieldLabel %>"
 											placeholder="<%= locale.general.passwordConfirmationTextfieldPlaceholder %>"
 											type="password"
-											autocomplete="new-password">
-										</dav-textfield>
+											autocomplete="new-password"
+										></dav-textfield>
 									</div>
 
 									<div class="d-flex">
 										<dav-button
 											id="password-save-button"
 											class="mt-3"
-											type="accent">
+											type="accent"
+										>
 											<%= locale.save %>
 										</dav-button>
 
 										<dav-progress-ring
 											id="password-progress-ring"
 											class="d-none"
-											style="margin: 24px 0px 0px 14px; width: 16px; height: 16px">
-										</dav-progress-ring>
+											style="
+												margin: 24px 0px 0px 14px;
+												width: 16px;
+												height: 16px;
+											"
+										></dav-progress-ring>
 									</div>
 								</div>
 							</form>
@@ -207,15 +256,19 @@
 						<div class="mb-4 d-none">
 							<dav-message-bar
 								id="error-message-bar-plans"
-								type="danger">
-							</dav-message-bar>
+								type="danger"
+							></dav-message-bar>
 						</div>
 
-						<div class="mb-4 <%= showUpgradeSuccessMessage ? '' : 'd-none' %>">
+						<div
+							class="mb-4 <%= showUpgradeSuccessMessage ? '' : 'd-none' %>"
+						>
 							<dav-message-bar
 								id="success-message-bar-plans"
-								type="success">
-								<%= showUpgradeSuccessMessage ? locale.plans.changePlanSuccessMessage : '' %>
+								type="success"
+							>
+								<%= showUpgradeSuccessMessage ?
+								locale.plans.changePlanSuccessMessage : '' %>
 							</dav-message-bar>
 						</div>
 					</div>
@@ -228,62 +281,87 @@
 								<div
 									id="payment-method-card"
 									class="card shadow-sm"
-									style="display: inline-block; margin: 0px 15px">
-
+									style="display: inline-block; margin: 0px 15px"
+								>
 									<div class="card-body">
-										<h5 class="fw-light mb-3"><%= locale.plans.paymentMethodCardHeader %></h5>
+										<h5 class="fw-light mb-3">
+											<%= locale.plans.paymentMethodCardHeader %>
+										</h5>
 
 										<div class="d-flex">
-											<i class="ms-Icon ms-Icon--PaymentCard me-2" style="font-size: 20px; margin-top: -3px" aria-hidden="true"></i>
-											<p style="margin-bottom: 0px;">**** **** **** <%= card.last4 %></p>
+											<i
+												class="ms-Icon ms-Icon--PaymentCard me-2"
+												style="font-size: 20px; margin-top: -3px"
+												aria-hidden="true"
+											></i>
+											<p style="margin-bottom: 0px">
+												**** **** **** <%= card.last4 %>
+											</p>
 										</div>
 
 										<p style="margin-bottom: 8px">
-											<%= locale.plans.cardExpires %>
-											<%= card.exp_month < 10 ? `0${card.exp_month}` : card.exp_month.toString() %>
-											/
-											<%= card.exp_year %>
+											<%= locale.plans.cardExpires %> <%=
+											card.exp_month < 10 ? `0${card.exp_month}` :
+											card.exp_month.toString() %> / <%=
+											card.exp_year %>
 										</p>
 
 										<div class="d-flex" style="float: right">
 											<dav-progress-ring
 												id="payment-method-button-progress-ring"
 												style="margin: 8px 14px 0px 0px"
-												class="d-none">
-											</dav-progress-ring>
+												class="d-none"
+											></dav-progress-ring>
 
 											<dav-button
 												id="payment-method-button"
-												style="float: right; margin-bottom: 16px">
+												style="float: right; margin-bottom: 16px"
+											>
 												<%= locale.plans.edit %>
 											</dav-button>
 										</div>
 									</div>
 								</div>
-								<% } %>
-
-								<% if (periodEndDate != null && user.Plan > 0) { %>
+								<% } %> <% if (periodEndDate != null && user.Plan > 0) {
+								%>
 								<div
 									id="subscription-card"
 									class="card shadow-sm"
-									style="display: inline-block; margin: 0px 15px">
-
+									style="display: inline-block; margin: 0px 15px"
+								>
 									<div class="card-body">
-										<h5 id="subscription-card-header" class="fw-light">
-											<%= user.SubscriptionStatus == 0 ? locale.plans.nextPayment : locale.plans.subscriptionEnd %>
+										<h5
+											id="subscription-card-header"
+											class="fw-light"
+										>
+											<%= user.SubscriptionStatus == 0 ?
+											locale.plans.nextPayment :
+											locale.plans.subscriptionEnd %>
 										</h5>
-										<p id="subscription-card-period-end-date"><%= periodEndDate %></p>
+										<p id="subscription-card-period-end-date">
+											<%= periodEndDate %>
+										</p>
 
-										<div class="d-flex" style="float: right; margin-bottom: 16px; margin-top: 27px">
+										<div
+											class="d-flex"
+											style="
+												float: right;
+												margin-bottom: 16px;
+												margin-top: 27px;
+											"
+										>
 											<dav-progress-ring
 												id="cancel-continue-subscription-button-progress-ring"
 												style="margin: 8px 14px 0px 0px"
-												class="d-none">
-											</dav-progress-ring>
+												class="d-none"
+											></dav-progress-ring>
 
 											<dav-button
-												id="cancel-continue-subscription-button">
-												<%= user.SubscriptionStatus == 0 ? locale.plans.cancelSubscription : locale.plans.continueSubscription %>
+												id="cancel-continue-subscription-button"
+											>
+												<%= user.SubscriptionStatus == 0 ?
+												locale.plans.cancelSubscription :
+												locale.plans.continueSubscription %>
 											</dav-button>
 										</div>
 									</div>
@@ -293,7 +371,10 @@
 						</div>
 
 						<!-- Plans overview -->
-						<div id="plans-table-container" class="d-flex justify-content-center mt-4 mx-3 <%= isMobile ? 'd-none' : '' %>">
+						<div
+							id="plans-table-container"
+							class="d-flex justify-content-center mt-4 mx-3 <%= isMobile ? 'd-none' : '' %>"
+						>
 							<table id="plans-table">
 								<thead>
 									<tr>
@@ -305,8 +386,12 @@
 									<tr>
 										<th></th>
 										<th></th>
-										<th class="fs-6 fw-light"><%= pricingLocale.plus.price %></th>
-										<th class="fs-6 fw-light"><%= pricingLocale.pro.price %></th>
+										<th class="fs-6 fw-light">
+											<%= pricingLocale.plus.price %>
+										</th>
+										<th class="fs-6 fw-light">
+											<%= pricingLocale.pro.price %>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -329,22 +414,36 @@
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+										<td class="fs-4 fw-light pt-4 pb-1">
+											UniversalSoundboard
+										</td>
 									</tr>
-                           <tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
-										<td></td>
-										<td><i class="fa-light fa-check"></i></td>
-										<td><i class="fa-light fa-check"></i></td>
-									</tr>
-                           <tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.soundRecorderFeature %></td>
+									<tr class="border-top">
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.outputDeviceFeature
+											%>
+										</td>
 										<td></td>
 										<td><i class="fa-light fa-check"></i></td>
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.soundRecorderFeature
+											%>
+										</td>
+										<td></td>
+										<td><i class="fa-light fa-check"></i></td>
+										<td><i class="fa-light fa-check"></i></td>
+									</tr>
+									<tr class="border-top">
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.hotkeyFeature
+											%>
+										</td>
 										<td></td>
 										<td><i class="fa-light fa-check"></i></td>
 										<td><i class="fa-light fa-check"></i></td>
@@ -353,18 +452,22 @@
 									<tr class="border-top">
 										<td></td>
 										<td class="pt-3">
-											<div id="plans-table-free-button-container" class="d-flex justify-content-center">
+											<div
+												id="plans-table-free-button-container"
+												class="d-flex justify-content-center"
+											>
 												<dav-progress-ring
 													id="plans-table-free-button-progress-ring"
 													style="margin: 4px 14px 0px 0px"
-													class="d-none">
-												</dav-progress-ring>
+													class="d-none"
+												></dav-progress-ring>
 
 												<button
 													id="plans-table-free-current-plan-button"
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button"
-													disabled>
+													disabled
+												>
 													<%= locale.plans.currentPlan %>
 												</button>
 
@@ -372,7 +475,8 @@
 												<button
 													id="plans-table-free-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
-													type="button">
+													type="button"
+												>
 													<%= locale.plans.downgrade %>
 												</button>
 												<% } else { %>
@@ -380,25 +484,30 @@
 													id="plans-table-free-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 													type="button"
-													disabled>
+													disabled
+												>
 													<%= locale.plans.downgrade %>
 												</button>
 												<% } %>
 											</div>
 										</td>
 										<td class="pt-3">
-											<div id="plans-table-plus-button-container" class="d-flex justify-content-center">
+											<div
+												id="plans-table-plus-button-container"
+												class="d-flex justify-content-center"
+											>
 												<dav-progress-ring
 													id="plans-table-plus-button-progress-ring"
 													style="margin: 4px 14px 0px 0px"
-													class="d-none">
-												</dav-progress-ring>
+													class="d-none"
+												></dav-progress-ring>
 
 												<% if (user.SubscriptionStatus == 0) { %>
 												<button
 													id="plans-table-plus-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
-													type="button">
+													type="button"
+												>
 													<%= locale.plans.upgrade %>
 												</button>
 												<% } else { %>
@@ -406,7 +515,8 @@
 													id="plans-table-plus-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 													type="button"
-													disabled>
+													disabled
+												>
 													<%= locale.plans.upgrade %>
 												</button>
 												<% } %>
@@ -415,7 +525,8 @@
 													id="plans-table-plus-current-plan-button"
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
 													type="button"
-													disabled>
+													disabled
+												>
 													<%= locale.plans.currentPlan %>
 												</button>
 
@@ -423,7 +534,8 @@
 												<button
 													id="plans-table-plus-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
-													type="button">
+													type="button"
+												>
 													<%= locale.plans.downgrade %>
 												</button>
 												<% } else { %>
@@ -431,25 +543,30 @@
 													id="plans-table-plus-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button"
-													disabled>
+													disabled
+												>
 													<%= locale.plans.downgrade %>
 												</button>
 												<% } %>
 											</div>
 										</td>
 										<td class="pt-3">
-											<div id="plans-table-pro-button-container" class="d-flex justify-content-center">
+											<div
+												id="plans-table-pro-button-container"
+												class="d-flex justify-content-center"
+											>
 												<dav-progress-ring
 													id="plans-table-pro-button-progress-ring"
 													style="margin: 4px 14px 0px 0px"
-													class="d-none">
-												</dav-progress-ring>
+													class="d-none"
+												></dav-progress-ring>
 
 												<% if (user.SubscriptionStatus == 0) { %>
 												<button
 													id="plans-table-pro-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
-													type="button">
+													type="button"
+												>
 													<%= locale.plans.upgrade %>
 												</button>
 												<% } else { %>
@@ -457,7 +574,8 @@
 													id="plans-table-pro-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 													type="button"
-													disabled>
+													disabled
+												>
 													<%= locale.plans.upgrade %>
 												</button>
 												<% } %>
@@ -466,7 +584,8 @@
 													id="plans-table-pro-current-plan-button"
 													class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
 													type="button"
-													disabled>
+													disabled
+												>
 													<%= locale.plans.currentPlan %>
 												</button>
 											</div>
@@ -476,7 +595,10 @@
 							</table>
 						</div>
 
-						<div id="plans-table-mobile-container" class="d-flex flex-column justify-content-center mt-3 <%= isMobile ? '' : 'd-none' %>">
+						<div
+							id="plans-table-mobile-container"
+							class="d-flex flex-column justify-content-center mt-3 <%= isMobile ? '' : 'd-none' %>"
+						>
 							<table id="plans-table-mobile-free">
 								<thead>
 									<tr>
@@ -500,18 +622,22 @@
 
 									<tr class="border-top">
 										<td></td>
-										<td id="plans-table-mobile-free-button-container" class="d-flex justify-content-center pt-3">
+										<td
+											id="plans-table-mobile-free-button-container"
+											class="d-flex justify-content-center pt-3"
+										>
 											<dav-progress-ring
 												id="plans-table-mobile-free-button-progress-ring"
 												style="margin: 4px 14px 0px 0px"
-												class="d-none">
-											</dav-progress-ring>
+												class="d-none"
+											></dav-progress-ring>
 
 											<button
 												id="plans-table-mobile-free-current-plan-button"
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button"
-												disabled>
+												disabled
+											>
 												<%= locale.plans.currentPlan %>
 											</button>
 
@@ -519,7 +645,8 @@
 											<button
 												id="plans-table-mobile-free-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
-												type="button">
+												type="button"
+											>
 												<%= locale.plans.downgrade %>
 											</button>
 											<% } else { %>
@@ -527,7 +654,8 @@
 												id="plans-table-mobile-free-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
 												type="button"
-												disabled>
+												disabled
+											>
 												<%= locale.plans.downgrade %>
 											</button>
 											<% } %>
@@ -544,7 +672,9 @@
 									</tr>
 									<tr>
 										<th></th>
-										<th class="fs-6 fw-light"><%= pricingLocale.plus.price %></th>
+										<th class="fs-6 fw-light">
+											<%= pricingLocale.plus.price %>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -561,35 +691,53 @@
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+										<td class="fs-4 fw-light pt-4 pb-1">
+											UniversalSoundboard
+										</td>
 									</tr>
-                           <tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
+									<tr class="border-top">
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.outputDeviceFeature
+											%>
+										</td>
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.soundRecorderFeature %></td>
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.soundRecorderFeature
+											%>
+										</td>
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.hotkeyFeature
+											%>
+										</td>
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 
 									<tr class="border-top">
 										<td></td>
-										<td id="plans-table-mobile-plus-button-container" class="d-flex justify-content-center pt-3">
+										<td
+											id="plans-table-mobile-plus-button-container"
+											class="d-flex justify-content-center pt-3"
+										>
 											<dav-progress-ring
 												id="plans-table-mobile-plus-button-progress-ring"
 												style="margin: 4px 14px 0px 0px"
-												class="d-none">
-											</dav-progress-ring>
+												class="d-none"
+											></dav-progress-ring>
 
 											<% if (user.SubscriptionStatus == 0) { %>
 											<button
 												id="plans-table-mobile-plus-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
-												type="button">
+												type="button"
+											>
 												<%= locale.plans.upgrade %>
 											</button>
 											<% } else { %>
@@ -597,7 +745,8 @@
 												id="plans-table-mobile-plus-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
 												type="button"
-												disabled>
+												disabled
+											>
 												<%= locale.plans.upgrade %>
 											</button>
 											<% } %>
@@ -606,7 +755,8 @@
 												id="plans-table-mobile-plus-current-plan-button"
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
 												type="button"
-												disabled>
+												disabled
+											>
 												<%= locale.plans.currentPlan %>
 											</button>
 
@@ -614,7 +764,8 @@
 											<button
 												id="plans-table-mobile-plus-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
-												type="button">
+												type="button"
+											>
 												<%= locale.plans.downgrade %>
 											</button>
 											<% } else { %>
@@ -622,7 +773,8 @@
 												id="plans-table-mobile-plus-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button"
-												disabled>
+												disabled
+											>
 												<%= locale.plans.downgrade %>
 											</button>
 											<% } %>
@@ -639,7 +791,9 @@
 									</tr>
 									<tr>
 										<th></th>
-										<th class="fs-6 fw-light"><%= pricingLocale.pro.price %></th>
+										<th class="fs-6 fw-light">
+											<%= pricingLocale.pro.price %>
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -656,35 +810,53 @@
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+										<td class="fs-4 fw-light pt-4 pb-1">
+											UniversalSoundboard
+										</td>
 									</tr>
-                           <tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
+									<tr class="border-top">
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.outputDeviceFeature
+											%>
+										</td>
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.soundRecorderFeature %></td>
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.soundRecorderFeature
+											%>
+										</td>
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 									<tr class="border-top">
-										<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+										<td class="ps-3">
+											<%=
+											pricingLocale.universalsoundboard.hotkeyFeature
+											%>
+										</td>
 										<td><i class="fa-light fa-check"></i></td>
 									</tr>
 
 									<tr class="border-top">
 										<td></td>
-										<td id="plans-table-mobile-pro-button-container" class="d-flex justify-content-center pt-3">
+										<td
+											id="plans-table-mobile-pro-button-container"
+											class="d-flex justify-content-center pt-3"
+										>
 											<dav-progress-ring
 												id="plans-table-mobile-pro-button-progress-ring"
 												style="margin: 4px 14px 0px 0px"
-												class="d-none">
-											</dav-progress-ring>
+												class="d-none"
+											></dav-progress-ring>
 
 											<% if (user.SubscriptionStatus == 0) { %>
 											<button
 												id="plans-table-mobile-pro-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
-												type="button">
+												type="button"
+											>
 												<%= locale.plans.upgrade %>
 											</button>
 											<% } else { %>
@@ -692,7 +864,8 @@
 												id="plans-table-mobile-pro-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
 												type="button"
-												disabled>
+												disabled
+											>
 												<%= locale.plans.upgrade %>
 											</button>
 											<% } %>
@@ -701,7 +874,8 @@
 												id="plans-table-mobile-pro-current-plan-button"
 												class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
 												type="button"
-												disabled>
+												disabled
+											>
 												<%= locale.plans.currentPlan %>
 											</button>
 										</td>
@@ -715,17 +889,25 @@
 		</dav-sidenav-container>
 
 		<aside class="mdc-snackbar">
-			<div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
-				<div id="snackbar-label" class="mdc-snackbar__label" aria-atomic="false"></div>
+			<div
+				class="mdc-snackbar__surface"
+				role="status"
+				aria-relevant="additions"
+			>
+				<div
+					id="snackbar-label"
+					class="mdc-snackbar__label"
+					aria-atomic="false"
+				></div>
 			</div>
 		</aside>
 
 		<dav-dialog
 			id="expired-session-dialog"
 			header="<%= sessionExpiredDialogLocale.header %>"
-			primaryButtonText="<%= sessionExpiredDialogLocale.reload %>">
-			<p class="fw-light"
-				style="max-width: 300px; font-size: 16px">
+			primaryButtonText="<%= sessionExpiredDialogLocale.reload %>"
+		>
+			<p class="fw-light" style="max-width: 300px; font-size: 16px">
 				<%= sessionExpiredDialogLocale.description %>
 			</p>
 		</dav-dialog>
@@ -734,10 +916,10 @@
 			id="profile-image-dialog"
 			header="<%= locale.general.profileImageDialog.header %>"
 			primaryButtonText="<%= locale.save %>"
-			defaultButtonText="<%= locale.cancel %>">
-
-			<div class="mb-3" style="max-height: 400px;">
-				<img id="profile-image-dialog-image" style="max-width: 100%">
+			defaultButtonText="<%= locale.cancel %>"
+		>
+			<div class="mb-3" style="max-height: 400px">
+				<img id="profile-image-dialog-image" style="max-width: 100%" />
 			</div>
 		</dav-dialog>
 
@@ -745,10 +927,13 @@
 			id="change-plan-dialog"
 			header="<%= locale.plans.changePlanDialog.upgradeProHeader %>"
 			primaryButtonText="<%= locale.continue %>"
-			defaultButtontext="<%= locale.cancel %>">
-			<p id="change-plan-dialog-description"
+			defaultButtontext="<%= locale.cancel %>"
+		>
+			<p
+				id="change-plan-dialog-description"
 				class="fw-light"
-				style="max-width: 300px; font-size: 16px">
+				style="max-width: 300px; font-size: 16px"
+			>
 				<%= locale.plans.changePlanDialog.upgradeProDescription %>
 			</p>
 		</dav-dialog>

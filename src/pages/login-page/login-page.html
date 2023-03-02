@@ -2,34 +2,50 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
-		<meta name="csrf-token" content="<%= csrfToken %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
+		<meta name="csrf-token" content="<%= csrfToken %>" />
 
-		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="login-page.scss">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="login-page.scss" />
 
 		<script type="module" src="login-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body dir="ltr">
-		<% if (websiteLogin) { %><include src="src/components/navbar-component/navbar-component.html"></include><% } %>
+		<% if (websiteLogin) { %>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include
+		><% } %>
 
-		<div class="container d-flex flex-column align-items-center" style="margin-top: 100px">
+		<div
+			class="container d-flex flex-column align-items-center"
+			style="margin-top: 100px"
+		>
 			<img
 				src="/assets/images/dav-logo.png"
 				width="60"
 				height="60"
-				alt="dav Logo">
+				alt="dav Logo"
+			/>
 
-			<h2 class="text-center fw-light my-4">
-				<%= locale.title %>
-			</h2>
+			<h2 class="text-center fw-light my-4"><%= locale.title %></h2>
 
 			<form class="w-100">
 				<!-- Email -->
@@ -37,8 +53,7 @@
 					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<!-- Error messages -->
 						<div class="mb-3 d-none">
-							<dav-message-bar id="error-message-bar">
-							</dav-message-bar>
+							<dav-message-bar id="error-message-bar"></dav-message-bar>
 						</div>
 
 						<dav-textfield
@@ -47,8 +62,8 @@
 							placeholder="<%= locale.emailTextfieldPlaceholder %>"
 							type="email"
 							autocomplete="email"
-							autofocus>
-						</dav-textfield>
+							autofocus
+						></dav-textfield>
 					</div>
 				</div>
 
@@ -60,37 +75,38 @@
 							label="<%= locale.passwordTextfieldLabel %>"
 							placeholder="<%= locale.passwordTextfieldPlaceholder %>"
 							type="password"
-							autocomplete="current-password">
-						</dav-textfield>
+							autocomplete="current-password"
+						></dav-textfield>
 					</div>
 				</div>
 
 				<div class="row mt-3">
 					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<div class="d-flex">
-							<dav-button
-								id="login-button"
-								type="accent">
+							<dav-button id="login-button" type="accent">
 								<%= locale.login %>
 							</dav-button>
 
 							<dav-progress-ring
 								id="login-button-progress-ring"
 								class="d-none"
-								style="width: 16px; height: 16px; margin: 6px 0 0 14px">
-							</dav-progress-ring>
+								style="width: 16px; height: 16px; margin: 6px 0 0 14px"
+							></dav-progress-ring>
 
-							<a id="forgot-password-link"
+							<a
+								id="forgot-password-link"
 								class="text-center ms-auto d-none"
 								style="padding-top: 4px"
 								href="/forgot-password"
-								tabindex="-1">
+								tabindex="-1"
+							>
 								<%= locale.forgotPassword %>
 							</a>
 
 							<dav-button
 								id="signup-button"
-								class="ms-auto <%= websiteLogin ? 'd-none' : '' %>">
+								class="ms-auto <%= websiteLogin ? 'd-none' : '' %>"
+							>
 								<%= locale.signup %>
 							</dav-button>
 						</div>
@@ -98,11 +114,13 @@
 				</div>
 
 				<div class="d-flex justify-content-center mt-3 d-none">
-					<a id="forgot-password-link-mobile"
+					<a
+						id="forgot-password-link-mobile"
 						class="text-center"
 						href="/forgot-password"
 						target="<%= websiteLogin ? '' : 'blank' %>"
-						tabindex="-1">
+						tabindex="-1"
+					>
 						<%= locale.forgotPassword %>
 					</a>
 				</div>
@@ -111,17 +129,30 @@
 			<% if (user != null) { %>
 			<div
 				class="mx-auto"
-				style="width: 60%; border: 1px solid #eaeaea; margin-top: 56px; margin-bottom: 56px"></div>
+				style="
+					width: 60%;
+					border: 1px solid #eaeaea;
+					margin-top: 56px;
+					margin-bottom: 56px;
+				"
+			></div>
 
-			<div id="login-as-button-container" class="d-flex align-items-center mx-auto">
-				<button id="login-as-button" class="list-group-item list-group-item-action shadow-sm">
+			<div
+				id="login-as-button-container"
+				class="d-flex align-items-center mx-auto"
+			>
+				<button
+					id="login-as-button"
+					class="list-group-item list-group-item-action shadow-sm"
+				>
 					<div class="d-flex">
 						<img
 							class="me-3 rounded"
 							src="<%= user.ProfileImage %>"
 							alt="<%= locale.profileImageOf.replace('{0}', user.FirstName) %>"
 							width="70"
-							height="70">
+							height="70"
+						/>
 
 						<h5 class="my-auto fw-light">
 							<%= locale.loginAs.replace('{0}', user.FirstName) %>
@@ -132,8 +163,8 @@
 				<dav-progress-ring
 					id="login-as-button-progress-ring"
 					class="d-none"
-					style="width: 24px; height: 24px; margin-left: 20px;">
-				</dav-progress-ring>
+					style="width: 24px; height: 24px; margin-left: 20px"
+				></dav-progress-ring>
 			</div>
 			<% } %>
 		</div>
@@ -141,9 +172,9 @@
 		<dav-dialog
 			id="expired-session-dialog"
 			header="<%= sessionExpiredDialogLocale.header %>"
-			primaryButtonText="<%= sessionExpiredDialogLocale.reload %>">
-			<p class="fw-light"
-				style="max-width: 300px; font-size: 16px">
+			primaryButtonText="<%= sessionExpiredDialogLocale.reload %>"
+		>
+			<p class="fw-light" style="max-width: 300px; font-size: 16px">
 				<%= sessionExpiredDialogLocale.description %>
 			</p>
 		</dav-dialog>

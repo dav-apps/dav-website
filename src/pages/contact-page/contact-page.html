@@ -2,20 +2,29 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
 
-		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
 
 		<script type="module" src="contact-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body>
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<div class="container page-container pt-4 pb-3 d-flex">
 			<div style="display: inline-block" class="mx-auto">
@@ -23,17 +32,19 @@
 
 				<div class="mt-4 ps-2" style="font-size: 18px">
 					<p>
-						<span class="font-weight-bold">dav Apps</span><br>
-						David Zurek<br>
-						Graf-Adolf-Straße 45<br>
-						58730 Fröndenberg / Ruhr<br>
-						<%= locale.germany %><br><br>
+						<span class="font-weight-bold">dav Apps</span><br />
+						David Zurek<br />
+						Graf-Adolf-Straße 45<br />
+						58730 Fröndenberg / Ruhr<br />
+						<%= locale.germany %><br /><br />
 						support@dav-apps.tech
 					</p>
 				</div>
 			</div>
 		</div>
 
-		<include src="src/components/footer-component/footer-component.html"></include>
+		<include
+			src="src/components/footer-component/footer-component.html"
+		></include>
 	</body>
 </html>

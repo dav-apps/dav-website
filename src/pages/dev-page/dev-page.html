@@ -2,32 +2,40 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
 
-		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="dev-page.scss">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="dev-page.scss" />
 
 		<script type="module" src="dev-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body>
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<div class="container page-container pt-4">
-			<h1 class="text-center fw-light mb-3">
-				<%= locale.title %>
-			</h1>
+			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
 
 			<div class="mb-3 mx-auto d-none" style="width: 250px">
-				<dav-message-bar
-					id="error-message-bar"
-					type="danger">
+				<dav-message-bar id="error-message-bar" type="danger">
 				</dav-message-bar>
 			</div>
 
@@ -38,8 +46,8 @@
 					class="card app-card text-center m-3 cursor shadow-sm"
 					onmouseover="appCardMouseOver(<%= app.Id %>)"
 					onmouseout="appCardMouseOut(<%= app.Id %>)"
-					onclick="appCardClick(<%= app.Id %>)">
-
+					onclick="appCardClick(<%= app.Id %>)"
+				>
 					<div class="card-body">
 						<p class="card-text"><%= app.Name %></p>
 					</div>
@@ -48,9 +56,7 @@
 			</div>
 
 			<div class="d-flex justify-content-center mt-3 ms-3">
-				<dav-button
-					id="statistics-button"
-					type="accent">
+				<dav-button id="statistics-button" type="accent">
 					<%= locale.statistics %>
 				</dav-button>
 			</div>

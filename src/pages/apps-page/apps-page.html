@@ -2,63 +2,86 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
 
-		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
-		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/fontawesome.min.css">
-		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/solid.min.css">
-		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/brands.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="apps-page.scss">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/@fortawesome/fontawesome-pro/css/fontawesome.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/@fortawesome/fontawesome-pro/css/solid.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/@fortawesome/fontawesome-pro/css/brands.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="apps-page.scss" />
 
 		<script type="module" src="apps-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body dir="ltr">
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<div class="container page-container pt-4">
 			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
 
 			<div class="d-flex flex-wrap justify-content-center">
 				<% apps.forEach((app) => { %>
-					<div class="card m-3" style="width: 18rem">
-						<div class="card-body">
-							<h5 class="card-title mb-3"><%= app.Name %></h5>
-							<p class="card-text"><%= app.Description %></p>
+				<div class="card m-3" style="width: 18rem">
+					<div class="card-body">
+						<h5 class="card-title mb-3"><%= app.Name %></h5>
+						<p class="card-text"><%= app.Description %></p>
 
-							<div class="card-button-container">
-								<% if (app.WebLink) { %>
-									<a class="btn card-button text-dark mx-2"
-										target="blank"
-										href="<%= app.WebLink %>">
-										<i class="fa-solid fa-globe"></i>
-									</a>
-								<% } %>
-
-								<% if (app.GooglePlayLink) { %>
-									<a class="btn card-button text-dark mx-2"
-										target="blank"
-										href="<%= app.GooglePlayLink %>">
-										<i class="fa-brands fa-android"></i>
-									</a>
-								<% } %>
-
-								<% if (app.MicrosoftStoreLink) { %>
-									<a class="btn card-button text-dark mx-2"
-										target="blank"
-										href="<%= app.MicrosoftStoreLink %>">
-										<i class="fa-brands fa-windows"></i>
-									</a>
-								<% } %>
-							</div>
+						<div class="card-button-container">
+							<% if (app.WebLink) { %>
+							<a
+								class="btn card-button text-dark mx-2"
+								target="blank"
+								href="<%= app.WebLink %>"
+							>
+								<i class="fa-solid fa-globe"></i>
+							</a>
+							<% } %> <% if (app.GooglePlayLink) { %>
+							<a
+								class="btn card-button text-dark mx-2"
+								target="blank"
+								href="<%= app.GooglePlayLink %>"
+							>
+								<i class="fa-brands fa-android"></i>
+							</a>
+							<% } %> <% if (app.MicrosoftStoreLink) { %>
+							<a
+								class="btn card-button text-dark mx-2"
+								target="blank"
+								href="<%= app.MicrosoftStoreLink %>"
+							>
+								<i class="fa-brands fa-windows"></i>
+							</a>
+							<% } %>
 						</div>
 					</div>
+				</div>
 				<% }) %>
 			</div>
 		</div>

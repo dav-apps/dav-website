@@ -1,23 +1,23 @@
-import axios from 'axios'
-import 'dav-ui-components'
+import axios from "axios"
+import "dav-ui-components"
 import {
 	Button,
 	Textfield,
 	MessageBar,
 	ProgressRing,
 	Dialog
-} from 'dav-ui-components'
-import { ErrorCodes } from 'dav-js'
-import '../../components/navbar-component/navbar-component'
-import { getLocale } from '../../locales'
-import { devEnvironment, prodEnvironment } from '../../environments'
+} from "dav-ui-components"
+import { ErrorCodes } from "dav-js"
+import "../../components/navbar-component/navbar-component"
+import { getLocale } from "../../locales"
+import { devEnvironment, prodEnvironment } from "../../environments"
 import {
 	showElement,
 	hideElement,
 	getUserAgentModel,
 	getUserAgentPlatform,
 	handleExpiredSessionError
-} from '../../utils'
+} from "../../utils"
 
 let locale = getLocale(navigator.language).signupPage
 let errorMessageBar: MessageBar
@@ -32,32 +32,45 @@ let expiredSessionDialog: Dialog
 
 let websiteSignup = true
 let appId = 0
-let apiKey = null
-let redirectUrl = null
+let apiKey = ""
+let redirectUrl = ""
 
 window.addEventListener("load", main)
 
 function main() {
-	errorMessageBar = document.getElementById('error-message-bar') as MessageBar
-	firstNameTextfield = document.getElementById("first-name-textfield") as Textfield
+	errorMessageBar = document.getElementById("error-message-bar") as MessageBar
+	firstNameTextfield = document.getElementById(
+		"first-name-textfield"
+	) as Textfield
 	emailTextfield = document.getElementById("email-textfield") as Textfield
-	passwordTextfield = document.getElementById("password-textfield") as Textfield
-	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
+	passwordTextfield = document.getElementById(
+		"password-textfield"
+	) as Textfield
+	passwordConfirmationTextfield = document.getElementById(
+		"password-confirmation-textfield"
+	) as Textfield
 	signupButton = document.getElementById("signup-button") as Button
-	signupProgressRing = document.getElementById("signup-progress-ring") as ProgressRing
+	signupProgressRing = document.getElementById(
+		"signup-progress-ring"
+	) as ProgressRing
 	loginButton = document.getElementById("login-button") as Button
-	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
+	expiredSessionDialog = document.getElementById(
+		"expired-session-dialog"
+	) as Dialog
 
 	let queryString = new URLSearchParams(window.location.search)
-	appId = +queryString.get("appId")
-	apiKey = queryString.get("apiKey")
-	redirectUrl = queryString.get("redirectUrl")
+	appId = +(queryString.get("appId") as string)
+	apiKey = queryString.get("apiKey") as string
+	redirectUrl = queryString.get("redirectUrl") as string
 
-	websiteSignup = appId == 0 && apiKey == null && redirectUrl == null
+	websiteSignup = appId == 0 && !apiKey && !redirectUrl
 
 	if (websiteSignup) {
 		// Set the appId and apiKey
-		if (document.querySelector(`meta[name="env"]`).getAttribute("content") == "production") {
+		if (
+			document?.querySelector(`meta[name="env"]`)?.getAttribute("content") ==
+			"production"
+		) {
 			appId = prodEnvironment.appId
 			apiKey = prodEnvironment.apiKey
 		} else {
@@ -77,7 +90,9 @@ function setEventListeners() {
 	passwordConfirmationTextfield.addEventListener("enter", signup)
 	signupButton.addEventListener("click", signup)
 	loginButton.addEventListener("click", loginButtonClick)
-	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
+	expiredSessionDialog.addEventListener("primaryButtonClick", () =>
+		window.location.reload()
+	)
 }
 
 async function signup() {
@@ -91,7 +106,8 @@ async function signup() {
 		passwordTextfield.errorMessage = locale.errors.passwordMissing
 		return
 	} else if (passwordTextfield.value != passwordConfirmationTextfield.value) {
-		passwordConfirmationTextfield.errorMessage = locale.errors.passwordConfirmationNotMatching
+		passwordConfirmationTextfield.errorMessage =
+			locale.errors.passwordConfirmationNotMatching
 		return
 	}
 
@@ -106,10 +122,13 @@ async function signup() {
 
 	try {
 		let response = await axios({
-			method: 'post',
-			url: '/api/signup',
+			method: "post",
+			url: "/api/signup",
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			},
 			data: {
 				firstName: firstNameTextfield.value,
@@ -145,14 +164,16 @@ async function signup() {
 function loginButtonClick() {
 	if (websiteSignup) return
 
-	window.location.href = `/login?appId=${appId}&apiKey=${apiKey}&redirectUrl=${encodeURIComponent(redirectUrl)}`
+	window.location.href = `/login?appId=${appId}&apiKey=${apiKey}&redirectUrl=${encodeURIComponent(
+		redirectUrl
+	)}`
 }
 
-function showError(errors: { code: number, message: string }[]) {
-   if (errors == null) {
-      showErrorMessageBar(locale.errors.unexpectedErrorLong)
-      return
-   }
+function showError(errors: { code: number; message: string }[]) {
+	if (errors == null) {
+		showErrorMessageBar(locale.errors.unexpectedErrorLong)
+		return
+	}
 
 	let errorCode = errors[0].code
 
@@ -176,7 +197,12 @@ function showError(errors: { code: number, message: string }[]) {
 			emailTextfield.errorMessage = locale.errors.emailTaken
 			break
 		default:
-			showErrorMessageBar(locale.errors.unexpectedErrorShort.replace('{0}', errorCode.toString()))
+			showErrorMessageBar(
+				locale.errors.unexpectedErrorShort.replace(
+					"{0}",
+					errorCode.toString()
+				)
+			)
 			break
 	}
 }

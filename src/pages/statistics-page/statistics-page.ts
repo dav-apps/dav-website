@@ -9,14 +9,14 @@ import {
 	ArcElement,
 	Legend,
 	Tooltip
-} from 'chart.js'
-import axios from 'axios'
-import { DateTime } from 'luxon'
-import { UserSnapshot } from 'dav-js'
-import 'dav-ui-components'
-import { Header, Dropdown, DropdownOptionType } from 'dav-ui-components'
-import '../../components/navbar-component/navbar-component'
-import { getLocale } from '../../locales'
+} from "chart.js"
+import axios from "axios"
+import { DateTime } from "luxon"
+import { UserSnapshot } from "dav-js"
+import "dav-ui-components"
+import { Header, Dropdown, DropdownOptionType } from "dav-ui-components"
+import "../../components/navbar-component/navbar-component"
+import { getLocale } from "../../locales"
 
 let locale = getLocale(navigator.language).statisticsPage
 let header: Header
@@ -40,8 +40,8 @@ Chart.register(
 
 let userChart: Chart
 let activeUsersChart: Chart
-let plansChart: Chart
-let confirmationsChart: Chart
+let plansChart: Chart<"pie", number[], string>
+let confirmationsChart: Chart<"pie", number[], string>
 let csrfToken: string
 
 window.addEventListener("load", main)
@@ -50,87 +50,118 @@ async function main() {
 	header = document.getElementById("header") as Header
 	timeframeDropdown = document.getElementById("timeframe-dropdown") as Dropdown
 	userChartCanvas = document.getElementById("user-chart") as HTMLCanvasElement
-	activeUsersChartCanvas = document.getElementById("active-users-chart") as HTMLCanvasElement
-	plansChartCanvas = document.getElementById("plans-chart") as HTMLCanvasElement
-	confirmationsChartCanvas = document.getElementById("confirmations-chart") as HTMLCanvasElement
+	activeUsersChartCanvas = document.getElementById(
+		"active-users-chart"
+	) as HTMLCanvasElement
+	plansChartCanvas = document.getElementById(
+		"plans-chart"
+	) as HTMLCanvasElement
+	confirmationsChartCanvas = document.getElementById(
+		"confirmations-chart"
+	) as HTMLCanvasElement
 
 	userChart = new Chart(userChartCanvas, {
-		type: 'line',
+		type: "line",
 		data: {
 			labels: [],
 			datasets: [
 				{
 					label: locale.numberOfUsers,
 					data: [],
-					borderColor: 'rgb(255, 99, 132)',
-					backgroundColor: 'rgb(255, 99, 132)'
+					borderColor: "rgb(255, 99, 132)",
+					backgroundColor: "rgb(255, 99, 132)"
 				},
 				{
 					label: "Free",
 					data: [],
-					borderColor: 'rgb(54, 162, 235)',
-					backgroundColor: 'rgb(54, 162, 235)'
+					borderColor: "rgb(54, 162, 235)",
+					backgroundColor: "rgb(54, 162, 235)"
 				},
 				{
 					label: "Plus",
 					data: [],
-					borderColor: 'rgb(255, 205, 86)',
-					backgroundColor: 'rgb(255, 205, 86)'
+					borderColor: "rgb(255, 205, 86)",
+					backgroundColor: "rgb(255, 205, 86)"
 				},
 				{
 					label: "Pro",
 					data: [],
-					borderColor: 'rgb(111, 205, 205)',
-					backgroundColor: 'rgb(111, 205, 205)'
+					borderColor: "rgb(111, 205, 205)",
+					backgroundColor: "rgb(111, 205, 205)"
 				}
 			]
 		}
 	})
 
 	activeUsersChart = new Chart(activeUsersChartCanvas, {
-		type: 'line',
+		type: "line",
 		data: {
 			labels: [],
 			datasets: [
-				{ label: locale.daily, data: [], borderColor: 'rgb(255, 99, 132)', backgroundColor: 'rgb(255, 99, 132)' },
-				{ label: locale.weekly, data: [], borderColor: 'rgb(54, 162, 235)', backgroundColor: 'rgb(54, 162, 235)' },
-				{ label: locale.monthly, data: [], borderColor: 'rgb(255, 205, 86)', backgroundColor: 'rgb(255, 205, 86)' },
-				{ label: locale.yearly, data: [], borderColor: 'rgb(111, 205, 205)', backgroundColor: 'rgb(111, 205, 205)', hidden: true }
+				{
+					label: locale.daily,
+					data: [],
+					borderColor: "rgb(255, 99, 132)",
+					backgroundColor: "rgb(255, 99, 132)"
+				},
+				{
+					label: locale.weekly,
+					data: [],
+					borderColor: "rgb(54, 162, 235)",
+					backgroundColor: "rgb(54, 162, 235)"
+				},
+				{
+					label: locale.monthly,
+					data: [],
+					borderColor: "rgb(255, 205, 86)",
+					backgroundColor: "rgb(255, 205, 86)"
+				},
+				{
+					label: locale.yearly,
+					data: [],
+					borderColor: "rgb(111, 205, 205)",
+					backgroundColor: "rgb(111, 205, 205)",
+					hidden: true
+				}
 			]
 		}
 	})
 
 	plansChart = new Chart(plansChartCanvas, {
-		type: 'pie',
+		type: "pie",
 		data: {
 			labels: ["Free", "Plus", "Pro"],
-			datasets: [{
-				data: [0, 0, 0],
-				backgroundColor: [
-					'rgb(255, 99, 132)',
-					'rgb(54, 162, 235)',
-					'rgb(255, 205, 86)'
-				]
-			}]
+			datasets: [
+				{
+					data: [0, 0, 0],
+					backgroundColor: [
+						"rgb(255, 99, 132)",
+						"rgb(54, 162, 235)",
+						"rgb(255, 205, 86)"
+					]
+				}
+			]
 		}
 	})
 
 	confirmationsChart = new Chart(confirmationsChartCanvas, {
-		type: 'pie',
+		type: "pie",
 		data: {
 			labels: [locale.confirmed, locale.unconfirmed],
-			datasets: [{
-				data: [0, 0],
-				backgroundColor: [
-					'rgb(255, 99, 132)',
-					'rgb(54, 162, 235)'
-				]
-			}]
+			datasets: [
+				{
+					data: [0, 0],
+					backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"]
+				}
+			]
 		}
 	})
 
 	// Get the CSRF token
-	csrfToken = document.querySelector(`meta[name="csrf-token"]`)?.getAttribute("content") ?? ""
+	csrfToken =
+		document
+			.querySelector(`meta[name="csrf-token"]`)
+			?.getAttribute("content") ?? ""
 	if (csrfToken == null) return
 
 	setupTimeframeDropdown()
@@ -140,7 +171,10 @@ async function main() {
 
 function setEventListeners() {
 	header.addEventListener("backButtonClick", navigateBack)
-	timeframeDropdown.addEventListener("change", timeframeDropdownSelectionChanged)
+	timeframeDropdown.addEventListener(
+		"change",
+		timeframeDropdownSelectionChanged
+	)
 }
 
 function navigateBack() {
@@ -177,8 +211,8 @@ async function timeframeDropdownSelectionChanged() {
 async function loadUserSnapshots() {
 	try {
 		let getUserSnapshotsResponse = await axios({
-			method: 'get',
-			url: '/api/user_snapshots',
+			method: "get",
+			url: "/api/user_snapshots",
 			headers: {
 				"X-CSRF-TOKEN": csrfToken
 			},
@@ -188,35 +222,33 @@ async function loadUserSnapshots() {
 		})
 
 		processUserSnapshots(getUserSnapshotsResponse.data)
-	} catch(error) {
+	} catch (error) {
 		// Redirect to the Dev page
 		navigateBack()
 		return
 	}
 }
 
-function processUserSnapshots(
-	userSnapshots: {
-		snapshots: UserSnapshot[]
-	}
-) {
+function processUserSnapshots(userSnapshots: { snapshots: UserSnapshot[] }) {
 	// Save the days in a separate array with timestamps
 	let snapshots: {
-		date: DateTime,
-		daily: number,
-		weekly: number,
-		monthly: number,
-		yearly: number,
-		free: number,
-		plus: number,
-		pro: number,
-		confirmed: number,
+		date: DateTime
+		daily: number
+		weekly: number
+		monthly: number
+		yearly: number
+		free: number
+		plus: number
+		pro: number
+		confirmed: number
 		unconfirmed: number
 	}[] = []
 
 	for (let snapshot of userSnapshots.snapshots) {
 		snapshots.push({
-			date: DateTime.fromJSDate(new Date(snapshot.time)).setLocale(navigator.language).minus({ days: 1 }),
+			date: DateTime.fromJSDate(new Date(snapshot.time))
+				.setLocale(navigator.language)
+				.minus({ days: 1 }),
 			daily: snapshot.dailyActive,
 			weekly: snapshot.weeklyActive,
 			monthly: snapshot.monthlyActive,
@@ -249,7 +281,9 @@ function processUserSnapshots(
 
 	for (let snapshot of snapshots) {
 		userChart.data.labels.push(snapshot.date.toFormat("DD"))
-		userChart.data.datasets[0].data.push(snapshot.free + snapshot.plus + snapshot.pro)
+		userChart.data.datasets[0].data.push(
+			snapshot.free + snapshot.plus + snapshot.pro
+		)
 		userChart.data.datasets[1].data.push(snapshot.free)
 		userChart.data.datasets[2].data.push(snapshot.plus)
 		userChart.data.datasets[3].data.push(snapshot.pro)
@@ -277,8 +311,10 @@ function processUserSnapshots(
 		plansChart.data.datasets[0].data[2] = snapshots[snapshots.length - 1].pro
 
 		// Show the distribution of confirmed users on the pie chart
-		confirmationsChart.data.datasets[0].data[0] = snapshots[snapshots.length - 1].confirmed
-		confirmationsChart.data.datasets[0].data[1] = snapshots[snapshots.length - 1].unconfirmed
+		confirmationsChart.data.datasets[0].data[0] =
+			snapshots[snapshots.length - 1].confirmed
+		confirmationsChart.data.datasets[0].data[1] =
+			snapshots[snapshots.length - 1].unconfirmed
 	}
 
 	userChart.update()

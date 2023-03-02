@@ -1,5 +1,5 @@
 #start-header {
-	background-image: url('/assets/images/start-background.jpg');
+	background-image: url("/assets/images/start-background.jpg");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: top;
@@ -24,7 +24,8 @@
 	font-size: 20px;
 }
 
-#success-message-container, #error-message-container {
+#success-message-container,
+#error-message-container {
 	width: 300px;
 	position: absolute;
 	right: 0;
@@ -37,7 +38,7 @@
 .app-container {
 	margin: 0;
 	background-color: #efefef;
-	font-family: 'Segoe UI';
+	font-family: "Segoe UI";
 }
 
 .app-description {
@@ -54,15 +55,15 @@
 }
 
 .google-play-badge {
-   height: 70px;
+	height: 70px;
 }
 
 .microsoft-store-badge {
-   height: 48px;
+	height: 48px;
 }
 
 .github-badge {
-   height: 50px;
+	height: 50px;
 }
 
 .screenshot-pocketlib {

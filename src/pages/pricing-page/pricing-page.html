@@ -2,28 +2,46 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
 
-		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/fontawesome.min.css">
-		<link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-pro/css/light.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="pricing-page.scss">
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/@fortawesome/fontawesome-pro/css/fontawesome.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/@fortawesome/fontawesome-pro/css/light.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="pricing-page.scss" />
 
 		<script type="module" src="pricing-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body>
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<div class="container page-container pt-4 pb-4">
 			<h1 class="text-center fw-light mb-3"><%= locale.title %></h1>
 
-			<div id="plans-table-container" class="d-flex justify-content-center mt-3 <%= isMobile ? 'd-none' : '' %>">
+			<div
+				id="plans-table-container"
+				class="d-flex justify-content-center mt-3 <%= isMobile ? 'd-none' : '' %>"
+			>
 				<table id="plans-table">
 					<thead>
 						<tr>
@@ -35,8 +53,12 @@
 						<tr>
 							<th></th>
 							<th></th>
-							<th class="fs-6 fw-light"><%= pricingLocale.plus.price %></th>
-							<th class="fs-6 fw-light"><%= pricingLocale.pro.price %></th>
+							<th class="fs-6 fw-light">
+								<%= pricingLocale.plus.price %>
+							</th>
+							<th class="fs-6 fw-light">
+								<%= pricingLocale.pro.price %>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -59,22 +81,33 @@
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 						<tr class="border-top">
-							<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+							<td class="fs-4 fw-light pt-4 pb-1">
+								UniversalSoundboard
+							</td>
 						</tr>
-                  <tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
-							<td></td>
-							<td><i class="fa-light fa-check"></i></td>
-							<td><i class="fa-light fa-check"></i></td>
-						</tr>
-                  <tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.soundRecorderFeature %></td>
+						<tr class="border-top">
+							<td class="ps-3">
+								<%=
+								pricingLocale.universalsoundboard.outputDeviceFeature %>
+							</td>
 							<td></td>
 							<td><i class="fa-light fa-check"></i></td>
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 						<tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+							<td class="ps-3">
+								<%=
+								pricingLocale.universalsoundboard.soundRecorderFeature
+								%>
+							</td>
+							<td></td>
+							<td><i class="fa-light fa-check"></i></td>
+							<td><i class="fa-light fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3">
+								<%= pricingLocale.universalsoundboard.hotkeyFeature %>
+							</td>
 							<td></td>
 							<td><i class="fa-light fa-check"></i></td>
 							<td><i class="fa-light fa-check"></i></td>
@@ -83,7 +116,10 @@
 				</table>
 			</div>
 
-			<div id="plans-table-mobile-container" class="d-flex flex-column justify-content-center mt-3 <%= isMobile ? '' : 'd-none' %>">
+			<div
+				id="plans-table-mobile-container"
+				class="d-flex flex-column justify-content-center mt-3 <%= isMobile ? '' : 'd-none' %>"
+			>
 				<table id="plans-table-mobile-free">
 					<thead>
 						<tr>
@@ -106,7 +142,7 @@
 						</tr>
 					</tbody>
 				</table>
-				
+
 				<table id="plans-table-mobile-plus" class="mt-5">
 					<thead>
 						<tr>
@@ -115,7 +151,9 @@
 						</tr>
 						<tr>
 							<th></th>
-							<th class="fs-6 fw-light"><%= pricingLocale.plus.price %></th>
+							<th class="fs-6 fw-light">
+								<%= pricingLocale.plus.price %>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -132,18 +170,29 @@
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 						<tr class="border-top">
-							<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+							<td class="fs-4 fw-light pt-4 pb-1">
+								UniversalSoundboard
+							</td>
 						</tr>
-                  <tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
-							<td><i class="fa-light fa-check"></i></td>
-						</tr>
-                  <tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.soundRecorderFeature %></td>
+						<tr class="border-top">
+							<td class="ps-3">
+								<%=
+								pricingLocale.universalsoundboard.outputDeviceFeature %>
+							</td>
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 						<tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+							<td class="ps-3">
+								<%=
+								pricingLocale.universalsoundboard.soundRecorderFeature
+								%>
+							</td>
+							<td><i class="fa-light fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3">
+								<%= pricingLocale.universalsoundboard.hotkeyFeature %>
+							</td>
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 					</tbody>
@@ -157,7 +206,9 @@
 						</tr>
 						<tr>
 							<th></th>
-							<th class="fs-6 fw-light"><%= pricingLocale.pro.price %></th>
+							<th class="fs-6 fw-light">
+								<%= pricingLocale.pro.price %>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -174,18 +225,29 @@
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 						<tr class="border-top">
-							<td class="fs-4 fw-light pt-4 pb-1">UniversalSoundboard</td>
+							<td class="fs-4 fw-light pt-4 pb-1">
+								UniversalSoundboard
+							</td>
 						</tr>
-                  <tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.outputDeviceFeature %></td>
-							<td><i class="fa-light fa-check"></i></td>
-						</tr>
-                  <tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.soundRecorderFeature %></td>
+						<tr class="border-top">
+							<td class="ps-3">
+								<%=
+								pricingLocale.universalsoundboard.outputDeviceFeature %>
+							</td>
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 						<tr class="border-top">
-							<td class="ps-3"><%= pricingLocale.universalsoundboard.hotkeyFeature %></td>
+							<td class="ps-3">
+								<%=
+								pricingLocale.universalsoundboard.soundRecorderFeature
+								%>
+							</td>
+							<td><i class="fa-light fa-check"></i></td>
+						</tr>
+						<tr class="border-top">
+							<td class="ps-3">
+								<%= pricingLocale.universalsoundboard.hotkeyFeature %>
+							</td>
 							<td><i class="fa-light fa-check"></i></td>
 						</tr>
 					</tbody>
@@ -193,6 +255,8 @@
 			</div>
 		</div>
 
-		<include src="src/components/footer-component/footer-component.html"></include>
+		<include
+			src="src/components/footer-component/footer-component.html"
+		></include>
 	</body>
 </html>

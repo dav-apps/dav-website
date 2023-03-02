@@ -1,23 +1,23 @@
-import axios from 'axios'
-import { ErrorCodes } from 'dav-js'
-import 'dav-ui-components'
+import axios from "axios"
+import { ErrorCodes } from "dav-js"
+import "dav-ui-components"
 import {
 	Button,
 	Dialog,
 	Textfield,
 	MessageBar,
 	ProgressRing
-} from 'dav-ui-components'
-import '../../components/navbar-component/navbar-component'
-import { getLocale } from '../../locales'
-import { devEnvironment, prodEnvironment } from '../../environments'
+} from "dav-ui-components"
+import "../../components/navbar-component/navbar-component"
+import { getLocale } from "../../locales"
+import { devEnvironment, prodEnvironment } from "../../environments"
 import {
 	showElement,
 	hideElement,
 	getUserAgentModel,
 	getUserAgentPlatform,
 	handleExpiredSessionError
-} from '../../utils'
+} from "../../utils"
 
 let locale = getLocale(navigator.language).loginPage
 let errorMessageBar: MessageBar
@@ -35,38 +35,57 @@ let expiredSessionDialog: Dialog
 
 let websiteLogin = true
 let appId = 0
-let apiKey = null
-let redirectUrl = null
-let redirect = null
+let apiKey = ""
+let redirectUrl = ""
+let redirect = ""
 
 window.addEventListener("resize", setSize)
 window.addEventListener("load", main)
 
 function main() {
-	errorMessageBar = document.getElementById('error-message-bar') as MessageBar
-	emailTextfield = document.getElementById('email-textfield') as Textfield
-	passwordTextfield = document.getElementById('password-textfield') as Textfield
-	loginButton = document.getElementById('login-button') as Button
-	loginButtonProgressRing = document.getElementById('login-button-progress-ring') as ProgressRing
-	signupButton = document.getElementById('signup-button') as Button
-	forgotPasswordLink = document.getElementById('forgot-password-link') as HTMLAnchorElement
-	forgotPasswordLinkMobile = document.getElementById('forgot-password-link-mobile') as HTMLAnchorElement
-	loginAsButtonContainer = document.getElementById('login-as-button-container') as HTMLDivElement
-	loginAsButton = document.getElementById('login-as-button') as HTMLButtonElement
-	loginAsButtonProgressRing = document.getElementById('login-as-button-progress-ring') as ProgressRing
-	expiredSessionDialog = document.getElementById('expired-session-dialog') as Dialog
+	errorMessageBar = document.getElementById("error-message-bar") as MessageBar
+	emailTextfield = document.getElementById("email-textfield") as Textfield
+	passwordTextfield = document.getElementById(
+		"password-textfield"
+	) as Textfield
+	loginButton = document.getElementById("login-button") as Button
+	loginButtonProgressRing = document.getElementById(
+		"login-button-progress-ring"
+	) as ProgressRing
+	signupButton = document.getElementById("signup-button") as Button
+	forgotPasswordLink = document.getElementById(
+		"forgot-password-link"
+	) as HTMLAnchorElement
+	forgotPasswordLinkMobile = document.getElementById(
+		"forgot-password-link-mobile"
+	) as HTMLAnchorElement
+	loginAsButtonContainer = document.getElementById(
+		"login-as-button-container"
+	) as HTMLDivElement
+	loginAsButton = document.getElementById(
+		"login-as-button"
+	) as HTMLButtonElement
+	loginAsButtonProgressRing = document.getElementById(
+		"login-as-button-progress-ring"
+	) as ProgressRing
+	expiredSessionDialog = document.getElementById(
+		"expired-session-dialog"
+	) as Dialog
 
 	let queryString = new URLSearchParams(window.location.search)
-	appId = +queryString.get("appId")
-	apiKey = queryString.get("apiKey")
-	redirectUrl = queryString.get("redirectUrl")
-	redirect = queryString.get("redirect")
+	appId = +(queryString.get("appId") as string)
+	apiKey = queryString.get("apiKey") as string
+	redirectUrl = queryString.get("redirectUrl") as string
+	redirect = queryString.get("redirect") as string
 
-	websiteLogin = appId == 0 && apiKey == null && redirectUrl == null
+	websiteLogin = appId == 0 && !apiKey && !redirectUrl
 
 	if (websiteLogin) {
 		// Set the appId and apiKey
-		if (document.querySelector(`meta[name="env"]`).getAttribute("content") == "production") {
+		if (
+			document?.querySelector(`meta[name="env"]`)?.getAttribute("content") ==
+			"production"
+		) {
 			appId = prodEnvironment.appId
 			apiKey = prodEnvironment.apiKey
 		} else {
@@ -85,8 +104,11 @@ function setEventListeners() {
 	passwordTextfield.addEventListener("enter", login)
 	loginButton.addEventListener("click", login)
 	signupButton.addEventListener("click", signupButtonClick)
-	if (loginAsButton != null) loginAsButton.addEventListener("click", loginAsButtonClick)
-	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
+	if (loginAsButton != null)
+		loginAsButton.addEventListener("click", loginAsButtonClick)
+	expiredSessionDialog.addEventListener("primaryButtonClick", () =>
+		window.location.reload()
+	)
 }
 
 function setSize() {
@@ -118,10 +140,12 @@ async function login() {
 
 	try {
 		let response = await axios({
-			method: 'post',
-			url: '/api/login',
+			method: "post",
+			url: "/api/login",
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": document
+					?.querySelector(`meta[name="csrf-token"]`)
+					?.getAttribute("content") ?? ""
 			},
 			data: {
 				email: emailTextfield.value,
@@ -159,7 +183,9 @@ async function login() {
 function signupButtonClick() {
 	if (websiteLogin) return
 
-	window.location.href = `/signup?appId=${appId}&apiKey=${apiKey}&redirectUrl=${encodeURIComponent(redirectUrl)}`
+	window.location.href = `/signup?appId=${appId}&apiKey=${apiKey}&redirectUrl=${encodeURIComponent(
+		redirectUrl
+	)}`
 }
 
 async function loginAsButtonClick() {
@@ -174,10 +200,12 @@ async function loginAsButtonClick() {
 
 	try {
 		let response = await axios({
-			method: 'post',
-			url: '/api/create_session_from_access_token',
+			method: "post",
+			url: "/api/create_session_from_access_token",
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN": document
+					?.querySelector(`meta[name="csrf-token"]`)
+					?.getAttribute("content") ?? ""
 			},
 			data: {
 				appId,
@@ -203,7 +231,7 @@ async function loginAsButtonClick() {
 	}
 }
 
-function showError(errors: { code: number, message: string }[]) {
+function showError(errors: { code: number; message: string }[]) {
 	if (errors == null) {
 		errorMessageBar.innerText = locale.errors.unexpectedErrorLong
 		showElement(errorMessageBar)
@@ -212,10 +240,16 @@ function showError(errors: { code: number, message: string }[]) {
 
 	let errorCode = errors[0].code
 
-	if (errorCode == ErrorCodes.IncorrectPassword || errorCode == ErrorCodes.UserDoesNotExist) {
+	if (
+		errorCode == ErrorCodes.IncorrectPassword ||
+		errorCode == ErrorCodes.UserDoesNotExist
+	) {
 		errorMessageBar.innerText = locale.errors.loginFailed
 	} else {
-		errorMessageBar.innerText = locale.errors.unexpectedErrorShort.replace("{0}", errorCode.toString())
+		errorMessageBar.innerText = locale.errors.unexpectedErrorShort.replace(
+			"{0}",
+			errorCode.toString()
+		)
 	}
 
 	if (errorCode != ErrorCodes.EmailMissing) {

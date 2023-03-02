@@ -2,52 +2,53 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
-		<meta name="csrf-token" content="<%= csrfToken %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
+		<meta name="csrf-token" content="<%= csrfToken %>" />
 
-		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="app-page.scss">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="app-page.scss" />
 
 		<script type="module" src="app-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body>
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<div class="container page-container">
 			<div class="mb-3">
-				<dav-header
-					id="header"
-					backButtonVisible
-					size="big">
-				</dav-header>
+				<dav-header id="header" backButtonVisible size="big"></dav-header>
 			</div>
 
 			<div>
 				<p id="description" class="mb-3 fw-light"></p>
 
-				<dav-button
-					id="statistics-button"
-					type="accent">
+				<dav-button id="statistics-button" type="accent">
 					<%= locale.statistics %>
 				</dav-button>
 
-				<dav-button id="edit-button">
-					<%= locale.edit %>
-				</dav-button>
+				<dav-button id="edit-button"> <%= locale.edit %></dav-button>
 
-				<h5 class="fw-light mt-4">
-					<%= locale.published %>
-				</h5>
+				<h5 class="fw-light mt-4"><%= locale.published %></h5>
 
-				<dav-toggle id="published-toggle">
-				</dav-toggle>
+				<dav-toggle id="published-toggle"></dav-toggle>
 			</div>
 
 			<div class="d-flex">
@@ -73,16 +74,16 @@
 			id="edit-app-dialog"
 			header="<%= locale.editAppDialog.header %>"
 			primaryButtonText="<%= locale.save %>"
-			defaultButtonText="<%= locale.cancel %>">
-
+			defaultButtonText="<%= locale.cancel %>"
+		>
 			<form>
 				<!-- Name -->
 				<div class="mb-3">
 					<dav-textfield
 						id="edit-app-dialog-name-textfield"
 						label="<%= locale.editAppDialog.nameTextfieldLabel %>"
-						placeholder="<%= locale.editAppDialog.nameTextfieldPlaceholder %>">
-					</dav-textfield>
+						placeholder="<%= locale.editAppDialog.nameTextfieldPlaceholder %>"
+					></dav-textfield>
 				</div>
 
 				<!-- Description -->
@@ -91,8 +92,8 @@
 						id="edit-app-dialog-description-textarea"
 						label="<%= locale.editAppDialog.descriptionTextfieldLabel %>"
 						placeholder="<%= locale.editAppDialog.descriptionTextfieldPlaceholder %>"
-						resize="vertical">
-					</dav-textareaa>
+						resize="vertical"
+					></dav-textarea>
 				</div>
 
 				<!-- WebLink -->
@@ -102,8 +103,8 @@
 						label="<%= locale.editAppDialog.webLinkTextfieldLabel %>"
 						placeholder="<%= locale.editAppDialog.webLinkTextfieldPlaceholder %>"
 						type="url"
-						autocomplete="url">
-					</dav-textfield>
+						autocomplete="url"
+					></dav-textfield>
 				</div>
 
 				<!-- GooglePlayLink -->
@@ -113,8 +114,8 @@
 						label="<%= locale.editAppDialog.googlePlayLinkTextfieldLabel %>"
 						placeholder="<%= locale.editAppDialog.googlePlayLinkTextfieldPlaceholder %>"
 						type="url"
-						autocomplete="url">
-					</dav-textfield>
+						autocomplete="url"
+					></dav-textfield>
 				</div>
 
 				<!-- MicrosoftStoreLink -->
@@ -124,14 +125,13 @@
 						label="<%= locale.editAppDialog.microsoftStoreLinkTextfieldLabel %>"
 						placeholder="<%= locale.editAppDialog.microsoftStoreLinkTextfieldPlaceholder %>"
 						type="url"
-						autocomplete="url">
-					</dav-textfield>
+						autocomplete="url"
+					></dav-textfield>
 				</div>
 			</form>
 		</dav-dialog>
 
-		<dav-dialog
-			id="publish-app-dialog">
+		<dav-dialog id="publish-app-dialog">
 			<p id="publish-app-dialog-text" class="fw-light"></p>
 		</dav-dialog>
 	</body>

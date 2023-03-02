@@ -3,7 +3,11 @@ import "dav-ui-components"
 import { Button, Dialog, ProgressRing, Textfield } from "dav-ui-components"
 import "../../components/navbar-component/navbar-component"
 import { getLocale } from "../../locales"
-import { handleExpiredSessionError, hideElement, showElement } from "../../utils"
+import {
+	handleExpiredSessionError,
+	hideElement,
+	showElement
+} from "../../utils"
 
 let locale = getLocale(navigator.language).passwordResetPage
 let passwordTextfield: Textfield
@@ -18,15 +22,25 @@ let passwordConfirmationToken = ""
 window.addEventListener("load", main)
 
 function main() {
-	passwordTextfield = document.getElementById("password-textfield") as Textfield
-	passwordConfirmationTextfield = document.getElementById("password-confirmation-textfield") as Textfield
+	passwordTextfield = document.getElementById(
+		"password-textfield"
+	) as Textfield
+	passwordConfirmationTextfield = document.getElementById(
+		"password-confirmation-textfield"
+	) as Textfield
 	saveButton = document.getElementById("save-button") as Button
-	saveButtonProgressRing = document.getElementById("save-button-progress-ring") as ProgressRing
-	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
+	saveButtonProgressRing = document.getElementById(
+		"save-button-progress-ring"
+	) as ProgressRing
+	expiredSessionDialog = document.getElementById(
+		"expired-session-dialog"
+	) as Dialog
 
 	let queryString = new URLSearchParams(window.location.search)
-	userId = +queryString.get("userId")
-	passwordConfirmationToken = queryString.get("passwordConfirmationToken")
+	userId = +(queryString.get("userId") as string)
+	passwordConfirmationToken = queryString.get(
+		"passwordConfirmationToken"
+	) as string
 
 	setEventListeners()
 }
@@ -36,7 +50,9 @@ function setEventListeners() {
 	passwordConfirmationTextfield.addEventListener("change", clearErrorMessages)
 	passwordConfirmationTextfield.addEventListener("enter", saveButtonClick)
 	saveButton.addEventListener("click", saveButtonClick)
-	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
+	expiredSessionDialog.addEventListener("primaryButtonClick", () =>
+		window.location.reload()
+	)
 }
 
 function clearErrorMessages() {
@@ -46,15 +62,16 @@ function clearErrorMessages() {
 
 async function saveButtonClick() {
 	if (
-		passwordTextfield.value.length == 0
-		&& passwordConfirmationTextfield.value.length == 0
+		passwordTextfield.value.length == 0 &&
+		passwordConfirmationTextfield.value.length == 0
 	) {
 		passwordTextfield.errorMessage = locale.errors.passwordMissing
 		return
 	}
 
 	if (passwordTextfield.value != passwordConfirmationTextfield.value) {
-		passwordConfirmationTextfield.errorMessage = locale.errors.passwordConfirmationNotMatching
+		passwordConfirmationTextfield.errorMessage =
+			locale.errors.passwordConfirmationNotMatching
 		return
 	}
 
@@ -76,10 +93,13 @@ async function saveButtonClick() {
 
 	try {
 		await axios({
-			method: 'post',
-			url: '/api/set_password',
+			method: "post",
+			url: "/api/set_password",
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			},
 			data: {
 				id: userId,

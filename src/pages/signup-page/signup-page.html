@@ -2,33 +2,48 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
-		<meta name="csrf-token" content="<%= csrfToken %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
+		<meta name="csrf-token" content="<%= csrfToken %>" />
 
-		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
 
 		<script type="module" src="signup-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body dir="ltr">
-		<% if (websiteSignup) { %><include src="src/components/navbar-component/navbar-component.html"></include><% } %>
+		<% if (websiteSignup) { %><include
+			src="src/components/navbar-component/navbar-component.html"
+		></include
+		><% } %>
 
-		<div class="container d-flex flex-column align-items-center" style="margin-top: 100px">
+		<div
+			class="container d-flex flex-column align-items-center"
+			style="margin-top: 100px"
+		>
 			<img
 				src="/assets/images/dav-logo.png"
 				width="60"
 				height="60"
-				alt="dav Logo">
+				alt="dav Logo"
+			/>
 
-			<h2 class="text-center fw-light my-4">
-				<%= locale.title %>
-			</h2>
+			<h2 class="text-center fw-light my-4"><%= locale.title %></h2>
 
 			<form class="w-100">
 				<!-- First name -->
@@ -36,8 +51,7 @@
 					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<!-- Error messages -->
 						<div class="mb-3 d-none">
-							<dav-message-bar id="error-message-bar">
-							</dav-message-bar>
+							<dav-message-bar id="error-message-bar"></dav-message-bar>
 						</div>
 
 						<dav-textfield
@@ -45,8 +59,8 @@
 							label="<%= locale.firstNameTextfieldLabel %>"
 							placeholder="<%= locale.firstNameTextfieldPlaceholder %>"
 							autocomplete="given-name"
-							autofocus>
-						</dav-textfield>
+							autofocus
+						></dav-textfield>
 					</div>
 				</div>
 
@@ -58,8 +72,8 @@
 							label="<%= locale.emailTextfieldLabel %>"
 							placeholder="<%= locale.emailTextfieldPlaceholder %>"
 							type="email"
-							autocomplete="email">
-						</dav-textfield>
+							autocomplete="email"
+						></dav-textfield>
 					</div>
 				</div>
 
@@ -71,8 +85,8 @@
 							label="<%= locale.passwordTextfieldLabel %>"
 							placeholder="<%= locale.passwordTextfieldPlaceholder %>"
 							type="password"
-							autocomplete="new-password">
-						</dav-textfield>
+							autocomplete="new-password"
+						></dav-textfield>
 					</div>
 				</div>
 
@@ -84,29 +98,28 @@
 							label="<%= locale.passwordConfirmationTextfieldLabel %>"
 							placeholder="<%= locale.passwordConfirmationTextFieldPlaceholder %>"
 							type="password"
-							autocomplete="new-password">
-						</dav-textfield>
+							autocomplete="new-password"
+						></dav-textfield>
 					</div>
 				</div>
 
 				<div class="row mt-3">
 					<div class="col-10 col-sm-8 col-md-6 col-lg-5 mx-auto">
 						<div class="d-flex flex-row">
-							<dav-button
-								id="signup-button"
-								type="accent">
+							<dav-button id="signup-button" type="accent">
 								<%= locale.signup %>
 							</dav-button>
 
 							<dav-progress-ring
 								id="signup-progress-ring"
 								class="d-none"
-								style="width: 16px; height: 16px; margin: 6px 0 0 14px">
-							</dav-progress-ring>
+								style="width: 16px; height: 16px; margin: 6px 0 0 14px"
+							></dav-progress-ring>
 
 							<dav-button
 								id="login-button"
-								class="ms-auto <%= websiteSignup ? 'd-none' : '' %>">
+								class="ms-auto <%= websiteSignup ? 'd-none' : '' %>"
+							>
 								<%= locale.login %>
 							</dav-button>
 						</div>
@@ -118,9 +131,9 @@
 		<dav-dialog
 			id="expired-session-dialog"
 			header="<%= sessionExpiredDialogLocale.header %>"
-			primaryButtonText="<%= sessionExpiredDialogLocale.reload %>">
-			<p class="fw-light"
-				style="max-width: 300px; font-size: 16px">
+			primaryButtonText="<%= sessionExpiredDialogLocale.reload %>"
+		>
+			<p class="fw-light" style="max-width: 300px; font-size: 16px">
 				<%= sessionExpiredDialogLocale.description %>
 			</p>
 		</dav-dialog>

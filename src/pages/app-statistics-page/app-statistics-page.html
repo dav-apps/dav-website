@@ -2,31 +2,39 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
-		<meta name="csrf-token" content="<%= csrfToken %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
+		<meta name="csrf-token" content="<%= csrfToken %>" />
 
-		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css">
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="app-statistics-page.scss">
+		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="app-statistics-page.scss" />
 
 		<script type="module" src="app-statistics-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body>
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<div class="container page-container pt-4">
 			<div class="mb-3">
-				<dav-header
-					id="header"
-					backButtonVisible
-					size="big">
-				</dav-header>
+				<dav-header id="header" backButtonVisible size="big"></dav-header>
 			</div>
 
 			<div class="mb-3 d-flex justify-content-center">
@@ -45,19 +53,15 @@
 				<canvas id="active-users-chart"></canvas>
 			</div>
 
-         <div class="d-flex flex-wrap justify-content-center mb-5">
+			<div class="d-flex flex-wrap justify-content-center mb-5">
 				<div class="my-4 mx-auto">
-					<h3 class="text-center fw-light">
-						<%= locale.plans %>
-					</h3>
+					<h3 class="text-center fw-light"><%= locale.plans %></h3>
 
 					<canvas id="plans-chart"></canvas>
 				</div>
 
 				<div class="my-4 mx-auto">
-					<h3 class="text-center fw-light">
-						<%= locale.confirmations %>
-					</h3>
+					<h3 class="text-center fw-light"><%= locale.confirmations %></h3>
 
 					<canvas id="confirmations-chart"></canvas>
 				</div>

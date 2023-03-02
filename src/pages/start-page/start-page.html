@@ -2,35 +2,55 @@
 <html lang="<%= lang %>">
 	<head>
 		<title>dav</title>
-		<base href="/">
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="env" content="<%= process.env.ENV %>">
+		<base href="/" />
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="env" content="<%= process.env.ENV %>" />
 
-		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-		<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-		<% if (successMessageText != null || errorMessageText != null) { %><link rel="stylesheet" href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"><% } %>
-		<link rel="stylesheet" href="../../styles.scss">
-		<link rel="stylesheet" href="../apps-page/apps-page.scss">
-		<link rel="stylesheet" href="start-page.scss">
+		<link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+		<link
+			rel="stylesheet"
+			href="/node_modules/bootstrap/dist/css/bootstrap.min.css"
+		/>
+		<% if (successMessageText != null || errorMessageText != null) { %>
+		<link
+			rel="stylesheet"
+			href="/node_modules/office-ui-fabric-core/dist/css/fabric.min.css"
+		/>
+		<% } %>
+		<link rel="stylesheet" href="../../styles.scss" />
+		<link rel="stylesheet" href="../apps-page/apps-page.scss" />
+		<link rel="stylesheet" href="start-page.scss" />
 
 		<script type="module" src="start-page.ts" defer async></script>
-		<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+		<script
+			async
+			defer
+			src="https://scripts.simpleanalyticscdn.com/latest.js"
+		></script>
 	</head>
 	<body>
-		<include src="src/components/navbar-component/navbar-component.html"></include>
+		<include
+			src="src/components/navbar-component/navbar-component.html"
+		></include>
 
 		<div>
 			<div id="start-header" class="d-flex">
 				<!-- Error message -->
-				<div id="error-message-container" class="<%= errorMessageText == null ? 'd-none' : '' %>">
+				<div
+					id="error-message-container"
+					class="<%= errorMessageText == null ? 'd-none' : '' %>"
+				>
 					<dav-message-bar type="danger">
 						<%= errorMessageText %>
 					</dav-message-bar>
 				</div>
 
 				<!-- Success message -->
-				<div id="success-message-container" class="<%= successMessageText == null ? 'd-none' : '' %>">
+				<div
+					id="success-message-container"
+					class="<%= successMessageText == null ? 'd-none' : '' %>"
+				>
 					<dav-message-bar type="success">
 						<%= successMessageText %>
 					</dav-message-bar>
@@ -44,41 +64,107 @@
 			<!-- PocketLib -->
 			<div class="app-container row pt-3 m-0">
 				<div class="col-12 col-md-6 ps-5 pe-5 pe-md-0">
-					<h1 id="large-header-pocketlib" class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>">PocketLib</h1>
-					<h2 id="small-header-pocketlib" class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>">PocketLib</h2>
+					<h1
+						id="large-header-pocketlib"
+						class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>"
+					>
+						PocketLib
+					</h1>
+					<h2
+						id="small-header-pocketlib"
+						class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>"
+					>
+						PocketLib
+					</h2>
 
-					<div id="screenshot-pocketlib-mobile-container" class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>">
+					<div
+						id="screenshot-pocketlib-mobile-container"
+						class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>"
+					>
 						<picture>
-							<source srcset="/assets/images/PocketLibScreenshot.jpg?as=avif" type="image/avif" />
-							<source srcset="/assets/images/PocketLibScreenshot.jpg?as=webp" type="image/webp" />
+							<source
+								srcset="/assets/images/PocketLibScreenshot.jpg?as=avif"
+								type="image/avif"
+							/>
+							<source
+								srcset="/assets/images/PocketLibScreenshot.jpg?as=webp"
+								type="image/webp"
+							/>
 							<img
 								id="screenshot-pocketlib-mobile"
 								class="screenshot-pocketlib shadow"
 								src="/assets/images/PocketLibScreenshot.jpg"
-								alt="Screenshot of PocketLib" />
+								alt="Screenshot of PocketLib"
+							/>
 						</picture>
 					</div>
 
-					<p class="app-description mt-5 mb-0"><%- locale.pocketlibDescription %></p>
+					<p class="app-description mt-5 mb-0">
+						<%- locale.pocketlibDescription %>
+					</p>
 
 					<div class="links-container">
-						<a href="https://pocketlib.dav-apps.tech" target="blank" class="me-2"><img src="/assets/images/globe-solid.png" height="40"></a>
-						<a href='//www.microsoft.com/store/apps/9NCRKB9SQ79S?cid=storebadge&ocid=badge' target="blank" class="mx-2"><img src="/assets/images/MicrosoftStoreBadge.jpg" alt='English badge' class="microsoft-store-badge" /></a>
-						<a href='https://play.google.com/store/apps/details?id=app.dav.pocketlib&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' class="google-play-badge" /></a>
-						<a href='https://github.com/dav-apps/PocketLib' target="blank" class="ms-2"><img src="/assets/images/GitHub-Mark-64px.png" class="github-badge"></a>
+						<a
+							href="https://pocketlib.dav-apps.tech"
+							target="blank"
+							class="me-2"
+						>
+							<img src="/assets/images/globe-solid.png" height="40" />
+						</a>
+						<a
+							href="//www.microsoft.com/store/apps/9NCRKB9SQ79S?cid=storebadge&ocid=badge"
+							target="blank"
+							class="mx-2"
+						>
+							<img
+								src="/assets/images/MicrosoftStoreBadge.jpg"
+								alt="English badge"
+								class="microsoft-store-badge"
+							/>
+						</a>
+						<a
+							href="https://play.google.com/store/apps/details?id=app.dav.pocketlib&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+							target="blank"
+						>
+							<img
+								alt="Get it on Google Play"
+								src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+								class="google-play-badge"
+							/>
+						</a>
+						<a
+							href="https://github.com/dav-apps/PocketLib"
+							target="blank"
+							class="ms-2"
+						>
+							<img
+								src="/assets/images/GitHub-Mark-64px.png"
+								class="github-badge"
+							/>
+						</a>
 					</div>
 				</div>
 
-				<div id="screenshot-pocketlib-container" class="col-12 col-md-6 d-flex <%= isMobile ? 'd-none' : '' %>">
+				<div
+					id="screenshot-pocketlib-container"
+					class="col-12 col-md-6 d-flex <%= isMobile ? 'd-none' : '' %>"
+				>
 					<div class="mx-auto my-5">
 						<picture>
-							<source srcset="/assets/images/PocketLibScreenshot.jpg?as=avif" type="image/avif" />
-							<source srcset="/assets/images/PocketLibScreenshot.jpg?as=webp" type="image/webp" />
+							<source
+								srcset="/assets/images/PocketLibScreenshot.jpg?as=avif"
+								type="image/avif"
+							/>
+							<source
+								srcset="/assets/images/PocketLibScreenshot.jpg?as=webp"
+								type="image/webp"
+							/>
 							<img
 								id="screenshot-pocketlib"
 								class="screenshot-pocketlib shadow"
 								src="/assets/images/PocketLibScreenshot.jpg"
-								alt="Screenshot of PocketLib" />
+								alt="Screenshot of PocketLib"
+							/>
 						</picture>
 					</div>
 				</div>
@@ -86,41 +172,103 @@
 
 			<!-- UniversalSoundboard -->
 			<div class="app-container row pt-3 m-0">
-				<div id="screenshot-universalsoundboard-container" class="col-12 col-md-7 d-flex <%= isMobile ? 'd-none' : '' %>">
+				<div
+					id="screenshot-universalsoundboard-container"
+					class="col-12 col-md-7 d-flex <%= isMobile ? 'd-none' : '' %>"
+				>
 					<div class="mx-auto my-5">
 						<picture>
-							<source srcset="/assets/images/UniversalSoundboardScreenshot.jpg?as=avif" type="image/avif" />
-							<source srcset="/assets/images/UniversalSoundboardScreenshot.jpg?as=webp" type="image/webp" />
+							<source
+								srcset="
+									/assets/images/UniversalSoundboardScreenshot.jpg?as=avif
+								"
+								type="image/avif"
+							/>
+							<source
+								srcset="
+									/assets/images/UniversalSoundboardScreenshot.jpg?as=webp
+								"
+								type="image/webp"
+							/>
 							<img
 								id="screenshot-universalsoundboard"
 								class="screenshot-universalsoundboard shadow"
 								src="/assets/images/UniversalSoundboardScreenshot.jpg"
-								alt="Screenshot of UniversalSoundboard" />
+								alt="Screenshot of UniversalSoundboard"
+							/>
 						</picture>
 					</div>
 				</div>
 
-				<div class="col-12 col-md-5 pe-5 ps-md-0 ps-5 pb-4" style="font-family: 'Segoe UI'">
-					<h1 id="large-header-universalsoundboard" class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>">UniversalSoundboard</h1>
-					<h2 id="small-header-universalsoundboard" class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>">UniversalSoundboard</h2>
+				<div
+					class="col-12 col-md-5 pe-5 ps-md-0 ps-5 pb-4"
+					style="font-family: 'Segoe UI'"
+				>
+					<h1
+						id="large-header-universalsoundboard"
+						class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>"
+					>
+						UniversalSoundboard
+					</h1>
+					<h2
+						id="small-header-universalsoundboard"
+						class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>"
+					>
+						UniversalSoundboard
+					</h2>
 
-					<div id="screenshot-universalsoundboard-mobile-container" class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>">
+					<div
+						id="screenshot-universalsoundboard-mobile-container"
+						class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>"
+					>
 						<picture>
-							<source srcset="/assets/images/UniversalSoundboardScreenshot.jpg?as=avif" type="image/avif" />
-							<source srcset="/assets/images/UniversalSoundboardScreenshot.jpg?as=webp" type="image/webp" />
+							<source
+								srcset="
+									/assets/images/UniversalSoundboardScreenshot.jpg?as=avif
+								"
+								type="image/avif"
+							/>
+							<source
+								srcset="
+									/assets/images/UniversalSoundboardScreenshot.jpg?as=webp
+								"
+								type="image/webp"
+							/>
 							<img
 								id="screenshot-universalsoundboard-mobile"
 								class="screenshot-universalsoundboard shadow"
 								src="/assets/images/UniversalSoundboardScreenshot.jpg"
-								alt="Screenshot of UniversalSoundboard" />
+								alt="Screenshot of UniversalSoundboard"
+							/>
 						</picture>
 					</div>
 
-					<p class="app-description mt-5 mb-0"><%- locale.universalSoundboardDescription %></p>
+					<p class="app-description mt-5 mb-0">
+						<%- locale.universalSoundboardDescription %>
+					</p>
 
 					<div class="links-container">
-						<a href='//www.microsoft.com/store/apps/9NBLGGH51005?cid=storebadge&ocid=badge' target="blank" class="me-2"><img src="/assets/images/MicrosoftStoreBadge.jpg" alt='English badge' class="microsoft-store-badge" /></a>
-						<a href="https://github.com/dav-apps/UniversalSoundboard" target="blank" class="ms-2"><img src="/assets/images/GitHub-Mark-64px.png" class="github-badge"></a>
+						<a
+							href="//www.microsoft.com/store/apps/9NBLGGH51005?cid=storebadge&ocid=badge"
+							target="blank"
+							class="me-2"
+						>
+							<img
+								src="/assets/images/MicrosoftStoreBadge.jpg"
+								alt="English badge"
+								class="microsoft-store-badge"
+							/>
+						</a>
+						<a
+							href="https://github.com/dav-apps/UniversalSoundboard"
+							target="blank"
+							class="ms-2"
+						>
+							<img
+								src="/assets/images/GitHub-Mark-64px.png"
+								class="github-badge"
+							/>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -128,47 +276,115 @@
 			<!-- Calendo -->
 			<div class="app-container row py-3 m-0">
 				<div class="col-12 col-md-6 ps-5 pe-5 pe-md-0">
-					<h1 id="large-header-calendo" class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>">Calendo</h1>
-					<h2 id="small-header-calendo" class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>">Calendo</h2>
+					<h1
+						id="large-header-calendo"
+						class="mt-3 text-center fw-normal <%= isMobile ? '' : 'd-none' %>"
+					>
+						Calendo
+					</h1>
+					<h2
+						id="small-header-calendo"
+						class="mt-3 text-center fw-normal <%= isMobile ? 'd-none' : '' %>"
+					>
+						Calendo
+					</h2>
 
-					<div id="screenshot-calendo-mobile-container" class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>">
+					<div
+						id="screenshot-calendo-mobile-container"
+						class="d-flex justify-content-center my-5 <%= isMobile ? '' : 'd-none' %>"
+					>
 						<picture>
-							<source srcset="/assets/images/CalendoScreenshot.jpg?as=avif" type="image/avif" />
-							<source srcset="/assets/images/CalendoScreenshot.jpg?as=webp" type="image/webp" />
+							<source
+								srcset="/assets/images/CalendoScreenshot.jpg?as=avif"
+								type="image/avif"
+							/>
+							<source
+								srcset="/assets/images/CalendoScreenshot.jpg?as=webp"
+								type="image/webp"
+							/>
 							<img
 								id="screenshot-calendo-mobile"
 								class="screenshot-calendo shadow"
 								src="/assets/images/CalendoScreenshot.jpg"
-								alt="Screenshot of Calendo" />
+								alt="Screenshot of Calendo"
+							/>
 						</picture>
 					</div>
 
-					<p class="app-description mt-5 mb-0"><%- locale.calendoDescription %></p>
+					<p class="app-description mt-5 mb-0">
+						<%- locale.calendoDescription %>
+					</p>
 
 					<div class="links-container">
-						<a href="https://calendo.dav-apps.tech" target="blank" class="me-2"><img src="/assets/images/globe-solid.png" height="40"></a>
-						<a href='//www.microsoft.com/store/apps/9mvl99jvt1ss?cid=storebadge&ocid=badge' target="blank" class="mx-2"><img src="/assets/images/MicrosoftStoreBadge.jpg" alt='English badge' class="microsoft-store-badge" /></a>
-						<a href='https://play.google.com/store/apps/details?id=app.dav.calendo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' target="blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' class="google-play-badge" /></a>
-						<a href='https://github.com/dav-apps/Calendo' target="blank" class="ms-2"><img src="/assets/images/GitHub-Mark-64px.png" class="github-badge"></a>
+						<a
+							href="https://calendo.dav-apps.tech"
+							target="blank"
+							class="me-2"
+						>
+							<img src="/assets/images/globe-solid.png" height="40" />
+						</a>
+						<a
+							href="//www.microsoft.com/store/apps/9mvl99jvt1ss?cid=storebadge&ocid=badge"
+							target="blank"
+							class="mx-2"
+						>
+							<img
+								src="/assets/images/MicrosoftStoreBadge.jpg"
+								alt="English badge"
+								class="microsoft-store-badge"
+							/>
+						</a>
+						<a
+							href="https://play.google.com/store/apps/details?id=app.dav.calendo&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+							target="blank"
+						>
+							<img
+								alt="Get it on Google Play"
+								src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+								class="google-play-badge"
+							/>
+						</a>
+						<a
+							href="https://github.com/dav-apps/Calendo"
+							target="blank"
+							class="ms-2"
+						>
+							<img
+								src="/assets/images/GitHub-Mark-64px.png"
+								class="github-badge"
+							/>
+						</a>
 					</div>
 				</div>
 
-				<div id="screenshot-calendo-container" class="col-12 col-md-6 d-flex <%= isMobile ? 'd-none' : '' %>">
+				<div
+					id="screenshot-calendo-container"
+					class="col-12 col-md-6 d-flex <%= isMobile ? 'd-none' : '' %>"
+				>
 					<div class="mx-auto my-5">
 						<picture>
-							<source srcset="/assets/images/CalendoScreenshot.jpg?as=avif" type="image/avif" />
-							<source srcset="/assets/images/CalendoScreenshot.jpg?as=webp" type="image/webp" />
+							<source
+								srcset="/assets/images/CalendoScreenshot.jpg?as=avif"
+								type="image/avif"
+							/>
+							<source
+								srcset="/assets/images/CalendoScreenshot.jpg?as=webp"
+								type="image/webp"
+							/>
 							<img
 								id="screenshot-calendo"
 								class="shadow screenshot-calendo"
 								src="/assets/images/CalendoScreenshot.jpg"
-								alt="Screenshot of Calendo" />
+								alt="Screenshot of Calendo"
+							/>
 						</picture>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<include src="src/components/footer-component/footer-component.html"></include>
+		<include
+			src="src/components/footer-component/footer-component.html"
+		></include>
 	</body>
 </html>

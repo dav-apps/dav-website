@@ -1,10 +1,14 @@
-import axios from 'axios'
-import { ErrorCodes } from 'dav-js'
-import 'dav-ui-components'
-import { Button, Dialog, ProgressRing, Textfield } from 'dav-ui-components'
-import '../../components/navbar-component/navbar-component'
-import { getLocale } from '../../locales'
-import { hideElement, showElement, handleExpiredSessionError } from '../../utils'
+import axios from "axios"
+import { ErrorCodes } from "dav-js"
+import "dav-ui-components"
+import { Button, Dialog, ProgressRing, Textfield } from "dav-ui-components"
+import "../../components/navbar-component/navbar-component"
+import { getLocale } from "../../locales"
+import {
+	hideElement,
+	showElement,
+	handleExpiredSessionError
+} from "../../utils"
 
 let locale = getLocale(navigator.language).forgotPasswordPage
 let emailTextfield: Textfield
@@ -17,8 +21,12 @@ window.addEventListener("load", main)
 function main() {
 	emailTextfield = document.getElementById("email-textfield") as Textfield
 	sendButton = document.getElementById("send-button") as Button
-	sendButtonProgressRing = document.getElementById("send-button-progress-ring") as ProgressRing
-	expiredSessionDialog = document.getElementById("expired-session-dialog") as Dialog
+	sendButtonProgressRing = document.getElementById(
+		"send-button-progress-ring"
+	) as ProgressRing
+	expiredSessionDialog = document.getElementById(
+		"expired-session-dialog"
+	) as Dialog
 
 	setEventListeners()
 }
@@ -27,7 +35,9 @@ function setEventListeners() {
 	emailTextfield.addEventListener("change", emailTextfieldChange)
 	emailTextfield.addEventListener("enter", sendButtonClick)
 	sendButton.addEventListener("click", sendButtonClick)
-	expiredSessionDialog.addEventListener("primaryButtonClick", () => window.location.reload())
+	expiredSessionDialog.addEventListener("primaryButtonClick", () =>
+		window.location.reload()
+	)
 }
 
 function emailTextfieldChange() {
@@ -35,10 +45,7 @@ function emailTextfieldChange() {
 }
 
 async function sendButtonClick() {
-	if (
-		emailTextfield.value.length < 3
-		|| !emailTextfield.value.includes('@')
-	) {
+	if (emailTextfield.value.length < 3 || !emailTextfield.value.includes("@")) {
 		emailTextfield.errorMessage = locale.errors.emailInvalid
 		return
 	}
@@ -50,10 +57,13 @@ async function sendButtonClick() {
 
 	try {
 		await axios({
-			method: 'post',
-			url: '/api/send_password_reset_email',
+			method: "post",
+			url: "/api/send_password_reset_email",
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			},
 			data: {
 				email: emailTextfield.value
@@ -67,7 +77,9 @@ async function sendButtonClick() {
 		sendButton.disabled = false
 
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
-			emailTextfield.errorMessage = getErrorMessage(error.response.data.errors[0].code)
+			emailTextfield.errorMessage = getErrorMessage(
+				error.response.data.errors[0].code
+			)
 		}
 	}
 }
@@ -77,6 +89,9 @@ function getErrorMessage(code: number): string {
 		case ErrorCodes.UserDoesNotExist:
 			return locale.errors.userNotFound
 		default:
-			return locale.errors.unexpectedErrorShort.replace('{0}', code.toString())
+			return locale.errors.unexpectedErrorShort.replace(
+				"{0}",
+				code.toString()
+			)
 	}
 }

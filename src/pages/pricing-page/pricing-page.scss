@@ -10,6 +10,7 @@ td {
 	height: 48px;
 }
 
-th:not(first-child), td:not(:first-child) {
+th:not(first-child),
+td:not(:first-child) {
 	text-align: center;
 }

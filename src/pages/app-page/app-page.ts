@@ -1,9 +1,16 @@
-import axios from 'axios'
-import { App, ErrorCodes } from 'dav-js'
-import 'dav-ui-components'
-import { Button, Dialog, Header, Textarea, Textfield, Toggle } from 'dav-ui-components'
-import '../../components/navbar-component/navbar-component'
-import { getLocale } from '../../locales'
+import axios from "axios"
+import { App, ErrorCodes } from "dav-js"
+import "dav-ui-components"
+import {
+	Button,
+	Dialog,
+	Header,
+	Textarea,
+	Textfield,
+	Toggle
+} from "dav-ui-components"
+import "../../components/navbar-component/navbar-component"
+import { getLocale } from "../../locales"
 
 let locale = getLocale(navigator.language).appPage
 let header: Header
@@ -40,27 +47,42 @@ async function main() {
 	tablesList = document.getElementById("tables-list") as HTMLUListElement
 	apisList = document.getElementById("apis-list") as HTMLUListElement
 	editAppDialog = document.getElementById("edit-app-dialog") as Dialog
-	editAppDialogNameTextfield = document.getElementById("edit-app-dialog-name-textfield") as Textfield
-	editAppDialogDescriptionTextarea = document.getElementById("edit-app-dialog-description-textarea") as Textarea
-	editAppDialogWebLinkTextfield = document.getElementById("edit-app-dialog-weblink-textfield") as Textfield
-	editAppDialogGooglePlayLinkTextfield = document.getElementById("edit-app-dialog-googleplaylink-textfield") as Textfield
-	editAppDialogMicrosoftStoreLinkTextfield = document.getElementById("edit-app-dialog-microsoftstorelink-textfield") as Textfield
+	editAppDialogNameTextfield = document.getElementById(
+		"edit-app-dialog-name-textfield"
+	) as Textfield
+	editAppDialogDescriptionTextarea = document.getElementById(
+		"edit-app-dialog-description-textarea"
+	) as Textarea
+	editAppDialogWebLinkTextfield = document.getElementById(
+		"edit-app-dialog-weblink-textfield"
+	) as Textfield
+	editAppDialogGooglePlayLinkTextfield = document.getElementById(
+		"edit-app-dialog-googleplaylink-textfield"
+	) as Textfield
+	editAppDialogMicrosoftStoreLinkTextfield = document.getElementById(
+		"edit-app-dialog-microsoftstorelink-textfield"
+	) as Textfield
 	publishAppDialog = document.getElementById("publish-app-dialog") as Dialog
-	publishAppDialogText = document.getElementById("publish-app-dialog-text") as HTMLParagraphElement
+	publishAppDialogText = document.getElementById(
+		"publish-app-dialog-text"
+	) as HTMLParagraphElement
 
 	setEventListeners()
 
 	// Get the app id
-	let urlPathParts = window.location.pathname.split('/')
+	let urlPathParts = window.location.pathname.split("/")
 	let appId = +urlPathParts[urlPathParts.length - 1]
 
 	// Get the app
 	try {
 		let getAppResponse = await axios({
-			method: 'get',
+			method: "get",
 			url: `/api/app/${appId}`,
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			}
 		})
 
@@ -107,25 +129,34 @@ function setEventListeners() {
 		hideEditAppDialogErrors()
 	})
 
-	editAppDialogDescriptionTextarea.addEventListener("change", (event: Event) => {
-		editAppDialogDescription = (event as CustomEvent).detail.value
-		hideEditAppDialogErrors()
-	})
+	editAppDialogDescriptionTextarea.addEventListener(
+		"change",
+		(event: Event) => {
+			editAppDialogDescription = (event as CustomEvent).detail.value
+			hideEditAppDialogErrors()
+		}
+	)
 
 	editAppDialogWebLinkTextfield.addEventListener("change", (event: Event) => {
 		editAppDialogWebLink = (event as CustomEvent).detail.value
 		hideEditAppDialogErrors()
 	})
 
-	editAppDialogGooglePlayLinkTextfield.addEventListener("change", (event: Event) => {
-		editAppDialogGooglePlayLink = (event as CustomEvent).detail.value
-		hideEditAppDialogErrors()
-	})
+	editAppDialogGooglePlayLinkTextfield.addEventListener(
+		"change",
+		(event: Event) => {
+			editAppDialogGooglePlayLink = (event as CustomEvent).detail.value
+			hideEditAppDialogErrors()
+		}
+	)
 
-	editAppDialogMicrosoftStoreLinkTextfield.addEventListener("change", (event: Event) => {
-		editAppDialogMicrosoftStoreLink = (event as CustomEvent).detail.value
-		hideEditAppDialogErrors()
-	})
+	editAppDialogMicrosoftStoreLinkTextfield.addEventListener(
+		"change",
+		(event: Event) => {
+			editAppDialogMicrosoftStoreLink = (event as CustomEvent).detail.value
+			hideEditAppDialogErrors()
+		}
+	)
 }
 
 function navigateBack() {
@@ -168,10 +199,12 @@ async function updateApp() {
 	hideEditAppDialogErrors()
 
 	if (editAppDialogName.length == 0) {
-		editAppDialogNameTextfield.errorMessage = locale.editAppDialog.errors.nameTooShort
+		editAppDialogNameTextfield.errorMessage =
+			locale.editAppDialog.errors.nameTooShort
 		return
 	} else if (editAppDialogDescription.length == 0) {
-		editAppDialogDescriptionTextarea.errorMessage = locale.editAppDialog.errors.descriptionTooShort
+		editAppDialogDescriptionTextarea.errorMessage =
+			locale.editAppDialog.errors.descriptionTooShort
 		return
 	}
 
@@ -179,10 +212,13 @@ async function updateApp() {
 
 	try {
 		let response = await axios({
-			method: 'put',
+			method: "put",
 			url: `/api/app/${app.Id}`,
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			},
 			data: {
 				name: editAppDialogName,
@@ -213,29 +249,40 @@ async function updateApp() {
 
 			switch (errorCode) {
 				case ErrorCodes.NameTooShort:
-					editAppDialogNameTextfield.errorMessage = locale.editAppDialog.errors.nameTooShort
+					editAppDialogNameTextfield.errorMessage =
+						locale.editAppDialog.errors.nameTooShort
 					break
 				case ErrorCodes.DescriptionTooShort:
-					editAppDialogDescriptionTextarea.errorMessage = locale.editAppDialog.errors.descriptionTooShort
+					editAppDialogDescriptionTextarea.errorMessage =
+						locale.editAppDialog.errors.descriptionTooShort
 					break
 				case ErrorCodes.NameTooLong:
-					editAppDialogNameTextfield.errorMessage = locale.editAppDialog.errors.nameTooLong
+					editAppDialogNameTextfield.errorMessage =
+						locale.editAppDialog.errors.nameTooLong
 					break
 				case ErrorCodes.DescriptionTooLong:
-					editAppDialogDescriptionTextarea.errorMessage = locale.editAppDialog.errors.descriptionTooLong
+					editAppDialogDescriptionTextarea.errorMessage =
+						locale.editAppDialog.errors.descriptionTooLong
 					break
 				case ErrorCodes.WebLinkInvalid:
-					editAppDialogWebLinkTextfield.errorMessage = locale.editAppDialog.errors.linkInvalid
+					editAppDialogWebLinkTextfield.errorMessage =
+						locale.editAppDialog.errors.linkInvalid
 					break
 				case ErrorCodes.GooglePlayLinkInvalid:
-					editAppDialogGooglePlayLinkTextfield.errorMessage = locale.editAppDialog.errors.linkInvalid
+					editAppDialogGooglePlayLinkTextfield.errorMessage =
+						locale.editAppDialog.errors.linkInvalid
 					break
 				case ErrorCodes.MicrosoftStoreLinkInvalid:
-					editAppDialogMicrosoftStoreLinkTextfield.errorMessage = locale.editAppDialog.errors.linkInvalid
+					editAppDialogMicrosoftStoreLinkTextfield.errorMessage =
+						locale.editAppDialog.errors.linkInvalid
 					break
 				default:
 					if (errors.length == 1) {
-						editAppDialogNameTextfield.errorMessage = locale.editAppDialog.errors.unexpectedError.replace('{0}', errorCode.toString())
+						editAppDialogNameTextfield.errorMessage =
+							locale.editAppDialog.errors.unexpectedError.replace(
+								"{0}",
+								errorCode.toString()
+							)
 					}
 					break
 			}
@@ -246,10 +293,14 @@ async function updateApp() {
 }
 
 function showPublishAppDialog() {
-	publishAppDialog.header = app.Published ? locale.publishAppDialog.unpublishHeader : locale.publishAppDialog.publishHeader
+	publishAppDialog.header = app.Published
+		? locale.publishAppDialog.unpublishHeader
+		: locale.publishAppDialog.publishHeader
 	publishAppDialog.primaryButtonText = locale.publishAppDialog.confirm
 	publishAppDialog.defaultButtonText = locale.cancel
-	publishAppDialogText.innerText = app.Published ? locale.publishAppDialog.unpublishSubtext : locale.publishAppDialog.publishSubtext
+	publishAppDialogText.innerText = app.Published
+		? locale.publishAppDialog.unpublishSubtext
+		: locale.publishAppDialog.publishSubtext
 	publishAppDialog.visible = true
 }
 
@@ -262,10 +313,13 @@ async function publishUnpublishApp() {
 
 	try {
 		let response = await axios({
-			method: 'put',
+			method: "put",
 			url: `/api/app/${app.Id}`,
 			headers: {
-				"X-CSRF-TOKEN": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content")
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			},
 			data: {
 				published: !app.Published
@@ -275,7 +329,7 @@ async function publishUnpublishApp() {
 		let responseData = response.data
 		app.Published = responseData.Published
 		publishedToggle.checked = responseData.Published
-	} catch (error) { }
+	} catch (error) {}
 
 	publishAppDialog.loading = false
 	publishAppDialog.visible = false

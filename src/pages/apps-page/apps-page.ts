@@ -1,1 +1,1 @@
-import '../../components/navbar-component/navbar-component'
+import "../../components/navbar-component/navbar-component"
