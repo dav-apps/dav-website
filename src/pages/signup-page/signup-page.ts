@@ -10,7 +10,11 @@ import {
 import { ErrorCodes } from "dav-js"
 import "../../components/navbar-component/navbar-component"
 import { getLocale } from "../../locales"
-import { devEnvironment, prodEnvironment } from "../../environments"
+import {
+	devEnvironment,
+	stagingEnvironment,
+	prodEnvironment
+} from "../../environments"
 import {
 	showElement,
 	hideElement,
@@ -67,15 +71,23 @@ function main() {
 
 	if (websiteSignup) {
 		// Set the appId and apiKey
-		if (
-			document?.querySelector(`meta[name="env"]`)?.getAttribute("content") ==
-			"production"
-		) {
-			appId = prodEnvironment.appId
-			apiKey = prodEnvironment.apiKey
-		} else {
-			appId = devEnvironment.appId
-			apiKey = devEnvironment.apiKey
+		let env = document
+			?.querySelector(`meta[name="env"]`)
+			?.getAttribute("content")
+
+		switch (env) {
+			case "production":
+				appId = prodEnvironment.appId
+				apiKey = prodEnvironment.apiKey
+				break
+			case "staging":
+				appId = stagingEnvironment.appId
+				apiKey = stagingEnvironment.apiKey
+				break
+			default:
+				appId = devEnvironment.appId
+				apiKey = devEnvironment.apiKey
+				break
 		}
 	}
 

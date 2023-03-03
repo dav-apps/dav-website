@@ -1258,13 +1258,22 @@ export class App {
 		if (this.initialized) return
 		this.initialized = true
 
+		let environment = Environment.Development
+
+		switch (process.env.ENV) {
+			case "production":
+				environment = Environment.Production
+				break
+			case "staging":
+				environment = Environment.Staging
+				break
+		}
+
 		new Dav({
-			environment:
-				process.env.ENV == "production"
-					? Environment.Production
-					: Environment.Development,
+			environment,
 			server: true
 		})
+
 		this.auth = new Auth({
 			apiKey: process.env.DAV_API_KEY,
 			secretKey: process.env.DAV_SECRET_KEY,
