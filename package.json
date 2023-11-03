@@ -4,6 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "node dist/server.js",
+		"dev": "concurrently 'npm:tsc:watch' 'npm:server:watch' 'npm:parcel:watch'",
 		"build": "npm install && tsc && npm run parcel:build",
 		"build:watch": "concurrently 'npm:tsc:watch' 'npm:server:watch'",
 		"tsc:watch": "tsc -w",
