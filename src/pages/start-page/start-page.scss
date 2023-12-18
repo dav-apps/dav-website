@@ -58,8 +58,9 @@
 	height: 70px;
 }
 
-.microsoft-store-badge {
+ms-store-badge::part(img) {
 	height: 48px;
+	margin: 6px 8px 0;
 }
 
 .github-badge {
