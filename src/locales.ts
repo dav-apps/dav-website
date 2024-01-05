@@ -424,7 +424,6 @@ const enDefaults = {
 			noAds: "No ads",
 			universalsoundboard: {
 				outputDeviceFeature: "Change the output device",
-				soundRecorderFeature: "Get access to the sound recorder",
 				hotkeyFeature: "Assign hotkeys to sounds"
 			}
 		},
@@ -888,7 +887,6 @@ const deDefaults = {
 			noAds: "Keine Werbung",
 			universalsoundboard: {
 				outputDeviceFeature: "Ändere das Ausgabegerät",
-				soundRecorderFeature: "Bekomme Zugriff zum Sound-Recorder",
 				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu"
 			}
 		},
