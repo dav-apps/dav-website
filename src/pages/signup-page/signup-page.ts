@@ -156,7 +156,9 @@ async function signup() {
 		if (websiteSignup) {
 			window.location.href = "/"
 		} else {
-			window.location.href = `${redirectUrl}?accessToken=${response.data.accessToken}`
+			let url = new URL(redirectUrl)
+			url.searchParams.append("accessToken", response.data.accessToken)
+			window.location.href = url.toString()
 		}
 	} catch (error) {
 		hideElement(signupProgressRing)

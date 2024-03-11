@@ -155,9 +155,10 @@ async function login() {
 			method: "post",
 			url: "/api/login",
 			headers: {
-				"X-CSRF-TOKEN": document
-					?.querySelector(`meta[name="csrf-token"]`)
-					?.getAttribute("content") ?? ""
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			},
 			data: {
 				email: emailTextfield.value,
@@ -176,7 +177,9 @@ async function login() {
 				window.location.href = "/"
 			}
 		} else {
-			window.location.href = `${redirectUrl}?accessToken=${response.data.accessToken}`
+			let url = new URL(redirectUrl)
+			url.searchParams.append("accessToken", response.data.accessToken)
+			window.location.href = url.toString()
 		}
 	} catch (error) {
 		hideElement(loginButtonProgressRing)
@@ -215,9 +218,10 @@ async function loginAsButtonClick() {
 			method: "post",
 			url: "/api/create_session_from_access_token",
 			headers: {
-				"X-CSRF-TOKEN": document
-					?.querySelector(`meta[name="csrf-token"]`)
-					?.getAttribute("content") ?? ""
+				"X-CSRF-TOKEN":
+					document
+						?.querySelector(`meta[name="csrf-token"]`)
+						?.getAttribute("content") ?? ""
 			},
 			data: {
 				appId,
@@ -227,7 +231,9 @@ async function loginAsButtonClick() {
 			}
 		})
 
-		window.location.href = `${redirectUrl}?accessToken=${response.data.accessToken}`
+		let url = new URL(redirectUrl)
+		url.searchParams.append("accessToken", response.data.accessToken)
+		window.location.href = url.toString()
 	} catch (error) {
 		hideElement(loginAsButtonProgressRing)
 		loginButton.disabled = false
