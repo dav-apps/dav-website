@@ -3,12 +3,18 @@ import "../../components/navbar-component/navbar-component"
 import "../../components/footer-component/footer-component"
 import { showElement, hideElement } from "../../utils"
 
+let largeHeaderStoryline: HTMLHeadingElement
+let smallHeaderStoryline: HTMLHeadingElement
 let largeHeaderPocketlib: HTMLHeadingElement
 let smallHeaderPocketlib: HTMLHeadingElement
 let largeHeaderUniversalsoundboard: HTMLHeadingElement
 let smallHeaderUniversalsoundboard: HTMLHeadingElement
 let largeHeaderCalendo: HTMLHeadingElement
 let smallHeaderCalendo: HTMLHeadingElement
+let screenshotStorylineContainer: HTMLDivElement
+let screenshotStoryline: HTMLImageElement
+let screenshotStorylineMobileContainer: HTMLDivElement
+let screenshotStorylineMobile: HTMLImageElement
 let screenshotPocketlibContainer: HTMLDivElement
 let screenshotPocketlib: HTMLImageElement
 let screenshotPocketlibMobileContainer: HTMLDivElement
@@ -44,6 +50,18 @@ async function main() {
 	smallHeaderCalendo = document.getElementById(
 		"small-header-calendo"
 	) as HTMLHeadingElement
+	screenshotStorylineContainer = document.getElementById(
+		"screenshot-storyline-container"
+	) as HTMLDivElement
+	screenshotStoryline = document.getElementById(
+		"screenshot-storyline"
+	) as HTMLImageElement
+	screenshotStorylineMobileContainer = document.getElementById(
+		"screenshot-storyline-mobile-container"
+	) as HTMLDivElement
+	screenshotStorylineMobile = document.getElementById(
+		"screenshot-storyline-mobile"
+	) as HTMLImageElement
 	screenshotPocketlibContainer = document.getElementById(
 		"screenshot-pocketlib-container"
 	) as HTMLDivElement
@@ -87,6 +105,8 @@ async function main() {
 function setSize() {
 	let mobileView: boolean = window.innerWidth <= 768
 
+	screenshotStoryline.style.width = `${window.innerWidth * 0.3}px`
+	screenshotStorylineMobile.style.width = `${window.innerWidth * 0.3}px`
 	screenshotPocketlib.style.width = `${window.innerWidth * 0.3}px`
 	screenshotPocketlibMobile.style.width = `${window.innerWidth * 0.3}px`
 	screenshotUniversalsoundboard.style.width = `${window.innerWidth * 0.5}px`
@@ -99,10 +119,12 @@ function setSize() {
 	if (mobileView) {
 		showElement(
 			// Show large headers
+			largeHeaderStoryline,
 			largeHeaderPocketlib,
 			largeHeaderUniversalsoundboard,
 			largeHeaderCalendo,
 			// Show mobile screenshots
+			screenshotStorylineMobileContainer,
 			screenshotPocketlibMobileContainer,
 			screenshotUniversalsoundboardMobileContainer,
 			screenshotCalendoMobileContainer
@@ -110,10 +132,12 @@ function setSize() {
 
 		hideElement(
 			// Hide small headers
+			smallHeaderStoryline,
 			smallHeaderPocketlib,
 			smallHeaderUniversalsoundboard,
 			smallHeaderCalendo,
 			// Hide desktop screenshots
+			screenshotStorylineContainer,
 			screenshotPocketlibContainer,
 			screenshotUniversalsoundboardContainer,
 			screenshotCalendoContainer
@@ -121,10 +145,12 @@ function setSize() {
 	} else {
 		hideElement(
 			// Hide large headers
+			largeHeaderStoryline,
 			largeHeaderPocketlib,
 			largeHeaderUniversalsoundboard,
 			largeHeaderCalendo,
 			// Hide mobile screenshots
+			screenshotStorylineMobileContainer,
 			screenshotPocketlibMobileContainer,
 			screenshotUniversalsoundboardMobileContainer,
 			screenshotCalendoMobileContainer
@@ -132,10 +158,12 @@ function setSize() {
 
 		showElement(
 			// Show small headers
+			smallHeaderStoryline,
 			smallHeaderPocketlib,
 			smallHeaderUniversalsoundboard,
 			smallHeaderCalendo,
 			// Show desktop screenshots
+			screenshotStorylineContainer,
 			screenshotPocketlibContainer,
 			screenshotUniversalsoundboardContainer,
 			screenshotCalendoContainer

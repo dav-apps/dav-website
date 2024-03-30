@@ -3,6 +3,18 @@ const enDefaults = {
 	lang: "en",
 	startPage: {
 		title: "dav is a modern platform of connected apps and services",
+		storylineDescription: `
+			Storyline is the one place to get all your news.<br><br>
+
+			🌟 Streamlined News Feed<br>
+			Access news from a multitude of sources, all in one convenient feed.<br><br>
+
+			📌 Personalized Feed<br>
+			Follow your favorite publishers and customize your feed to match your interests. Tailor your news experience to suit your preferences, ensuring you never miss out on what matters most to you.<br><br>
+
+			☁ Seamlessly sync across devices<br>
+			Log in with your dav Account to effortlessly synchronize your feed and preferences across all your devices.
+		`,
 		pocketlibDescription: `
 			PocketLib is a simple and modern ebook reader.<br><br>
 
@@ -457,6 +469,18 @@ const deDefaults = {
 	lang: "de",
 	startPage: {
 		title: "dav ist eine moderne Plattform für vernetzte Apps und Dienste",
+		storylineDescription: `
+			Storyline ist der eine Ort, um alle deine Nachrichten zu erhalten.<br><br>
+
+			🌟 Vereinfachter Nachrichten-Feed<br>
+			Zugriff auf Nachrichten aus einer Vielzahl von Quellen, alles in einem praktischen Feed.<br><br>
+
+			📌 Personalisierter Feed<br>
+			Folge deinen Lieblingsseiten und passe deinen Feed an, um deine Interessen zu treffen. Gestalte deine Nachrichtenerfahrung nach deinen Vorlieben, um sicherzustellen, dass du nie das verpasst, was dir am wichtigsten ist.<br><br>
+
+			☁ Nahtlose Synchronisierung über Geräte hinweg<br>
+			Melde dich mit deinem dav-Konto an, um deinen Feed und deine Einstellungen mühelos auf allen deinen Geräten zu synchronisieren.
+		`,
 		pocketlibDescription: `
 			PocketLib ist ein einfacher und moderner Ebook-Reader.<br><br>
 
@@ -467,7 +491,7 @@ const deDefaults = {
 			Der PocketLib Store enthält eine umfangreiche Sammlung an freier Literatur, sorgfältig ausgewählt und produziert für wahre Buchliebhaber. Melde dich an, um kostenlosen Zugriff auf all diese Bücher zu bekommen.<br><br>
 
 			☁ Sichere deine Daten und lese auf jedem Gerät<br>
-			Melde dich mit deinem dav Account an, um deine Bibliothek und deinen Lese-Fortschritt in der Cloud zu speichern. Lese auf jedem Gerät, wann und wo auch immer du willst.
+			Melde dich mit deinem dav-Konto an, um deine Bibliothek und deinen Lese-Fortschritt in der Cloud zu speichern. Lese auf jedem Gerät, wann und wo auch immer du willst.
 		`,
 		universalSoundboardDescription: `
 			Erstelle dein eigenes Soundboard mit UniversalSoundboard!

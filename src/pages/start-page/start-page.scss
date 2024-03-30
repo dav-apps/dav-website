@@ -67,7 +67,9 @@ ms-store-badge::part(img) {
 	height: 50px;
 }
 
-.screenshot-pocketlib {
+.screenshot-storyline,
+.screenshot-pocketlib,
+.screenshot-calendo {
 	min-width: 250px;
 	max-width: 400px;
 }
@@ -75,9 +77,4 @@ ms-store-badge::part(img) {
 .screenshot-universalsoundboard {
 	min-width: 300px;
 	max-width: 700px;
-}
-
-.screenshot-calendo {
-	min-width: 250px;
-	max-width: 400px;
 }
