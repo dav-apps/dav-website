@@ -434,6 +434,11 @@ const enDefaults = {
 			onlineStorage: "Online storage",
 			accessData: "Access your data on any device",
 			noAds: "No ads",
+			storyline: {
+				articleSummariesFeature: "Smart Article Summaries",
+				realTimeUpdatesFeature: "Real-time Updates",
+				feedPersonalizationFeature: "Enhanced Feed-Personalization"
+			},
 			universalsoundboard: {
 				outputDeviceFeature: "Change the output device",
 				hotkeyFeature: "Assign hotkeys to sounds"
@@ -909,6 +914,11 @@ const deDefaults = {
 			onlineStorage: "Online-Speicher",
 			accessData: "Zugriff auf deine Daten von jedem Gerät",
 			noAds: "Keine Werbung",
+			storyline: {
+				articleSummariesFeature: "Prägnante Artikelzusammenfassungen",
+				realTimeUpdatesFeature: "Echtzeit-Updates",
+				feedPersonalizationFeature: "Optimierte Personalisierung deines Feeds"
+			},
 			universalsoundboard: {
 				outputDeviceFeature: "Ändere das Ausgabegerät",
 				hotkeyFeature: "Ordne Tastenkombinationen zu Sounds zu"
