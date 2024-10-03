@@ -58,9 +58,13 @@
 	height: 70px;
 }
 
+ms-store-badge {
+	height: 48px;
+	margin: 0 8px;
+}
+
 ms-store-badge::part(img) {
 	height: 48px;
-	margin: 6px 8px 0;
 }
 
 .screenshot-storyline,
