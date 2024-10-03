@@ -33,10 +33,25 @@ const enDefaults = {
 			<br><br>You can log in with your dav Account to use the same soundboard on all your devices.
 		`,
 		calendoDescription: `
-			Calendo is a simple app for managing your schedule.
-			You can organize your appointments, manage your todos and group todos by topic.
-			<br>With Calendo you have always an overview of upcoming events and todos.
-			<br><br>You can log in with your dav Account to use the same calendar on all your devices.
+			Calendo is your all-in-one app for appointments, todos, and timely reminders!<br><br>
+
+			📅 Create Appointments & Todos<br>
+			Easily set up and manage tasks and events in one place.<br><br>
+
+			👁️ Overview at a Glance<br>
+			Quickly view all future events and tasks in a simple, streamlined interface.<br><br>
+
+			🗓️ Calendar View<br>
+			See all your upcoming appointments and todos in a clear, organized calendar.<br><br>
+
+			🏷️ Label Sorting<br>
+			Sort your todos by customizable labels for better organization.<br><br>
+
+			⏰ Reminders<br>
+			Get push notifications to remind you of important appointments and tasks.<br><br>
+
+			☁ Seamlessly sync across devices<br>
+			Log in with your dav Account to synchronize your appointments and todos across all your devices.
 		`
 	},
 	userStartPage: {
@@ -504,10 +519,25 @@ const deDefaults = {
 			<br><br>Melde dich mit deinem dav Account an, um dein Soundboard auf mehreren Geräten zu nutzen.
 		`,
 		calendoDescription: `
-			Calendo ist eine einfache App, um deinen Zeitplan zu verwalten.
-			Organisiere deine Termine, verwalte deine Todos und gruppiere Todos nach Themen.
-			<br>Mit Calendo hast du immer den Überblick über bevorstehende Ereignisse und Aufgaben.
-			<br><br>Melde dich mit deinem dav Account an, um von allen Geräten auf deinen Kalender zuzugreifen.
+			Calendo ist deine All-in-One-App für Termine, Todos und rechtzeitige Erinnerungen!<br><br>
+
+			📅 Termine & Todos erstellen<br>
+			Richte Aufgaben und Ereignisse ganz einfach ein und verwalte sie an einem Ort.<br><br>
+
+			👁️ Übersicht auf einen Blick<br>
+			Sieh alle zukünftigen Ereignisse und Aufgaben schnell in einer einfachen, übersichtlichen Oberfläche.<br><br>
+
+			🗓️ Kalenderansicht<br>
+			Behalte den Überblick über alle bevorstehenden Termine und Todos in einem klaren, organisierten Kalender.<br><br>
+
+			🏷️ Etiketten-Sortierung<br>
+			Sortiere deine Todos nach anpassbaren Labels für eine bessere Organisation.<br><br>
+
+			⏰ Erinnerungen<br>
+			Erhalte Push-Benachrichtigungen, um an wichtige Termine und Aufgaben erinnert zu werden.<br><br>
+
+			☁ Nahtlose Synchronisierung über alle Geräte<br>
+			Melde dich mit deinem dav-Konto an, um deine Termine und Todos auf all deinen Geräten zu synchronisieren.
 		`
 	},
 	userStartPage: {
@@ -917,7 +947,8 @@ const deDefaults = {
 			storyline: {
 				articleSummariesFeature: "Prägnante Artikelzusammenfassungen",
 				realTimeUpdatesFeature: "Echtzeit-Updates",
-				feedPersonalizationFeature: "Optimierte Personalisierung deines Feeds"
+				feedPersonalizationFeature:
+					"Optimierte Personalisierung deines Feeds"
 			},
 			universalsoundboard: {
 				outputDeviceFeature: "Ändere das Ausgabegerät",
