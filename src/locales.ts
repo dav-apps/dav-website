@@ -454,6 +454,9 @@ const enDefaults = {
 				realTimeUpdatesFeature: "Real-time Updates",
 				feedPersonalizationFeature: "Enhanced Feed-Personalization"
 			},
+			pocketlib: {
+				freeShipping: "Free shipping"
+			},
 			universalsoundboard: {
 				outputDeviceFeature: "Change the output device",
 				hotkeyFeature: "Assign hotkeys to sounds"
@@ -949,6 +952,9 @@ const deDefaults = {
 				realTimeUpdatesFeature: "Echtzeit-Updates",
 				feedPersonalizationFeature:
 					"Optimierte Personalisierung deines Feeds"
+			},
+			pocketlib: {
+				freeShipping: "Kostenloser Versand"
 			},
 			universalsoundboard: {
 				outputDeviceFeature: "Ändere das Ausgabegerät",
