@@ -254,7 +254,7 @@ export class App {
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
 			let userId = +req.query.userId
-			let passwordConfirmationToken = req.query.passwordConfirmationToken
+			let passwordConfirmationToken = req.query.passwordConfirmationToken as string
 
 			if (
 				isNaN(userId) ||
