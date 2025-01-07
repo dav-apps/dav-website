@@ -24,6 +24,7 @@ import {
 	CustomerPortalSessionsController,
 	ApiResponse,
 	ApiErrorResponse,
+	ErrorCode,
 	SessionResponseData,
 	SignupResponseData,
 	GetDevResponseData,
@@ -254,7 +255,8 @@ export class App {
 			let csrfToken = this.addCsrfToken(CsrfTokenContext.PasswordResetPage)
 
 			let userId = +req.query.userId
-			let passwordConfirmationToken = req.query.passwordConfirmationToken as string
+			let passwordConfirmationToken = req.query
+				.passwordConfirmationToken as string
 
 			if (
 				isNaN(userId) ||
@@ -691,17 +693,15 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.getApp(accessToken, req)
-			if (result.accessToken)
-				this.setAccessTokenCookie(res, result.accessToken)
 
-			if (result.response == null || result.response.status == -1) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<DavApp>
-				res.status(response.status).send(response.data)
+			if (result.accessToken) {
+				this.setAccessTokenCookie(res, result.accessToken)
+			}
+
+			if (Array.isArray(result.response)) {
+				res.status(500).end({ errors: result.response })
 			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.status(200).send(result.response)
 			}
 		})
 
@@ -1392,7 +1392,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: ApiResponse<DavApp> | ApiErrorResponse
+		response: DavApp | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1401,21 +1401,34 @@ export class App {
 			}
 		}
 
-		let response = await AppsController.GetApp({
-			accessToken,
-			id: +req.params.id
-		})
-
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(
+		let response = await AppsController.retrieveApp(
+			`
+				id
+    			name
+    			description
+    			webLink
+    			googlePlayLink
+    			microsoftStoreLink
+    			published
+			`,
+			{
 				accessToken,
-				response as ApiErrorResponse
+				id: Number(req.params.id)
+			}
+		)
+
+		if (Array.isArray(response)) {
+			const errorCodes = response as ErrorCode[]
+
+			let newAccessToken = await this.handleGraphQLApiError(
+				accessToken,
+				errorCodes
 			)
 
 			if (newAccessToken == null) {
 				return {
 					accessToken,
-					response
+					response: errorCodes
 				}
 			} else {
 				return await this.getApp(newAccessToken, req)
@@ -1424,7 +1437,7 @@ export class App {
 
 		return {
 			accessToken,
-			response: response as ApiResponse<DavApp>
+			response
 		}
 	}
 
@@ -1697,8 +1710,9 @@ export class App {
 		if (
 			errorResponse.errors.length == 0 ||
 			errorResponse.errors[0].code != ErrorCodes.AccessTokenMustBeRenewed
-		)
+		) {
 			return null
+		}
 
 		let renewSessionResult = await SessionsController.RenewSession({
 			accessToken
@@ -1709,6 +1723,26 @@ export class App {
 				.accessToken
 		} else {
 			return null
+		}
+	}
+
+	private async handleGraphQLApiError(
+		accessToken: string,
+		errorCodes: ErrorCode[]
+	) {
+		if (!errorCodes.includes("SESSION_ENDED")) {
+			return null
+		}
+
+		let renewSessionResponse = await SessionsController.renewSession(
+			`accessToken`,
+			{ accessToken }
+		)
+
+		if (Array.isArray(renewSessionResponse)) {
+			return null
+		} else {
+			return renewSessionResponse.accessToken
 		}
 	}
 
