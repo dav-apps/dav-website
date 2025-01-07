@@ -366,7 +366,6 @@ const enDefaults = {
 		edit: "Edit",
 		published: "Published",
 		tables: "Tables",
-		apis: "APIs",
 		editAppDialog: {
 			header: "Edit app",
 			nameTextfieldLabel: "Name",
@@ -863,7 +862,6 @@ const deDefaults = {
 		edit: "Bearbeiten",
 		published: "Veröffentlicht",
 		tables: "Tabellen",
-		apis: "APIs",
 		editAppDialog: {
 			header: "App bearbeiten",
 			nameTextfieldLabel: "Name",

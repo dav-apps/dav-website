@@ -1410,6 +1410,12 @@ export class App {
     			googlePlayLink
     			microsoftStoreLink
     			published
+				tables {
+					items {
+						id
+						name
+					}
+				}
 			`,
 			{
 				accessToken,

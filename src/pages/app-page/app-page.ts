@@ -45,7 +45,6 @@ async function main() {
 	editButton = document.getElementById("edit-button") as Button
 	publishedToggle = document.getElementById("published-toggle") as Toggle
 	tablesList = document.getElementById("tables-list") as HTMLUListElement
-	apisList = document.getElementById("apis-list") as HTMLUListElement
 	editAppDialog = document.getElementById("edit-app-dialog") as Dialog
 	editAppDialogNameTextfield = document.getElementById(
 		"edit-app-dialog-name-textfield"
@@ -102,13 +101,6 @@ async function main() {
 		liElement.classList.add("list-group-item", "text-center")
 		liElement.innerText = table.Name
 		tablesList.appendChild(liElement)
-	}
-
-	for (let api of app.Apis) {
-		let liElement = document.createElement("li") as HTMLLIElement
-		liElement.classList.add("list-group-item", "text-center")
-		liElement.innerText = api.Name
-		apisList.appendChild(liElement)
 	}
 }
 
