@@ -715,7 +715,7 @@ export class App {
 			}
 
 			if (Array.isArray(result.response)) {
-				res.status(500).end({ errors: result.response })
+				res.status(500).send({ errors: result.response })
 			} else {
 				res.status(200).send(result.response)
 			}
@@ -767,32 +767,32 @@ export class App {
 			}
 
 			// Do the API request
-			let response = await SessionsController.CreateSession({
-				auth: this.auth,
-				email: req.body.email,
-				password: req.body.password,
-				appId: +req.body.appId,
-				apiKey: req.body.apiKey,
-				deviceName: req.body.deviceName,
-				deviceOs: req.body.deviceOs
-			})
+			let response = await SessionsController.createSession(
+				`
+					accessToken
+					websiteAccessToken
+				`,
+				{
+					auth: this.auth,
+					email: req.body.email,
+					password: req.body.password,
+					appId: +req.body.appId,
+					apiKey: req.body.apiKey,
+					deviceName: req.body.deviceName,
+					deviceOs: req.body.deviceOs
+				}
+			)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<SessionResponseData>
-				res.status(response.status)
-
-				if (response.data.websiteAccessToken) {
-					this.setAccessTokenCookie(res, response.data.websiteAccessToken)
+			if (Array.isArray(response)) {
+				res.status(500).send({ errors: response })
+			} else {
+				if (response.websiteAccessToken) {
+					this.setAccessTokenCookie(res, response.websiteAccessToken)
 				} else {
-					this.setAccessTokenCookie(res, response.data.accessToken)
+					this.setAccessTokenCookie(res, response.accessToken)
 				}
 
-				res.send(response.data)
-			} else if (response.status == -1) {
-				res.status(500).end()
-			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(response)
 			}
 		})
 
