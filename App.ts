@@ -379,13 +379,29 @@ export class App {
 
 		router.get("/apps", async (req, res) => {
 			// Get the apps
-			let response = await AppsController.GetApps()
+			let response = await AppsController.listApps(
+				`
+					items {
+						id
+						name
+						description
+						webLink
+						googlePlayLink
+						microsoftStoreLink
+						published
+					}
+				`,
+				{
+					published: true
+				}
+			)
 			let locale = getLocale(req.acceptsLanguages(supportedLocales))
 			let userResponse = await this.getUser(
 				this.getRequestCookies(req)["accessToken"]
 			)
-			if (userResponse.accessToken)
+			if (userResponse.accessToken) {
 				this.setAccessTokenCookie(res, userResponse.accessToken)
+			}
 
 			res.render("apps-page/apps-page", {
 				lang: locale.lang,
@@ -393,9 +409,9 @@ export class App {
 				navbarLocale: locale.navbarComponent,
 				user: userResponse.user,
 				apps:
-					response.status == 200
-						? (response as ApiResponse<DavApp[]>).data
-						: []
+					response.length > 0 && typeof response[0] == "string"
+						? []
+						: response
 			})
 		})
 
