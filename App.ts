@@ -28,7 +28,7 @@ import {
 	ApiErrorResponse2,
 	ErrorCode,
 	UserSnapshotResource,
-	GetAppUserSnapshotsResponseData,
+	AppUserSnapshotResource,
 	CreateCheckoutSessionResponseData,
 	CreateCustomerPortalSessionResponseData
 } from "dav-js"
@@ -780,15 +780,10 @@ export class App {
 				this.setAccessTokenCookie(res, result.accessToken)
 			}
 
-			if (result.response == null || result.response.status == -1) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response =
-					result.response as ApiResponse<GetAppUserSnapshotsResponseData>
-				res.status(response.status).send(response.data)
+			if (result.response.length > 0 && typeof result.response[0] == "string") {
+				res.status(500).send({ errors: result.response })
 			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(result.response)
 			}
 		})
 
@@ -1586,7 +1581,7 @@ export class App {
 		months: number
 	): Promise<{
 		accessToken: string
-		response: ApiResponse<GetAppUserSnapshotsResponseData> | ApiErrorResponse
+		response: AppUserSnapshotResource[] | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1595,22 +1590,40 @@ export class App {
 			}
 		}
 
-		let response = await AppUserSnapshotsController.GetAppUserSnapshots({
-			accessToken,
-			id: appId,
-			start: DateTime.now().startOf("day").minus({ months }).toSeconds()
-		})
-
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(
+		let response = await AppUserSnapshotsController.listAppUserSnapshots(
+			`
+				items {
+					time
+					dailyActive
+					weeklyActive
+					monthlyActive
+					yearlyActive
+					freePlan
+					plusPlan
+					proPlan
+					emailConfirmed
+					emailUnconfirmed
+				}
+			`,
+			{
 				accessToken,
-				response as ApiErrorResponse
+				appId: appId,
+				start: DateTime.now().startOf("day").minus({ months }).toSeconds()
+			}
+		)
+
+		if (response.length > 0 && typeof response[0] == "number") {
+			const errorCodes = response as ErrorCode[]
+
+			let newAccessToken = await this.handleGraphQLApiError(
+				accessToken,
+				errorCodes
 			)
 
 			if (newAccessToken == null) {
 				return {
 					accessToken,
-					response
+					response: errorCodes
 				}
 			} else {
 				return await this.getAppUserSnapshots(newAccessToken, appId, months)
@@ -1619,7 +1632,7 @@ export class App {
 
 		return {
 			accessToken,
-			response: response as ApiResponse<GetAppUserSnapshotsResponseData>
+			response
 		}
 	}
 
