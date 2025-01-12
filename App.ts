@@ -25,8 +25,6 @@ import {
 	ApiResponse,
 	ApiErrorResponse,
 	ErrorCode,
-	SessionResponseData,
-	SignupResponseData,
 	GetDevResponseData,
 	GetUserSnapshotsResponseData,
 	GetAppUserSnapshotsResponseData,
@@ -286,7 +284,7 @@ export class App {
 				return
 			}
 
-			let userId = +req.query.userId
+			let userId = Number(req.query.userId)
 			let passwordConfirmationToken = req.query
 				.passwordConfirmationToken as string
 			let emailConfirmationToken = req.query.emailConfirmationToken as string
@@ -300,13 +298,13 @@ export class App {
 						emailConfirmationToken != null &&
 						emailConfirmationToken.length >= 2
 					) {
-						let response = await UsersController.ConfirmUser({
+						let response = await UsersController.confirmUser(`id`, {
 							auth: this.auth,
 							id: userId,
 							emailConfirmationToken
 						})
 
-						if (isSuccessStatusCode(response.status)) {
+						if (!Array.isArray(response)) {
 							res.redirect("/?message=confirmUser")
 							return
 						}
@@ -320,13 +318,16 @@ export class App {
 						emailConfirmationToken != null &&
 						emailConfirmationToken.length >= 2
 					) {
-						let response = await UsersController.SaveNewEmail({
-							auth: this.auth,
-							id: userId,
-							emailConfirmationToken
-						})
+						let response = await UsersController.saveNewEmailOfUser(
+							`id`,
+							{
+								auth: this.auth,
+								id: userId,
+								emailConfirmationToken
+							}
+						)
 
-						if (isSuccessStatusCode(response.status)) {
+						if (!Array.isArray(response)) {
 							res.redirect("/?message=changeEmail")
 							return
 						}
@@ -340,13 +341,16 @@ export class App {
 						passwordConfirmationToken != null &&
 						passwordConfirmationToken.length >= 2
 					) {
-						let response = await UsersController.SaveNewPassword({
-							auth: this.auth,
-							id: userId,
-							passwordConfirmationToken
-						})
+						let response = await UsersController.saveNewPasswordOfUser(
+							`id`,
+							{
+								auth: this.auth,
+								id: userId,
+								passwordConfirmationToken
+							}
+						)
 
-						if (isSuccessStatusCode(response.status)) {
+						if (!Array.isArray(response)) {
 							res.redirect("/?message=changePassword")
 							return
 						}
@@ -360,13 +364,13 @@ export class App {
 						emailConfirmationToken != null &&
 						emailConfirmationToken.length >= 2
 					) {
-						let response = await UsersController.ResetEmail({
+						let response = await UsersController.resetEmailOfUser(`id`, {
 							auth: this.auth,
 							id: userId,
 							emailConfirmationToken
 						})
 
-						if (isSuccessStatusCode(response.status)) {
+						if (!Array.isArray(response)) {
 							res.redirect("/?message=resetEmail")
 							return
 						}
@@ -776,7 +780,7 @@ export class App {
 					auth: this.auth,
 					email: req.body.email,
 					password: req.body.password,
-					appId: +req.body.appId,
+					appId: Number(req.body.appId),
 					apiKey: req.body.apiKey,
 					deviceName: req.body.deviceName,
 					deviceOs: req.body.deviceOs
@@ -808,23 +812,26 @@ export class App {
 				return
 			}
 
-			let response = await SessionsController.CreateSessionFromAccessToken({
-				auth: this.auth,
-				accessToken: this.getRequestCookies(req)["accessToken"],
-				appId: req.body.appId,
-				apiKey: req.body.apiKey,
-				deviceName: req.body.deviceName,
-				deviceOs: req.body.deviceOs
-			})
+			// Do the API request
+			let response = await SessionsController.createSessionFromAccessToken(
+				`
+					accessToken
+					websiteAccessToken
+				`,
+				{
+					auth: this.auth,
+					accessToken: this.getRequestCookies(req)["accessToken"],
+					appId: Number(req.body.appId),
+					apiKey: req.body.apiKey,
+					deviceName: req.body.deviceName,
+					deviceOs: req.body.deviceOs
+				}
+			)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<SessionResponseData>
-				res.status(response.status).send(response.data)
-			} else if (response.status == -1) {
-				res.status(500).end()
+			if (Array.isArray(response)) {
+				res.status(500).send({ errors: response })
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(response)
 			}
 		})
 
@@ -841,33 +848,33 @@ export class App {
 			}
 
 			// Do the API request
-			let response = await UsersController.Signup({
-				auth: this.auth,
-				email: req.body.email,
-				firstName: req.body.firstName,
-				password: req.body.password,
-				appId: +req.body.appId,
-				apiKey: req.body.apiKey,
-				deviceName: req.body.deviceName,
-				deviceOs: req.body.deviceOs
-			})
+			let response = await UsersController.createUser(
+				`
+					accessToken
+					websiteAccessToken
+				`,
+				{
+					auth: this.auth,
+					email: req.body.email,
+					firstName: req.body.firstName,
+					password: req.body.password,
+					appId: Number(req.body.appId),
+					apiKey: req.body.apiKey,
+					deviceName: req.body.deviceName,
+					deviceOs: req.body.deviceOs
+				}
+			)
 
-			if (isSuccessStatusCode(response.status)) {
-				response = response as ApiResponse<SignupResponseData>
-				res.status(response.status)
-
-				if (response.data.websiteAccessToken) {
-					this.setAccessTokenCookie(res, response.data.websiteAccessToken)
+			if (Array.isArray(response)) {
+				res.status(500).send({ errors: response })
+			} else {
+				if (response.websiteAccessToken) {
+					this.setAccessTokenCookie(res, response.websiteAccessToken)
 				} else {
-					this.setAccessTokenCookie(res, response.data.accessToken)
+					this.setAccessTokenCookie(res, response.accessToken)
 				}
 
-				res.send(response.data)
-			} else if (response.status == -1) {
-				res.status(500).end()
-			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(response)
 			}
 		})
 
@@ -895,18 +902,18 @@ export class App {
 				return
 			}
 
-			let response = await UsersController.SendConfirmationEmail({
-				auth: this.auth,
-				id: userResponse.user.Id
-			})
+			let response = await UsersController.sendConfirmationEmailForUser(
+				`id`,
+				{
+					auth: this.auth,
+					id: userResponse.user.Id
+				}
+			)
 
-			if (isSuccessStatusCode(response.status)) {
-				res.status(response.status).end()
-			} else if (response.status == -1) {
-				res.status(500).end()
+			if (Array.isArray(response)) {
+				res.status(500).send({ errors: response })
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(response)
 			}
 		})
 
@@ -922,18 +929,18 @@ export class App {
 				return
 			}
 
-			let response = await UsersController.SendPasswordResetEmail({
-				auth: this.auth,
-				email: req.body.email
-			})
+			let response = await UsersController.sendPasswordResetEmailForUser(
+				`id`,
+				{
+					auth: this.auth,
+					email: req.body.email
+				}
+			)
 
-			if (isSuccessStatusCode(response.status)) {
-				res.status(response.status).end()
-			} else if (response.status == -1) {
-				res.status(500).end()
+			if (Array.isArray(response)) {
+				res.status(500).send({ errors: response })
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(response)
 			}
 		})
 
@@ -949,20 +956,17 @@ export class App {
 				return
 			}
 
-			let response = await UsersController.SetPassword({
+			let response = await UsersController.setPasswordOfUser(`id`, {
 				auth: this.auth,
 				id: req.body.id,
 				password: req.body.password,
 				passwordConfirmationToken: req.body.passwordConfirmationToken
 			})
 
-			if (isSuccessStatusCode(response.status)) {
-				res.status(response.status).end()
-			} else if (response.status == -1) {
-				res.status(500).end()
+			if (Array.isArray(response)) {
+				res.status(500).send({ errors: response })
 			} else {
-				response = response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(response)
 			}
 		})
 
@@ -980,8 +984,10 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.updateUser(accessToken, req)
-			if (result.accessToken)
+
+			if (result.accessToken) {
 				this.setAccessTokenCookie(res, result.accessToken)
+			}
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -1008,8 +1014,10 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.setProfileImageOfUser(accessToken, req)
-			if (result.accessToken)
+
+			if (result.accessToken) {
 				this.setAccessTokenCookie(res, result.accessToken)
+			}
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -1036,8 +1044,10 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.createCheckoutSession(accessToken, req)
-			if (result.accessToken)
+
+			if (result.accessToken) {
 				this.setAccessTokenCookie(res, result.accessToken)
+			}
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -1065,8 +1075,10 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.createCustomerPortalSession(accessToken)
-			if (result.accessToken)
+
+			if (result.accessToken) {
 				this.setAccessTokenCookie(res, result.accessToken)
+			}
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -1101,9 +1113,11 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
-			if (userResponse.accessToken)
-				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let user = userResponse.user
+
+			if (userResponse.accessToken) {
+				this.setAccessTokenCookie(res, userResponse.accessToken)
+			}
 
 			if (user == null) {
 				res.status(412).end()
@@ -1181,9 +1195,11 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let userResponse = await this.getUser(accessToken)
-			if (userResponse.accessToken)
-				this.setAccessTokenCookie(res, userResponse.accessToken)
 			let user = userResponse.user
+
+			if (userResponse.accessToken) {
+				this.setAccessTokenCookie(res, userResponse.accessToken)
+			}
 
 			if (user == null) {
 				res.status(412).end()
@@ -1228,8 +1244,10 @@ export class App {
 
 			let accessToken = this.getRequestCookies(req)["accessToken"]
 			let result = await this.updateApp(accessToken, req)
-			if (result.accessToken)
+
+			if (result.accessToken) {
 				this.setAccessTokenCookie(res, result.accessToken)
+			}
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -1297,7 +1315,7 @@ export class App {
 		})
 	}
 
-	private getRequestCookies(req) {
+	private getRequestCookies(req: express.Request) {
 		if (req.headers.cookie == null) return {}
 		const rawCookies = req.headers.cookie.split("; ")
 		const parsedCookies = {}
@@ -1736,16 +1754,16 @@ export class App {
 			return null
 		}
 
-		let renewSessionResult = await SessionsController.RenewSession({
-			accessToken
-		})
+		let renewSessionResult = await SessionsController.renewSession(
+			`accessToken`,
+			{ accessToken }
+		)
 
-		if (renewSessionResult.status == 200) {
-			return (renewSessionResult as ApiResponse<SessionResponseData>).data
-				.accessToken
-		} else {
+		if (Array.isArray(renewSessionResult)) {
 			return null
 		}
+
+		return renewSessionResult.accessToken
 	}
 
 	private async handleGraphQLApiError(
