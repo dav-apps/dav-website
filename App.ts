@@ -24,6 +24,7 @@ import {
 	CustomerPortalSessionsController,
 	ApiResponse,
 	ApiErrorResponse,
+	ApiErrorResponse2,
 	ErrorCode,
 	GetDevResponseData,
 	GetUserSnapshotsResponseData,
@@ -1052,11 +1053,11 @@ export class App {
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
 			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<User>
+				let response = result.response as ApiResponse<{}>
 				res.status(response.status).send(response.data)
 			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				let response = result.response as ApiErrorResponse2
+				res.status(response.status).send({ error: response.error })
 			}
 		})
 
@@ -1668,7 +1669,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: ApiResponse<User> | ApiErrorResponse
+		response: ApiResponse<{}> | ApiErrorResponse2
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1677,16 +1678,16 @@ export class App {
 			}
 		}
 
-		let response = await UsersController.SetProfileImageOfUser({
+		let response = await UsersController.uploadUserProfileImage({
 			accessToken,
-			data: req.body,
-			type: req.headers["content-type"]
+			contentType: req.headers["content-type"],
+			data: req.body
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(
+			let newAccessToken = await this.handleApiError2(
 				accessToken,
-				response as ApiErrorResponse
+				response as ApiErrorResponse2
 			)
 
 			if (newAccessToken == null) {
@@ -1846,6 +1847,29 @@ export class App {
 		if (
 			errorResponse.errors.length == 0 ||
 			errorResponse.errors[0].code != ErrorCodes.AccessTokenMustBeRenewed
+		) {
+			return null
+		}
+
+		let renewSessionResult = await SessionsController.renewSession(
+			`accessToken`,
+			{ accessToken }
+		)
+
+		if (Array.isArray(renewSessionResult)) {
+			return null
+		}
+
+		return renewSessionResult.accessToken
+	}
+
+	private async handleApiError2(
+		accessToken: string,
+		errorResponse: ApiErrorResponse2
+	): Promise<string> {
+		if (
+			errorResponse.error != null ||
+			errorResponse.error.code != "SESSION_ENDED"
 		) {
 			return null
 		}
