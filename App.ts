@@ -753,7 +753,7 @@ export class App {
 			if (Array.isArray(result.response)) {
 				res.status(500).send({ errors: result.response })
 			} else {
-				res.status(200).send(result.response)
+				res.send(result.response)
 			}
 		})
 
@@ -775,8 +775,10 @@ export class App {
 				Number(req.params.id),
 				req.query.months ? Number(req.query.months) : 1
 			)
-			if (result.accessToken)
+
+			if (result.accessToken) {
 				this.setAccessTokenCookie(res, result.accessToken)
+			}
 
 			if (result.response == null || result.response.status == -1) {
 				res.status(500).end()
@@ -1021,14 +1023,10 @@ export class App {
 				this.setAccessTokenCookie(res, result.accessToken)
 			}
 
-			if (result.response == null || result.response.status == -1) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<User>
-				res.status(response.status).send(response.data)
+			if (Array.isArray(result.response)) {
+				res.status(500).send({ errors: result.response })
 			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(result.response)
 			}
 		})
 
@@ -1595,7 +1593,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: ApiResponse<User> | ApiErrorResponse
+		response: User | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1604,17 +1602,49 @@ export class App {
 			}
 		}
 
-		let response = await UsersController.UpdateUser({
-			accessToken,
-			firstName: req.body.firstName,
-			email: req.body.email,
-			password: req.body.password
-		})
-
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(
+		let response = await UsersController.updateUser(
+			`
+				id
+				email
+				firstName
+				confirmed
+				totalStorage
+				usedStorage
+				dev {
+					id
+				}
+				provider {
+					id
+				}
+				profileImage {
+					url
+					etag
+				}
+				apps {
+					total
+					items {
+						id
+						name
+						description
+						published
+						webLink
+						googlePlayLink
+						microsoftStoreLink
+					}
+				}
+			`,
+			{
 				accessToken,
-				response as ApiErrorResponse
+				firstName: req.body.firstName,
+				email: req.body.email,
+				password: req.body.password
+			}
+		)
+
+		if (Array.isArray(response)) {
+			let newAccessToken = await this.handleGraphQLApiError(
+				accessToken,
+				response
 			)
 
 			if (newAccessToken == null) {
@@ -1629,7 +1659,7 @@ export class App {
 
 		return {
 			accessToken,
-			response: response as ApiResponse<User>
+			response
 		}
 	}
 
