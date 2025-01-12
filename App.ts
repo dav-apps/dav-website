@@ -11,6 +11,7 @@ import {
 	Auth,
 	App as DavApp,
 	User,
+	Dev,
 	Environment,
 	ErrorCodes,
 	isSuccessStatusCode,
@@ -1421,7 +1422,7 @@ export class App {
 
 	private async getDev(
 		accessToken: string
-	): Promise<{ accessToken: string; dev: GetDevResponseData }> {
+	): Promise<{ accessToken: string; dev: Dev }> {
 		if (accessToken == null) {
 			return {
 				accessToken: null,
@@ -1429,19 +1430,36 @@ export class App {
 			}
 		}
 
-		let getDevResponse = await DevsController.GetDev({ accessToken })
+		let getDevResponse = await DevsController.retrieveDev(
+			`
+				id
+				apps {
+					items {
+						id
+						name
+						description
+						webLink
+						googlePlayLink
+						microsoftStoreLink
+						published
+					}
+				}
+			`,
+			{ accessToken }
+		)
 
-		if (!isSuccessStatusCode(getDevResponse.status)) {
-			accessToken = await this.handleApiError(
+		if (Array.isArray(getDevResponse)) {
+			accessToken = await this.handleGraphQLApiError(
 				accessToken,
-				getDevResponse as ApiErrorResponse
+				getDevResponse
 			)
+
 			return await this.getDev(accessToken)
 		}
 
 		return {
 			accessToken,
-			dev: (getDevResponse as ApiResponse<GetDevResponseData>).data
+			dev: getDevResponse
 		}
 	}
 
