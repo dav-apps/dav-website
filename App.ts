@@ -27,8 +27,7 @@ import {
 	ApiErrorResponse,
 	ApiErrorResponse2,
 	ErrorCode,
-	GetDevResponseData,
-	GetUserSnapshotsResponseData,
+	UserSnapshotResource,
 	GetAppUserSnapshotsResponseData,
 	CreateCheckoutSessionResponseData,
 	CreateCustomerPortalSessionResponseData
@@ -717,19 +716,18 @@ export class App {
 				accessToken,
 				req.query.months ? Number(req.query.months) : 1
 			)
+
 			if (result.accessToken) {
 				this.setAccessTokenCookie(res, result.accessToken)
 			}
 
-			if (result.response == null || result.response.status == -1) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response =
-					result.response as ApiResponse<GetUserSnapshotsResponseData>
-				res.status(response.status).send(response.data)
+			if (
+				result.response.length > 0 &&
+				typeof result.response[0] == "string"
+			) {
+				res.status(500).send({ errors: result.response })
 			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(result.response)
 			}
 		})
 
@@ -1468,7 +1466,7 @@ export class App {
 		months: number
 	): Promise<{
 		accessToken: string
-		response: ApiResponse<GetUserSnapshotsResponseData> | ApiErrorResponse
+		response: UserSnapshotResource[] | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1477,21 +1475,39 @@ export class App {
 			}
 		}
 
-		let response = await UserSnapshotsController.GetUserSnapshots({
-			accessToken,
-			start: DateTime.now().startOf("day").minus({ months }).toSeconds()
-		})
-
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(
+		let response = await UserSnapshotsController.listUserSnapshots(
+			`
+				items {
+					time
+					dailyActive
+					weeklyActive
+					monthlyActive
+					yearlyActive
+					freePlan
+					plusPlan
+					proPlan
+					emailConfirmed
+					emailUnconfirmed
+				}
+			`,
+			{
 				accessToken,
-				response as ApiErrorResponse
+				start: DateTime.now().startOf("day").minus({ months }).toSeconds()
+			}
+		)
+
+		if (response.length > 0 && typeof response[0] == "number") {
+			const errorCodes = response as ErrorCode[]
+
+			let newAccessToken = await this.handleGraphQLApiError(
+				accessToken,
+				errorCodes
 			)
 
 			if (newAccessToken == null) {
 				return {
 					accessToken,
-					response
+					response: errorCodes
 				}
 			} else {
 				return await this.getUserSnapshots(newAccessToken, months)
@@ -1500,7 +1516,7 @@ export class App {
 
 		return {
 			accessToken,
-			response: response as ApiResponse<GetUserSnapshotsResponseData>
+			response
 		}
 	}
 
