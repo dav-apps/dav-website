@@ -30,7 +30,7 @@ import {
 	UserSnapshotResource,
 	AppUserSnapshotResource,
 	CheckoutSessionResource,
-	CreateCustomerPortalSessionResponseData
+	CustomerPortalSessionResource
 } from "dav-js"
 import { CsrfToken, CsrfTokenContext } from "./src/types.js"
 import { supportedLocales, getLocale } from "./src/locales.js"
@@ -1103,15 +1103,10 @@ export class App {
 				this.setAccessTokenCookie(res, result.accessToken)
 			}
 
-			if (result.response == null || result.response.status == -1) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response =
-					result.response as ApiResponse<CreateCustomerPortalSessionResponseData>
-				res.status(response.status).send(response.data)
+			if (Array.isArray(result.response)) {
+				res.status(500).send({ errors: result.response })
 			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(result.response)
 			}
 		})
 
@@ -1800,9 +1795,7 @@ export class App {
 
 	private async createCustomerPortalSession(accessToken: string): Promise<{
 		accessToken: string
-		response:
-			| ApiResponse<CreateCustomerPortalSessionResponseData>
-			| ApiErrorResponse
+		response: CustomerPortalSessionResource | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1812,14 +1805,17 @@ export class App {
 		}
 
 		let response =
-			await CustomerPortalSessionsController.CreateCustomerPortalSession({
-				accessToken
-			})
+			await CustomerPortalSessionsController.createCustomerPortalSession(
+				`url`,
+				{
+					accessToken
+				}
+			)
 
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(
+		if (Array.isArray(response)) {
+			let newAccessToken = await this.handleGraphQLApiError(
 				accessToken,
-				response as ApiErrorResponse
+				response
 			)
 
 			if (newAccessToken == null) {
@@ -1834,8 +1830,7 @@ export class App {
 
 		return {
 			accessToken,
-			response:
-				response as ApiResponse<CreateCustomerPortalSessionResponseData>
+			response
 		}
 	}
 
