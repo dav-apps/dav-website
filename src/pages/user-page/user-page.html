@@ -277,7 +277,7 @@
 						<div style="width: 80%">
 							<!-- Cards for payment method and subscription status -->
 							<div class="d-flex flex-wrap justify-content-center">
-								<% if (card != null && user.Plan > 0) { %>
+								<% if (card != null && user.Plan != 'FREE') { %>
 								<div
 									id="payment-method-card"
 									class="card shadow-sm"
@@ -322,7 +322,7 @@
 										</div>
 									</div>
 								</div>
-								<% } %> <% if (periodEndDate != null && user.Plan > 0) {
+								<% } %> <% if (periodEndDate != null && user.Plan != 'FREE') {
 								%>
 								<div
 									id="subscription-card"
@@ -334,7 +334,7 @@
 											id="subscription-card-header"
 											class="fw-light"
 										>
-											<%= user.SubscriptionStatus == 0 ?
+											<%= user.SubscriptionStatus == 'ACTIVE' ?
 											locale.plans.nextPayment :
 											locale.plans.subscriptionEnd %>
 										</h5>
@@ -359,7 +359,7 @@
 											<dav-button
 												id="cancel-continue-subscription-button"
 											>
-												<%= user.SubscriptionStatus == 0 ?
+												<%= user.SubscriptionStatus == 'ACTIVE' ?
 												locale.plans.cancelSubscription :
 												locale.plans.continueSubscription %>
 											</dav-button>
@@ -504,17 +504,17 @@
 
 												<button
 													id="plans-table-free-current-plan-button"
-													class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-outline-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
 													type="button"
 													disabled
 												>
 													<%= locale.plans.currentPlan %>
 												</button>
 
-												<% if (user.SubscriptionStatus == 0) { %>
+												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 												<button
 													id="plans-table-free-downgrade-button"
-													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-outline-danger <%= user.Plan != 'FREE' ? '' : 'd-none' %>"
 													type="button"
 												>
 													<%= locale.plans.downgrade %>
@@ -522,7 +522,7 @@
 												<% } else { %>
 												<button
 													id="plans-table-free-downgrade-button"
-													class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-outline-danger <%= user.Plan != 'FREE' ? '' : 'd-none' %>"
 													type="button"
 													disabled
 												>
@@ -542,10 +542,10 @@
 													class="d-none"
 												></dav-progress-ring>
 
-												<% if (user.SubscriptionStatus == 0) { %>
+												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 												<button
 													id="plans-table-plus-upgrade-button"
-													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
 													type="button"
 												>
 													<%= locale.plans.upgrade %>
@@ -553,7 +553,7 @@
 												<% } else { %>
 												<button
 													id="plans-table-plus-upgrade-button"
-													class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
 													type="button"
 													disabled
 												>
@@ -563,17 +563,17 @@
 
 												<button
 													id="plans-table-plus-current-plan-button"
-													class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-outline-dark <%= user.Plan == 'PLUS' ? '' : 'd-none' %>"
 													type="button"
 													disabled
 												>
 													<%= locale.plans.currentPlan %>
 												</button>
 
-												<% if (user.SubscriptionStatus == 0) { %>
+												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 												<button
 													id="plans-table-plus-downgrade-button"
-													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-outline-danger <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
 													type="button"
 												>
 													<%= locale.plans.downgrade %>
@@ -581,7 +581,7 @@
 												<% } else { %>
 												<button
 													id="plans-table-plus-downgrade-button"
-													class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-outline-danger <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
 													type="button"
 													disabled
 												>
@@ -601,10 +601,10 @@
 													class="d-none"
 												></dav-progress-ring>
 
-												<% if (user.SubscriptionStatus == 0) { %>
+												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 												<button
 													id="plans-table-pro-upgrade-button"
-													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-dark <%= user.Plan != 'PRO' ? '' : 'd-none' %>"
 													type="button"
 												>
 													<%= locale.plans.upgrade %>
@@ -612,7 +612,7 @@
 												<% } else { %>
 												<button
 													id="plans-table-pro-upgrade-button"
-													class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-dark <%= user.Plan != 'PRO' ? '' : 'd-none' %>"
 													type="button"
 													disabled
 												>
@@ -622,7 +622,7 @@
 
 												<button
 													id="plans-table-pro-current-plan-button"
-													class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
+													class="btn btn-sm btn-outline-dark <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
 													type="button"
 													disabled
 												>
@@ -674,17 +674,17 @@
 
 											<button
 												id="plans-table-mobile-free-current-plan-button"
-												class="btn btn-sm btn-outline-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-outline-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
 												type="button"
 												disabled
 											>
 												<%= locale.plans.currentPlan %>
 											</button>
 
-											<% if (user.SubscriptionStatus == 0) { %>
+											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 											<button
 												id="plans-table-mobile-free-downgrade-button"
-												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-outline-danger <%= user.Plan != 'FREE' ? '' : 'd-none' %>"
 												type="button"
 											>
 												<%= locale.plans.downgrade %>
@@ -692,7 +692,7 @@
 											<% } else { %>
 											<button
 												id="plans-table-mobile-free-downgrade-button"
-												class="btn btn-sm btn-outline-danger <%= user.Plan > 0 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-outline-danger <%= user.Plan != 'FREE' ? '' : 'd-none' %>"
 												type="button"
 												disabled
 											>
@@ -793,10 +793,10 @@
 												class="d-none"
 											></dav-progress-ring>
 
-											<% if (user.SubscriptionStatus == 0) { %>
+											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 											<button
 												id="plans-table-mobile-plus-upgrade-button"
-												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
 												type="button"
 											>
 												<%= locale.plans.upgrade %>
@@ -804,7 +804,7 @@
 											<% } else { %>
 											<button
 												id="plans-table-mobile-plus-upgrade-button"
-												class="btn btn-sm btn-dark <%= user.Plan == 0 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
 												type="button"
 												disabled
 											>
@@ -814,17 +814,17 @@
 
 											<button
 												id="plans-table-mobile-plus-current-plan-button"
-												class="btn btn-sm btn-outline-dark <%= user.Plan == 1 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-outline-dark <%= user.Plan == 'PLUS' ? '' : 'd-none' %>"
 												type="button"
 												disabled
 											>
 												<%= locale.plans.currentPlan %>
 											</button>
 
-											<% if (user.SubscriptionStatus == 0) { %>
+											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 											<button
 												id="plans-table-mobile-plus-downgrade-button"
-												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-outline-danger <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
 												type="button"
 											>
 												<%= locale.plans.downgrade %>
@@ -832,7 +832,7 @@
 											<% } else { %>
 											<button
 												id="plans-table-mobile-plus-downgrade-button"
-												class="btn btn-sm btn-outline-danger <%= user.Plan == 2 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-outline-danger <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
 												type="button"
 												disabled
 											>
@@ -946,10 +946,10 @@
 												class="d-none"
 											></dav-progress-ring>
 
-											<% if (user.SubscriptionStatus == 0) { %>
+											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
 											<button
 												id="plans-table-mobile-pro-upgrade-button"
-												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-dark <%= user.Plan != 'PRO' ? '' : 'd-none' %>"
 												type="button"
 											>
 												<%= locale.plans.upgrade %>
@@ -957,7 +957,7 @@
 											<% } else { %>
 											<button
 												id="plans-table-mobile-pro-upgrade-button"
-												class="btn btn-sm btn-dark <%= user.Plan < 2 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-dark <%= user.Plan != 'PRO' ? '' : 'd-none' %>"
 												type="button"
 												disabled
 											>
@@ -967,7 +967,7 @@
 
 											<button
 												id="plans-table-mobile-pro-current-plan-button"
-												class="btn btn-sm btn-outline-dark <%= user.Plan == 2 ? '' : 'd-none' %>"
+												class="btn btn-sm btn-outline-dark <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
 												type="button"
 												disabled
 											>

@@ -30,7 +30,8 @@ import {
 	UserSnapshotResource,
 	AppUserSnapshotResource,
 	CheckoutSessionResource,
-	CustomerPortalSessionResource
+	CustomerPortalSessionResource,
+	Plan
 } from "dav-js"
 import { CsrfToken, CsrfTokenContext } from "./src/types.js"
 import { supportedLocales, getLocale } from "./src/locales.js"
@@ -539,10 +540,10 @@ export class App {
 			}
 
 			if (req.query.plan == "1") {
-				user.Plan = 1
+				user.Plan = Plan.Plus
 				showUpgradeSuccessMessage = true
 			} else if (req.query.plan == "2") {
-				user.Plan = 2
+				user.Plan = Plan.Pro
 				showUpgradeSuccessMessage = true
 			}
 
@@ -1360,6 +1361,10 @@ export class App {
 				confirmed
 				totalStorage
 				usedStorage
+				stripeCustomerId
+				plan
+				subscriptionStatus
+				periodEnd
 				dev {
 					id
 				}
