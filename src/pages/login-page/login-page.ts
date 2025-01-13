@@ -1,5 +1,5 @@
 import axios from "axios"
-import { ErrorCodes } from "dav-js"
+import { ErrorCode } from "dav-js"
 import "dav-ui-components"
 import {
 	Button,
@@ -249,29 +249,23 @@ async function loginAsButtonClick() {
 	}
 }
 
-function showError(errors: { code: number; message: string }[]) {
-	if (errors == null) {
+function showError(errorCodes: ErrorCode[]) {
+	if (errorCodes == null || errorCodes.length == 0) {
 		errorMessageBar.innerText = locale.errors.unexpectedErrorLong
 		showElement(errorMessageBar)
 		return
 	}
 
-	let errorCode = errors[0].code
-
 	if (
-		errorCode == ErrorCodes.IncorrectPassword ||
-		errorCode == ErrorCodes.UserDoesNotExist
+		errorCodes.includes("PASSWORD_INCORRECT") ||
+		errorCodes.includes("USER_DOES_NOT_EXIST")
 	) {
 		errorMessageBar.innerText = locale.errors.loginFailed
 	} else {
 		errorMessageBar.innerText = locale.errors.unexpectedErrorShort.replace(
 			"{0}",
-			errorCode.toString()
+			errorCodes[0]
 		)
-	}
-
-	if (errorCode != ErrorCodes.EmailMissing) {
-		passwordTextfield.value = ""
 	}
 
 	showElement(errorMessageBar)
