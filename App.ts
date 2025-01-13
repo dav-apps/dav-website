@@ -539,10 +539,10 @@ export class App {
 					.toFormat("DDD")
 			}
 
-			if (req.query.plan == "1") {
+			if (req.query.plan == Plan.Plus) {
 				user.Plan = Plan.Plus
 				showUpgradeSuccessMessage = true
-			} else if (req.query.plan == "2") {
+			} else if (req.query.plan == Plan.Pro) {
 				user.Plan = Plan.Pro
 				showUpgradeSuccessMessage = true
 			}
@@ -1125,7 +1125,7 @@ export class App {
 
 			let plan = req.body.plan
 
-			if (plan != 0 && plan != 1 && plan != 2) {
+			if (plan != Plan.Free && plan != Plan.Plus && plan != Plan.Pro) {
 				res.status(400).end()
 				return
 			}
@@ -1151,7 +1151,7 @@ export class App {
 			})
 
 			if (subscriptions.data.length == 0) {
-				if (plan == 0) {
+				if (plan == Plan.Free) {
 					res.status(200).send({
 						plan
 					})
@@ -1163,7 +1163,7 @@ export class App {
 						items: [
 							{
 								plan:
-									plan == 1
+									plan == Plan.Plus
 										? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID
 										: process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
 							}
@@ -1173,7 +1173,7 @@ export class App {
 			} else {
 				let subscription = subscriptions.data[0]
 
-				if (plan == 0) {
+				if (plan == Plan.Free) {
 					// Cancel the subscription
 					await stripe.subscriptions.update(subscription.id, {
 						cancel_at_period_end: true
@@ -1185,7 +1185,7 @@ export class App {
 							{
 								id: subscription.items.data[0].id,
 								plan:
-									plan == 1
+									plan == Plan.Plus
 										? process.env.STRIPE_DAV_PLUS_EUR_PLAN_ID
 										: process.env.STRIPE_DAV_PRO_EUR_PLAN_ID
 							}

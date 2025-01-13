@@ -809,7 +809,7 @@ async function paymentMethodButtonClick() {
 			}
 		})
 
-		window.location.href = response.data.sessionUrl
+		window.location.href = response.data.url
 		return
 	} catch (error) {
 		// Show error message
