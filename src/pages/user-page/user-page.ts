@@ -1,7 +1,7 @@
 import axios from "axios"
 import { MDCSnackbar } from "@material/snackbar"
 import Cropper from "cropperjs"
-import { ErrorCode, PromiseHolder } from "dav-js"
+import { ErrorCode, Plan, PromiseHolder } from "dav-js"
 import "dav-ui-components"
 import {
 	Button,
@@ -939,8 +939,8 @@ async function plansTablePlusUpgradeButtonClick() {
 	disablePlansTableButtons()
 
 	try {
-		let response = await createCheckoutSession(1)
-		window.location.href = response.data.sessionUrl
+		let response = await createCheckoutSession(Plan.Plus)
+		window.location.href = response.data.url
 		return
 	} catch (error) {
 		// Show error message
@@ -976,11 +976,11 @@ async function plansTablePlusDowngradeButtonClick() {
 					"Content-Type": "application/json"
 				},
 				data: {
-					plan: 1
+					plan: "PLUS"
 				}
 			})
 
-			if (response.data.plan == 1) {
+			if (response.data.plan == "PLUS") {
 				// Update the UI
 				hideElement(
 					plansTablePlusDowngradeButton,
@@ -1019,8 +1019,8 @@ async function plansTableProUpgradeButtonClick() {
 		disablePlansTableButtons()
 
 		try {
-			let response = await createCheckoutSession(2)
-			window.location.href = response.data.sessionUrl
+			let response = await createCheckoutSession(Plan.Pro)
+			window.location.href = response.data.url
 			return
 		} catch (error) {
 			// Show error message
@@ -1052,11 +1052,11 @@ async function plansTableProUpgradeButtonClick() {
 						"Content-Type": "application/json"
 					},
 					data: {
-						plan: 2
+						plan: "PRO"
 					}
 				})
 
-				if (response.data.plan == 2) {
+				if (response.data.plan == "PRO") {
 					// Update the UI
 					hideElement(
 						plansTablePlusUpgradeButton,
@@ -1094,7 +1094,7 @@ function hideChangePlanDialog(result: boolean) {
 	changePlanDialog.visible = false
 }
 
-async function createCheckoutSession(plan: number): Promise<any> {
+async function createCheckoutSession(plan: Plan): Promise<any> {
 	return await axios({
 		method: "post",
 		url: "/api/checkout_session",
