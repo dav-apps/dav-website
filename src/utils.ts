@@ -1,3 +1,5 @@
+import { Dialog } from "dav-ui-components"
+
 function getUpmostParentWithSingleChild(element: HTMLElement) {
 	let currentElement = element
 	let resultElement = element
@@ -71,8 +73,8 @@ export async function getUserAgentPlatform(): Promise<string | null> {
 }
 
 export function handleExpiredSessionError(
-	error,
-	expiredSessionDialog
+	error: any,
+	expiredSessionDialog: Dialog
 ): boolean {
 	if (error.response.status == 403 && error.response.data.length == 0) {
 		expiredSessionDialog.visible = true

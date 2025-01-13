@@ -1,7 +1,7 @@
 import axios from "axios"
 import { MDCSnackbar } from "@material/snackbar"
 import Cropper from "cropperjs"
-import { ErrorCodes, PromiseHolder } from "dav-js"
+import { ErrorCode, PromiseHolder } from "dav-js"
 import "dav-ui-components"
 import {
 	Button,
@@ -534,7 +534,7 @@ async function sendConfirmationEmailLinkClick() {
 		// Show error message
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			showGeneralErrorMessage(
-				getErrorMessage(error.response.data.errors[0].code)
+				getErrorMessage(error.response.data.errors[0] as ErrorCode)
 			)
 		}
 	}
@@ -617,7 +617,7 @@ async function profileImageDialogPrimaryButtonClick() {
 		// Show error message
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			showGeneralErrorMessage(
-				getErrorMessage(error.response.data.errors[0].code)
+				getErrorMessage(error.response.data.errors[0] as ErrorCode)
 			)
 			profileImage.src = initialProfileImageSrc
 		}
@@ -675,7 +675,7 @@ async function firstNameSaveButtonClick() {
 		// Show error message
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			firstNameTextfield.errorMessage = getErrorMessage(
-				error.response.data.errors[0].code
+				error.response.data.errors[0] as ErrorCode
 			)
 		}
 	}
@@ -726,7 +726,7 @@ async function emailSaveButtonClick() {
 		// Show error message
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			emailTextfield.errorMessage = getErrorMessage(
-				error.response.data.errors[0].code
+				error.response.data.errors[0] as ErrorCode
 			)
 		}
 	}
@@ -781,7 +781,7 @@ async function passwordSaveButtonClick() {
 		// Show error message
 		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
 			passwordTextfield.errorMessage = getErrorMessage(
-				error.response.data.errors[0].code
+				error.response.data.errors[0] as ErrorCode
 			)
 			passwordConfirmationTextfield.value = ""
 		}
@@ -1230,28 +1230,23 @@ function showPlansErrorMessage(message: string) {
 	showElement(errorMessageBarPlans)
 }
 
-function getErrorMessage(errorCode: number): string {
+function getErrorMessage(errorCode: ErrorCode): string {
 	switch (errorCode) {
-		case ErrorCodes.ImageFileTooLarge:
-			return locale.errors.profileImageFileTooLarge
-		case ErrorCodes.FirstNameTooShort:
-			return locale.errors.firstNameTooShort
-		case ErrorCodes.FirstNameTooLong:
-			return locale.errors.firstNameTooLong
-		case ErrorCodes.EmailInvalid:
-			return locale.errors.emailInvalid
-		case ErrorCodes.EmailAlreadyInUse:
-			return locale.errors.emailTaken
-		case ErrorCodes.PasswordTooShort:
-			return locale.errors.passwordTooShort
-		case ErrorCodes.PasswordTooLong:
-			return locale.errors.passwordTooLong
-		case ErrorCodes.UserIsAlreadyConfirmed:
+		case "USER_IS_ALREADY_CONFIRMED":
 			return locale.errors.emailAlreadyConfirmed
+		case "FIRST_NAME_TOO_SHORT":
+			return locale.errors.firstNameTooShort
+		case "FIRST_NAME_TOO_LONG":
+			return locale.errors.firstNameTooLong
+		case "PASSWORD_TOO_SHORT":
+			return locale.errors.passwordTooShort
+		case "PASSWORD_TOO_LONG":
+			return locale.errors.passwordTooLong
+		case "EMAIL_INVALID":
+			return locale.errors.emailInvalid
+		case "EMAIL_ALREADY_IN_USE":
+			return locale.errors.emailTaken
 		default:
-			return locale.errors.unexpectedErrorShort.replace(
-				"{0}",
-				errorCode.toString()
-			)
+			return locale.errors.unexpectedErrorShort.replace("{0}", errorCode)
 	}
 }
