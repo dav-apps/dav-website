@@ -1267,14 +1267,10 @@ export class App {
 				this.setAccessTokenCookie(res, result.accessToken)
 			}
 
-			if (result.response == null || result.response.status == -1) {
-				res.status(500).end()
-			} else if (isSuccessStatusCode(result.response.status)) {
-				let response = result.response as ApiResponse<DavApp>
-				res.status(response.status).send(response.data)
+			if (Array.isArray(result.response)) {
+				res.status(500).send({ errors: result.response })
 			} else {
-				let response = result.response as ApiErrorResponse
-				res.status(response.status).send({ errors: response.errors })
+				res.send(result.response)
 			}
 		})
 		//#endregion
@@ -1839,7 +1835,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: ApiResponse<DavApp> | ApiErrorResponse
+		response: DavApp | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1848,21 +1844,32 @@ export class App {
 			}
 		}
 
-		let response = await AppsController.UpdateApp({
-			accessToken,
-			id: Number(req.params.id),
-			name: req.body.name,
-			description: req.body.description,
-			webLink: req.body.webLink,
-			googlePlayLink: req.body.googlePlayLink,
-			microsoftStoreLink: req.body.microsoftStoreLink,
-			published: req.body.published
-		})
-
-		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError(
+		let response = await AppsController.updateApp(
+			`
+				id
+    			name
+    			description
+    			webLink
+    			googlePlayLink
+    			microsoftStoreLink
+    			published
+			`,
+			{
 				accessToken,
-				response as ApiErrorResponse
+				id: Number(req.params.id),
+				name: req.body.name,
+				description: req.body.description,
+				webLink: req.body.webLink,
+				googlePlayLink: req.body.googlePlayLink,
+				microsoftStoreLink: req.body.microsoftStoreLink,
+				published: req.body.published
+			}
+		)
+
+		if (Array.isArray(response)) {
+			let newAccessToken = await this.handleGraphQLApiError(
+				accessToken,
+				response
 			)
 
 			if (newAccessToken == null) {
@@ -1877,7 +1884,7 @@ export class App {
 
 		return {
 			accessToken,
-			response: response as ApiResponse<DavApp>
+			response
 		}
 	}
 
