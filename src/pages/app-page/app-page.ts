@@ -1,5 +1,5 @@
 import axios from "axios"
-import { App, ErrorCodes } from "dav-js"
+import { App, ErrorCode } from "dav-js"
 import "dav-ui-components"
 import {
 	Button,
@@ -19,7 +19,6 @@ let statisticsButton: Button
 let editButton: Button
 let publishedToggle: Toggle
 let tablesList: HTMLUListElement
-let apisList: HTMLUListElement
 let editAppDialog: Dialog
 let editAppDialogNameTextfield: Textfield
 let editAppDialogDescriptionTextarea: Textarea
@@ -234,48 +233,44 @@ async function updateApp() {
 
 		editAppDialog.visible = false
 	} catch (error) {
-		let errors = error.response.data.errors
+		let errorCodes = error.response.data.errors as ErrorCode[]
 
-		for (let error of errors) {
-			let errorCode = error.code
-
+		for (let errorCode of errorCodes) {
 			switch (errorCode) {
-				case ErrorCodes.NameTooShort:
+				case "NAME_TOO_SHORT":
 					editAppDialogNameTextfield.errorMessage =
 						locale.editAppDialog.errors.nameTooShort
 					break
-				case ErrorCodes.DescriptionTooShort:
+				case "DESCRIPTION_TOO_SHORT":
 					editAppDialogDescriptionTextarea.errorMessage =
 						locale.editAppDialog.errors.descriptionTooShort
 					break
-				case ErrorCodes.NameTooLong:
+				case "NAME_TOO_LONG":
 					editAppDialogNameTextfield.errorMessage =
 						locale.editAppDialog.errors.nameTooLong
 					break
-				case ErrorCodes.DescriptionTooLong:
+				case "DESCRIPTION_TOO_LONG":
 					editAppDialogDescriptionTextarea.errorMessage =
 						locale.editAppDialog.errors.descriptionTooLong
 					break
-				case ErrorCodes.WebLinkInvalid:
+				case "WEB_LINK_INVALID":
 					editAppDialogWebLinkTextfield.errorMessage =
 						locale.editAppDialog.errors.linkInvalid
 					break
-				case ErrorCodes.GooglePlayLinkInvalid:
+				case "GOOGLE_PLAY_LINK_INVALID":
 					editAppDialogGooglePlayLinkTextfield.errorMessage =
 						locale.editAppDialog.errors.linkInvalid
 					break
-				case ErrorCodes.MicrosoftStoreLinkInvalid:
+				case "MICROSOFT_STORE_LINK_INVALID":
 					editAppDialogMicrosoftStoreLinkTextfield.errorMessage =
 						locale.editAppDialog.errors.linkInvalid
 					break
 				default:
-					if (errors.length == 1) {
-						editAppDialogNameTextfield.errorMessage =
-							locale.editAppDialog.errors.unexpectedError.replace(
-								"{0}",
-								errorCode.toString()
-							)
-					}
+					editAppDialogNameTextfield.errorMessage =
+						locale.editAppDialog.errors.unexpectedError.replace(
+							"{0}",
+							errorCode
+						)
 					break
 			}
 		}
