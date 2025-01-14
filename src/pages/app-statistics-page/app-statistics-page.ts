@@ -12,7 +12,7 @@ import {
 } from "chart.js"
 import axios from "axios"
 import { DateTime } from "luxon"
-import { App, AppUserSnapshot } from "dav-js"
+import { App, AppUserSnapshotResource } from "dav-js"
 import "dav-ui-components"
 import { Header, Dropdown, DropdownOptionType } from "dav-ui-components"
 import "../../components/navbar-component/navbar-component"
@@ -253,7 +253,7 @@ async function loadUserSnapshots() {
 	}
 }
 
-function processUserSnapshots(userSnapshots: { snapshots: AppUserSnapshot[] }) {
+function processUserSnapshots(userSnapshots: AppUserSnapshotResource[]) {
 	// Save the days in a separate array with timestamps
 	let snapshots: {
 		date: DateTime
@@ -268,7 +268,7 @@ function processUserSnapshots(userSnapshots: { snapshots: AppUserSnapshot[] }) {
 		unconfirmed: number
 	}[] = []
 
-	for (let snapshot of userSnapshots.snapshots) {
+	for (let snapshot of userSnapshots) {
 		snapshots.push({
 			date: DateTime.fromJSDate(new Date(snapshot.time))
 				.setLocale(navigator.language)
