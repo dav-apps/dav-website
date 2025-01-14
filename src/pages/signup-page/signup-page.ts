@@ -7,7 +7,7 @@ import {
 	ProgressRing,
 	Dialog
 } from "dav-ui-components"
-import { ErrorCodes } from "dav-js"
+import { ErrorCode } from "dav-js"
 import "../../components/navbar-component/navbar-component"
 import { getLocale } from "../../locales"
 import {
@@ -183,41 +183,38 @@ function loginButtonClick() {
 	)}`
 }
 
-function showError(errors: { code: number; message: string }[]) {
+function showError(errors: ErrorCode[]) {
 	if (errors == null) {
 		showErrorMessageBar(locale.errors.unexpectedErrorLong)
 		return
 	}
 
-	let errorCode = errors[0].code
-
-	switch (errorCode) {
-		case ErrorCodes.FirstNameTooShort:
-			firstNameTextfield.errorMessage = locale.errors.firstNameTooShort
-			break
-		case ErrorCodes.PasswordTooShort:
-			passwordTextfield.errorMessage = locale.errors.passwordTooShort
-			break
-		case ErrorCodes.FirstNameTooLong:
-			firstNameTextfield.errorMessage = locale.errors.firstNameTooLong
-			break
-		case ErrorCodes.PasswordTooLong:
-			passwordTextfield.errorMessage = locale.errors.passwordTooLong
-			break
-		case ErrorCodes.EmailInvalid:
-			emailTextfield.errorMessage = locale.errors.emailInvalid
-			break
-		case ErrorCodes.EmailAlreadyInUse:
-			emailTextfield.errorMessage = locale.errors.emailTaken
-			break
-		default:
-			showErrorMessageBar(
-				locale.errors.unexpectedErrorShort.replace(
-					"{0}",
-					errorCode.toString()
+	for (let errorCode of errors) {
+		switch (errorCode) {
+			case "FIRST_NAME_TOO_SHORT":
+				firstNameTextfield.errorMessage = locale.errors.firstNameTooShort
+				break
+			case "PASSWORD_TOO_SHORT":
+				passwordTextfield.errorMessage = locale.errors.passwordTooShort
+				break
+			case "FIRST_NAME_TOO_LONG":
+				firstNameTextfield.errorMessage = locale.errors.firstNameTooLong
+				break
+			case "PASSWORD_TOO_LONG":
+				passwordTextfield.errorMessage = locale.errors.passwordTooLong
+				break
+			case "EMAIL_INVALID":
+				emailTextfield.errorMessage = locale.errors.emailInvalid
+				break
+			case "EMAIL_ALREADY_IN_USE":
+				emailTextfield.errorMessage = locale.errors.emailTaken
+				break
+			default:
+				showErrorMessageBar(
+					locale.errors.unexpectedErrorShort.replace("{0}", errorCode)
 				)
-			)
-			break
+				break
+		}
 	}
 }
 
