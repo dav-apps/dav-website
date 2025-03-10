@@ -32,6 +32,12 @@ window.addEventListener("resize", setSize)
 window.addEventListener("load", main)
 
 async function main() {
+	largeHeaderStoryline = document.getElementById(
+		"large-header-storyline"
+	) as HTMLHeadingElement
+	smallHeaderStoryline = document.getElementById(
+		"small-header-storyline"
+	) as HTMLHeadingElement
 	largeHeaderPocketlib = document.getElementById(
 		"large-header-pocketlib"
 	) as HTMLHeadingElement

@@ -50,32 +50,32 @@
 				<% apps.forEach((app) => { %>
 				<div class="card m-3" style="width: 18rem">
 					<div class="card-body d-flex flex-column">
-						<h5 class="card-title mb-3"><%= app.Name %></h5>
-						<p class="card-text"><%= app.Description %></p>
+						<h5 class="card-title mb-3"><%= app.name %></h5>
+						<p class="card-text"><%= app.description %></p>
 						<div class="h-100"></div>
 
 						<div class="card-button-container">
-							<% if (app.WebLink) { %>
+							<% if (app.webLink) { %>
 							<a
 								class="btn card-button text-dark mx-2"
 								target="blank"
-								href="<%= app.WebLink %>"
+								href="<%= app.webLink %>"
 							>
 								<i class="fa-solid fa-globe"></i>
 							</a>
-							<% } %> <% if (app.GooglePlayLink) { %>
+							<% } %> <% if (app.googlePlayLink) { %>
 							<a
 								class="btn card-button text-dark mx-2"
 								target="blank"
-								href="<%= app.GooglePlayLink %>"
+								href="<%= app.googlePlayLink %>"
 							>
 								<i class="fa-brands fa-android"></i>
 							</a>
-							<% } %> <% if (app.MicrosoftStoreLink) { %>
+							<% } %> <% if (app.microsoftStoreLink) { %>
 							<a
 								class="btn card-button text-dark mx-2"
 								target="blank"
-								href="<%= app.MicrosoftStoreLink %>"
+								href="<%= app.microsoftStoreLink %>"
 							>
 								<i class="fa-brands fa-windows"></i>
 							</a>

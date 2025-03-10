@@ -9,11 +9,8 @@ import Stripe from "stripe"
 import {
 	Dav,
 	Auth,
-	App as DavApp,
 	User,
-	Dev,
 	Environment,
-	ErrorCodes,
 	isSuccessStatusCode,
 	AppsController,
 	SessionsController,
@@ -23,15 +20,21 @@ import {
 	AppUserSnapshotsController,
 	CheckoutSessionsController,
 	CustomerPortalSessionsController,
+	List,
 	ApiResponse,
-	ApiErrorResponse,
 	ApiErrorResponse2,
 	ErrorCode,
+	UserResource,
+	DevResource,
+	AppResource,
 	UserSnapshotResource,
 	AppUserSnapshotResource,
 	CheckoutSessionResource,
 	CustomerPortalSessionResource,
-	Plan
+	Plan,
+	convertUserResourceToUser,
+	convertDevResourceToDev,
+	convertAppResourceToApp
 } from "dav-js"
 import { CsrfToken, CsrfTokenContext } from "./src/types.js"
 import { supportedLocales, getLocale } from "./src/locales.js"
@@ -105,7 +108,7 @@ export class App {
 					lang: locale.lang,
 					locale: locale.userStartPage,
 					navbarLocale: locale.navbarComponent,
-					user: userResponse.user,
+					user: convertUserResourceToUser(userResponse.user),
 					errorMessageText,
 					successMessageText
 				})
@@ -425,11 +428,8 @@ export class App {
 				lang: locale.lang,
 				locale: locale.appsPage,
 				navbarLocale: locale.navbarComponent,
-				user: userResponse.user,
-				apps:
-					response.length > 0 && typeof response[0] == "string"
-						? []
-						: response
+				user: convertUserResourceToUser(userResponse.user),
+				apps: Array.isArray(response) ? [] : response.items
 			})
 		})
 
@@ -531,7 +531,7 @@ export class App {
 				return
 			}
 
-			let user = userResponse.user
+			let user = convertUserResourceToUser(userResponse.user)
 
 			if (user.PeriodEnd != null) {
 				periodEndDate = DateTime.fromJSDate(user.PeriodEnd)
@@ -599,8 +599,8 @@ export class App {
 				lang: locale.lang,
 				locale: locale.devPage,
 				navbarLocale: locale.navbarComponent,
-				user: userResponse.user,
-				dev: devResponse.dev
+				user: convertUserResourceToUser(userResponse.user),
+				dev: convertDevResourceToDev(devResponse.dev)
 			})
 		})
 
@@ -630,7 +630,7 @@ export class App {
 				locale: locale.statisticsPage,
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
-				user: userResponse.user
+				user: convertUserResourceToUser(userResponse.user)
 			})
 		})
 
@@ -662,7 +662,7 @@ export class App {
 				locale: locale.appPage,
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
-				user: userResponse.user
+				user: convertUserResourceToUser(userResponse.user)
 			})
 		})
 
@@ -694,7 +694,7 @@ export class App {
 				locale: locale.statisticsPage,
 				navbarLocale: locale.navbarComponent,
 				csrfToken,
-				user: userResponse.user
+				user: convertUserResourceToUser(userResponse.user)
 			})
 		})
 		//#endregion
@@ -722,13 +722,10 @@ export class App {
 				this.setAccessTokenCookie(res, result.accessToken)
 			}
 
-			if (
-				result.response.length > 0 &&
-				typeof result.response[0] == "string"
-			) {
+			if (Array.isArray(result.response)) {
 				res.status(500).send({ errors: result.response })
 			} else {
-				res.send(result.response)
+				res.send(result.response.items)
 			}
 		})
 
@@ -754,7 +751,7 @@ export class App {
 			if (Array.isArray(result.response)) {
 				res.status(500).send({ errors: result.response })
 			} else {
-				res.send(result.response)
+				res.send(convertAppResourceToApp(result.response))
 			}
 		})
 
@@ -781,13 +778,10 @@ export class App {
 				this.setAccessTokenCookie(res, result.accessToken)
 			}
 
-			if (
-				result.response.length > 0 &&
-				typeof result.response[0] == "string"
-			) {
+			if (Array.isArray(result.response)) {
 				res.status(500).send({ errors: result.response })
 			} else {
-				res.send(result.response)
+				res.send(result.response.items)
 			}
 		})
 
@@ -939,7 +933,7 @@ export class App {
 				`id`,
 				{
 					auth: this.auth,
-					id: userResponse.user.Id
+					id: userResponse.user.id
 				}
 			)
 
@@ -1147,7 +1141,7 @@ export class App {
 				apiVersion: null
 			})
 			let subscriptions = await stripe.subscriptions.list({
-				customer: user.StripeCustomerId
+				customer: user.stripeCustomerId
 			})
 
 			if (subscriptions.data.length == 0) {
@@ -1159,7 +1153,7 @@ export class App {
 				} else {
 					// Create a new subscription
 					await stripe.subscriptions.create({
-						customer: user.StripeCustomerId,
+						customer: user.stripeCustomerId,
 						items: [
 							{
 								plan:
@@ -1229,7 +1223,7 @@ export class App {
 				apiVersion: null
 			})
 			let subscriptions = await stripe.subscriptions.list({
-				customer: user.StripeCustomerId
+				customer: user.stripeCustomerId
 			})
 
 			if (subscriptions.data.length == 0) {
@@ -1345,7 +1339,7 @@ export class App {
 
 	private async getUser(
 		accessToken: string
-	): Promise<{ accessToken: string; user: User }> {
+	): Promise<{ accessToken: string; user: UserResource }> {
 		if (accessToken == null) {
 			return {
 				accessToken: null,
@@ -1398,6 +1392,7 @@ export class App {
 				accessToken,
 				retrieveUserResponse
 			)
+
 			return await this.getUser(accessToken)
 		}
 
@@ -1409,7 +1404,7 @@ export class App {
 
 	private async getDev(
 		accessToken: string
-	): Promise<{ accessToken: string; dev: Dev }> {
+	): Promise<{ accessToken: string; dev: DevResource }> {
 		if (accessToken == null) {
 			return {
 				accessToken: null,
@@ -1455,7 +1450,7 @@ export class App {
 		months: number
 	): Promise<{
 		accessToken: string
-		response: UserSnapshotResource[] | ErrorCode[]
+		response: List<UserSnapshotResource> | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1485,7 +1480,7 @@ export class App {
 			}
 		)
 
-		if (response.length > 0 && typeof response[0] == "number") {
+		if (Array.isArray(response)) {
 			const errorCodes = response as ErrorCode[]
 
 			let newAccessToken = await this.handleGraphQLApiError(
@@ -1514,7 +1509,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: DavApp | ErrorCode[]
+		response: AppResource | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1575,7 +1570,7 @@ export class App {
 		months: number
 	): Promise<{
 		accessToken: string
-		response: AppUserSnapshotResource[] | ErrorCode[]
+		response: List<AppUserSnapshotResource> | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1606,7 +1601,7 @@ export class App {
 			}
 		)
 
-		if (response.length > 0 && typeof response[0] == "number") {
+		if (Array.isArray(response)) {
 			const errorCodes = response as ErrorCode[]
 
 			let newAccessToken = await this.handleGraphQLApiError(
@@ -1635,7 +1630,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: User | ErrorCode[]
+		response: UserResource | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1726,7 +1721,7 @@ export class App {
 		})
 
 		if (!isSuccessStatusCode(response.status)) {
-			let newAccessToken = await this.handleApiError2(
+			let newAccessToken = await this.handleApiError(
 				accessToken,
 				response as ApiErrorResponse2
 			)
@@ -1840,7 +1835,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: DavApp | ErrorCode[]
+		response: AppResource | ErrorCode[]
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1895,34 +1890,11 @@ export class App {
 
 	private async handleApiError(
 		accessToken: string,
-		errorResponse: ApiErrorResponse
-	): Promise<string> {
-		if (
-			errorResponse.errors.length == 0 ||
-			errorResponse.errors[0].code != ErrorCodes.AccessTokenMustBeRenewed
-		) {
-			return null
-		}
-
-		let renewSessionResult = await SessionsController.renewSession(
-			`accessToken`,
-			{ accessToken }
-		)
-
-		if (Array.isArray(renewSessionResult)) {
-			return null
-		}
-
-		return renewSessionResult.accessToken
-	}
-
-	private async handleApiError2(
-		accessToken: string,
 		errorResponse: ApiErrorResponse2
 	): Promise<string> {
 		if (
 			errorResponse.error != null ||
-			errorResponse.error.code != "SESSION_ENDED"
+			errorResponse.error.code != "SESSION_EXPIRED"
 		) {
 			return null
 		}
@@ -1943,7 +1915,7 @@ export class App {
 		accessToken: string,
 		errorCodes: ErrorCode[]
 	) {
-		if (!errorCodes.includes("SESSION_ENDED")) {
+		if (!errorCodes.includes("SESSION_EXPIRED")) {
 			return null
 		}
 
