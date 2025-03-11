@@ -22,7 +22,7 @@ import {
 	CustomerPortalSessionsController,
 	List,
 	ApiResponse,
-	ApiErrorResponse2,
+	ApiErrorResponse,
 	ErrorCode,
 	UserResource,
 	DevResource,
@@ -1048,7 +1048,7 @@ export class App {
 				let response = result.response as ApiResponse<{}>
 				res.status(response.status).send(response.data)
 			} else {
-				let response = result.response as ApiErrorResponse2
+				let response = result.response as ApiErrorResponse
 				res.status(response.status).send({ error: response.error })
 			}
 		})
@@ -1705,7 +1705,7 @@ export class App {
 		req: any
 	): Promise<{
 		accessToken: string
-		response: ApiResponse<{}> | ApiErrorResponse2
+		response: ApiResponse<{}> | ApiErrorResponse
 	}> {
 		if (accessToken == null) {
 			return {
@@ -1723,7 +1723,7 @@ export class App {
 		if (!isSuccessStatusCode(response.status)) {
 			let newAccessToken = await this.handleApiError(
 				accessToken,
-				response as ApiErrorResponse2
+				response as ApiErrorResponse
 			)
 
 			if (newAccessToken == null) {
@@ -1890,7 +1890,7 @@ export class App {
 
 	private async handleApiError(
 		accessToken: string,
-		errorResponse: ApiErrorResponse2
+		errorResponse: ApiErrorResponse
 	): Promise<string> {
 		if (
 			errorResponse.error != null ||
