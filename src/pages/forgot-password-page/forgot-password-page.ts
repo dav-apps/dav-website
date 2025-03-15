@@ -1,5 +1,4 @@
 import axios from "axios"
-import { ErrorCodes } from "dav-js"
 import "dav-ui-components"
 import { Button, Dialog, ProgressRing, Textfield } from "dav-ui-components"
 import "../../components/navbar-component/navbar-component"
@@ -76,22 +75,17 @@ async function sendButtonClick() {
 		emailTextfield.disabled = false
 		sendButton.disabled = false
 
-		if (!handleExpiredSessionError(error, expiredSessionDialog)) {
-			emailTextfield.errorMessage = getErrorMessage(
-				error.response.data.errors[0].code
-			)
+		if (
+			!handleExpiredSessionError(error, expiredSessionDialog) &&
+			error.response?.data?.errors?.includes("USER_DOES_NOT_EXIST")
+		) {
+			emailTextfield.errorMessage = locale.errors.userNotFound
+		} else {
+			emailTextfield.errorMessage =
+				locale.errors.unexpectedErrorShort.replace(
+					"{0}",
+					error.response?.data?.errors[0] ?? ""
+				)
 		}
-	}
-}
-
-function getErrorMessage(code: number): string {
-	switch (code) {
-		case ErrorCodes.UserDoesNotExist:
-			return locale.errors.userNotFound
-		default:
-			return locale.errors.unexpectedErrorShort.replace(
-				"{0}",
-				code.toString()
-			)
 	}
 }
