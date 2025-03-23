@@ -148,14 +148,14 @@
 					<div class="d-flex">
 						<img
 							class="me-3 rounded"
-							src="<%= user.ProfileImage %>"
-							alt="<%= locale.profileImageOf.replace('{0}', user.FirstName) %>"
+							src="<%= user.profileImage.url %>"
+							alt="<%= locale.profileImageOf.replace('{0}', user.firstName) %>"
 							width="70"
 							height="70"
 						/>
 
 						<h5 class="my-auto fw-light">
-							<%= locale.loginAs.replace('{0}', user.FirstName) %>
+							<%= locale.loginAs.replace('{0}', user.firstName) %>
 						</h5>
 					</div>
 				</button>
