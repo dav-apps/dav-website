@@ -552,13 +552,32 @@ export class App {
 				let stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 					apiVersion: null
 				})
-				let paymentMethods = await stripe.customers.listPaymentMethods(
-					user.StripeCustomerId,
-					{ limit: 1, type: "card" }
-				)
 
-				if (paymentMethods.data.length > 0) {
-					card = paymentMethods.data[0].card
+				try {
+					let paymentMethods = await stripe.customers.listPaymentMethods(
+						user.StripeCustomerId,
+						{ limit: 1, type: "card" }
+					)
+
+					if (paymentMethods.data.length > 0) {
+						card = paymentMethods.data[0].card
+					}
+				} catch (error) {
+					if (
+						error instanceof Stripe.errors.StripeInvalidRequestError &&
+						error.code == "resource_missing" &&
+						error.param == "id"
+					) {
+						// The customer does not exist for the configured Stripe mode.
+						// Fall back to the free plan instead of failing the user page.
+						user.Plan = Plan.Free
+						user.SubscriptionStatus = null
+						user.PeriodEnd = null
+						periodEndDate = null
+						showUpgradeSuccessMessage = false
+					} else {
+						throw error
+					}
 				}
 			}
 
