@@ -511,7 +511,7 @@
 													<%= locale.plans.currentPlan %>
 												</button>
 
-												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+												<% if (user.SubscriptionStatus != 'ENDING') { %>
 												<button
 													id="plans-table-free-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan != 'FREE' ? '' : 'd-none' %>"
@@ -542,7 +542,7 @@
 													class="d-none"
 												></dav-progress-ring>
 
-												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+												<% if (user.SubscriptionStatus != 'ENDING') { %>
 												<button
 													id="plans-table-plus-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
@@ -570,7 +570,7 @@
 													<%= locale.plans.currentPlan %>
 												</button>
 
-												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+												<% if (user.SubscriptionStatus != 'ENDING') { %>
 												<button
 													id="plans-table-plus-downgrade-button"
 													class="btn btn-sm btn-outline-danger <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
@@ -601,7 +601,7 @@
 													class="d-none"
 												></dav-progress-ring>
 
-												<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+												<% if (user.SubscriptionStatus != 'ENDING') { %>
 												<button
 													id="plans-table-pro-upgrade-button"
 													class="btn btn-sm btn-dark <%= user.Plan != 'PRO' ? '' : 'd-none' %>"
@@ -681,7 +681,7 @@
 												<%= locale.plans.currentPlan %>
 											</button>
 
-											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+											<% if (user.SubscriptionStatus != 'ENDING') { %>
 											<button
 												id="plans-table-mobile-free-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan != 'FREE' ? '' : 'd-none' %>"
@@ -793,7 +793,7 @@
 												class="d-none"
 											></dav-progress-ring>
 
-											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+											<% if (user.SubscriptionStatus != 'ENDING') { %>
 											<button
 												id="plans-table-mobile-plus-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan == 'FREE' ? '' : 'd-none' %>"
@@ -821,7 +821,7 @@
 												<%= locale.plans.currentPlan %>
 											</button>
 
-											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+											<% if (user.SubscriptionStatus != 'ENDING') { %>
 											<button
 												id="plans-table-mobile-plus-downgrade-button"
 												class="btn btn-sm btn-outline-danger <%= user.Plan == 'PRO' ? '' : 'd-none' %>"
@@ -946,7 +946,7 @@
 												class="d-none"
 											></dav-progress-ring>
 
-											<% if (user.SubscriptionStatus == 'ACTIVE') { %>
+											<% if (user.SubscriptionStatus != 'ENDING') { %>
 											<button
 												id="plans-table-mobile-pro-upgrade-button"
 												class="btn btn-sm btn-dark <%= user.Plan != 'PRO' ? '' : 'd-none' %>"
